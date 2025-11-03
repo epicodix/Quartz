@@ -1,0 +1,617 @@
+# 쿠버네티스 핵심 개념 완벽 정리
+
+---
+
+## 왜 쿠버네티스인가? (시나리오 비교)
+
+#### **시나리오 1: 대규모 트래픽 대응**
+```
+상황:
+- 평소: 서버 1대, 컨테이너 3개로 충분
+- 블랙프라이데이: 트래픽 100배 증가
+- 필요: 서버 10대, 컨테이너 50개
+
+Docker만 사용:
+❌ 수동으로 서버 10대에 일일이 배포
+❌ 각 서버에 ssh 접속해서 docker run
+❌ 로드밸런서 수동 설정
+❌ 한 대씩 관리 (악몽)
+
+쿠버네티스 사용:
+✅ kubectl scale deployment myapp --replicas=50
+✅ 자동으로 서버들에 분산 배포
+✅ 자동 로드밸런싱
+✅ 한 번의 명령으로 완료
+```
+
+#### **시나리오 2: 컨테이너 장애**
+```
+상황:
+- 새벽 3시에 서버 1대 다운
+- 해당 서버의 컨테이너 10개 중단
+- 고객 서비스 중단
+
+Docker만 사용:
+❌ 담당자 호출 (새벽 3시)
+❌ 수동으로 다른 서버에 재배포
+❌ 복구까지 30분 소요
+❌ 서비스 중단 시간 발생
+
+쿠버네티스 사용:
+✅ 자동으로 장애 감지 (5초 이내)
+✅ 자동으로 다른 서버에 재배포
+✅ 복구까지 10초 소요
+✅ 담당자는 푹 자기 
+```
+
+#### **시나리오 3: 무중단 배포**
+```
+상황:
+- 서비스 중인 앱의 새 버전 배포
+- 사용자는 서비스 중단을 눈치채면 안 됨
+
+Docker만 사용:
+❌ 기존 컨테이너 중지
+❌ 새 컨테이너 시작
+❌ 중간에 서비스 공백 발생 (5-10초)
+❌ 문제 있으면 롤백 수동
+
+쿠버네티스 사용:
+✅ 롤링 업데이트 (하나씩 교체)
+✅ 서비스 중단 0초
+✅ 문제 감지 시 자동 롤백
+✅ Blue-Green, Canary 배포 지원
+```
+
+---
+
+##  쿠버네티스 핵심 개념
+
+### **1. 클러스터 (Cluster)**
+```
+쿠버네티스의 전체 시스템
+
+클러스터
+  ├─ 마스터 노드 (Control Plane)
+  │   └─ 뇌 역할: 모든 것을 지휘
+  └─ 워커 노드들 (Worker Nodes)
+      └─ 실제 컨테이너가 실행되는 서버들
+
+비유:
+- 클러스터 = 회사 전체
+- 마스터 노드 = CEO
+- 워커 노드 = 직원들
+```
+
+---
+
+### **2. 노드 (Node)**
+```
+물리적 또는 가상의 서버 한 대
+
+마스터 노드:
+- API Server: 모든 명령의 진입점
+- Scheduler: "어느 워커 노드에 배치할까?"
+- Controller Manager: "현재 상태를 원하는 상태로"
+- etcd: 모든 정보를 저장하는 DB
+
+워커 노드:
+- kubelet: 마스터의 명령을 받아 실행
+- kube-proxy: 네트워크 라우팅
+- Container Runtime: Docker 등
+- Pod들: 실제 애플리케이션
+
+비유:
+- 마스터 노드 = 본사
+- 워커 노드 = 지점
+```
+
+---
+
+### **3. 파드 (Pod)**
+```
+쿠버네티스의 최소 배포 단위
+하나 이상의 컨테이너를 묶은 그룹
+
+특징:
+- 같은 Pod 안의 컨테이너들은 localhost로 통신
+- 같은 네트워크와 스토리지 공유
+- 함께 생성되고 함께 삭제됨
+- IP 주소를 Pod 단위로 할당
+
+예시:
+Pod
+  ├─ 웹 서버 컨테이너
+  └─ 로그 수집 컨테이너
+  
+→ 두 컨테이너가 긴밀하게 협력해야 할 때
+
+주의:
+❌ Pod에 직접 배포하지 않음
+✅ Deployment를 통해 관리
+```
+
+---
+
+### **4. 디플로이먼트 (Deployment)**
+```
+Pod를 관리하는 상위 개념
+실제로 가장 많이 사용하는 리소스
+
+역할:
+- Pod 복제본 개수 관리
+- 롤링 업데이트
+- 롤백
+- 자동 복구
+
+예시:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 3  ← Pod 3개 실행
+  template:
+    spec:
+      containers:
+      - name: web
+        image: nginx:1.19
+
+결과:
+→ nginx Pod 3개가 자동 생성됨
+→ 하나 죽으면 자동으로 새로 생성
+→ 이미지 업데이트 시 순차적으로 교체
+```
+
+---
+
+### **5. 서비스 (Service)**
+```
+Pod들에 대한 네트워크 접근을 제공
+Pod는 죽었다 살았다 하는데, IP가 매번 바뀜
+→ 고정된 접근점 필요 = Service
+
+타입:
+1. ClusterIP (기본)
+   - 클러스터 내부에서만 접근
+   - 프론트엔드 → 백엔드 통신
+
+2. NodePort
+   - 외부에서 접근 가능
+   - 각 노드의 특정 포트로 접근
+   - 개발/테스트용
+
+3. LoadBalancer
+   - 클라우드 로드밸런서 자동 생성
+   - 프로덕션 환경
+   - AWS ELB, GCP Load Balancer 등
+
+4. ExternalName
+   - 외부 서비스를 내부 이름으로 매핑
+
+예시:
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-service
+spec:
+  selector:
+    app: my-app  ← 이 라벨을 가진 Pod들에 연결
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: LoadBalancer
+
+결과:
+→ my-app-service.default.svc.cluster.local
+→ 이 주소로 접근하면 Pod들에 로드밸런싱
+```
+
+---
+
+### **6. 인그레스 (Ingress)**
+```
+HTTP(S) 라우팅
+도메인 기반으로 여러 서비스에 트래픽 분산
+
+예시:
+example.com/api    → API 서비스
+example.com/web    → 웹 서비스
+example.com/admin  → 관리자 서비스
+
+YAML:
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+spec:
+  rules:
+  - host: example.com
+    http:
+      paths:
+      - path: /api
+        backend:
+          service:
+            name: api-service
+            port: 80
+      - path: /web
+        backend:
+          service:
+            name: web-service
+            port: 80
+
+추가 기능:
+- SSL/TLS 인증서 자동 관리
+- URL 리다이렉트
+- 로드밸런싱
+```
+
+---
+
+### **7. 컨피그맵 & 시크릿 (ConfigMap & Secret)**
+```
+설정과 민감 정보 관리
+
+ConfigMap:
+- 환경 변수
+- 설정 파일
+- 평문 저장
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  DATABASE_URL: "mysql://db:3306"
+  LOG_LEVEL: "info"
+
+Secret:
+- 비밀번호
+- API 키
+- 인증서
+- Base64 인코딩 (암호화는 별도)
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-secret
+type: Opaque
+data:
+  password: cGFzc3dvcmQxMjM=  ← base64
+
+사용:
+containers:
+- name: app
+  env:
+  - name: DB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: db-secret
+        key: password
+```
+
+---
+
+### **8. 볼륨 (Volume, PV, PVC)**
+```
+데이터 영속성
+
+문제:
+- 컨테이너는 일시적 (Ephemeral)
+- 재시작하면 데이터 사라짐
+
+해결:
+- Volume: 데이터를 외부에 저장
+
+종류:
+1. emptyDir: Pod 내부 임시 저장
+2. hostPath: 노드의 파일시스템
+3. PersistentVolume (PV): 클러스터 레벨 스토리지
+4. PersistentVolumeClaim (PVC): PV 사용 요청
+
+예시:
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+사용:
+containers:
+- name: mysql
+  volumeMounts:
+  - name: db-storage
+    mountPath: /var/lib/mysql
+volumes:
+- name: db-storage
+  persistentVolumeClaim:
+    claimName: db-pvc
+```
+
+---
+
+### **9. 네임스페이스 (Namespace)**
+```
+리소스 격리 및 그룹화
+
+용도:
+- 환경 분리: dev, staging, production
+- 팀 분리: team-a, team-b
+- 프로젝트 분리: project-x, project-y
+
+기본 네임스페이스:
+- default: 기본
+- kube-system: 쿠버네티스 시스템 컴포넌트
+- kube-public: 모두가 읽을 수 있는 리소스
+- kube-node-lease: 노드 상태 정보
+
+예시:
+kubecl create namespace dev
+kubecl create namespace prod
+
+리소스 배포:
+kubectl apply -f app.yaml -n dev
+kubectl apply -f app.yaml -n prod
+
+→ 같은 앱을 다른 환경에 독립적으로 배포
+```
+
+---
+
+##  쿠버네티스 동작 원리
+
+### **선언적 관리 (Declarative Management)**
+```
+전통적 방식 (명령형):
+1. 서버1에 컨테이너 3개 시작
+2. 서버2에 컨테이너 3개 시작
+3. 로드밸런서 설정
+4. 방화벽 열기
+...
+
+쿠버네티스 방식 (선언형):
+"나는 nginx Pod 6개를 원한다"
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 6  ← 원하는 상태 선언
+
+쿠버네티스가 알아서:
+✅ 어느 서버에 배치할지 결정
+✅ 컨테이너 시작
+✅ 네트워크 설정
+✅ 상태 모니터링
+✅ 문제 시 자동 복구
+```
+
+---
+
+### **컨트롤 루프 (Control Loop)**
+```
+쿠버네티스의 핵심 메커니즘
+
+무한 루프:
+1. 현재 상태 확인
+2. 원하는 상태와 비교
+3. 차이가 있으면 조치
+4. 1번으로 돌아가기
+
+예시:
+원하는 상태: Pod 5개
+현재 상태: Pod 3개 (2개 죽음)
+
+→ 컨트롤러가 자동으로 Pod 2개 생성
+→ 현재 상태: Pod 5개 (목표 달성)
+
+이것이 "자동 복구"의 원리
+```
+
+---
+
+##  쿠버네티스 아키텍처 흐름
+
+### **배포 과정**
+```
+1. 개발자: kubectl apply -f deployment.yaml
+   ↓
+2. API Server: 요청 받음, etcd에 저장
+   ↓
+3. Scheduler: "어느 노드에 배치할까?"
+   - CPU/메모리 사용량 확인
+   - 노드 상태 확인
+   - 최적의 노드 선택
+   ↓
+4. 선택된 워커 노드의 kubelet: 명령 받음
+   ↓
+5. Container Runtime: 컨테이너 시작
+   ↓
+6. kube-proxy: 네트워크 설정
+   ↓
+7. Pod 실행 완료!
+```
+
+---
+
+### **장애 복구 과정**
+```
+1. Pod 죽음 (크래시, 노드 다운 등)
+   ↓
+2. kubelet: 마스터에게 보고
+   ↓
+3. Controller Manager: "이런, Pod가 부족해!"
+   - 원하는 상태: 5개
+   - 현재 상태: 4개
+   ↓
+4. Scheduler: 새 Pod를 배치할 노드 선택
+   ↓
+5. 해당 노드의 kubelet: 새 Pod 시작
+   ↓
+6. 복구 완료! (전체 과정 10초 이내)
+```
+
+---
+
+##  핵심 개념 정리표
+
+| 개념 | 역할 | 비유 |
+|------|------|------|
+| **Cluster** | 전체 시스템 | 회사 전체 |
+| **Node** | 서버 (마스터/워커) | 본사/지점 |
+| **Pod** | 컨테이너 그룹 (최소 단위) | 직원 (최소 업무 단위) |
+| **Deployment** | Pod 관리 (복제, 업데이트) | 부서장 (팀 관리) |
+| **Service** | 네트워크 접근 제공 | 대표번호 (고정 연락처) |
+| **Ingress** | HTTP 라우팅 | 안내 데스크 (방문자 안내) |
+| **ConfigMap** | 설정 관리 | 회사 규정집 |
+| **Secret** | 민감 정보 관리 | 금고 (비밀 보관) |
+| **Volume** | 데이터 저장 | 창고 (물건 보관) |
+| **Namespace** | 리소스 격리 | 사업부 (조직 구분) |
+
+---
+
+##  Docker vs Docker Compose vs Kubernetes
+
+### **비교표**
+
+| 항목 | Docker | Docker Compose | Kubernetes |
+|------|--------|----------------|------------|
+| **범위** | 단일 컨테이너 | 여러 컨테이너 (단일 서버) | 여러 컨테이너 (여러 서버) |
+| **서버** | 1대 | 1대 | 다수 |
+| **오케스트레이션** | ❌ | 기본 | 고급 |
+| **자동 복구** | ❌ | ❌ | ✅ |
+| **스케일링** | 수동 | 수동 | 자동 |
+| **로드밸런싱** | 수동 | 수동 | 자동 |
+| **롤링 업데이트** | ❌ | ❌ | ✅ |
+| **복잡도** | 낮음 | 중간 | 높음 |
+| **학습 곡선** | 완만 | 완만 | 가파름 |
+| **적합한 경우** | 개발/테스트 | 소규모 프로젝트 | 프로덕션 (대규모) |
+
+---
+
+### **실전 사용 예시**
+```
+개인 프로젝트 (컨테이너 3개):
+→ Docker Compose
+docker-compose up -d
+
+스타트업 초기 (컨테이너 10개, 서버 1-2대):
+→ Docker Compose 또는 간단한 K8s (Minikube)
+
+성장 단계 (컨테이너 50개, 서버 5대):
+→ Kubernetes 도입 고려
+
+대기업/유니콘 (컨테이너 1000개, 서버 100대):
+→ Kubernetes 필수
+```
+
+---
+
+##  언제 쿠버네티스를 도입해야 하나?
+
+### **쿠버네티스가 필요한 신호**
+```
+✅ 다음 중 3개 이상 해당하면 고려:
+
+1. 컨테이너가 20개 이상
+2. 서버가 3대 이상
+3. 트래픽이 급변함 (급증/급감)
+4. 무중단 배포 필수
+5. 24/7 운영 필요
+6. 글로벌 서비스 (멀티 리전)
+7. 마이크로서비스 아키텍처
+8. DevOps 문화 정착
+9. 클라우드 네이티브 지향
+10. 자동화가 생존 문제
+```
+
+---
+
+### **쿠버네티스가 과한 경우**
+```
+❌ 다음 경우는 오버 엔지니어링:
+
+1. 정적 웹사이트
+2. 컨테이너 1-2개
+3. 트래픽 일정함
+4. 서버 1대로 충분
+5. 업데이트가 월 1회
+6. 팀 규모 5명 이하
+7. Docker Compose로 충분히 관리 가능
+8. 학습 시간이 없음
+9. 인프라보다 비즈니스 로직 구현이 급함
+
+→ Docker Compose 추천
+```
+
+---
+
+##  쿠버네티스 학습 로드맵
+
+### **단계별 학습**
+```
+Level 1 (기초): 1-2주
+- Docker 완벽 숙지
+- 컨테이너 개념 이해
+- Dockerfile 작성 능숙
+
+Level 2 (입문): 2-4주
+- Minikube 설치
+- Pod, Deployment 실습
+- Service로 접근하기
+- kubectl 명령어 익히기
+
+Level 3 (중급): 4-8주
+- ConfigMap, Secret 사용
+- Volume, PV, PVC 이해
+- Ingress 설정
+- 실전 프로젝트 배포
+
+Level 4 (고급): 2-3개월
+- StatefulSet, DaemonSet
+- HPA (Auto Scaling)
+- Helm Charts
+- CI/CD 파이프라인 연동
+- 모니터링 (Prometheus, Grafana)
+
+Level 5 (전문가): 6개월+
+- CKA 자격증
+- 프로덕션 운영 경험
+- 트러블슈팅
+- 성능 최적화
+- 멀티 클러스터 관리
+```
+
+---
+
+##  핵심 요약
+
+### **쿠버네티스 = 컨테이너 자동 관리 시스템**
+```
+핵심 가치:
+1. 자동화: 배포, 확장, 복구
+2. 선언적: "무엇을" 원하는지만 명시
+3. 이식성: 어느 클라우드든 동일하게 작동
+4. 확장성: 컨테이너 10개든 10,000개든
+5. 자가 치유: 문제 발생 시 자동 복구
+
+핵심 개념:
+- Pod: 최소 배포 단위
+- Deployment: Pod 관리
+- Service: 네트워크 접근
+- Ingress: HTTP 라우팅
+- ConfigMap/Secret: 설정 관리
+- Volume: 데이터 영속성
+
+학습 순서:
+Docker → Kubernetes 기초 → 실전 프로젝트
+
+도입 시점:
+컨테이너 20개 이상 OR 서버 3대 이상
+```
