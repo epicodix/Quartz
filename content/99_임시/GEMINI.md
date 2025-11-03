@@ -119,3 +119,14 @@ export class User {
     - 로컬 경로: `/Users/a1234/epicodix/edu-cloud7-html`
     - GitHub 연결 준비 완료 (사용자 GitHub 저장소 생성 및 연결 필요)
 - Obsidian 파일 관리 규칙: Git 작업 및 교육 내용 관련 Obsidian 파일은 별도 카테고리 및 태그를 통해 관리 (예: `[[교육/구름딥다이브/클라우드네이티브]]`, `#git`, `#cloud-native`)
+
+---
+
+## Quartz 웹사이트 배포
+
+Obsidian `GEMINI` 폴더의 내용을 `my-quartz-site` 웹사이트로 동기화하고 GitHub Pages에 배포합니다.
+`/Users/a1234/epicodix/my-quartz-site` 폴더로 이동한 후, 아래 명령어를 실행하세요.
+
+```bash
+./sync-and-deploy.sh
+```
