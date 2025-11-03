@@ -1,7 +1,7 @@
 
 ---
-title: "Gemini CLI 활용 가이드 (날짜 테스트)"
-date: 2025-11-03
+title: "Gemini CLI 활용 가이드"
+published: 2025-10-31
 ---
 
 # Gemini CLI 사용 설명서: 당신의 AI 개발 파트너

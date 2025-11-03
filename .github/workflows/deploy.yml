@@ -30,8 +30,7 @@ jobs:
       - name: Build Quartz
         run: npx quartz build
 
-      - name: List public directory
-        run: ls -R public
+      
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
