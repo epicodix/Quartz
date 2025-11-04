@@ -15,7 +15,7 @@ const config: QuartzConfig = {
     analytics: {
       provider: "plausible",
     },
-    locale: "en-US",
+    locale: "ko-KR",
     baseUrl: "epicodix.github.io/Quartz",
     ignorePatterns: ["private", "templates", ".obsidian", "99_임시"],
     defaultDateType: "published",
