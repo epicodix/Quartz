@@ -1,0 +1,14 @@
+#kubernetes #component #control-plane
+
+API 서버(kube-api-server)는 쿠버네티스 `[[컨트롤 플레인 (Control Plane)]]`의 핵심으로, **'지휘 본부'** 역할을 합니다.
+
+**주요 역할**
+
+1.  **모든 통신의 관문 (Gateway) **
+      * 사용자(`kubectl`), `[[K8s - Kubelet]]`, `[[K8s - Scheduler]]` 등 클러스터 내부/외부의 모든 컴포넌트가 통신하는 유일한 창구입니다.
+2.  **'원하는 상태' 저장**
+      * 사용자의 모든 명령(요청)을 받아 유효성을 검증한 뒤, 이 '원하는 상태'를 `[[K8s - etcd]]` 데이터베이스에 저장합니다.
+3.  **검증 (Validation)**
+      * 사용자의 요청(YAML 등)이 문법에 맞는지, 권한이 있는지 확인합니다.
+
+* 관련 링크: `[[Kubernetes 핵심 컴포넌트]]`, `[[K8s - etcd]]`
