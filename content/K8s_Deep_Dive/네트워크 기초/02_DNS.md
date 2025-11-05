@@ -1,0 +1,83 @@
+## 🌐 DNS (Domain Name System) 기초
+
+### DNS가 왜 필요한가?
+
+```
+사람: "네이버 접속하고 싶어!"
+컴퓨터: "IP 주소가 뭔데? 223.130.200.107?"
+사람: "그걸 내가 어떻게 외워...😅"
+
+→ DNS가 해결!
+사람: "naver.com" (이름)
+DNS: "223.130.200.107 여기로 가!" (IP)
+```
+
+**DNS = 인터넷의 전화번호부** 📞
+
+---
+
+### DNS 작동 방식 (실제 웹사이트 접속 과정)
+
+```
+1. 브라우저에 "www.google.com" 입력
+   ↓
+2. 내 컴퓨터의 DNS Resolver가 물어봄
+   "google.com의 IP가 뭐야?"
+   ↓
+3. DNS 서버 체인을 거슬러 올라감:
+   
+   Local DNS (ISP)
+   → Root DNS: ".com은 여기 물어봐"
+   → TLD DNS: "google.com은 여기 물어봐"
+   → Authoritative DNS: "142.250.196.14야!"
+   ↓
+4. IP 주소 받아서 캐싱 (다음엔 빠르게)
+   ↓
+5. 실제 서버에 연결!
+```
+
+---
+
+### 쿠버네티스의 내부 DNS (CoreDNS)
+
+쿠버네티스 클러스터는 **작은 인터넷**입니다!
+
+```
+인터넷:
+google.com → 142.250.196.14
+
+쿠버네티스 클러스터:
+user-service.production.svc.cluster.local → 10.96.0.10
+```
+
+#### 실제 예시로 이해하기
+
+```
+상황: order-service가 user-service와 통신하고 싶음
+
+1. 코드에서:
+   http://user-service/api/users 호출
+   
+2. 파드의 /etc/resolv.conf 확인:
+   nameserver 10.96.0.10     ← CoreDNS의 IP
+   search production.svc.cluster.local
+   
+3. DNS 질의:
+   "user-service가 뭐야?"
+   → 자동으로 확장: user-service.production.svc.cluster.local
+   
+4. CoreDNS 응답:
+   "10.100.50.20이야!" ← user-service의 ClusterIP
+   
+5. 실제 통신:
+   10.100.50.20:80으로 요청 전송
+```
+
+#### DNS 레코드 타입
+
+|타입|설명|예시|
+|---|---|---|
+|**A 레코드**|도메인 → IPv4 주소|google.com → 142.250.196.14|
+|**AAAA 레코드**|도메인 → IPv6 주소|google.com → 2404:6800:...|
+|**CNAME**|도메인 → 다른 도메인|[www.example.com](http://www.example.com) → example.com|
+|**SRV**|서비스 위치 정보|(쿠버네티스에서 사용)|
