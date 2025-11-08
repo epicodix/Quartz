@@ -1,3 +1,26 @@
+---
+title: MacBook ARM에서 Ubuntu VM 환경 구축 가이드
+summary: ARM 아키텍처 MacBook에서 VirtualBox를 이용한 Ubuntu VM 구축 시 발생하는 아키텍처 불일치 오류를 분석합니다.
+  문제 원인을 진단하고, 대안 솔루션으로 UTM을 제시하는 문제 해결 가이드입니다.
+tags:
+- MacBook
+- ARM
+- Ubuntu
+- VirtualBox
+- 가상화
+category: 가이드
+difficulty: 중급
+estimated_time: 20분
+created: '2025-11-05'
+updated: '2025-11-05'
+tech_stack:
+- MacBook ARM
+- Ubuntu
+- VirtualBox
+- Vagrant
+- UTM
+---
+
 # MacBook ARM에서 Ubuntu VM 환경 구축 가이드
 
 > **태그**: #맥북 #ARM #Ubuntu #가상화 #VirtualBox #문제해결  

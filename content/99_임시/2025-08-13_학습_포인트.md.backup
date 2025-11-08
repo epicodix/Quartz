@@ -1,0 +1,206 @@
+# TypeScript & NestJS 디버깅 가이드
+
+> 실제 개발 과정에서 겪은 문제점과 해결책을 정리한 학습 노트
+
+## 📋 목차
+
+1. [TypeScript 구문 오류](https://claude.ai/chat/bd942a60-746b-47fd-9020-881cc0a3b796#typescript-%EA%B5%AC%EB%AC%B8-%EC%98%A4%EB%A5%98)
+2. [TypeORM PostgreSQL 케이스 센시티브 이슈](https://claude.ai/chat/bd942a60-746b-47fd-9020-881cc0a3b796#typeorm-postgresql-%EC%BC%80%EC%9D%B4%EC%8A%A4-%EC%84%BC%EC%8B%9C%ED%8B%B0%EB%B8%8C-%EC%9D%B4%EC%8A%88)
+3. [핵심 학습 포인트](https://claude.ai/chat/bd942a60-746b-47fd-9020-881cc0a3b796#%ED%95%B5%EC%8B%AC-%ED%95%99%EC%8A%B5-%ED%8F%AC%EC%9D%B8%ED%8A%B8)
+
+---
+
+## 🔧 TypeScript 구문 오류
+
+### 문제 상황
+
+```
+Error TS1005: '}' expected.
+Line 130, Column 5
+```
+
+**발생 원인**: 클래스 선언 마지막에 닫는 중괄호 `}` 누락
+
+### 원본 코드 문제점
+
+```typescript
+@Injectable()
+export class DatabaseRepository {
+  // ... 클래스 내용들 ...
+  
+  async findLatestTrafficForAllLinks(): Promise<TrafficData[]> {
+    // ... 메서드 구현 ...
+  }
+  // ❌ 여기서 클래스가 끝났는데 닫는 중괄호가 없음!
+```
+
+### 해결 방법
+
+```typescript
+@Injectable()
+export class DatabaseRepository {
+  // ... 클래스 내용들 ...
+  
+  async findLatestTrafficForAllLinks(): Promise<TrafficData[]> {
+    // ... 메서드 구현 ...
+  }
+} // ✅ 클래스 닫는 중괄호 추가
+```
+
+### 🎯 학습 포인트
+
+- **구문 검사의 중요성**: TypeScript 컴파일러는 구문이 완전하지 않으면 컴파일을 거부
+- **IDE 도움 활용**: VS Code 등 에디터의 중괄호 매칭 기능 활용
+- **코드 포매터 사용**: Prettier 같은 도구로 일관된 코드 스타일 유지
+
+---
+
+## 🐘 TypeORM PostgreSQL 케이스 센시티브 이슈
+
+### 문제 상황
+
+```
+QueryFailedError: column latest_td.maxcollectedat does not exist
+Hint: Perhaps you meant to reference the column "latest_td.maxCollectedAt".
+```
+
+**발생 원인**: PostgreSQL의 케이스 센시티브 특성과 TypeORM 쿼리 빌더 간의 불일치
+
+### 문제 코드 분석
+
+```typescript
+// ❌ 문제가 된 코드
+(subQuery: SelectQueryBuilder<any>) => {
+  return subQuery
+    .select(`"rawData"->>'link_id'`, 'link_id')
+    .addSelect('MAX("collectedAt")', 'maxCollectedAt') // camelCase 사용
+    .from(TrafficData, 'td_sub')
+    .groupBy(`"rawData"->>'link_id'`);
+},
+'latest_td',
+// JOIN 조건에서 maxCollectedAt을 참조했지만 PostgreSQL은 maxcollectedat으로 인식
+`td."rawData"->>'link_id' = latest_td.link_id AND "td"."collectedAt" = latest_td.maxCollectedAt`
+```
+
+### 실제 생성된 SQL 쿼리
+
+```sql
+SELECT "td"."id" AS "td_id", 
+       "td"."collectedAt" AS "td_collectedAt", 
+       "td"."rawData" AS "td_rawData" 
+FROM "traffic_data" "td" 
+INNER JOIN (
+    SELECT "rawData"->>'link_id' AS "link_id", 
+           MAX("collectedAt") AS "maxCollectedAt" 
+    FROM "traffic_data" "td_sub" 
+    GROUP BY "rawData"->>'link_id"
+) "latest_td" 
+ON td."rawData"->>'link_id' = latest_td.link_id 
+AND "td"."collectedAt" = latest_td.maxCollectedAt
+-- ❌ PostgreSQL이 maxCollectedAt을 maxcollectedat으로 변환함
+```
+
+### 해결 방법
+
+```typescript
+// ✅ 해결된 코드
+(subQuery: SelectQueryBuilder<any>) => {
+  return subQuery
+    .select(`"rawData"->>'link_id'`, 'link_id')
+    .addSelect('MAX("collectedAt")', 'max_collected_at') // snake_case 사용
+    .from(TrafficData, 'td_sub')
+    .groupBy(`"rawData"->>'link_id'`);
+},
+'latest_td',
+// JOIN 조건도 snake_case로 일치시킴
+`td."rawData"->>'link_id' = latest_td.link_id AND "td"."collectedAt" = latest_td.max_collected_at`
+```
+
+### 🎯 학습 포인트
+
+- **PostgreSQL 케이스 규칙**: 따옴표로 감싸지 않은 식별자는 자동으로 소문자로 변환
+- **일관된 네이밍**: 데이터베이스에서는 snake_case가 더 안전한 선택
+- **TypeORM 쿼리 빌더**: 복잡한 쿼리에서 alias 네이밍에 주의 필요
+
+---
+
+## 💡 핵심 학습 포인트
+
+### 1. 디버깅 프로세스
+
+#### 단계별 접근법
+
+1. **에러 메시지 정확히 읽기**
+    
+    - 줄 번호와 컬럼 정보 확인
+    - 에러 타입 분석 (구문 오류 vs 런타임 오류)
+2. **문제 영역 특정하기**
+    
+    - TypeScript 컴파일 타임 vs 런타임 구분
+    - 로컬 환경 vs 데이터베이스 연결 이슈 구분
+3. **근본 원인 파악**
+    
+    - 표면적 증상이 아닌 실제 원인 찾기
+    - 관련 문서나 스펙 확인
+
+### 2. 예방 전략
+
+#### 코드 품질 관리
+
+```typescript
+// ✅ 좋은 습관들
+- 일관된 네이밍 컨벤션 (camelCase vs snake_case)
+- TypeScript strict 모드 활용
+- ESLint, Prettier 등 도구 활용
+- 단위 테스트로 쿼리 검증
+```
+
+#### 데이터베이스 작업 시 주의사항
+
+```typescript
+// ✅ PostgreSQL과 TypeORM 사용시 권장사항
+- 복잡한 쿼리는 먼저 순수 SQL로 테스트
+- alias는 snake_case 사용
+- 쿼리 빌더보다 Raw SQL이 명확할 때는 과감히 사용
+```
+
+### 3. 도구 활용
+
+#### 개발 환경 최적화
+
+- **VS Code Extensions**
+    
+    - TypeScript Importer
+    - Bracket Pair Colorizer
+    - PostgreSQL syntax highlighting
+- **디버깅 도구**
+    
+    - TypeORM 로깅 활성화 (`logging: true`)
+    - PostgreSQL 쿼리 로그 모니터링
+    - NestJS 디버깅 모드 활용
+
+---
+
+## 📚 참고 자료
+
+### 공식 문서
+
+- [TypeORM Query Builder](https://typeorm.io/select-query-builder)
+- [PostgreSQL Identifiers](https://www.postgresql.org/docs/current/sql-syntax-lexical.html#SQL-SYNTAX-IDENTIFIERS)
+- [NestJS Database Integration](https://docs.nestjs.com/techniques/database)
+
+### 추가 학습 권장사항
+
+- PostgreSQL 네이밍 컨벤션 가이드
+- TypeORM 고급 쿼리 패턴
+- NestJS 에러 핸들링 베스트 프랙티스
+
+---
+
+## 🔖 태그
+
+#TypeScript #NestJS #TypeORM #PostgreSQL #디버깅 #쿼리최적화`
+
+---
+
+**작성일**: 2025-08-13

@@ -1,3 +1,15 @@
+---
+title: Reconciliation Loop
+summary: 조정 루프(Reconciliation Loop)는 쿠버네티스 컨트롤러들이 작동하는 핵심 메커니즘입니다.
+tags:
+- 미분류
+category: 기타
+difficulty: 중급
+estimated_time: 30분
+created: '2025-11-03'
+updated: '2025-11-08'
+---
+
 #kubernetes #principle
 
 조정 루프(Reconciliation Loop)는 쿠버네티스 컨트롤러들이 작동하는 핵심 메커니즘입니다.
@@ -13,3 +25,7 @@
 이 루프는 무한히 반복되며, 덕분에 쿠버네티스는 선언된 상태를 안정적으로 유지하고 스스로를 치유(Self-healing)할 수 있습니다.
 
 * 관련 링크: `[[원하는 상태 (Desired State)]]`, `[[K8s - Controller Manager]]`
+
+---
+
+**작성일**: 2025-11-03

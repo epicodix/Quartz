@@ -1,3 +1,27 @@
+---
+title: Claude Code와 함께하는 지식관리 완벽 가이드
+summary: Anthropic의 AI CLI 도구인 Claude Code를 사용하여 프로젝트 컨텍스트를 이해하고, 코드 생성, 리팩토링, 문서화,
+  테스트 자동화 등 개발 생산성을 극대화하는 지식관리 및 활용법을 다룹니다.
+tags:
+- AI
+- Claude
+- 개발도구
+- 지식관리
+- 생산성
+category: 가이드
+difficulty: 중급
+estimated_time: 1시간
+created: '2025-11-05'
+updated: '2025-11-05'
+tech_stack:
+- Claude Code
+- Node.js
+- CLI
+- React
+- TypeScript
+- GitHub Actions
+---
+
 # Claude Code와 함께하는 지식관리 완벽 가이드
 
 > **태그**: #AI #클로드 #개발도구 #지식관리 #생산성  

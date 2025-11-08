@@ -1,3 +1,16 @@
+---
+title: K8s - Controller Manager
+summary: 컨트롤러 매니저(kube-controller-manager)는 쿠버네티스의 다양한 **컨트롤러 프로세스들을 실행하고 관리**하는 핵심
+  컴포넌트입니다.
+tags:
+- 미분류
+category: 기타
+difficulty: 중급
+estimated_time: 30분
+created: '2025-11-03'
+updated: '2025-11-08'
+---
+
 #kubernetes #component #control-plane
 
 컨트롤러 매니저(kube-controller-manager)는 쿠버네티스의 다양한 **컨트롤러 프로세스들을 실행하고 관리**하는 핵심 컴포넌트입니다.
@@ -14,3 +27,7 @@
 > 비유하자면, 컨트롤러 매니저는 '부서 관리자 팀'과 같습니다. 각 부서(Deployment, Node 등)를 책임지는 여러 명의 관리자(Controller)들이 각자의 역할을 쉴새없이 수행하는 공간입니다.
 
 * 관련 링크: `[[컨트롤 플레인 (Control Plane)]]`, `[[Reconciliation Loop]]`
+
+---
+
+**작성일**: 2025-11-03

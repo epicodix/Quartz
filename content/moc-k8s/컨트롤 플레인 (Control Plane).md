@@ -1,3 +1,16 @@
+---
+title: 컨트롤 플레인 (Control Plane)
+summary: 컨트롤 플레인(Control Plane)은 쿠버네티스 클러스터 전체를 관리하고 모든 결정을 내리는 **'두뇌(Brain)'** 또는
+  **'지휘 본부'**입니다.
+tags:
+- 미분류
+category: 기타
+difficulty: 중급
+estimated_time: 30분
+created: '2025-11-03'
+updated: '2025-11-08'
+---
+
 #kubernetes #architecture #control-plane #moc
 
 컨트롤 플레인(Control Plane)은 쿠버네티스 클러스터 전체를 관리하고 모든 결정을 내리는 **'두뇌(Brain)'** 또는 **'지휘 본부'**입니다.
@@ -12,3 +25,7 @@
 *   `[[K8s - Controller Manager]]`: 파드의 개수를 유지(Replication)하거나 노드의 상태를 감시하는 등 다양한 컨트롤러를 실행하는 역할.
 
 * 관련 링크: `[[Kubernetes 핵심 컴포넌트]]`, `[[Kubernetes (MOC)]]`
+
+---
+
+**작성일**: 2025-11-03

@@ -1,3 +1,16 @@
+---
+title: K8s - ClusterRole
+summary: '`[[K8s - Role]]`과 매우 유사하지만, `[[K8s - Namespace]]`에 종속되지 않고 **클러스터 전체 범위**에
+  적용되는 권한의 집합입니다.'
+tags:
+- 미분류
+category: 기타
+difficulty: 중급
+estimated_time: 30분
+created: '2025-11-03'
+updated: '2025-11-08'
+---
+
 #kubernetes #security #rbac
 
 `[[K8s - Role]]`과 매우 유사하지만, `[[K8s - Namespace]]`에 종속되지 않고 **클러스터 전체 범위**에 적용되는 권한의 집합입니다.
@@ -23,3 +36,7 @@ rules:
 ```
 
 * 관련 링크: `[[K8s - Role]]`, `[[K8s - RoleBinding & ClusterRoleBinding]]`
+
+---
+
+**작성일**: 2025-11-03

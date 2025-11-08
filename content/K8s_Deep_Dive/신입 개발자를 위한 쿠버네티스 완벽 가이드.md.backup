@@ -1,0 +1,1837 @@
+## 들어가며: 왜 쿠버네티스인가?
+
+웹 서비스를 만들었다고 상상해보세요. 처음에는 사용자가 100명이었지만, 갑자기 10만 명으로 늘어났습니다. 서버 한 대로는 감당이 안 되죠. 서버를 10대, 100대로 늘려야 하는데, 이걸 어떻게 관리할까요? 바로 이 문제를 해결하는 것이 **쿠버네티스(Kubernetes, K8s)** 입니다.
+
+쿠버네티스는 컨테이너화된 애플리케이션을 자동으로 배포하고, 확장하고, 관리해주는 **오케스트레이션 플랫폼**입니다. 구글이 내부에서 사용하던 Borg 시스템을 오픈소스화한 것으로, 현재 클라우드 네이티브 생태계의 사실상 표준(de facto standard)입니다.
+
+## 📦 1단계: 컨테이너 이해하기
+
+### 컨테이너란?
+
+컨테이너는 애플리케이션과 그 실행에 필요한 모든 것(라이브러리, 설정 파일 등)을 하나의 패키지로 묶은 것입니다.
+
+**비유:** 컨테이너는 이사 갈 때 쓰는 박스와 같습니다. 박스 안에 물건을 담아두면, 어떤 집(서버)으로 옮기든 똑같이 작동합니다.
+
+**가상머신(VM) vs 컨테이너:**
+
+- VM: 각자 독립된 OS를 가지고 있어 무겁고 느림 (집을 통째로 옮기는 것)
+- 컨테이너: OS 커널을 공유하여 가볍고 빠름 (필요한 물건만 담은 박스)
+
+### Docker와의 관계
+
+Docker는 컨테이너를 만들고 실행하는 도구입니다. 쿠버네티스는 이런 컨테이너들을 대규모로 관리하는 도구죠.
+
+**딥먹 주제:**
+
+- Docker 이미지 레이어 구조와 최적화 기법
+- Container Runtime Interface (CRI): Docker, containerd, CRI-O 비교
+- OCI (Open Container Initiative) 표준
+- Multi-stage build를 통한 이미지 크기 최적화
+
+---
+
+## 🎯 2단계: 파드(Pod) - 쿠버네티스의 최소 단위
+
+### 파드란?
+
+파드는 **하나 이상의 컨테이너를 묶은 그룹**입니다. 쿠버네티스에서 배포할 수 있는 가장 작은 단위죠.
+
+**왜 컨테이너가 아니라 파드를 단위로 쓸까?**
+
+실제 애플리케이션은 여러 프로세스가 협력해서 동작합니다. 예를 들어:
+
+- 메인 웹 서버 컨테이너
+- 로그를 수집하는 사이드카 컨테이너
+- 설정 파일을 동기화하는 어댑터 컨테이너
+
+이런 컨테이너들은 같은 네트워크와 스토리지를 공유해야 하는데, 파드가 이를 가능하게 합니다.
+
+**파드의 특징:**
+
+- 파드 내 컨테이너들은 localhost로 통신 가능 (같은 네트워크 네임스페이스)
+- 파드는 하나의 IP 주소를 공유
+- 파드는 임시적(ephemeral) - 언제든 삭제되고 재생성될 수 있음
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-app-pod
+spec:
+  containers:
+  - name: web-server
+    image: nginx:1.21
+    ports:
+    - containerPort: 80
+  - name: log-collector
+    image: fluentd:v1.14
+```
+
+**딥먹 주제:**
+- 파드의 라이프사이클과 상태(Pending, Running, Succeeded, Failed)
+- Init 컨테이너와 사이드카 패턴
+- 파드 네트워킹: CNI(Container Network Interface) 플러그인
+- 파드 간 통신: Service Mesh (Istio, Linkerd)
+- 파드 스케줄링: Node Affinity, Taints and Tolerations
+- 리소스 QoS 클래스: Guaranteed, Burstable, BestEffort
+
+---
+
+
+
+
+## 🎮 3단계: 디플로이먼트(Deployment) - 선언적 배포 관리
+
+### 디플로이먼트란?
+
+디플로이먼트는 **파드를 관리하는 상위 컨트롤러**입니다. "내 애플리케이션의 파드를 3개 유지해줘"라고 선언하면, 쿠버네티스가 자동으로 이를 보장합니다.
+
+**핵심 개념: 선언적(Declarative) 관리**
+
+전통적 방식(명령형):
+
+1. 서버 A에 접속
+2. 애플리케이션 설치
+3. 서버 B에 접속
+4. 애플리케이션 설치
+5. ...
+
+쿠버네티스 방식(선언적):
+
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-web-app
+spec:
+  replicas: 3  # "파드 3개를 원해"
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.21
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+```
+
+"파드 3개"라고 선언하면, 쿠버네티스가 알아서:
+
+- 파드가 죽으면 자동으로 재시작
+- 노드가 다운되면 다른 노드에 파드 재배치
+- 트래픽에 따라 자동으로 스케일링 (HPA 사용 시)
+
+### 롤링 업데이트와 롤백
+
+새 버전 배포 시, 한 번에 모든 파드를 교체하면 서비스 다운타임이 발생합니다. 디플로이먼트는 **점진적으로** 파드를 교체합니다.
+
+
+```yaml
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1  # 최대 1개까지 동시에 죽일 수 있음
+      maxSurge: 1        # 최대 1개까지 추가로 생성 가능
+```
+
+**프로세스:**
+
+1. 새 버전 파드 1개 생성
+2. 준비되면 이전 버전 파드 1개 종료
+3. 반복...
+
+문제가 생기면 이전 버전으로 즉시 롤백:
+
+bash
+
+```bash
+kubectl rollout undo deployment/my-web-app
+```
+
+**딥먹 주제:**
+
+- ReplicaSet의 역할과 디플로이먼트와의 관계
+- Blue-Green 배포, Canary 배포 전략
+- StatefulSet: 상태를 가진 애플리케이션 관리 (데이터베이스 등)
+- DaemonSet: 모든 노드에 파드 배포 (모니터링 에이전트 등)
+- Job과 CronJob: 배치 작업 관리
+- Horizontal Pod Autoscaler (HPA)와 Vertical Pod Autoscaler (VPA)
+- Cluster Autoscaler: 노드 자동 확장
+
+---
+
+## 🌐 4단계: 서비스(Service) - 네트워킹의 핵심
+
+### 문제 상황
+
+파드는 생성/삭제될 때마다 IP가 바뀝니다. 프론트엔드가 백엔드 파드에 접속하려면 어떻게 해야 할까요?
+
+### 서비스란?
+
+서비스는 **파드들의 고정된 진입점**을 제공합니다. 로드밸런서 역할도 하죠.
+
+**서비스 타입:**
+
+1. **ClusterIP (기본값)**: 클러스터 내부에서만 접근 가능
+
+yaml
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  type: ClusterIP
+  selector:
+    app: backend  # 이 라벨을 가진 파드들에게 트래픽 전달
+  ports:
+  - port: 80
+    targetPort: 8080
+```
+
+2. **NodePort**: 모든 노드의 특정 포트로 외부 접근 가능
+
+yaml
+
+```yaml
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 8080
+    nodePort: 30000  # 30000-32767 범위
+```
+
+3. **LoadBalancer**: 클라우드 로드밸런서 자동 생성 (AWS ELB, GCP LB 등)
+
+
+```yaml
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+```
+
+4. **ExternalName**: 외부 서비스에 대한 DNS alias
+
+### Ingress: 고급 라우팅
+
+Ingress는 HTTP/HTTPS 트래픽을 위한 **7계층 로드밸런싱**을 제공합니다.
+
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+spec:
+  rules:
+  - host: myapp.com
+    http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: backend-service
+            port:
+              number: 80
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-service
+            port:
+              number: 80
+```
+
+**딥먹 주제:**
+
+- kube-proxy의 동작 원리: iptables vs IPVS 모드
+- CoreDNS와 서비스 디스커버리
+- Headless Service와 StatefulSet
+- Ingress Controller 비교: NGINX, Traefik, HAProxy, Contour
+- Service Mesh: Istio, Linkerd를 통한 고급 트래픽 관리
+- Network Policy: 파드 간 통신 제어
+- CNI 플러그인: Calico, Flannel, Weave, Cilium
+
+## 💾 5단계: 볼륨(Volume) - 데이터 영속성
+
+### 문제 상황
+
+파드는 언제든 재시작될 수 있습니다. 컨테이너 내부에 저장한 데이터는 사라지죠. 데이터베이스나 파일 저장이 필요하다면?
+
+### 볼륨의 종류
+
+**1. emptyDir**: 파드가 살아있는 동안만 유지되는 임시 볼륨
+
+
+```yaml
+spec:
+  containers:
+  - name: app
+    volumeMounts:
+    - name: cache
+      mountPath: /cache
+  volumes:
+  - name: cache
+    emptyDir: {}
+```
+
+**용도:** 임시 캐시, 컨테이너 간 데이터 공유
+
+**2. hostPath**: 노드의 파일시스템 마운트
+
+
+```yaml
+volumes:
+- name: logs
+  hostPath:
+    path: /var/log/myapp
+    type: Directory
+```
+
+**주의:** 파드가 다른 노드로 옮겨가면 데이터 접근 불가
+
+**3. PersistentVolume (PV)와 PersistentVolumeClaim (PVC)**
+
+진짜 영속적인 스토리지를 위한 방법입니다.
+
+**개념 분리:**
+
+- **PV**: 실제 스토리지 (관리자가 생성)
+- **PVC**: 스토리지 요청 (개발자가 생성)
+
+
+```yaml
+# PVC 생성 (개발자)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: database-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce  # 한 번에 하나의 노드만 읽기/쓰기 가능
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: fast-ssd
+
+---
+# 파드에서 사용
+spec:
+  containers:
+  - name: postgres
+    volumeMounts:
+    - name: db-storage
+      mountPath: /var/lib/postgresql/data
+  volumes:
+  - name: db-storage
+    persistentVolumeClaim:
+      claimName: database-pvc
+```
+
+**StorageClass**: 동적 프로비저닝
+
+yaml
+
+```yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: fast-ssd
+provisioner: kubernetes.io/aws-ebs
+parameters:
+  type: gp3
+  iopsPerGB: "50"
+```
+
+**딥먹 주제:**
+
+- Volume Plugin: CSI (Container Storage Interface)
+- AccessMode 상세: RWO, ROX, RWX
+- StatefulSet과 VolumeClaimTemplate
+- Snapshot과 클론
+- 스토리지 벤더 비교: AWS EBS, GCE PD, Azure Disk, Ceph, GlusterFS
+- Local Persistent Volume과 노드 친화성
+- Volume expansion과 제약사항
+
+---
+
+## 🔐 6단계: ConfigMap & Secret - 설정과 민감 정보 관리
+
+### ConfigMap: 설정 데이터
+
+애플리케이션 설정을 코드와 분리하는 것은 12-Factor App의 기본 원칙입니다.
+
+
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  database_host: "postgres.default.svc.cluster.local"
+  database_port: "5432"
+  log_level: "INFO"
+  config.json: |
+    {
+      "feature_flags": {
+        "new_ui": true
+      }
+    }
+```
+
+**사용 방법:**
+
+1. **환경 변수로 주입**
+
+
+```yaml
+spec:
+  containers:
+  - name: app
+    env:
+    - name: DB_HOST
+      valueFrom:
+        configMapKeyRef:
+          name: app-config
+          key: database_host
+```
+
+2. **전체를 환경 변수로**
+
+
+```yaml
+envFrom:
+- configMapRef:
+    name: app-config
+```
+
+3. **파일로 마운트**
+
+
+```yaml
+volumeMounts:
+- name: config
+  mountPath: /etc/config
+volumes:
+- name: config
+  configMap:
+    name: app-config
+```
+
+### Secret: 민감한 정보
+
+Secret은 ConfigMap과 비슷하지만, **base64로 인코딩**되고 메모리에만 저장됩니다.
+
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-credentials
+type: Opaque
+data:
+  username: YWRtaW4=  # admin을 base64 인코딩
+  password: cGFzc3dvcmQxMjM=  # password123
+```
+
+**더 안전하게:**
+
+
+```bash
+kubectl create secret generic db-credentials \
+  --from-literal=username=admin \
+  --from-literal=password=password123
+```
+
+**사용:**
+
+
+```yaml
+spec:
+  containers:
+  - name: app
+    env:
+    - name: DB_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: db-credentials
+          key: password
+```
+
+**주의사항:**
+
+- Secret은 base64일 뿐, 암호화가 아닙니다!
+- etcd 암호화를 반드시 활성화해야 합니다
+- RBAC로 접근 제어 필수
+
+**딥먹 주제:**
+
+- etcd 암호화 설정 (encryption-at-rest)
+- External Secrets Operator: AWS Secrets Manager, HashiCorp Vault 연동
+- Sealed Secrets: GitOps를 위한 암호화된 Secret
+- Secret 자동 로테이션
+- Image Pull Secret과 Private Registry 연동
+- Service Account Token과 IRSA (AWS), Workload Identity (GCP)
+
+---
+
+## 🎛️ 7단계: 네임스페이스(Namespace) - 리소스 격리
+### 네임스페이스란?
+
+네임스페이스는 **가상의 클러스터**를 만드는 것과 같습니다. 하나의 물리적 클러스터를 논리적으로 분할합니다.
+
+**기본 네임스페이스:**
+
+- `default`: 기본 작업 공간
+- `kube-system`: 쿠버네티스 시스템 컴포넌트
+- `kube-public`: 모두에게 공개되는 리소스
+- `kube-node-lease`: 노드 하트비트 정보
+
+**사용 사례:**
+
+- 환경 분리: dev, staging, production
+- 팀 분리: team-a, team-b
+- 프로젝트 분리: project-x, project-y
+
+
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: development
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+  namespace: development  # 이 네임스페이스에 생성
+```
+
+**리소스 쿼터 설정:**
+
+
+```yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: dev-quota
+  namespace: development
+spec:
+  hard:
+    requests.cpu: "10"
+    requests.memory: 20Gi
+    persistentvolumeclaims: "5"
+    pods: "50"
+```
+
+**딥먹 주제:**
+
+- LimitRange: 개별 파드/컨테이너 리소스 제한
+- Network Policy를 통한 네임스페이스 간 격리
+- RBAC와 네임스페이스 기반 권한 관리
+- Multi-tenancy 아키텍처 패턴
+- Hierarchical Namespace Controller (HNC)
+
+---
+
+## 🏗️ 쿠버네티스 아키텍처: 내부 동작 원리
+
+### Control Plane (마스터 노드)
+
+**1. API Server (kube-apiserver)**
+
+- 모든 요청의 진입점
+- RESTful API 제공
+- 인증, 인가, Admission Control 수행
+- etcd와 유일하게 통신하는 컴포넌트
+
+**2. etcd**
+
+- 분산 키-밸류 저장소
+- 클러스터의 모든 상태 정보 저장
+- Raft 알고리즘으로 데이터 일관성 보장
+
+**3. Scheduler (kube-scheduler)**
+
+- 파드를 어느 노드에 배치할지 결정
+- 리소스, Affinity, Taints 등 고려
+- 실제 배치는 kubelet이 수행
+
+**4. Controller Manager (kube-controller-manager)**
+
+- 다양한 컨트롤러들의 집합
+- Deployment Controller, ReplicaSet Controller, Node Controller 등
+- 선언된 상태(desired state)와 현재 상태(current state)를 지속적으로 비교하여 조정
+
+**5. Cloud Controller Manager**
+
+- 클라우드 제공자별 기능 통합
+- LoadBalancer 타입 서비스 생성 시 실제 클라우드 LB 생성 등
+
+### Worker Node
+
+**1. Kubelet**
+
+- 각 노드의 에이전트
+- API Server로부터 파드 명세를 받아 컨테이너 런타임에 전달
+- 파드와 컨테이너의 상태를 모니터링하고 API Server에 보고
+
+**2. Kube-proxy**
+
+- 네트워크 프록시
+- Service의 가상 IP를 실제 파드 IP로 변환
+- iptables 또는 IPVS 규칙 관리
+
+**3. Container Runtime**
+
+- 실제 컨테이너를 실행
+- Docker, containerd, CRI-O 등
+
+**딥먹 주제:**
+
+- Control Plane 고가용성 (HA) 구성
+- etcd 백업과 복구 전략
+- Custom Scheduler 개발
+- Admission Webhook: 커스텀 검증 및 변경 로직
+- Operator Pattern: Custom Resource Definition (CRD)과 Custom Controller
+- API Aggregation Layer
+- 쿠버네티스 소스 코드 분석 (특히 Controller 패턴)
+
+---
+
+## 🔍 8단계: 관찰성 (Observability)
+### 로깅
+
+**중앙 집중식 로깅 필요성:** 파드는 언제든 삭제될 수 있어, 로그를 외부에 저장해야 합니다.
+
+**일반적인 스택: EFK**
+
+- **Elasticsearch**: 로그 저장 및 검색
+- **Fluentd/Fluent Bit**: 로그 수집 및 전달
+- **Kibana**: 로그 시각화
+
+**최신 트렌드: Loki**
+
+- Grafana Labs의 경량 로그 시스템
+- 로그 자체가 아닌 메타데이터만 인덱싱하여 저장 공간 절약
+
+### 모니터링
+
+**Prometheus + Grafana**
+
+Prometheus는 쿠버네티스 환경에서 사실상 표준인 모니터링 도구입니다.
+
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8080"
+    prometheus.io/path: "/metrics"
+```
+
+**주요 메트릭:**
+
+- CPU, 메모리 사용량
+- 네트워크 I/O
+- 파드 재시작 횟수
+- 애플리케이션별 커스텀 메트릭
+
+### 추적 (Tracing)
+
+**분산 추적의 필요성:** 마이크로서비스 환경에서 하나의 요청이 여러 서비스를 거칩니다. 어디서 느려지는지 추적이 필요합니다.
+
+**도구:**
+
+- Jaeger
+- Zipkin
+- OpenTelemetry (표준화된 계측 프레임워크)
+
+**딥먹 주제:**
+
+- Metrics Server와 리소스 메트릭 파이프라인
+- Custom Metrics와 External Metrics (HPA 고급 활용)
+- PromQL 쿼리 언어 마스터
+- Grafana 대시보드 설계 Best Practice
+- Thanos/Cortex: Prometheus 장기 저장 및 HA
+- OpenTelemetry Collector 활용
+- eBPF 기반 관찰성 도구: Cilium, Pixie
+
+---
+
+## 🛡️ 9단계: 보안
+
+### RBAC (Role-Based Access Control)
+
+쿠버네티스는 **누가, 무엇을, 어떻게** 할 수 있는지 세밀하게 제어합니다.
+
+**주요 리소스:**
+
+1. **ServiceAccount**: 파드가 사용하는 계정
+2. **Role/ClusterRole**: 권한 정의
+    - Role: 네임스페이스 내 권한
+    - ClusterRole: 클러스터 전체 권한
+3. **RoleBinding/ClusterRoleBinding**: 사용자/그룹/ServiceAccount에 권한 부여
+
+
+```yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: app-reader
+  namespace: development
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-reader
+  namespace: development
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: read-pods
+  namespace: development
+subjects:
+- kind: ServiceAccount
+  name: app-reader
+  namespace: development
+roleRef:
+  kind: Role
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io
+```
+
+### Pod Security Standards
+
+파드가 할 수 있는 것을 제한합니다.
+
+**세 가지 레벨:**
+
+1. **Privileged**: 제한 없음
+2. **Baseline**: 기본적인 보안 (권장)
+3. **Restricted**: 매우 엄격 (프로덕션 권장)
+
+
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: secure-app
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+```
+
+**주요 제약사항 (Restricted):**
+
+- root로 실행 불가
+- privileged 컨테이너 불가
+- hostPath 볼륨 불가
+- hostNetwork, hostPID, hostIPC 불가
+
+### Network Policy
+
+파드 간 통신을 방화벽처럼 제어합니다.
+
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: backend-policy
+  namespace: production
+spec:
+  podSelector:
+    matchLabels:
+      app: backend
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: frontend
+    ports:
+    - protocol: TCP
+      port: 8080
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: database
+    ports:
+    - protocol: TCP
+      port: 5432
+```
+
+**딥먹 주제:**
+
+- OPA (Open Policy Agent)와 Gatekeeper: 정책 기반 거버넌스
+- Admission Controller 커스터마이징
+- Pod Security Admission과 이전 PodSecurityPolicy 마이그레이션
+- mTLS와 Service Mesh 보안
+- 이미지 서명 및 검증: Notary, Cosign
+- Runtime Security: Falco, Aqua, Sysdig
+- Secrets 관리: HashiCorp Vault, External Secrets Operator
+- Supply Chain Security: SLSA Framework
+
+---
+
+## 🚀 10단계: 최신 인프라 트렌드와 쿠버네티스
+
+### GitOps
+
+**개념:** Git을 Single Source of Truth로 사용하는 배포 방식
+
+**도구:**
+
+- **ArgoCD**: 가장 인기있는 GitOps CD 도구
+- **Flux**: CNCF 졸업 프로젝트
+- **Jenkins X**: CI/CD 통합
+
+**작동 방식:**
+
+1. 개발자가 Git에 매니페스트 파일 커밋
+2. ArgoCD가 Git 저장소를 지속적으로 모니터링
+3. 변경 감지 시 자동으로 클러스터에 적용
+4. 드리프트 감지 및 자동 동기화
+
+**장점:**
+
+- 코드 리뷰를 통한 변경 검토
+- 완벽한 변경 이력 (Git log)
+- 쉬운 롤백 (Git revert)
+- 재해 복구 용이
+
+### Service Mesh
+
+**문제:** 마이크로서비스가 수백 개가 되면 네트워킹 복잡도 폭발
+
+**Service Mesh가 제공하는 것:**
+
+- 서비스 간 mTLS 자동 적용
+- 트래픽 관리 (Circuit Breaker, Retry, Timeout)
+- Canary 배포, A/B 테스트
+- 상세한 메트릭과 추적
+
+**인기 있는 Service Mesh:**
+
+- **Istio**: 가장 기능이 풍부하지만 복잡
+- **Linkerd**: 가볍고 사용하기 쉬움
+- **Consul**: HashiCorp 제품, 멀티 클라우드 지원
+
+### Serverless on Kubernetes
+
+**Knative**
+
+- 쿠버네티스 위에서 서버리스 워크로드 실행
+- 트래픽이 없으면 파드를 0으로 스케일 다운
+- 자동 스케일링과 리비전 관리
+
+```yaml
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: hello-world
+spec:
+  template:
+    spec:
+      containers:
+      - image: gcr.io/knative-samples/helloworld-go
+        env:
+        - name: TARGET
+          value: "Knative"
+```
+
+**장점:**
+
+- 비용 절감 (사용하지 않을 때 리소스 0)
+- 자동 스케일링 (0 → 수천 개 파드)
+- 블루-그린 배포 자동화
+
+**다른 옵션:**
+
+- **OpenFaaS**: Function as a Service
+- **Fission**: 빠른 콜드 스타트에 최적화
+- **Kubeless**: 경량 FaaS 프레임워크
+
+### Platform Engineering과 Internal Developer Platform (IDP)
+
+**개념:** 개발자가 인프라 복잡성을 신경 쓰지 않고 코드에만 집중할 수 있도록 추상화 레이어 제공
+
+**도구:**
+
+- **Backstage**: Spotify가 만든 개발자 포털
+- **Crossplane**: 인프라를 쿠버네티스 리소스처럼 관리
+- **Porter**: CNAB 기반 애플리케이션 패키징
+- **Humanitec**: 플랫폼 오케스트레이션
+
+**예시: Crossplane**
+
+
+```yaml
+apiVersion: database.aws.crossplane.io/v1beta1
+kind: RDSInstance
+metadata:
+  name: my-postgres
+spec:
+  forProvider:
+    region: us-east-1
+    dbInstanceClass: db.t3.micro
+    engine: postgres
+    engineVersion: "13.7"
+    masterUsername: admin
+    allocatedStorage: 20
+```
+
+개발자는 AWS 콘솔 없이 쿠버네티스 매니페스트만으로 RDS 인스턴스를 생성할 수 있습니다.
+
+### FinOps와 비용 최적화
+
+**쿠버네티스에서 비용이 폭발하는 이유:**
+
+- 리소스 요청(request)과 실제 사용량의 차이
+- 과도한 오버프로비저닝
+- 유휴 리소스 방치
+
+**비용 최적화 도구:**
+
+**1. Kubecost**
+
+- 네임스페이스, 파드, 레이블별 비용 추적
+- Right-sizing 권장사항 제공
+- 실시간 비용 알림
+
+**2. Goldilocks**
+
+- VPA를 활용한 리소스 request/limit 권장
+
+**3. Karpenter (AWS)**
+
+- 노드를 자동으로 프로비저닝/디프로비저닝
+- Cluster Autoscaler보다 빠르고 효율적
+- 워크로드 요구사항에 맞는 인스턴스 타입 자동 선택
+
+**모범 사례:**
+
+
+```yaml
+spec:
+  containers:
+  - name: app
+    resources:
+      requests:  # 스케줄링 기준
+        memory: "128Mi"
+        cpu: "100m"
+      limits:    # 상한선
+        memory: "256Mi"
+        cpu: "200m"
+```
+
+**딥먹 주제:**
+
+- Vertical Pod Autoscaler (VPA) 실전 활용
+- Spot/Preemptible 인스턴스 활용 전략
+- Multi-tenancy 환경에서의 Fair Scheduling
+- Resource Bin Packing과 Fragmentation 해결
+- 클라우드별 비용 구조 이해 (AWS EKS, GKE, AKS)
+
+---
+
+## 🏭 11단계: 실전 아키텍처 패턴
+
+### 1. 멀티 클러스터 전략
+
+**왜 여러 클러스터를 운영하나?**
+
+- 환경 분리 (dev, staging, prod)
+- 지역 분산 (글로벌 서비스)
+- 장애 격리 (blast radius 최소화)
+- 규정 준수 (데이터 주권)
+
+**멀티 클러스터 관리 도구:**
+
+**KubeFed (Kubernetes Federation)**
+
+- 여러 클러스터를 하나처럼 관리
+- 리소스를 여러 클러스터에 자동 배포
+
+**Rancher**
+
+- 웹 UI로 여러 클러스터 통합 관리
+- RBAC, 모니터링, 로깅 통합
+
+**ArgoCD Application Sets**
+
+- GitOps 방식으로 여러 클러스터에 배포
+- 템플릿을 통한 설정 통합
+
+### 2. Blue-Green 배포
+
+**개념:** 두 개의 동일한 환경(Blue, Green)을 유지하고 순간적으로 전환
+
+yaml
+
+```yaml
+# Blue 환경
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app
+spec:
+  selector:
+    app: my-app
+    version: blue  # Blue로 트래픽 전달
+  ports:
+  - port: 80
+---
+# Green 환경 배포 (새 버전)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-green
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+      version: green
+  template:
+    metadata:
+      labels:
+        app: my-app
+        version: green
+    spec:
+      containers:
+      - name: app
+        image: myapp:v2.0
+```
+
+검증 후 Service의 selector를 `version: green`으로 변경하면 즉시 전환됩니다.
+
+### 3. Canary 배포
+
+**개념:** 새 버전을 일부 사용자에게만 먼저 배포하고 점진적으로 확대
+
+**Argo Rollouts를 사용한 Canary:**
+
+yaml
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: my-app
+spec:
+  replicas: 10
+  strategy:
+    canary:
+      steps:
+      - setWeight: 10    # 10%에게 배포
+      - pause: {duration: 5m}
+      - setWeight: 30    # 30%로 확대
+      - pause: {duration: 5m}
+      - setWeight: 70
+      - pause: {duration: 5m}
+  template:
+    spec:
+      containers:
+      - name: app
+        image: myapp:v2.0
+```
+
+**Istio/Linkerd를 사용한 고급 Canary:**
+
+- 특정 사용자 그룹에게만 배포 (헤더 기반 라우팅)
+- A/B 테스트
+- 자동 rollback (에러율 임계값 초과 시)
+
+### 4. 마이크로서비스 통신 패턴
+
+**동기 통신 (Synchronous):**
+
+- REST API (Service + Ingress)
+- gRPC (고성능 RPC 프레임워크)
+
+**비동기 통신 (Asynchronous):**
+
+- 메시지 큐: RabbitMQ, Apache Kafka, NATS
+- 이벤트 스트리밍: Kafka Streams, Apache Flink
+
+**예시: Kafka 기반 이벤트 드리븐 아키텍처**
+
+yaml
+
+```yaml
+# Kafka 클러스터 (Strimzi Operator 사용)
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: my-cluster
+spec:
+  kafka:
+    replicas: 3
+    listeners:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+  zookeeper:
+    replicas: 3
+```
+
+**딥먹 주제:**
+
+- Circuit Breaker 패턴 구현 (Istio, Resilience4j)
+- Saga 패턴: 분산 트랜잭션 관리
+- Event Sourcing과 CQRS
+- API Gateway 패턴 (Kong, Ambassador, Gloo)
+- Service Mesh의 Traffic Splitting 고급 활용
+
+---
+
+## 🔧 12단계: 개발 워크플로우와 도구
+
+### 1. 로컬 개발 환경
+
+**Minikube**
+
+- 가장 간단한 로컬 쿠버네티스
+- 단일 노드 클러스터
+
+bash
+
+```bash
+minikube start --cpus 4 --memory 8192
+minikube dashboard  # 웹 UI 실행
+```
+
+**Kind (Kubernetes in Docker)**
+
+- Docker 컨테이너로 쿠버네티스 노드 실행
+- 멀티 노드 클러스터 지원
+- CI/CD 파이프라인에 적합
+
+bash
+
+```bash
+kind create cluster --config kind-config.yaml
+```
+
+**k3d (k3s in Docker)**
+
+- 경량 쿠버네티스 k3s를 Docker에서 실행
+- 가장 빠른 시작 시간
+
+bash
+
+```bash
+k3d cluster create dev --servers 1 --agents 2
+```
+
+**Docker Desktop Kubernetes**
+
+- Mac/Windows에서 가장 쉬운 설정
+- 개발용으로 충분
+
+### 2. 개발 가속 도구
+
+**Skaffold**
+
+- 코드 변경 → 빌드 → 배포 자동화
+
+yaml
+
+```yaml
+apiVersion: skaffold/v4beta1
+kind: Config
+build:
+  artifacts:
+  - image: myapp
+    docker:
+      dockerfile: Dockerfile
+deploy:
+  kubectl:
+    manifests:
+    - k8s/*.yaml
+```
+
+bash
+
+```bash
+skaffold dev  # 파일 변경 감지하여 자동 재배포
+```
+
+**Tilt**
+
+- 더 강력한 개발 경험
+- 웹 UI 제공
+- 멀티 서비스 개발에 최적화
+
+**Telepresence**
+
+- 로컬 코드를 클러스터에 연결
+- 클러스터의 다른 서비스와 직접 통신하면서 로컬에서 디버깅
+
+bash
+
+```
+telepresence connect
+telepresence intercept my-service --port 8080
+# 이제 my-service로 가는 트래픽이 로컬 8080으로 옴
+```
+
+### 3. Helm - 쿠버네티스 패키지 매니저
+
+**Helm Chart란?**
+- 쿠버네티스 리소스들의 템플릿 묶음
+- 값(values)을 주입하여 재사용 가능
+
+**기본 구조:**
+```
+my-chart/
+  Chart.yaml        # 차트 메타데이터
+  values.yaml       # 기본값
+  templates/        # 쿠버네티스 매니페스트 템플릿
+    deployment.yaml
+    service.yaml
+    ingress.yaml
+````
+
+**템플릿 예시 (deployment.yaml):**
+
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-{{ .Chart.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        ports:
+        - containerPort: {{ .Values.service.port }}
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
+```
+
+**values.yaml:**
+
+
+```yaml
+replicaCount: 3
+image:
+  repository: myapp
+  tag: "1.0.0"
+service:
+  port: 8080
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "100m"
+  limits:
+    memory: "256Mi"
+    cpu: "200m"
+```
+
+**사용:**
+
+
+```
+# 차트 설치
+helm install my-release ./my-chart
+
+# 값을 오버라이드하여 설치
+helm install my-release ./my-chart \
+  --set replicaCount=5 \
+  --set image.tag=2.0.0
+
+# 업그레이드
+helm upgrade my-release ./my-chart
+
+# 롤백
+helm rollback my-release 1
+```
+
+**딥먹 주제:**
+- Helm Hooks: 배포 전후 작업 실행
+- Helm 서브차트와 의존성 관리
+- Helmfile: 여러 차트를 선언적으로 관리
+- Helm OCI 레지스트리 활용
+- Kustomize vs Helm 비교 및 선택 기준
+- Helm Chart 보안 스캐닝 (Checkov, Kubesec)
+
+### 4. Kustomize - 선언적 커스터마이제이션
+
+**Helm과의 차이:**
+- 템플릿 언어 없음
+- 기본 YAML에 패치를 덧붙이는 방식
+- kubectl에 내장되어 있음
+
+**디렉토리 구조:**
+```
+base/
+  deployment.yaml
+  service.yaml
+  kustomization.yaml
+overlays/
+  dev/
+    kustomization.yaml
+    patch-replicas.yaml
+  prod/
+    kustomization.yaml
+    patch-replicas.yaml
+````
+
+**base/kustomization.yaml:**
+
+```yaml
+resources:
+  - deployment.yaml
+  - service.yaml
+```
+
+**overlays/prod/kustomization.yaml:**
+
+```yaml
+bases:
+  - ../../base
+patchesStrategicMerge:
+  - patch-replicas.yaml
+namespace: production
+namePrefix: prod-
+commonLabels:
+  environment: production
+```
+
+**배포:**
+
+```bash
+kubectl apply -k overlays/prod/
+```
+
+**딥먹 주제:**
+
+- Strategic Merge Patch vs JSON Patch
+- Kustomize Components: 재사용 가능한 패치 조각
+- Kustomize + ArgoCD 통합
+- Sealed Secrets와 Kustomize 통합
+
+---
+
+## 📊 13단계: 실전 문제 해결과 디버깅
+
+### 1. 파드가 시작되지 않을 때
+
+**체크리스트:**
+
+
+```bash
+# 1. 파드 상태 확인
+kubectl get pods
+# 상태: Pending, CrashLoopBackOff, ImagePullBackOff, Error
+
+# 2. 자세한 정보 확인
+kubectl describe pod <pod-name>
+# Events 섹션을 주의깊게 확인
+
+# 3. 로그 확인
+kubectl logs <pod-name>
+kubectl logs <pod-name> --previous  # 이전 컨테이너의 로그
+
+# 4. 특정 컨테이너 로그 (파드에 여러 컨테이너가 있을 때)
+kubectl logs <pod-name> -c <container-name>
+```
+
+**주요 에러와 해결:**
+
+**ImagePullBackOff:**
+
+- 원인: 이미지를 pull할 수 없음
+- 해결:
+    - 이미지 이름/태그 확인
+    - Private 레지스트리라면 imagePullSecrets 설정
+
+
+```yaml
+  spec:
+    imagePullSecrets:
+    - name: regcred
+```
+
+**CrashLoopBackOff:**
+
+- 원인: 컨테이너가 시작 후 계속 종료됨
+- 해결:
+    - 로그에서 에러 확인
+    - livenessProbe 설정 확인 (너무 빠르게 체크하는지)
+    - 애플리케이션 시작 시간 고려한 initialDelaySeconds 설정
+
+**Pending:**
+
+- 원인: 스케줄링 불가
+- 해결:
+    - `kubectl describe pod`에서 스케줄링 실패 이유 확인
+    - 리소스 부족: 노드 추가 또는 request 줄이기
+    - PVC가 Bound되지 않음: 스토리지 클래스 확인
+    - Node Selector/Affinity 조건 확인
+
+### 2. 네트워킹 문제 디버깅
+
+**파드 간 통신이 안 될 때:**
+
+
+```bash
+# 1. 대상 파드의 IP 확인
+kubectl get pod <pod-name> -o wide
+
+# 2. 네트워크 테스트 파드 실행
+kubectl run -it --rm debug --image=nicolaka/netshoot --restart=Never -- /bin/bash
+
+# 파드 내에서:
+curl http://<target-pod-ip>:8080
+nslookup <service-name>
+ping <pod-ip>
+```
+
+**Service가 작동하지 않을 때:**
+
+```bash
+# 1. Service의 Endpoints 확인
+kubectl get endpoints <service-name>
+# 비어있다면 selector가 파드와 매치되지 않음
+
+# 2. 파드의 라벨 확인
+kubectl get pods --show-labels
+
+# 3. Service selector와 비교
+kubectl get service <service-name> -o yaml | grep -A 5 selector
+```
+
+**NetworkPolicy 문제:**
+
+```bash
+# NetworkPolicy 목록 확인
+kubectl get networkpolicy
+
+# 특정 NetworkPolicy 상세 확인
+kubectl describe networkpolicy <policy-name>
+```
+
+### 3. 리소스 부족 문제
+
+**노드의 리소스 상태 확인:**
+
+```bash
+kubectl top nodes
+kubectl describe node <node-name>
+# Allocated resources 섹션 확인
+```
+
+**파드의 실제 리소스 사용량:**
+
+```bash
+kubectl top pods
+kubectl top pods --containers  # 컨테이너별
+```
+
+**OOMKilled (Out of Memory):**
+
+```bash
+kubectl describe pod <pod-name>
+# Last State: Terminated, Reason: OOMKilled 확인
+```
+
+해결: memory limit 증가
+
+**CPU Throttling:**
+
+```bash
+# Prometheus 쿼리
+rate(container_cpu_cfs_throttled_seconds_total[5m])
+```
+
+해결: CPU limit 증가 또는 제거 고려
+
+### 4. 디버깅용 임시 컨테이너 (Ephemeral Containers)
+
+**쿠버네티스 1.23+에서 지원:**
+
+
+```bash
+kubectl debug <pod-name> -it --image=busybox --target=<container-name>
+```
+
+파드를 재시작하지 않고 디버깅 도구가 포함된 컨테이너를 추가합니다.
+
+### 5. 유용한 디버깅 명령어 모음
+
+
+```bash
+# 모든 리소스 확인
+kubectl get all -n <namespace>
+
+# 최근 이벤트 확인
+kubectl get events --sort-by='.lastTimestamp'
+
+# 특정 레이블의 파드만 확인
+kubectl get pods -l app=myapp
+
+# YAML 출력
+kubectl get pod <pod-name> -o yaml
+
+# JSONPath로 특정 필드 추출
+kubectl get pods -o jsonpath='{.items[*].spec.containers[*].image}'
+
+# 리소스 사용량 정렬
+kubectl top pods --sort-by=memory
+
+# 파드를 JSON으로 편집
+kubectl edit pod <pod-name>
+
+# 파드에 쉘로 접속
+kubectl exec -it <pod-name> -- /bin/bash
+
+# 파일 복사
+kubectl cp <pod-name>:/path/to/file ./local-file
+```
+
+**딥먹 주제:**
+
+- ksniff를 사용한 패킷 캡처
+- kubectl-debug 플러그인
+- eBPF 기반 실시간 디버깅 (kubectl-trace)
+- Stern을 사용한 멀티 파드 로그 스트리밍
+- kubectx/kubens: 컨텍스트와 네임스페이스 빠른 전환
+- k9s: 터미널 UI로 클러스터 관리
+
+---
+
+## 🎓 14단계: 학습 로드맵과 자격증
+
+### 학습 경로
+
+**1단계: 기초 (1-2개월)**
+
+- Docker 기본 개념과 사용법
+- 쿠버네티스 아키텍처 이해
+- 파드, 디플로이먼트, 서비스 실습
+- minikube로 로컬 환경 구축
+
+**2단계: 중급 (2-3개월)**
+
+- ConfigMap, Secret, Volume
+- Ingress, NetworkPolicy
+- RBAC 기본
+- Helm 사용법
+- 기본적인 트러블슈팅
+
+**3단계: 고급 (3-6개월)**
+
+- 커스텀 컨트롤러 개발
+- Operator 패턴
+- Service Mesh 도입
+- 멀티 클러스터 관리
+- 고급 모니터링과 관찰성
+
+**4단계: 전문가 (6개월+)**
+
+- 대규모 프로덕션 운영 경험
+- 성능 최적화와 비용 절감
+- 보안 강화
+- 커뮤니티 기여
+
+### 공식 자격증
+
+**1. CKA (Certified Kubernetes Administrator)**
+
+- 난이도: 중급
+- 내용: 클러스터 설치, 트러블슈팅, 네트워킹 등
+- 형식: 실습 시험 (터미널에서 직접 작업)
+- 추천: 운영/인프라 엔지니어
+
+**2. CKAD (Certified Kubernetes Application Developer)**
+
+- 난이도: 중급
+- 내용: 애플리케이션 배포, 설정 관리, 관찰성
+- 형식: 실습 시험
+- 추천: 개발자, DevOps 엔지니어
+
+**3. CKS (Certified Kubernetes Security Specialist)**
+
+- 난이도: 고급 (CKA 필수)
+- 내용: 클러스터 보안, Supply Chain Security
+- 형식: 실습 시험
+- 추천: 보안 엔지니어, 시니어 SRE
+
+### 추천 학습 리소스
+
+**공식 문서:**
+
+- kubernetes.io/docs (가장 정확하고 최신)
+
+**책:**
+
+- "Kubernetes in Action" - Marko Lukša
+- "Kubernetes Up & Running" - Kelsey Hightower
+- "Programming Kubernetes" - 고급 주제
+
+**온라인 강의:**
+
+- Udemy: Mumshad Mannambeth의 CKA/CKAD 강의
+- A Cloud Guru
+- Linux Foundation 공식 교육
+
+**실습 플랫폼:**
+
+- Killercoda (무료 실습 환경)
+- Killer.sh (자격증 모의고사)
+- KodeKloud (인터랙티브 실습)
+
+**커뮤니티:**
+
+- CNCF Slack
+- Kubernetes Slack
+- Reddit r/kubernetes
+- 한국 쿠버네티스 사용자 그룹
+
+---
+
+## 🏢 15단계: 실전 프로덕션 체크리스트
+
+### 배포 전 필수 확인사항
+
+**1. 고가용성 (High Availability)**
+
+yaml
+
+```yaml
+spec:
+  replicas: 3  # 최소 3개 (홀수 권장)
+  
+  # Anti-affinity로 다른 노드에 분산
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            app: myapp
+        topologyKey: kubernetes.io/hostname
+```
+
+**2. 헬스 체크**
+
+
+```yaml
+spec:
+  containers:
+  - name: app
+    # 애플리케이션 준비 확인
+    readinessProbe:
+      httpGet:
+        path: /health/ready
+        port: 8080
+      initialDelaySeconds: 10
+      periodSeconds: 5
+    
+    # 애플리케이션 살아있는지 확인
+    livenessProbe:
+      httpGet:
+        path: /health/live
+        port: 8080
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      failureThreshold: 3
+    
+    # 시작 시간이 긴 앱을 위한 체크
+    startupProbe:
+      httpGet:
+        path: /health/startup
+        port: 8080
+      failureThreshold: 30
+      periodSeconds: 10
+```
+
+**3. 리소스 관리**
+
+
+```yaml
+resources:
+  requests:  # 스케줄링 기준, 보장되는 최소 리소스
+    memory: "256Mi"
+    cpu: "250m"
+  limits:    # 상한선
+    memory: "512Mi"
+    cpu: "500m"  # CPU limit는 신중하게 (throttling 주의)
+```
+
+**4. Graceful Shutdown**
+
+
+```yaml
+spec:
+  terminationGracePeriodSeconds: 30
+  containers:
+  - name: app
+    lifecycle:
+      preStop:
+        exec:
+          command: ["/bin/sh", "-c", "sleep 15"]  # 연결 드레이닝
+```
+
+**5. PodDisruptionBudget**
+
+
+```yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: myapp-pdb
+spec:
+  minAvailable: 2  # 또는 maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: myapp
+```
+
+노드 업그레이드, 스케일 다운 시에도 최소한의 파드를 유지합니다.
+
+**6. 보안**
+
+
+```yaml
+spec:
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+    fsGroup: 1000
+  
+  containers:
+  - name: app
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop:
+        - ALL
+```
+
+**7. 이미지 관리**
+
+
+```yaml
+spec:
+  containers:
+  - name: app
+    image: myregistry.com/myapp:v1.2.3  # 명시적 태그, latest 금지
+    imagePullPolicy: IfNotPresent
+```
+
+### 모니터링 필수 지표
+
+**골든 시그널 (Google SRE):**
+
+1. **Latency**: 요청 응답 시간
+2. **Traffic**: 초당 요청 수 (RPS)
+3. **Errors**: 에러율
+4. **Saturation**: 리소스 사용률
+
+**쿠버네티스 특화 지표:**
+
+- 파드 재시작 횟수
+- 파드 OOMKilled 횟수
+- PVC 사용률
+- 노드 CPU/메모리 사용률
+- 네트워크 I/O
+- API Server 응답 시간
+
+**알림 설정 예시:**
+
+
+```yaml
+# Prometheus Alert 규칙
+groups:
+- name: kubernetes
+  rules:
+  - alert: PodCrashLooping
+    expr: rate(kube_pod_container_status_restarts_total[15m]) > 0
+    for: 5m
+    annotations:
+      summary: "Pod {{ $labels.pod }} is crash looping"
+  
+  - alert: HighMemoryUsage
+    expr: container_memory_usage_bytes / container_spec_memory_limit_bytes > 0.9
+    for: 5m
+    annotations:
+      summary: "Container {{ $labels.container }} memory usage > 90%"
+```
+
+### 백업과 재해 복구
+
+**etcd 백업 (가장 중요):**
+
+
+```bash
+ETCDCTL_API=3 etcdctl \
+  --endpoints=https://127.0.0.1:2379 \
+  --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+  --cert=/etc/kubernetes/pki/etcd/server.crt \
+  --key=/etc/kubernetes/pki/etcd/server.key \
+  snapshot save /backup/etcd-snapshot.db
+```
+
+**Velero: 애플리케이션 백업**
+
+
+```bash
+# 네임스페이스 전체 백업
+velero backup create my-backup --include-namespaces production
+
+# 복구
+velero restore create --from-backup my-backup
+```
+
+**딥먹 주제:**
+
+- Chaos Engineering: Chaos Mesh, Litmus
+- Progressive Delivery: Flagger + Istio
+- Cost-aware autoscaling
+- 멀티 테넌시 보안 강화
+- Zero-trust networking
+- 컴플라이언스 자동화 (PCI-DSS, HIPAA, SOC 2)
+
+---
+
+---
+
+**작성일**: 2025-11-03

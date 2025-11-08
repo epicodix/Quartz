@@ -1,3 +1,15 @@
+---
+title: GCP Professional Cloud Architect 완전 정복 가이드
+summary: '현재는 개념 나열 위주인데, **"언제 무엇을 선택해야 하는가"** 관점 추가:'
+tags:
+- 미분류
+category: 기타
+difficulty: 중급
+estimated_time: 30분
+created: '2025-10-31'
+updated: '2025-11-08'
+---
+
 
 
 ### **1. 각 섹션에 실전 의사결정 트리 추가**
@@ -2068,3 +2080,7 @@ VPA: 리소스 요청량이 부적절 (너무 많거나 적음)
 □ 이 가이드로 약점 집중 복습
 □ Practice Exam 재도전
 ````
+
+---
+
+**작성일**: 2025-10-31

@@ -1,3 +1,23 @@
+---
+title: 쿠버네티스 핵심 개념 완벽 정리
+summary: Docker만 사용할 때의 한계를 시나리오별로 비교하며 쿠버네티스의 필요성을 강조하고, 클러스터, 노드, 파드, 디플로이먼트, 서비스,
+  인그레스 등 필수 핵심 개념을 비유와 예시를 통해 쉽게 설명합니다.
+tags:
+- Kubernetes
+- Docker
+- 컨테이너
+- 핵심 개념
+- DevOps
+category: 교육
+difficulty: 초급
+estimated_time: 15분
+created: '2025-10-30'
+updated: '2025-11-08'
+tech_stack:
+- Kubernetes
+- Docker
+---
+
 # 쿠버네티스 핵심 개념 완벽 정리
 
 ---
@@ -615,3 +635,7 @@ Docker → Kubernetes 기초 → 실전 프로젝트
 도입 시점:
 컨테이너 20개 이상 OR 서버 3대 이상
 ```
+
+---
+
+**작성일**: 2025-10-30

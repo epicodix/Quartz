@@ -1,3 +1,16 @@
+---
+title: K8s - Kube-proxy
+summary: Kube-proxy는 클러스터의 각 `[[워커 노드 (Worker Node)]]`에서 실행되는 네트워크 프록시입니다. 쿠버네티스의
+  `[[K8s - Service]]` 개념을 가능하게 하는 핵심 컴포넌트입니다.
+tags:
+- 미분류
+category: 기타
+difficulty: 중급
+estimated_time: 30분
+created: '2025-11-03'
+updated: '2025-11-08'
+---
+
 #kubernetes #component #worker-node
 
 Kube-proxy는 클러스터의 각 `[[워커 노드 (Worker Node)]]`에서 실행되는 네트워크 프록시입니다. 쿠버네티스의 `[[K8s - Service]]` 개념을 가능하게 하는 핵심 컴포넌트입니다.
@@ -10,3 +23,7 @@ Kube-proxy는 클러스터의 각 `[[워커 노드 (Worker Node)]]`에서 실행
 간단히 말해, Kube-proxy는 **클러스터 내부의 트래픽을 올바른 목적지(파드)로 안내하는 '교통 경찰'** 역할을 합니다.
 
 * 관련 링크: `[[워커 노드 (Worker Node)]]`, `[[K8s - Service]]`
+
+---
+
+**작성일**: 2025-11-03

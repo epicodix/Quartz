@@ -1,3 +1,26 @@
+---
+title: Ollama 서버 외부 접근 및 curl 테스트 문제 해결 가이드
+summary: Ollama AI 서버 운영 시 발생하는 `curl`의 JSON 파싱 오류와 `ngrok`을 통한 외부 접근 시 403 Forbidden
+  문제를 해결하는 가이드입니다. `printf`와 환경 변수 설정을 통해 문제를 해결하는 방법을 제시합니다.
+tags:
+- Ollama
+- ngrok
+- curl
+- Troubleshooting
+- API
+category: 가이드
+difficulty: 초급
+estimated_time: 10분
+created: '2025-07-29'
+updated: '2025-11-08'
+tech_stack:
+- Ollama
+- ngrok
+- curl
+- Zsh
+- Bash
+---
+
 # Ollama AI 서버 외부 접근 및 `curl` 테스트 문제 해결 가이드
 
 이 문서는 Ollama AI 서버를 로컬 및 외부에서 테스트하는 과정에서 발생할 수 있는 일반적인 문제들과 그 해결 방법을 상세히 설명합니다. 특히 `curl` 명령어의 JSON 파싱 문제와 `ngrok`을 통한 외부 접근 시 발생하는 `403 Forbidden` 오류에 초점을 맞춥니다.
@@ -107,3 +130,7 @@ pkill -f ollama
 ## 결론
 
 `curl` 명령어의 셸 파싱 문제와 Ollama 서버의 네트워크/Origin 설정 문제는 외부에서 AI 서버에 접근하려는 시도에서 흔히 발생할 수 있습니다. 이 가이드에서 제시된 해결책들을 통해 이러한 문제들을 극복하고 Ollama AI 서버를 성공적으로 활용할 수 있기를 바랍니다.
+
+---
+
+**작성일**: 2025-07-29

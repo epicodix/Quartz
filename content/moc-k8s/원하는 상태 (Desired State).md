@@ -1,3 +1,15 @@
+---
+title: 원하는 상태 (Desired State)
+summary: '''원하는 상태(Desired State)''는 쿠버네티스에게 "우리가 바라는 시스템의 최종 모습"을 선언적으로 알려주는 것을 의미합니다.'
+tags:
+- 미분류
+category: 기타
+difficulty: 중급
+estimated_time: 30분
+created: '2025-11-03'
+updated: '2025-11-08'
+---
+
 #kubernetes #principle
 
 '원하는 상태(Desired State)'는 쿠버네티스에게 "우리가 바라는 시스템의 최종 모습"을 선언적으로 알려주는 것을 의미합니다.
@@ -18,3 +30,7 @@
 *   **조정 작업**: 컨트롤러가 현재 온도가 더 높다는 것을 인지하고, 온도를 24°C로 낮추기 위해 에어컨을 작동시킴
 
 * 관련 링크: `[[Kubernetes란 무엇인가?]]`, `[[Kubernetes (MOC)]]`
+
+---
+
+**작성일**: 2025-11-03

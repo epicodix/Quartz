@@ -1,3 +1,16 @@
+---
+title: Kubernetes (MOC)
+summary: '> **MOC (Map of Content)**: 쿠버네티스 학습의 메인 허브 페이지입니다. 관련된 모든 핵심 개념 노트를 이곳에서
+  연결합니다.'
+tags:
+- 미분류
+category: 기타
+difficulty: 중급
+estimated_time: 30분
+created: '2025-11-03'
+updated: '2025-11-08'
+---
+
 #kubernetes #moc #cloud-native
 
 > **MOC (Map of Content)**: 쿠버네티스 학습의 메인 허브 페이지입니다. 관련된 모든 핵심 개념 노트를 이곳에서 연결합니다.
@@ -45,3 +58,7 @@
       * `[[K8s - ClusterRole]]`
       * `[[K8s - RoleBinding & ClusterRoleBinding]]`
       * `[[K8s - ServiceAccount]]`
+
+---
+
+**작성일**: 2025-11-03

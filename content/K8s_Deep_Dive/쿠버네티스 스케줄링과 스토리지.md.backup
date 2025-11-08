@@ -1,0 +1,896 @@
+
+# Part 1: 스케줄링 
+
+---
+
+## 🔧 kube-scheduler 상세 동작 원리
+
+### 스케줄링 큐 (Scheduling Queue)
+
+```
+[Pod 생성] → [API Server] → [Scheduler의 3가지 큐]
+                                   ↓
+    ┌──────────────────────────────┴───────────────────────┐
+    │                                                        │
+┌───▼────┐        ┌────────────┐        ┌─────────────┐   │
+│ Active │ -----> │ Backoff    │ -----> │ Unschedulable│   │
+│ Queue  │        │ Queue      │        │ Queue        │   │
+└────────┘        └────────────┘        └─────────────┘   │
+    ↓                   ↓                       ↓           │
+스케줄링 시도      재시도 대기 중         스케줄 불가     │
+(즉시 처리)       (지수 백오프)          (이벤트 대기)    │
+                                                           │
+└──────────────────────────────────────────────────────────┘
+```
+
+### 상세 플로우
+
+yaml
+
+```
+# Pod 생성
+apiVersion: v1
+kind: Pod
+metadata:
+  name: example-pod
+spec:
+  containers:
+  - name: app
+    image: nginx
+  # nodeName이 없음!
+```
+```
+[1] Pod 생성 → API Server → etcd 저장
+    ↓
+[2] Scheduler Watch → "nodeName 없는 Pod 발견"
+    ↓
+[3] Active Queue에 추가
+    ↓
+[4] 스케줄링 사이클 시작
+    ↓
+    ├─ PreFilter 플러그인 실행 (사전 검증)
+    ├─ Filter 플러그인 실행 (노드별 검사)
+    ├─ PostFilter 플러그인 (모든 노드 실패 시)
+    ├─ PreScore 플러그인 (점수 계산 준비)
+    ├─ Score 플러그인 (노드별 점수)
+    ├─ NormalizeScore (점수 정규화)
+    └─ Reserve 플러그인 (리소스 예약)
+    ↓
+[5] Binding 사이클
+    ├─ Permit 플러그인 (승인/거부/대기)
+    ├─ PreBind 플러그인
+    ├─ Bind 플러그인 (nodeName 설정)
+    └─ PostBind 플러그인
+    ↓
+[6] API Server 업데이트
+    ↓
+[7] kubelet이 Pod 실행
+```
+
+---
+
+## 🎯 스케줄링 프레임워크
+
+### 확장 포인트 (Extension Points)
+```
+┌─────────────── Scheduling Cycle ────────────────┐
+│                                                  │
+│  ① QueueSort (큐 정렬)                          │
+│     ↓                                            │
+│  ② PreFilter (사전 필터링)                       │
+│     ↓                                            │
+│  ③ Filter (필터링) ← ⭐ 가장 중요               │
+│     ↓                                            │
+│  ④ PostFilter (모든 노드 실패 시)               │
+│     ↓                                            │
+│  ⑤ PreScore (점수 계산 준비)                    │
+│     ↓                                            │
+│  ⑥ Score (점수 매기기) ← ⭐ 가장 중요           │
+│     ↓                                            │
+│  ⑦ NormalizeScore (점수 정규화)                 │
+│     ↓                                            │
+│  ⑧ Reserve (리소스 예약)                        │
+│                                                  │
+└──────────────────────────────────────────────────┘
+          ↓
+┌─────────────── Binding Cycle ───────────────────┐
+│                                                  │
+│  ⑨ Permit (승인/거부/대기)                      │
+│     ↓                                            │
+│  ⑩ PreBind (바인딩 전 준비)                     │
+│     ↓                                            │
+│  ⑪ Bind (nodeName 설정) ← ⭐ 최종 바인딩        │
+│     ↓                                            │
+│  ⑫ PostBind (바인딩 후 작업)                    │
+│                                                  │
+└──────────────────────────────────────────────────┘
+````
+
+### 주요 플러그인 예제
+
+#### NodeResourcesFit (Filter 플러그인)
+
+go
+
+```go
+// 의사 코드
+func Filter(pod, node) bool {
+    podCPU := pod.requests.cpu
+    podMemory := pod.requests.memory
+    
+    availableCPU := node.allocatable.cpu - node.allocated.cpu
+    availableMemory := node.allocatable.memory - node.allocated.memory
+    
+    if podCPU > availableCPU || podMemory > availableMemory {
+        return false  // 노드 탈락
+    }
+    return true  // 통과
+}
+```
+
+#### NodeResourcesBalancedAllocation (Score 플러그인)
+
+go
+
+```go
+// 리소스 균형 점수 계산
+func Score(pod, node) int {
+    cpuFraction := (node.allocated.cpu + pod.requests.cpu) / node.allocatable.cpu
+    memoryFraction := (node.allocated.memory + pod.requests.memory) / node.allocatable.memory
+    
+    // 두 리소스의 사용률 차이가 작을수록 높은 점수
+    variance := abs(cpuFraction - memoryFraction)
+    score := 100 - (variance * 100)
+    
+    return score
+}
+```
+
+---
+
+## 🏆 Pod 우선순위와 선점 (Preemption)
+
+### 시나리오: 리소스 부족한 클러스터
+
+yaml
+
+````yaml
+# 1. PriorityClass 정의
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: high-priority
+value: 1000000
+globalDefault: false
+description: "Critical system pods"
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: low-priority
+value: 1000
+---
+
+# 2. 낮은 우선순위 Pod (이미 실행 중)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: low-priority-pod
+spec:
+  priorityClassName: low-priority
+  containers:
+  - name: app
+    image: nginx
+    resources:
+      requests:
+        cpu: "1"
+        memory: "2Gi"
+---
+
+# 3. 높은 우선순위 Pod (새로 생성)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: high-priority-pod
+spec:
+  priorityClassName: high-priority
+  containers:
+  - name: critical-app
+    image: nginx
+    resources:
+      requests:
+        cpu: "1"
+        memory: "2Gi"
+```
+
+### 선점 플로우
+```
+[클러스터 상태]
+노드A: CPU 4코어 중 3코어 사용 (1코어 남음)
+  - low-priority-pod-1 (1코어)
+  - low-priority-pod-2 (1코어)
+  - low-priority-pod-3 (1코어)
+
+[이벤트] high-priority-pod 생성 (1코어 필요)
+    ↓
+[Scheduler] Filter 단계
+    ├─ 모든 노드 리소스 부족 ❌
+    └─ PostFilter 플러그인 실행 (선점 시작)
+    ↓
+[선점 알고리즘]
+    ├─ 우선순위 비교: high (1000000) vs low (1000)
+    ├─ 희생자 선택: low-priority-pod-3
+    └─ Preemption 결정
+    ↓
+[Graceful Termination]
+    ├─ low-priority-pod-3에 SIGTERM 전송
+    ├─ terminationGracePeriodSeconds 대기 (30초)
+    └─ Pod 종료
+    ↓
+[리소스 확보] 노드A: 2코어 남음
+    ↓
+[Scheduler] high-priority-pod 배정
+    ↓
+[kubelet] high-priority-pod 실행 ✅
+````
+
+### 이벤트 확인
+
+bash
+
+````bash
+$ kubectl describe pod low-priority-pod-3
+Events:
+  Type     Reason     Message
+  ----     ------     -------
+  Normal   Preempted  Preempted by default/high-priority-pod on node node-1
+
+$ kubectl describe pod high-priority-pod
+Events:
+  Type     Reason               Message
+  ----     ------               -------
+  Normal   SuccessfulPreemption Preempted pod default/low-priority-pod-3
+  Normal   Scheduled            Successfully assigned to node-1
+```
+
+---
+
+# Part 2: 스토리지 (공식 문서 기반 대폭 보완)
+
+---
+
+## 📦 볼륨 타입 완전 정리
+
+### 1. 일반 볼륨 (Volumes) - Pod 수명 주기 종속
+```
+Pod 생성 → 볼륨 생성 → Pod 삭제 → 볼륨 삭제 💥
+````
+
+#### emptyDir (가장 기본)
+
+yaml
+
+````yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+spec:
+  containers:
+  - name: app
+    image: nginx
+    volumeMounts:
+    - name: cache
+      mountPath: /cache
+  - name: sidecar
+    image: busybox
+    command: ["/bin/sh", "-c", "tail -f /cache/access.log"]
+    volumeMounts:
+    - name: cache
+      mountPath: /cache
+  volumes:
+  - name: cache
+    emptyDir: {}  # 빈 디렉터리, Pod 삭제 시 사라짐
+```
+
+**플로우:**
+```
+Pod 생성 → kubelet이 노드에 임시 디렉터리 생성
+         (/var/lib/kubelet/pods/<pod-uid>/volumes/kubernetes.io~empty-dir/cache)
+         ↓
+컨테이너 시작 → 두 컨테이너 모두 같은 디렉터리 마운트
+         ↓
+데이터 공유 (같은 Pod 내 컨테이너 간)
+         ↓
+Pod 삭제 → 디렉터리 삭제 💥 (데이터 손실)
+````
+
+#### hostPath (노드 파일시스템 직접 접근)
+
+yaml
+
+````yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-hostpath
+spec:
+  containers:
+  - name: app
+    image: nginx
+    volumeMounts:
+    - name: host-logs
+      mountPath: /var/log/app
+  volumes:
+  - name: host-logs
+    hostPath:
+      path: /var/log/containers  # 노드의 실제 경로
+      type: DirectoryOrCreate
+```
+
+**플로우:**
+```
+Pod 생성 → Scheduler가 노드 선택 (예: node-1)
+         ↓
+kubelet → 노드의 /var/log/containers를 컨테이너에 마운트
+         ↓
+컨테이너 → 노드의 실제 파일 시스템에 직접 읽기/쓰기
+         ↓
+⚠️ 주의: 같은 Pod가 다른 노드로 재스케줄되면 데이터 손실!
+```
+
+---
+
+### 2. 퍼시스턴트 볼륨 (Persistent Volumes) - 독립적 수명 주기
+```
+PV 생성 → PVC 생성 → Pod 사용 → Pod 삭제 → PV 유지 ✅
+```
+
+#### 이미 앞에서 다룬 내용이므로 생략하고, 추가 세부사항만 보완
+
+---
+
+## 🎭 프로젝티드 볼륨 (Projected Volumes)
+
+### 개념: 여러 볼륨 소스를 하나로 통합
+```
+Secret + ConfigMap + ServiceAccount → 하나의 디렉터리로 프로젝션
+````
+
+### 사용 사례: TLS 인증서 + 앱 설정 통합
+
+yaml
+
+````yaml
+# 1. 소스 생성
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tls-secret
+type: kubernetes.io/tls
+data:
+  tls.crt: LS0tLS1CRUdJTi... (base64)
+  tls.key: LS0tLS1CRUdJTi... (base64)
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  app.conf: |
+    server {
+      listen 443 ssl;
+      ssl_certificate /certs/tls.crt;
+      ssl_certificate_key /certs/tls.key;
+    }
+---
+
+# 2. Projected Volume으로 통합
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web-server
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.21
+    volumeMounts:
+    - name: config-and-certs
+      mountPath: /certs
+      readOnly: true
+  volumes:
+  - name: config-and-certs
+    projected:  # ⭐ 여러 소스 통합
+      sources:
+      - secret:
+          name: tls-secret
+          items:
+          - key: tls.crt
+            path: tls.crt
+          - key: tls.key
+            path: tls.key
+      - configMap:
+          name: app-config
+          items:
+          - key: app.conf
+            path: nginx.conf
+      - serviceAccountToken:  # ⭐ ServiceAccount 토큰도 추가
+          path: token
+          expirationSeconds: 3600
+```
+
+### 플로우
+```
+Pod 생성
+    ↓
+kubelet이 projected 볼륨 처리
+    ↓
+    ├─ tls-secret에서 tls.crt, tls.key 추출
+    ├─ app-config에서 nginx.conf 추출
+    └─ ServiceAccount 토큰 생성 (1시간 TTL)
+    ↓
+임시 디렉터리에 모두 통합
+    /certs/
+      ├─ tls.crt        (from Secret)
+      ├─ tls.key        (from Secret)
+      ├─ nginx.conf     (from ConfigMap)
+      └─ token          (from SA)
+    ↓
+컨테이너에 읽기 전용으로 마운트
+    ↓
+nginx 시작 → /certs/nginx.conf 읽기 → TLS 활성화 ✅
+````
+
+### 실시간 업데이트
+
+bash
+
+```bash
+# ConfigMap 업데이트
+$ kubectl edit configmap app-config
+# nginx.conf 내용 수정
+
+# 약 60초 후 자동 반영!
+$ kubectl exec web-server -- cat /certs/nginx.conf
+# 새로운 내용 확인 ✅
+```
+
+---
+
+## ⚡ 임시 볼륨 (Ephemeral Volumes)
+
+### 1. Generic Ephemeral Volumes (동적 생성)
+
+yaml
+
+````yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: scratch-workspace
+spec:
+  containers:
+  - name: builder
+    image: golang:1.19
+    volumeMounts:
+    - name: scratch
+      mountPath: /workspace
+  volumes:
+  - name: scratch
+    ephemeral:  # ⭐ 임시 볼륨
+      volumeClaimTemplate:
+        spec:
+          accessModes: [ "ReadWriteOnce" ]
+          storageClassName: fast-ssd
+          resources:
+            requests:
+              storage: 10Gi
+```
+
+### 플로우
+```
+Pod 생성
+    ↓
+kubelet이 ephemeral 볼륨 감지
+    ↓
+자동으로 PVC 생성 (이름: <pod-name>-<volume-name>)
+    ├─ PVC 이름: scratch-workspace-scratch
+    ├─ StorageClass: fast-ssd
+    └─ 크기: 10Gi
+    ↓
+동적 프로비저닝 (StorageClass 기반)
+    ├─ AWS EBS 볼륨 생성 (10GB gp3)
+    └─ PV 자동 생성
+    ↓
+PVC ↔ PV Binding
+    ↓
+컨테이너에 마운트 (/workspace)
+    ↓
+[빌드 작업 수행]
+    ↓
+Pod 삭제
+    ↓
+⭐ PVC 자동 삭제 → PV 자동 삭제 (ReclaimPolicy: Delete)
+    ↓
+EBS 볼륨 삭제 💥 (임시 데이터)
+````
+
+### 확인
+
+bash
+
+```bash
+# Pod 실행 중
+$ kubectl get pvc
+NAME                          STATUS   VOLUME        CAPACITY
+scratch-workspace-scratch     Bound    pvc-xyz123    10Gi
+
+# Pod 삭제 후
+$ kubectl delete pod scratch-workspace
+$ kubectl get pvc
+No resources found.  # ⭐ PVC도 함께 삭제됨!
+```
+
+---
+
+### 2. CSI Ephemeral Volumes (인라인 방식)
+
+yaml
+
+````yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secrets-store-inline
+spec:
+  containers:
+  - name: app
+    image: nginx
+    volumeMounts:
+    - name: secrets
+      mountPath: /mnt/secrets
+      readOnly: true
+  volumes:
+  - name: secrets
+    csi:  # ⭐ CSI 드라이버 직접 호출
+      driver: secrets-store.csi.k8s.io
+      readOnly: true
+      volumeAttributes:
+        secretProviderClass: "aws-secrets"
+```
+
+### 플로우 (AWS Secrets Manager 예제)
+```
+Pod 생성
+    ↓
+kubelet → CSI Driver 호출 (secrets-store.csi.k8s.io)
+    ↓
+CSI Driver → AWS Secrets Manager API 호출
+    ├─ SecretId: prod/db/password
+    └─ 인증: IRSA (IAM Role for Service Account)
+    ↓
+시크릿 다운로드 → 임시 파일 시스템에 저장
+    ↓
+컨테이너에 마운트 (/mnt/secrets/)
+    /mnt/secrets/
+      └─ db-password  (내용: MySecurePassword123)
+    ↓
+애플리케이션 → 파일에서 비밀번호 읽기
+    ↓
+Pod 삭제 → 임시 파일 삭제 💥 (시크릿 노출 방지)
+```
+
+---
+
+## 🔄 퍼시스턴트 볼륨 심화 (Lifecycle)
+
+### PV 상태 전환 다이어그램
+```
+[PV 생성]
+    ↓
+┌─────────────┐
+│ Available   │ ← 사용 가능, PVC 대기 중
+└─────┬───────┘
+      │ PVC Binding
+      ↓
+┌─────────────┐
+│   Bound     │ ← PVC와 1:1 연결됨
+└─────┬───────┘
+      │ PVC 삭제
+      ↓
+┌─────────────┐
+│  Released   │ ← PVC 없어졌지만 데이터 남아있음
+└─────┬───────┘
+      │
+      ├─ ReclaimPolicy: Retain
+      │    ↓ (수동 정리 필요)
+      │  [관리자 개입] → Delete PV → Available (재사용)
+      │
+      ├─ ReclaimPolicy: Delete
+      │    ↓ (자동 삭제)
+      │  PV 삭제 → 외부 스토리지도 삭제 💥
+      │
+      └─ ReclaimPolicy: Recycle (Deprecated)
+           ↓
+         데이터 삭제 (rm -rf /volume/*)
+           ↓
+         Available (재사용 가능)
+````
+
+### ReclaimPolicy 시나리오
+
+#### Retain (보존)
+
+yaml
+
+````yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-important-data
+spec:
+  capacity:
+    storage: 100Gi
+  persistentVolumeReclaimPolicy: Retain  # ⭐ 보존
+  nfs:
+    server: 10.1.1.5
+    path: /exports/important
+```
+
+**플로우:**
+```
+[상태: Bound] PVC (app-data) ↔ PV (pv-important-data)
+    ↓
+PVC 삭제 (kubectl delete pvc app-data)
+    ↓
+[상태: Released]
+  - PV는 삭제되지 않음 ✅
+  - NFS 데이터 그대로 보존 ✅
+  - 하지만 다른 PVC 바인딩 불가 ⚠️
+    ↓
+관리자 수동 작업:
+  1. 데이터 백업
+  2. 데이터 정리 (필요시)
+  3. PV 삭제
+  4. 새 PV 생성 (같은 NFS 경로)
+````
+
+#### Delete (삭제)
+
+yaml
+
+````yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: fast-ssd
+provisioner: ebs.csi.aws.com
+reclaimPolicy: Delete  # ⭐ 기본값
+```
+
+**플로우:**
+```
+[동적 프로비저닝] PVC 생성 → PV 자동 생성 (EBS 볼륨)
+    ↓
+[상태: Bound] PVC ↔ PV
+    ↓
+PVC 삭제
+    ↓
+[PV 자동 삭제 트리거]
+    ├─ Kubernetes PV 객체 삭제
+    └─ CSI Driver 호출 → AWS EBS DeleteVolume API
+    ↓
+EBS 볼륨 삭제 💥 (복구 불가!)
+````
+
+---
+
+## ⚙️ StorageClass 상세
+
+### Provisioner별 차이점
+
+#### 1. AWS EBS CSI Driver
+
+yaml
+
+````yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ebs-gp3
+provisioner: ebs.csi.aws.com
+parameters:
+  type: gp3  # SSD 타입
+  iopsPerGB: "50"
+  throughput: "125"  # MB/s
+  encrypted: "true"
+  kmsKeyId: "arn:aws:kms:us-east-1:123456789012:key/abcd"
+volumeBindingMode: WaitForFirstConsumer  # ⭐ 중요!
+allowVolumeExpansion: true
+```
+
+**WaitForFirstConsumer 플로우:**
+```
+PVC 생성 (10Gi, ebs-gp3)
+    ↓
+[PVC 상태: Pending] ← ⭐ 아직 PV 생성 안 함!
+    ↓
+Pod 생성 (PVC 사용)
+    ↓
+Scheduler → Pod를 us-east-1a 노드에 할당
+    ↓ ⭐ 트리거!
+CSI Provisioner → EBS 볼륨을 us-east-1a에 생성
+    ↓
+PV 생성 (pvc-xyz, availabilityZone: us-east-1a)
+    ↓
+PVC ↔ PV Binding
+    ↓
+kubelet → EBS 어태치 → 컨테이너 마운트 ✅
+```
+
+**왜 WaitForFirstConsumer?**
+```
+문제 상황 (Immediate 모드):
+PVC 생성 → EBS를 us-east-1a에 생성
+Pod 생성 → Scheduler가 us-east-1b 노드에 할당
+  ↓
+❌ EBS는 같은 AZ에서만 어태치 가능!
+  ↓
+Pod Pending (FailedAttachVolume)
+
+해결 (WaitForFirstConsumer):
+Pod 스케줄링 후 → Pod가 있는 AZ에 EBS 생성 ✅
+````
+
+---
+
+#### 2. NFS Provisioner
+
+yaml
+
+````yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-client
+provisioner: nfs-subdir-external-provisioner  # Helm chart
+parameters:
+  archiveOnDelete: "true"  # 삭제 시 아카이빙
+volumeBindingMode: Immediate
+reclaimPolicy: Retain
+```
+
+**플로우:**
+```
+PVC 생성 (5Gi, nfs-client)
+    ↓
+NFS Provisioner (Pod) 감지
+    ↓
+NFS 서버에 서브디렉터리 생성
+    /nfs-exports/
+      └─ default-my-pvc-pvc-xyz/  # 자동 생성
+    ↓
+PV 생성 (nfs 타입, path: /default-my-pvc-pvc-xyz)
+    ↓
+PVC ↔ PV Binding
+    ↓
+Pod → NFS 마운트 ✅
+    ↓
+PVC 삭제
+    ↓
+archiveOnDelete: true
+    ↓
+디렉터리 이름 변경 (아카이빙)
+    /nfs-exports/
+      └─ archived-default-my-pvc-pvc-xyz-20240115/
+````
+
+---
+
+## 🎓 스토리지 선택 가이드
+
+### 사용 사례별 추천
+
+|사용 사례|추천 볼륨 타입|이유|
+|---|---|---|
+|로그 수집 (같은 Pod 내)|`emptyDir`|간단, Pod 종료 시 자동 정리|
+|캐시 데이터|`emptyDir` (메모리 백엔드)|초고속, 휘발성 OK|
+|빌드 작업 공간|Generic Ephemeral Volume|동적 생성, 자동 정리|
+|설정 + 인증서 통합|Projected Volume|여러 소스 통합, 실시간 업데이트|
+|데이터베이스|PVC + StatefulSet|영구 보존, Pod별 독립 스토리지|
+|공유 파일 시스템|PVC (ReadWriteMany) + NFS|여러 Pod 동시 접근|
+|외부 시크릿 (Vault)|CSI Ephemeral Volume|보안, 임시 마운트|
+
+---
+
+## 🔍 트러블슈팅 플로우
+
+### 문제 1: PVC가 Pending 상태
+
+bash
+
+````bash
+$ kubectl get pvc
+NAME       STATUS    VOLUME   STORAGECLASS
+app-data   Pending   -        fast-ssd
+
+# 원인 진단
+$ kubectl describe pvc app-data
+Events:
+  Type     Reason              Message
+  ----     ------              -------
+  Warning  ProvisioningFailed  Failed to provision volume: 
+                               no volume plugin matched
+```
+
+**해결 플로우:**
+```
+1. StorageClass 확인
+   $ kubectl get storageclass fast-ssd
+   ❌ Error: storageclass.storage.k8s.io "fast-ssd" not found
+   
+   해결: StorageClass 생성
+   $ kubectl apply -f storageclass.yaml
+
+2. CSI Driver 확인
+   $ kubectl get pods -n kube-system | grep ebs-csi
+   ❌ No resources found
+   
+   해결: CSI Driver 설치
+   $ helm install aws-ebs-csi-driver ...
+
+3. volumeBindingMode 확인
+   $ kubectl get sc fast-ssd -o yaml | grep volumeBindingMode
+   volumeBindingMode: WaitForFirstConsumer
+   
+   원인: Pod가 아직 생성되지 않음
+   해결: Pod 생성하면 자동 프로비저닝됨
+```
+
+---
+
+## 📚 핵심 요약
+
+### 스케줄링
+```
+Pod 생성 → Scheduler 큐 → 스케줄링 사이클 (Filter + Score) → Binding 사이클 → kubelet 실행
+```
+
+### 스토리지
+```
+일반 볼륨: Pod 수명 주기 종속, 간단한 공유/캐시
+프로젝티드: 여러 소스 통합, 실시간 업데이트
+임시 볼륨: 동적 생성, 자동 정리
+퍼시스턴트: 독립 수명 주기, 영구 보존
+````
+
+
+### 🎓 스케줄링 & 스토리지 최종 요약
+
+- **스케줄링 (Pod가 노드를 찾는 법)**
+    
+    1. `ReplicaSet` 등이 `nodeName`이 비어있는 Pod를 생성합니다.
+        
+    2. `kube-scheduler`가 이 Pod를 발견합니다.
+        
+    3. **필터링:** Pod의 요구조건(리소스, `nodeSelector`, `Taint`/`Toleration` 등)을 만족 못 하는 노드를 모두 탈락시킵니다.
+        
+    4. **스코어링:** 남은 후보 노드들에게 점수를 매깁니다. (예: 리소스 여유가 많으면 높은 점수, `Affinity`가 맞으면 높은 점수)
+        
+    5. **바인딩:** 1등 노드를 Pod의 `nodeName`에 기록합니다.
+        
+    6. 해당 노드의 `kubelet`이 Pod를 발견하고 컨테이너를 실행합니다.
+        
+- **스토리지 (데이터가 살아남는 법)**
+    
+    1. **추상화:** 개발자는 "10GB 필요"라는 **PVC(요청서)**만 작성합니다. 관리자는 "NFS 50GB짜리"라는 **PV(금고)**를 준비합니다.
+        
+    2. **정적 프로비저닝:** 관리자가 PV(금고)를 **수동으로** 미리 만들어 둡니다. PVC(요청서)가 들어오면 쿠버네티스가 조건이 맞는 PV와 **바인딩**합니다.
+        
+    3. **동적 프로비저닝:** 관리자가 **StorageClass(금고 제작 설명서)**를 미리 만들어 둡니다. PVC가 "이 설명서대로 만들어주세요"라고 요청하면, CSI 드라이버가 PV(금고)를 **자동으로** 생성하고 즉시 바인딩합니다.
+        
+    4. **StatefulSet:** `volumeClaimTemplates`라는 'PVC 템플릿'을 사용하여, `mysql-0` Pod를 위한 `data-mysql-0` PVC, `mysql-1` Pod를 위한 `data-mysql-1` PVC를 자동으로 생성하고 1:1로 고정시켜 데이터 영속성을 보장합니다.
+
+---
+
+**작성일**: 2025-11-07

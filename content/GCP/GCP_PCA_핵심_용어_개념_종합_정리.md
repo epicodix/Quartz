@@ -1,3 +1,15 @@
+---
+title: GCP PCA 핵심 용어 개념 종합 정리
+summary: 이 문서는 GCP Professional Cloud Architect 시험 준비를 위해 필요한 주요 용어와 개념을 정리한 것입니다.
+tags:
+- 미분류
+category: 기타
+difficulty: 중급
+estimated_time: 30분
+created: '2025-10-31'
+updated: '2025-11-08'
+---
+
 ### GCP PCA 핵심 용어 및 개념 종합 정리
 
 이 문서는 GCP Professional Cloud Architect 시험 준비를 위해 필요한 주요 용어와 개념을 정리한 것입니다.
@@ -119,3 +131,7 @@
     *   **블레임리스 사후 분석 (Blameless Post-mortem):** 문제의 근본 원인 분석 및 재발 방지 대책 수립.
 *   **신뢰할 수 있는 컨테이너 배포:**
     *   **Binary Authorization:** 서명된 컨테이너 이미지만 프로덕션 환경에 배포되도록 강제.
+
+---
+
+**작성일**: 2025-10-31

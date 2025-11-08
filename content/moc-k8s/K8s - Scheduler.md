@@ -1,3 +1,22 @@
+---
+title: 쿠버네티스 스케줄러(Kube-Scheduler)의 역할과 동작 원리
+summary: 쿠버네티스 스케줄러는 새로 생성된 파드를 감시하여 실행할 최적의 워커 노드를 찾아 할당하는 컨트롤 플레인 컴포넌트입니다. 필터링,
+  스코어링 단계를 거쳐 가장 적합한 노드를 선택하며, 실제 파드 실행은 Kubelet이 담당합니다.
+tags:
+- Kubernetes
+- Scheduler
+- Control Plane
+- Component
+- Pod
+category: 기술분석
+difficulty: 초급
+estimated_time: 5분
+created: '2025-11-03'
+updated: '2025-11-08'
+tech_stack:
+- Kubernetes
+---
+
 #kubernetes #component #control-plane
 
 스케줄러(kube-scheduler)는 새로 생성되었지만 아직 어느 노드에도 할당되지 않은 `[[K8s - Pod]]`를 감시하고, 이 파드를 실행할 최적의 `[[워커 노드 (Worker Node)]]`를 찾아주는 역할을 합니다.
@@ -12,3 +31,7 @@
 > **중요**: 스케줄러는 파드를 노드에 **'할당'**만 할 뿐, 실제로 파드를 **'실행'**하는 것은 해당 노드의 `[[K8s - Kubelet]]`입니다.
 
 * 관련 링크: `[[컨트롤 플레인 (Control Plane)]]`, `[[K8s - Pod 생성 과정]]`
+
+---
+
+**작성일**: 2025-11-03

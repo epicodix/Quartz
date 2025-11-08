@@ -255,3 +255,7 @@ tail -f /opt/homebrew/opt/tomcat/libexec/logs/catalina.out
 > "와씨 완벽하다" - 문제 해결 직후의 나
 
 ```
+
+---
+
+**작성일**: 2025-10-31

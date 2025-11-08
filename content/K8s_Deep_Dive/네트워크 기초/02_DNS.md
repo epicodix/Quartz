@@ -1,3 +1,23 @@
+---
+title: DNS (Domain Name System) 기초와 쿠버네티스 CoreDNS
+summary: DNS의 기본 개념과 작동 원리를 인터넷 전화번호부에 비유하여 설명합니다. 또한, 쿠버네티스 클러스터 내에서 CoreDNS가 서비스
+  이름을 IP 주소로 변환하는 과정과 주요 DNS 레코드 타입을 다룹니다.
+tags:
+- DNS
+- Kubernetes
+- CoreDNS
+- 네트워킹
+category: 교육
+difficulty: 초급
+estimated_time: 10분
+created: '2025-11-05'
+updated: '2025-11-08'
+tech_stack:
+- DNS
+- Kubernetes
+- CoreDNS
+---
+
 ## 🌐 DNS (Domain Name System) 기초
 
 ### DNS가 왜 필요한가?
@@ -81,3 +101,7 @@ user-service.production.svc.cluster.local → 10.96.0.10
 |**AAAA 레코드**|도메인 → IPv6 주소|google.com → 2404:6800:...|
 |**CNAME**|도메인 → 다른 도메인|[www.example.com](http://www.example.com) → example.com|
 |**SRV**|서비스 위치 정보|(쿠버네티스에서 사용)|
+
+---
+
+**작성일**: 2025-11-05

@@ -1,3 +1,23 @@
+---
+title: 'GCP VPC 핵심 분석: 클라우드 네트워크의 기초와 실제'
+summary: GCP VPC의 글로벌 스코프, 서브넷, 방화벽 규칙 등 핵심 개념을 기술적으로 분석하고, `gcloud` 명령어 예시를 통해 실무적인
+  이해를 돕는 문서입니다. 클라우드 네트워크의 기초를 다룹니다.
+tags:
+- GCP
+- VPC
+- Network
+- Firewall
+- gcloud
+category: 기술분석
+difficulty: 중급
+estimated_time: 15분
+created: '2025-10-30'
+updated: '2025-11-08'
+tech_stack:
+- GCP
+- gcloud
+---
+
 # GCP VPC 핵심 분석: 클라우드 네트워크의 기초와 실제
 
 VPC(Virtual Private Cloud)는 Google Cloud Platform(GCP) 내에서 사용자의 프로젝트별로 격리된 프라이빗 네트워크 공간을 제공하는 글로벌 서비스입니다. 모든 GCP 리소스(VM, GKE, Cloud SQL 등)는 VPC 네트워크 내에 생성되어야 하며, 이는 보안과 통신의 가장 기본적인 경계를 설정합니다.
@@ -93,3 +113,7 @@ gcloud compute firewall-rules create allow-http-ingress \
 ## 결론
 
 GCP VPC는 단순한 네트워크 격리 도구를 넘어, **글로벌 스코프**와 **자동화된 라우팅**, **계층적인 방화벽 규칙**, 다양한 연결 옵션을 제공하는 강력한 클라우드 네트워킹의 핵심입니다. Auto/Custom 모드의 차이를 이해하고, 태그나 서비스 계정을 활용한 방화벽 규칙을 효과적으로 설계하며, Cloud NAT과 같은 외부 연결 옵션을 적절하게 사용하는 것이 안전하고 효율적인 GCP 아키텍처 설계의 첫걸음입니다.
+
+---
+
+**작성일**: 2025-10-30

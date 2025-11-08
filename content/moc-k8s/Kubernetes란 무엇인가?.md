@@ -1,3 +1,15 @@
+---
+title: Kubernetes란 무엇인가?
+summary: 컨테이너화된 애플리케이션을 자동으로 배포, 스케일링, 관리하는 오픈소스 시스템입니다.
+tags:
+- 미분류
+category: 기타
+difficulty: 중급
+estimated_time: 30분
+created: '2025-11-03'
+updated: '2025-11-08'
+---
+
 #kubernetes #definition
 
 컨테이너화된 애플리케이션을 자동으로 배포, 스케일링, 관리하는 오픈소스 시스템입니다.
@@ -6,3 +18,7 @@
 
   * `[[원하는 상태 (Desired State)]]`를 선언하면, 쿠버네티스 컨트롤러들이 현재 상태(Current State)를 ` [[원하는 상태 (Desired State)]]  `와 일치시키기 위해 지속적으로 작동합니다. (→ `[[Reconciliation Loop]]`)
   * 관련 링크: `[[Kubernetes (MOC)]]`
+
+---
+
+**작성일**: 2025-11-03

@@ -1,3 +1,15 @@
+---
+title: Kubernetes 핵심 컴포넌트
+summary: '쿠버네티스 아키텍처는 크게 두 가지 핵심 부분으로 나뉩니다:'
+tags:
+- 미분류
+category: 기타
+difficulty: 중급
+estimated_time: 30분
+created: '2025-11-03'
+updated: '2025-11-08'
+---
+
 #kubernetes #architecture #moc
 
 쿠버네티스 아키텍처는 크게 두 가지 핵심 부분으로 나뉩니다:
@@ -8,3 +20,7 @@
 이 두 컴포넌트 그룹이 서로 통신하며 클러스터의 `[[원하는 상태 (Desired State)]]`를 유지합니다.
 
 * 관련 링크: `[[Kubernetes (MOC)]]`
+
+---
+
+**작성일**: 2025-11-03

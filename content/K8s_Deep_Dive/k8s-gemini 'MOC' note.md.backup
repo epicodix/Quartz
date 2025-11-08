@@ -1,0 +1,201 @@
+네, 마침 '클라우드 네이티브' 부트캠프를 듣고 계시니 쿠버네티스는 가장 핵심적인 주제이겠네요. 오늘 스터디에서 다루신 API 서버와 Kubelet의 상호작용을 중심으로, 옵시디언(Obsidian)에서 관리하기 좋은 '연결된 노트(Connected Notes)' 방식으로 정리해 드릴게요.
+
+이 구조는 새로운 개념이 나올 때마다 `[[새로운 노트 제목]]`처럼 대괄호로 묶어 개별 노트로 파생시키며 지식 베이스를 구축하는 데 최적화되어 있습니다.
+
+---
+
+### 🗂️ MOC - 쿠버네티스 (Kubernetes)
+
+`#kubernetes` `#cloud-native` `#devops` `#backend`
+
+> **MOC(Map of Content)**: 관련된 주제의 노트들을 연결하는 허브 페이지입니다. 이 노트를 쿠버네티스 학습의 메인 허브로 사용하세요.
+
+---
+
+### 1. 🧭 쿠버네티스란? (The Big Picture)
+
+- `[[컨테이너 오케스트레이션]]`을 위한 사실상의 표준(de facto standard) 플랫폼.
+    
+- **핵심 목표**: 컨테이너화된 애플리케이션의 배포, 스케일링, 관리를 자동화.
+    
+- `[[선언적 API (Declarative API)]]`를 통해 원하는 상태(Desired State)를 정의하면, 쿠버네티스가 현재 상태(Current State)를 원하는 상태로 맞추기 위해 작동 (`[[Reconciliation Loop]]`).
+    
+
+---
+
+### 2. 🏗️ 쿠버네티스 핵심 아키텍처
+
+#### 🔹 컨트롤 플레인 (Control Plane)
+
+클러스터 전체를 관리하고 조율하는 두뇌.
+
+- **`[[K8s - API 서버 (kube-api-server)]]`**
+    
+    - 모든 컴포넌트가 통신하는 유일한 관문(Gateway).
+        
+    - 모든 상호작용은 REST API 호출로 이루어짐.
+        
+    - `[[etcd]]`와의 유일한 통신 지점.
+        
+- **`[[K8s - etcd]]`**
+    
+    - 클러스터의 모든 상태 정보(원하는 상태, 현재 상태)를 저장하는 `[[분산 키-값 저장소]]`.
+        
+    - 클러스터의 "신뢰할 수 있는 유일한 정보원 (Single Source of Truth)".
+        
+- **`[[K8s - 스케줄러 (kube-scheduler)]]`**
+    
+    - 새로 생성된 `[[Pod]]`를 어떤 `[[워커 노드 (Worker Node)]]`에 배치할지 결정.
+        
+    - 필터링(Filtering) 및 스코어링(Scoring) 단계를 거침.
+        
+- **`[[K8s - 컨트롤러 매니저 (kube-controller-manager)]]`**
+    
+    - 클러스터의 상태를 모니터링하고 `[[Reconciliation Loop]]`를 실행.
+        
+    - 예: `[[Deployment 컨트롤러]]`, `[[ReplicaSet 컨트롤러]]` 등 다수의 컨트롤러 포함.
+        
+
+#### 🔹 워커 노드 (Worker Node)
+
+실제 컨테이너(애플리케이션)가 실행되는 머신.
+
+- **`[[K8s - Kubelet]]`**
+    
+    - 각 노드에서 실행되는 에이전트.
+        
+    - `[[K8s - API 서버 (kube-api-server)]]`로부터 `[[PodSpec]]` (파드 명세)을 전달받아,
+        
+    - `[[Container Runtime]]` (예: `[[Containerd]]`)을 통해 컨테이너를 실행/중지.
+        
+    - 노드와 컨테이너의 상태를 주기적으로 API 서버에 보고.
+        
+- **`[[K8s - Kube-proxy]]`**
+    
+    - 클러스터 내의 네트워크 규칙(iptables, IPVS)을 관리.
+        
+    - `[[Service]]` 오브젝트를 기반으로 `[[Pod]]` 간의 로드 밸런싱 및 네트워킹을 가능하게 함.
+        
+- **`[[Container Runtime]]`**
+    
+    - 컨테이너를 실제로 실행하는 소프트웨어 (예: `[[Containerd]]`, `[[CRI-O]]`).
+        
+
+---
+
+### 3. 🧩 주요 오브젝트 (Key Objects)
+
+- **`[[Pod]]`**: 쿠버네티스에서 생성하고 관리할 수 있는 가장 작은 배포 단위. 하나 이상의 컨테이너 그룹.
+    
+- **`[[Service]]`**: 변동성이 있는 `[[Pod]]` 집합에 접근할 수 있는 고정된 네트워크 엔드포인트(IP, DNS)를 제공. (백엔드와 프론트 연결 시 핵심)
+    
+- **`[[Volume]]`**: 컨테이너가 재시작되어도 데이터를 보존하기 위한 스토리지 추상화.
+    
+- **`[[Namespace]]`**: 단일 클러스터 내의 리소스를 논리적으로 격리하는 가상 클러스터.
+    
+- **`[[ConfigMap]]` & `[[Secret]]`**: 설정값이나 민감 정보(DB 암호 등)를 코드와 분리하여 주입.
+    
+
+---
+
+### 4. ⚙️ 컨트롤러와 추상화 (Controllers & Abstractions)
+
+- **`[[ReplicaSet]]`**: 지정된 수의 동일한 `[[Pod]]`가 항상 실행되도록 보장.
+    
+- **`[[Deployment]]`**: `[[ReplicaSet]]`과 `[[Pod]]`에 대한 선언적 업데이트를 제공. (롤링 업데이트, 롤백 등)
+    
+- **`[[StatefulSet]]`**: 데이터베이스처럼 순서와 고유한 ID가 중요한 상태 저장(Stateful) 애플리케이션을 위한 컨트롤러.
+    
+- **`[[DaemonSet]]`**: 모든 (또는 일부) 노드에 `[[Pod]]`가 하나씩 실행되도록 보장 (모니터링 에이전트 등).
+    
+
+---
+
+### 5. 🔄 딥다이브: 주요 상호작용 (Key Interactions)
+
+> 오늘 스터디하신 **API 서버와 Kubelet의 상호작용**은 "어떻게 Pod가 생성되는가"의 핵심입니다.
+
+**[시나리오: 사용자가 `kubectl run nginx`를 실행할 때]**
+
+1. **사용자/kubectl** -> **`[[K8s - API 서버 (kube-api-server)]]`**
+    
+    - `kubectl`이 인증 후 "Nginx Pod를 생성해달라"는 `[[Deployment]]` 생성 요청 (YAML/JSON)을 API 서버에 전송.
+        
+2. **`[[K8s - API 서버 (kube-api-server)]]`** -> **`[[etcd]]`**
+    
+    - API 서버가 요청을 검증(Validation)하고, "원하는 상태(Desired State)"로 `[[etcd]]`에 저장.
+        
+3. **`[[K8s - 컨트롤러 매니저 (kube-controller-manager)]]`** -> **`[[K8s - API 서버 (kube-api-server)]]`**
+    
+    - `Deployment 컨트롤러`가 `[[etcd]]`의 변경 사항을 감지 (Watch).
+        
+    - 새 `[[Deployment]]`를 보고, 이에 맞는 `[[ReplicaSet]]`을 생성하라고 API 서버에 요청.
+        
+    - `ReplicaSet 컨트롤러`가 이를 감지하고, 명세에 맞는 `[[Pod]]`를 생성하라고 API 서버에 요청.
+        
+4. **`[[K8s - 스케줄러 (kube-scheduler)]]`** -> **`[[K8s - API 서버 (kube-api-server)]]`**
+    
+    - 스케줄러가 `nodeName`이 할당되지 않은 새 `[[Pod]]`를 감지.
+        
+    - 가용한 `[[워커 노드 (Worker Node)]]` (예: Node-A)를 선택.
+        
+    - "이 Pod는 Node-A에 할당함"이라고 `[[Pod]]` 정보를 업데이트하기 위해 API 서버에 요청.
+        
+5. **(⭐️ 핵심) `[[K8s - Kubelet]]`** -> **`[[K8s - API 서버 (kube-api-server)]]`**
+    
+    - Node-A의 `[[K8s - Kubelet]]`은 주기적으로 API 서버를 감시(Watch)하며 "자신에게 할당된 Pod"가 있는지 확인.
+        
+    - 새 Nginx `[[Pod]]`가 자신에게 할당된 것을 발견.
+        
+6. **`[[K8s - Kubelet]]`** -> **`[[Container Runtime]]`**
+    
+    - Kubelet이 `[[PodSpec]]` (파드 명세)을 읽고, `[[Containerd]]`에게 "Nginx 컨테이너 이미지를 다운받고 실행하라"고 명령.
+        
+7. **`[[K8s - Kubelet]]`** -> **`[[K8s - API 서버 (kube-api-server)]]`**
+    
+    - Kubelet이 Pod의 상태(예: Running)를 API 서버에 지속적으로 보고(Report).
+        
+8. **`[[K8s - API 서버 (kube-api-server)]]`** -> **`[[etcd]]`**
+    
+    - API 서버가 Kubelet의 보고를 받아 "현재 상태(Current State)"를 `[[etcd]]`에 업데이트.
+        
+
+---
+
+### 6. 🚀 딥다이브: 확장 트렌드 (For Deep Dive)
+
+현재의 핵심 아키텍처 이해를 바탕으로, 클라우드 네이티브 생태계에서 중요하게 다루어지는 다음 개념들로 확장해 보세요. (특히 마케터에서 백엔드/AI 엔지니어로의 전환에 필요한 지식입니다.)
+
+- **`[[Service Mesh]]`**:
+    
+    - `[[Pod]]` 간의 통신(East-West 트래픽)을 제어, 모니터링, 보안을 담당하는 인프라 레이어.
+        
+    - "백엔드와 프론트간의 소규모 모듈 연결"에 대한 고민을 고도화된 수준에서 해결해 줍니다.
+        
+    - _관련 기술_: `[[Istio]]`, `[[Linkerd]]`
+        
+- **`[[GitOps]]`**:
+    
+    - Git 저장소를 "신뢰할 수 있는 유일한 정보원 (Single Source of Truth)"으로 사용하여 인프라와 애플리케이션을 선언적으로 관리하는 방식.
+        
+    - _관련 기술_: `[[ArgoCD]]`, `[[Flux]]`
+        
+- **`[[eBPF]]`**:
+    
+    - 커널 코드 변경 없이 커널 레벨에서 네트워킹, 보안, 모니터링 프로그램을 실행하는 기술. 차세대 K8s 네트워킹의 핵심입니다.
+        
+    - _관련 기술_: `[[Cilium]]`
+        
+- **`[[Kubeflow]]` (AI 목표 관련)**:
+    
+    - 쿠버네티스 위에서 머신러닝(ML) 워크플로우를 배포, 관리하기 위한 오픈소스 플랫폼.
+        
+    - `[[MLOps]]`를 쿠버네티스 환경에서 구현하는 가장 대표적인 방법입니다.
+        
+- **`[[Knative]]`**:
+    
+    - 쿠버네티스 위에서 `[[서버리스 (Serverless)]]` 워크로드를 구축, 배포, 관리하기 위한 플랫폼.
+
+---
+
+**작성일**: 2025-11-03

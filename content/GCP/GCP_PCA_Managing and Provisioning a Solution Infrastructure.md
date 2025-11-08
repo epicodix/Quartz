@@ -1,3 +1,16 @@
+---
+title: GCP PCA Managing and Provisioning a Solution Infrastructure
+summary: 이 문서는 GCP Professional Cloud Architect 시험의 'Managing and Provisioning a Solution
+  Infrastructure' 파트 문제들을 분석하고, 각 선택지의 정답/오답 이유를 상세히 해설하여 시험 준비를 돕는 것을 ...
+tags:
+- 미분류
+category: 기타
+difficulty: 중급
+estimated_time: 30분
+created: '2025-10-31'
+updated: '2025-11-08'
+---
+
 
 
 이 문서는 GCP Professional Cloud Architect 시험의 'Managing and Provisioning a Solution Infrastructure' 파트 문제들을 분석하고, 각 선택지의 정답/오답 이유를 상세히 해설하여 시험 준비를 돕는 것을 목표로 합니다.
@@ -306,3 +319,7 @@ Cymbal Direct's user account management app allows users to delete their account
 **PCA 핵심 역량**
 
 -   데이터 생명주기 관리, 데이터 보존 정책, 소프트 삭제 전략
+
+---
+
+**작성일**: 2025-10-31

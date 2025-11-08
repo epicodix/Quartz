@@ -1,3 +1,15 @@
+---
+title: Gemini CLI 에이전트 블로그 스타일 가이드
+summary: '*   **전문성 유지**: 기술적인 내용을 다루되, 독자가 쉽게 이해할 수 있도록 전문 용어는 간결하게 설명합니다.'
+tags:
+- 미분류
+category: 기타
+difficulty: 중급
+estimated_time: 30분
+created: '2025-07-12'
+updated: '2025-11-08'
+---
+
 # Gemini CLI 에이전트 블로그 스타일 가이드
 
 ## 1. 친절하고 균형 잡힌 어조
@@ -130,3 +142,7 @@ Obsidian `GEMINI` 폴더의 내용을 `my-quartz-site` 웹사이트로 동기화
 ```bash
 ./sync-and-deploy.sh
 ```
+
+---
+
+**작성일**: 2025-07-12

@@ -1,3 +1,16 @@
+---
+title: K8s - API 서버
+summary: API 서버(kube-api-server)는 쿠버네티스 `[[컨트롤 플레인 (Control Plane)]]`의 핵심으로, **'지휘
+  본부'** 역할을 합니다.
+tags:
+- 미분류
+category: 기타
+difficulty: 중급
+estimated_time: 30분
+created: '2025-11-03'
+updated: '2025-11-08'
+---
+
 #kubernetes #component #control-plane
 
 API 서버(kube-api-server)는 쿠버네티스 `[[컨트롤 플레인 (Control Plane)]]`의 핵심으로, **'지휘 본부'** 역할을 합니다.
@@ -12,3 +25,7 @@ API 서버(kube-api-server)는 쿠버네티스 `[[컨트롤 플레인 (Control P
       * 사용자의 요청(YAML 등)이 문법에 맞는지, 권한이 있는지 확인합니다.
 
 * 관련 링크: `[[Kubernetes 핵심 컴포넌트]]`, `[[K8s - etcd]]`
+
+---
+
+**작성일**: 2025-11-03

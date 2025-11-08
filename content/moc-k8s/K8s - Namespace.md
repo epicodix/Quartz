@@ -1,3 +1,23 @@
+---
+title: 쿠버네티스 네임스페이스(Namespace) 개념과 필요성
+summary: 쿠버네티스 네임스페이스는 단일 클러스터 내 리소스를 논리적으로 격리하는 가상 클러스터입니다. 여러 팀이나 프로젝트가 클러스터를 공유할
+  때 사용하며, ResourceQuota와 RBAC을 통해 자원 및 권한 관리를 할 수 있습니다.
+tags:
+- kubernetes
+- namespace
+- isolation
+- policy
+category: 교육
+difficulty: 초급
+estimated_time: 5분
+created: '2025-11-03'
+updated: '2025-11-08'
+tech_stack:
+- Kubernetes
+- ResourceQuota
+- RBAC
+---
+
 #kubernetes #policy #isolation
 
 단일 쿠버네티스 클러스터 내의 리소스를 논리적으로 분리하는 가상 클러스터입니다.
@@ -18,3 +38,7 @@
     ├── Pod: frontend-prod
     └── Pod: backend-prod
 ```
+
+---
+
+**작성일**: 2025-11-03

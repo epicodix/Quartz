@@ -1,0 +1,20 @@
+#kubernetes #component #control-plane
+
+컨트롤러 매니저(kube-controller-manager)는 쿠버네티스의 다양한 **컨트롤러 프로세스들을 실행하고 관리**하는 핵심 컴포넌트입니다.
+
+각 컨트롤러는 `[[Reconciliation Loop]]`(조정 루프)를 통해 클러스터의 '현재 상태'를 `[[원하는 상태 (Desired State)]]`로 맞추는 역할을 끊임없이 수행합니다.
+
+### 주요 컨트롤러 예시
+
+*   **Deployment Controller**: `[[K8s - Deployment]]`의 상태를 관리합니다.
+*   **ReplicaSet Controller**: `[[K8s - ReplicaSet]]`에 정의된 수만큼 `[[K8s - Pod]]`가 항상 실행되도록 보장합니다.
+*   **Node Controller**: `[[워커 노드 (Worker Node)]]`의 상태를 감시하고, 노드가 다운되면 해당 노드의 파드를 다른 노드로 옮기는 등의 조치를 취합니다.
+*   **ServiceAccount Controller**: `[[K8s - Namespace]]`에 기본 `[[K8s - ServiceAccount]]`를 생성합니다.
+
+> 비유하자면, 컨트롤러 매니저는 '부서 관리자 팀'과 같습니다. 각 부서(Deployment, Node 등)를 책임지는 여러 명의 관리자(Controller)들이 각자의 역할을 쉴새없이 수행하는 공간입니다.
+
+* 관련 링크: `[[컨트롤 플레인 (Control Plane)]]`, `[[Reconciliation Loop]]`
+
+---
+
+**작성일**: 2025-11-03

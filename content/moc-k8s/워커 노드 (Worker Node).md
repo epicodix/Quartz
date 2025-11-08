@@ -1,3 +1,15 @@
+---
+title: 워커 노드 (Worker Node)
+summary: 워커 노드(Worker Node)는 쿠버네티스 클러스터에서 **실제 애플리케이션 컨테이너가 배포되고 실행되는 '일꾼' 서버**입니다.
+tags:
+- 미분류
+category: 기타
+difficulty: 중급
+estimated_time: 30분
+created: '2025-11-03'
+updated: '2025-11-08'
+---
+
 #kubernetes #architecture #worker-node #moc
 
 워커 노드(Worker Node)는 쿠버네티스 클러스터에서 **실제 애플리케이션 컨테이너가 배포되고 실행되는 '일꾼' 서버**입니다.
@@ -11,3 +23,7 @@
 *   **`[[Container Runtime]]`**: 컨테이너를 실제로 실행하는 소프트웨어 (예: containerd, CRI-O).
 
 * 관련 링크: `[[Kubernetes 핵심 컴포넌트]]`, `[[Kubernetes (MOC)]]`
+
+---
+
+**작성일**: 2025-11-03

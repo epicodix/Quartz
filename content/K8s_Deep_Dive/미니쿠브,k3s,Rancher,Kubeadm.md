@@ -1,3 +1,27 @@
+---
+title: 쿠버네티스 도구(Minikube, K3s, Rancher) 비교 및 핵심 개념
+summary: Minikube, K3s, Rancher 등 다양한 쿠버네티스 도구의 특징과 용도를 비교하고, 파드, 컨트롤러, 스케줄러와 같은 핵심
+  개념을 비유와 예시를 통해 쉽게 설명하는 입문 가이드입니다.
+tags:
+- Kubernetes
+- Minikube
+- K3s
+- 컨테이너
+- 파드
+category: 교육
+difficulty: 초급
+estimated_time: 15분
+created: '2025-11-04'
+updated: '2025-11-08'
+tech_stack:
+- Kubernetes
+- Minikube
+- K3s
+- Rancher
+- Kubeadm
+- Docker
+---
+
 ### **Minikube (미니쿠브)**
 
 **누구에게 적합한가?** 쿠버네티스를 처음 배우는 학습자, 개발자
@@ -609,3 +633,7 @@ Q6: 쿠버네티스 전문가 되고 싶음?
 - 필요 없는 기능도 리소스를 차지하고, 복잡도가 올라갑니다.
 3.**매니지드 서비스를 사용하면서도 kubeadm 지식이 필요한 이유는?**
 - Worker Node는 직접 관리해야 하고, 깊은 트러블슈팅이 필요합니다.
+
+---
+
+**작성일**: 2025-11-04

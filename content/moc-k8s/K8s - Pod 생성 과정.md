@@ -1,3 +1,15 @@
+---
+title: K8s - Pod 생성 과정
+summary: 사용자가 `kubectl run nginx` 명령을 실행했을 때의 7단계 흐름입니다.
+tags:
+- 미분류
+category: 기타
+difficulty: 중급
+estimated_time: 30분
+created: '2025-11-03'
+updated: '2025-11-08'
+---
+
 #kubernetes #process
 
 사용자가 `kubectl run nginx` 명령을 실행했을 때의 7단계 흐름입니다.
@@ -18,3 +30,7 @@
       * `Container Runtime`을 통해 컨테이너 실행!
 7.  **연결**: `[[K8s - Kube-proxy]]`
       * 새 파드가 생성된 것을 감지하고, 해당 파드에 접근할 수 있도록 노드의 네트워크 규칙(iptables 등)을 설정
+
+---
+
+**작성일**: 2025-11-03

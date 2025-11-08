@@ -1,3 +1,15 @@
+---
+title: K8s - Kubelet
+summary: Kubelet은 각 `[[워커 노드 (Worker Node)]]`마다 하나씩 설치되어 실행되는 **'현장 작업자' ** 에이전트입니다.
+tags:
+- 미분류
+category: 기타
+difficulty: 중급
+estimated_time: 30분
+created: '2025-11-03'
+updated: '2025-11-08'
+---
+
 #kubernetes #component #worker-node
 
 Kubelet은 각 `[[워커 노드 (Worker Node)]]`마다 하나씩 설치되어 실행되는 **'현장 작업자' ** 에이전트입니다.
@@ -15,3 +27,7 @@ Kubelet은 각 `[[워커 노드 (Worker Node)]]`마다 하나씩 설치되어 �
 > `[[K8s - API 서버]]`가 `Kubelet`에게 직접 명령을 내리는 푸시(Push) 방식이 아니라, **`Kubelet`이 `API 서버`를 계속 확인하는 풀(Pull)/감시(Watch) 방식**입니다.
 
 * 관련 링크: `[[Kubernetes 핵심 컴포넌트]]`, `[[K8s - Pod 생성 과정]]`
+
+---
+
+**작성일**: 2025-11-03

@@ -1,3 +1,16 @@
+---
+title: GCP PCA Designing and Planning a Cloud Solution Architecture
+summary: 이 문서는 GCP Professional Cloud Architect 시험의 '솔루션 아키텍처 설계 및 계획' 파트 문제들을 분석하고,
+  각 선택지의 정답/오답 이유를 상세히 해설하여 시험 준비를 돕는 것을 목표로 합니다.
+tags:
+- 미분류
+category: 기타
+difficulty: 중급
+estimated_time: 30분
+created: '2025-10-30'
+updated: '2025-11-08'
+---
+
 
 이 문서는 GCP Professional Cloud Architect 시험의 '솔루션 아키텍처 설계 및 계획' 파트 문제들을 분석하고, 각 선택지의 정답/오답 이유를 상세히 해설하여 시험 준비를 돕는 것을 목표로 합니다.
 
@@ -283,3 +296,7 @@ Cymbal Direct is evaluating database options to store the analytics data from it
 **PCA 핵심 역량**
 
 - 데이터베이스 솔루션 선택 (각 GCP 데이터베이스 서비스의 특징과 사용 사례 이해)
+
+---
+
+**작성일**: 2025-10-30
