@@ -305,26 +305,26 @@ for i in {1..5}; do
     echo "=== 🔄 반복 $i회차 ($(date)) ==="
     
     # 1. PVC 생성
-    echo "1️⃣ PVC 생성 중..."
+    echo "1. PVC 생성 중..."
     kubectl create pvc cycle-pvc-$i --claim-size=1Gi
     
     # 2. 상태 확인
-    echo "2️⃣ PVC 상태 확인:"
+    echo "2. PVC 상태 확인:"
     kubectl get pvc cycle-pvc-$i
     
     # 3. Pod 생성  
-    echo "3️⃣ Pod 생성 중..."
+    echo "3. Pod 생성 중..."
     kubectl run cycle-pod-$i --image=busybox --command sleep 30 \
       --overrides='{"spec":{"volumes":[{"name":"vol","persistentVolumeClaim":{"claimName":"cycle-pvc-'$i'"}}],"containers":[{"name":"busybox","image":"busybox","command":["sleep","30"],"volumeMounts":[{"name":"vol","mountPath":"/data"}]}]}}'
     
     # 4. 데이터 생성
-    echo "4️⃣ 테스트 데이터 생성:"
+    echo "4. 테스트 데이터 생성:"
     kubectl wait --for=condition=Ready pod/cycle-pod-$i --timeout=60s
     kubectl exec cycle-pod-$i -- sh -c "echo 'Test data from cycle $i' > /data/test-$i.txt"
     kubectl exec cycle-pod-$i -- ls -la /data/
     
     # 5. 정리
-    echo "5️⃣ 리소스 정리:"
+    echo "5. 리소스 정리:"
     kubectl delete pod cycle-pod-$i
     kubectl delete pvc cycle-pvc-$i
     
