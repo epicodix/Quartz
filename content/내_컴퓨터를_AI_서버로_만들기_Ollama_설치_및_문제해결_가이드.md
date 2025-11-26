@@ -1,0 +1,211 @@
+# 내 컴퓨터를 AI 서버로 만들기: Ollama 설치부터 문제 해결까지 종합 가이드
+
+2024년 7월 29일, Gemini CLI와 함께
+
+## 시작하며: 왜 내 컴퓨터에 AI 서버를 만들까?
+
+클라우드 기반의 AI 모델을 사용하는 것은 편리하지만, 데이터 프라이버시, API 비용, 인터넷 연결의 제약 등 여러 고민을 낳습니다. 만약 내 개인 컴퓨터를 직접 생성형 AI 모델 서버로 만들 수 있다면 어떨까요?
+
+이 글은 Gemini CLI와 한 사용자가 함께 겪은 실제 경험을 바탕으로, macOS 환경에서 **Ollama를 사용하여 개인 컴퓨터를 경량 AI 모델 서버로 구축하는 전 과정**을 상세히 기록한 가이드입니다. 설치 과정에서 마주칠 수 있는 다양한 오류와 그 해결 과정을 포함하고 있어, 처음 도전하는 분들에게 훌륭한 길잡이가 될 것입니다.
+
+---
+
+## 1. 최종 목표
+
+- **Ollama 설치:** 로컬 AI 모델 구동을 위한 서버 애플리케이션을 설치한다.
+- **모델 다운로드:** 경량 AI 모델(예: Llama 3)을 내 컴퓨터에 다운로드한다.
+- **서버 실행 및 테스트:** 로컬 서버를 실행하고, API 요청에 정상적으로 응답하는지 확인한다.
+- **영구적인 사용 환경 구축:** 터미널에서 `ollama` 명령어를 쉽게 사용할 수 있도록 설정한다.
+
+---
+
+## 2. Ollama 설치: 첫 번째 시도와 교훈
+
+가장 먼저 시도한 방법은 macOS의 대표적인 패키지 매니저인 Homebrew를 이용한 설치였습니다.
+
+- **시도한 명령어:** `brew install ollama`
+- **결과:** **실패**
+- **오류 메시지:** `Error: You are using macOS 12. We (and Apple) do not provide support for this old version.`
+- **원인 분석:** Homebrew가 구버전 macOS(Monterey, 12)에 대한 소스 코드 빌드를 공식적으로 지원하지 않아, 컴파일에 필요한 파일을 찾지 못해 발생한 문제였습니다.
+
+> **교훈 1:** Homebrew와 같은 도구는 편리하지만, 운영체제 버전에 따라 예상치 못한 문제를 겪을 수 있습니다. 항상 공식 홈페이지의 설치 방법을 먼저 확인하는 것이 좋습니다.
+
+두 번째 시도는 공식 홈페이지에서 안내하는 `curl` 스크립트였습니다.
+
+- **시도한 명령어:** `curl -fsSL https://ollama.com/install.sh | sh`
+- **결과:** **실패**
+- **오류 메시지:** `ERROR: This script is intended to run on Linux only.`
+- **원인 분석:** 무심코 Linux 용 설치 스크립트를 macOS에서 실행하여 발생한 문제였습니다.
+
+> **교훈 2:** 운영체제에 맞는 설치 방법을 정확히 사용해야 합니다.
+
+### **가장 확실한 설치 방법 (macOS)**
+
+결국 가장 안정적인 방법은 GUI를 통한 수동 설치였습니다.
+
+1.  **웹 브라우저에서 [Ollama 다운로드 페이지](https://ollama.com/download)에 접속합니다.**
+2.  **"Download for macOS"** 버튼을 클릭하여 `Ollama-darwin.zip` 파일을 다운로드합니다.
+3.  압축을 풀고, **Ollama.app을 응용 프로그램(Applications) 폴더로 드래그**하여 설치를 완료합니다.
+
+---
+
+## 3. 실행 및 문제 해결: "command not found"와의 싸움
+
+설치 후, `ollama run phi-3` 명령어를 실행했지만 `bash: ollama: command not found` 오류가 발생했습니다. 이는 터미널이 `ollama`라는 명령어를 어디서 찾아야 할지 모른다는 의미입니다.
+
+### **문제 해결 과정**
+
+1.  **터미널 재시작:** 가장 먼저 시도한 것은 터미널을 완전히 종료하고 새로 시작하는 것이었습니다. 설치 과정에서 변경된 시스템 `PATH`를 적용하기 위함이었지만, 문제 해결에는 실패했습니다.
+
+2.  **실행 파일 경로 직접 탐색:** `ollama` 실행 파일의 실제 위치를 찾아 직접 실행하는 전략으로 전환했습니다.
+    *   **1차 시도:** `/usr/local/bin/ollama run phi-3` -> 실패 (`No such file or directory`)
+    *   **2차 시도:** `/Applications/Ollama.app/Contents/Resources/ollama run phi-3` -> **성공! (오류 변경)**
+
+    두 번째 시도에서 `command not found`가 아닌 `ollama server not responding` 이라는 새로운 오류를 만났습니다. 이것은 **실행 파일의 정확한 위치를 찾았다는 중요한 단서**였습니다.
+
+3.  **서버 실행 문제 해결:** `server not responding` 오류는 Ollama 앱은 설치되었지만, 실제 요청을 처리하는 백그라운드 서버 프로세스가 실행되지 않았다는 의미입니다.
+    *   **해결책 1 (GUI):** 응용 프로그램 폴더에서 `Ollama.app`을 직접 실행하여 메뉴 막대에 라마 아이콘이 나타나는지 확인합니다.
+    *   **해결책 2 (CLI):** 만약 GUI로 실행해도 서버가 불안정하다면, 터미널에서 직접 서버를 실행할 수 있습니다. `&`를 붙여 백그라운드에서 실행하는 것이 중요합니다.
+        ```bash
+        /Applications/Ollama.app/Contents/Resources/ollama serve &
+        ```
+    이 명령어를 실행하자, 서버가 정상적으로 시작되었습니다.
+
+4.  **서버 응답 확인:** 서버가 정말 살아있는지 확인하기 위해 `list` 명령어를 사용했습니다.
+    ```bash
+    /Applications/Ollama.app/Contents/Resources/ollama list
+    ```
+    그 결과, 비어있는 모델 목록이 정상적으로 출력되며 서버가 응답함을 확인했습니다.
+
+---
+
+## 4. 모델 다운로드 및 최종 테스트
+
+이제 서버가 준비되었으니, 실제 모델을 다운로드하여 서버를 최종 테스트합니다.
+
+1.  **모델 다운로드:** `phi-3` 모델은 저장소 문제로 실패하여, 가장 안정적인 `llama3` 모델을 다운로드했습니다.
+    ```bash
+    /Applications/Ollama.app/Contents/Resources/ollama run llama3
+    ```
+    이 명령어를 실행하면 `llama3` 모델(약 4.7GB)이 다운로드되고, 완료되면 자동으로 대화 모드로 진입합니다.
+
+2.  **대화형 테스트:** `ollama run llama3` 명령이 성공하면 터미널에 `>>> Send a message` 프롬프트가 나타납니다. 이곳에 직접 메시지를 입력하여 모델과 대화하며 테스트할 수 있습니다. (종료는 `/bye`)
+
+3.  **API 테스트:** 서버의 핵심 기능인 API를 테스트합니다. `curl`을 사용하여 서버에 직접 질문을 던져봅니다.
+    ```bash
+    curl http://localhost:11434/api/generate -d '{
+      "model": "llama3",
+      "prompt": "대한민국의 수도는 어디야?",
+      "stream": false
+    }'
+    ```
+    **성공 응답 (JSON):**
+    ```json
+    {
+      "model": "llama3",
+      "response": "😊 The capital of South Korea is Seoul (, Seoul).",
+      "done": true,
+      ...
+    }
+    ```
+    `response` 필드에 정확한 답변이 포함된 것을 통해, 서버가 완벽하게 작동함을 최종 확인했습니다.
+
+---
+
+## 5. 최종 사용 환경 구축
+
+모든 테스트가 끝났습니다. 이제 편리하게 사용할 일만 남았습니다.
+
+### **1. 영구적인 단축 명령어(alias) 설정**
+
+매번 긴 경로를 입력하지 않도록, 셸 설정 파일에 `ollama` 단축키를 등록했습니다. 이로써 터미널 어디서든 `ollama`만 입력하면 됩니다.
+
+- **실행된 명령어:**
+  ```bash
+  echo '\n# Ollama alias for easy access\nalias ollama="/Applications/Ollama.app/Contents/Resources/ollama"' >> ~/.zshrc
+  ```
+- **적용 방법:** **터미널을 새로 시작**하거나 `source ~/.zshrc` 명령어를 실행합니다.
+
+### **2. 나만의 AI 서버 활용법**
+
+- **직접 대화:** `ollama run [모델이름]`
+- **설치된 모델 확인:** `ollama list`
+- **API 연동:** `http://localhost:11434` 엔드포인트를 사용하여 나만의 애플리케이션을 만들어보세요.
+
+---
+
+## 6. 외부에서 Ollama 서버 접근하기 (Ngrok 활용)
+
+로컬에서만 접근 가능했던 Ollama 서버를 `ngrok`을 사용하여 외부 네트워크에서도 접근할 수 있도록 설정할 수 있습니다. 이는 모바일 기기나 다른 외부 컴퓨터에서 로컬 Ollama 서버를 활용할 때 유용합니다.
+
+### 1. Ollama 서버 외부 접속 허용 설정
+
+`ngrok`을 사용하기 전에, Ollama 서버가 모든 네트워크 인터페이스에서의 접속을 허용하도록 설정해야 합니다. 기본적으로 Ollama는 보안을 위해 `localhost`에서의 요청만 허용합니다.
+
+- **기존 Ollama 서버 종료:**
+  ```bash
+  pkill -f ollama
+  ```
+- **외부 접속 허용 모드로 Ollama 서버 재시작:**
+  ```bash
+  OLLAMA_HOST=0.0.0.0 /Applications/Ollama.app/Contents/Resources/ollama serve &
+  ```
+  이 명령어를 실행하면 Ollama 서버가 `0.0.0.0:11434`에서 모든 네트워크 요청을 수신할 준비를 합니다.
+
+### 2. Ngrok 설치 및 인증
+
+`ngrok`이 설치되어 있지 않다면 Homebrew를 통해 설치합니다.
+
+- **Ngrok 설치 (설치되어 있지 않다면):**
+  ```bash
+  brew install ngrok
+  ```
+- **Ngrok 인증 토큰 설정:**
+  `ngrok` 서비스를 사용하려면 계정 생성 후 발급받은 인증 토큰을 등록해야 합니다.
+  1. [ngrok 대시보드](https://dashboard.ngrok.com/get-started/your-authtoken)에서 본인의 인증 토큰을 확인합니다.
+  2. 터미널에 다음 명령어를 실행하여 토큰을 등록합니다. (`<YOUR_AUTHTOKEN>` 부분을 실제 토큰으로 대체)
+     ```bash
+     ngrok config add-authtoken <YOUR_AUTHTOKEN>
+     ```
+
+### 3. Ngrok 터널 시작
+
+인증이 완료되면, `ngrok`을 사용하여 로컬 Ollama 서버 포트(11434)를 외부 인터넷에 노출시킵니다.
+
+- **Ngrok 터널 실행:**
+  ```bash
+  ngrok http 11434 &
+  ```
+  이 명령어를 백그라운드(`&`)로 실행하면 터미널을 점유하지 않고 `ngrok` 터널이 생성됩니다.
+
+### 4. 공개 URL 확인
+
+`ngrok` 터널이 생성되면, 외부에서 접근 가능한 공개 URL이 발급됩니다. 이 URL은 `ngrok` API를 통해 확인할 수 있습니다.
+
+- **공개 URL 조회:**
+  ```bash
+  curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'
+  ```
+  이 명령어를 실행하면 `https://<랜덤문자열>.ngrok-free.app` 형태의 URL이 출력됩니다. 이 URL이 외부에서 Ollama 서버에 접근할 수 있는 주소입니다.
+
+### 5. 외부에서 Ollama 서버 테스트
+
+발급받은 `ngrok` URL을 사용하여 외부 네트워크(예: 스마트폰, 다른 컴퓨터)에서 Ollama 서버에 API 요청을 보내 테스트할 수 있습니다.
+
+- **외부 `curl` 테스트 예시:**
+  ```bash
+  curl https://<ngrok_public_url>/api/generate -d '{
+    "model": "llama3",
+    "prompt": "대한민국의 수도는 어디야?",
+    "stream": false
+  }'
+  ```
+  정상적으로 응답이 온다면, 외부에서 Ollama 서버 접근 설정이 완료된 것입니다.
+
+---
+
+## 맺음말
+
+수많은 오류와의 사투 끝에, 우리는 마침내 개인 컴퓨터 위에 온전히 동작하는 AI 모델 서버를 구축했습니다. 이 과정은 단순히 도구를 설치하는 것을 넘어, 문제의 원인을 분석하고, 가설을 세우고, 검증하며 해결해 나가는 값진 경험이었습니다.
+
+이 가이드가 여러분만의 로컬 AI 서버를 구축하는 데 도움이 되기를 바랍니다. 이제 여러분의 컴퓨터에서, 여러분의 데이터로, 여러분만의 AI를 마음껏 활용해 보세요.

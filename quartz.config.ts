@@ -72,6 +72,9 @@ const config: QuartzConfig = {
       Plugin.CrawlLinks({ markdownLinkResolution: "shortest" }),
       Plugin.Description(),
       Plugin.Latex({ renderEngine: "katex" }),
+      Plugin.Explorer({
+        folderClickBehavior: "collapse",
+      }),
     ],
     filters: [Plugin.RemoveDrafts()],
     emitters: [
