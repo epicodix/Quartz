@@ -1,5 +1,5 @@
 ---
-title: DaemonSet & StatefulSet 빠른 복습 및 공식문서 연습
+title: 14_DaemonSet & StatefulSet 빠른 복습 및 공식문서 연습
 tags:
   - Kubernetes
   - DaemonSet

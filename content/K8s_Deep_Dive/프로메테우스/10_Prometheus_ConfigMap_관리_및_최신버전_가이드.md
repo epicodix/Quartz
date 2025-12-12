@@ -1,5 +1,5 @@
 ---
-title: Prometheus ConfigMap 관리 및 최신버전 가이드
+title: 10_Prometheus ConfigMap 관리 및 최신버전 가이드
 tags:
   - prometheus
   - configmap

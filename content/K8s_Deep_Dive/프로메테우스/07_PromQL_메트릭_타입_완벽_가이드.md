@@ -1,5 +1,5 @@
 ---
-title: 📊 PromQL과 Prometheus 메트릭 타입 완벽 가이드
+title: 07_ PromQL과 Prometheus 메트릭 타입 완벽 가이드
 tags:
   - PromQL
   - Prometheus

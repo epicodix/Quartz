@@ -1,5 +1,5 @@
 ---
-title: Prometheus Native vs Operator - 수집 방식 완벽 비교
+title: 12_Prometheus Native vs Operator - 수집 방식 완벽 비교
 tags:
   - Prometheus
   - Operator

@@ -1,5 +1,5 @@
 ---
-title: 🎯 PromQL 레이블 매처 완벽 가이드  
+title: 08_PromQL 레이블 매처 완벽 가이드
 tags:
   - PromQL
   - 레이블매처

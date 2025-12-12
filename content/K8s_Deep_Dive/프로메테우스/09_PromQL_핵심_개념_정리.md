@@ -1,5 +1,5 @@
 ---
-title: 🔧 PromQL 핵심 개념 정리 - 연산자와 벡터
+title: 09_ PromQL 핵심 개념 정리 - 연산자와 벡터
 tags:
   - PromQL
   - 연산자

@@ -1,5 +1,5 @@
 ---
-title: 🎯 MetalLB 메트릭 완벽 가이드 - Prometheus 모니터링
+title: 06_MetalLB 메트릭 완벽 가이드 - Prometheus 모니터링
 tags:
   - MetalLB
   - Prometheus
