@@ -576,7 +576,7 @@ spec:
 - [[09_PromQL_핵심_개념_정리|PromQL 상세]]
 - [[12_Prometheus_Native_vs_Operator_완벽_비교|Native vs Operator]]
 - [[13_ServiceMonitor_PodMonitor_CRD_완벽_가이드|ServiceMonitor 상세]]
-- [[모니터링/07-4-Golden-Signals|4 Golden Signals]]
+- [[07-4-Golden-Signals|4 Golden Signals]]
 
 ---
 

@@ -1361,8 +1361,8 @@ spec:
 ## 🔗 연관 문서
 
 - [[12_Prometheus_Native_vs_Operator_완벽_비교|Native vs Operator 비교]]
-- [[모니터링/01-Exporter-개념|Exporter 개념]]
-- [[모니터링/09-모니터링-스택-설치-순서|설치 순서]]
+- [[01-Exporter-개념|Exporter 개념]]
+- [[09-모니터링-스택-설치-순서|설치 순서]]
 
 ## 💡 핵심 정리
 
