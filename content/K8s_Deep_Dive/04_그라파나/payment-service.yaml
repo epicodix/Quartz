@@ -1,0 +1,135 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: payment-config
+  namespace: default
+data:
+  config.json: |
+    {
+      "traffic_speed": 1.0,
+      "db_pool_size": 100,
+      "memory_leak": false,
+      "payment_gateway_latency_ms": 50
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: payment-service-script
+  namespace: default
+data:
+  app.py: |
+    import time
+    import random
+    import datetime
+    import sys
+    import json
+    import os
+    import threading
+
+    CONFIG_PATH = "/etc/config/config.json"
+    active_connections = 0
+    memory_hog = []
+
+    def load_config():
+        try:
+            with open(CONFIG_PATH, 'r') as f:
+                return json.load(f)
+        except Exception:
+            return {
+                "traffic_speed": 1.0,
+                "db_pool_size": 100,
+                "memory_leak": false,
+                "payment_gateway_latency_ms": 50
+            }
+
+    def simulate_request(config):
+        global active_connections
+        user_id = random.randint(1000, 9999)
+        amount = random.randint(10, 500)
+        
+        # 1. DB Connection Check
+        if active_connections >= config.get('db_pool_size', 10):
+            print(f"{datetime.datetime.now()} ERROR: [Database] ConnectionPoolExhausted: Could not acquire connection (Active: {active_connections}, Max: {config['db_pool_size']})")
+            print(f"    at com.payment.service.db.ConnectionPool.acquire(ConnectionPool.java:154)")
+            print(f"    at com.payment.service.core.TransactionManager.begin(TransactionManager.java:42)")
+            print(f"    at com.payment.service.api.PaymentController.process(PaymentController.java:88)")
+            return "ERROR"
+
+        # Simulate connection usage
+        active_connections += 1
+        
+        try:
+            # 2. Memory Leak Logic
+            if config.get('memory_leak', False):
+                # Append 1MB of dummy data
+                memory_hog.append(' ' * 1024 * 1024)
+                print(f"{datetime.datetime.now()} WARN: [System] High memory usage detected: Heap usage {(len(memory_hog))}MB")
+
+            # 3. Business Logic Latency
+            base_latency = config.get('payment_gateway_latency_ms', 50)
+            latency = random.normalvariate(base_latency, base_latency * 0.2) # Normal distribution
+            if latency < 0: latency = 10
+            
+            time.sleep(latency / 1000.0)
+            
+            # Log Result
+            print(f"{datetime.datetime.now()} INFO: [Payment] Processed transaction #{random.randint(10000,99999)} - User:{user_id} Amount:${amount} Latency:{int(latency)}ms Status:SUCCESS")
+            return "SUCCESS"
+            
+        finally:
+            active_connections -= 1
+
+    print("Starting Payment Service Simulator v2.0...")
+    print(f"Watching config: {CONFIG_PATH}")
+
+    while True:
+        current_config = load_config()
+        
+        # Traffic generation based on speed
+        # speed 1.0 = ~1 request per second
+        # speed 10.0 = ~10 requests per second
+        sleep_time = 1.0 / max(0.1, current_config.get('traffic_speed', 1.0))
+        
+        # Simulate burst traffic occasionally
+        if random.random() < 0.1:
+            sleep_time = sleep_time / 5.0
+            
+        simulate_request(current_config)
+        sys.stdout.flush()
+        time.sleep(sleep_time)
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-service
+  namespace: default
+  labels:
+    app: payment-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment-service
+  template:
+    metadata:
+      labels:
+        app: payment-service
+    spec:
+      containers:
+      - name: app
+        image: python:3.9-slim
+        command: ["python", "-u", "/app/app.py"]
+        volumeMounts:
+        - name: script-volume
+          mountPath: /app
+        - name: config-volume
+          mountPath: /etc/config
+      volumes:
+      - name: script-volume
+        configMap:
+          name: payment-service-script
+      - name: config-volume
+        configMap:
+          name: payment-config
