@@ -1,5 +1,5 @@
 ---
-title: AI가 말아주는 그라파나 대시보드 UX 디자인 가이드
+title: 11_AI가 말아주는 그라파나 대시보드 UX 디자인 가이드
 tags:
   - Grafana
   - Dashboard-Design
