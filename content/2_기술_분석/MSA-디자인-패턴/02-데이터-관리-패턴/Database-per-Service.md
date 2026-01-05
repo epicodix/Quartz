@@ -1211,5 +1211,10 @@ Recommendation Service
 ---
 
 **상위 문서**: [[_README|데이터 관리 패턴 폴더]]
-**마지막 업데이트**: 2026-01-02
+**마지막 업데이트**: 2026-01-05
 **다음 학습**: [[CQRS-패턴|CQRS 패턴]]
+
+<br>
+<div align="right" style="font-size: 0.8em; color: gray; opacity: 0.6;">
+  Supported by Claude Sonnet 4.5
+</div>
