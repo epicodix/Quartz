@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 echo "🔄 Syncing GEMINI folder to content..."
 rsync -av --delete "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/클라우드/GEMINI/" ./content/
 echo "✅ Sync complete!"

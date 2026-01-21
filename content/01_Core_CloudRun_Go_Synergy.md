@@ -1,5 +1,5 @@
 ---
-title: Cloud Run과 Go: 서버리스 시대를 위한 가장 가벼운 선택
+title: "Cloud Run과 Go: 서버리스 시대를 위한 가장 가벼운 선택"
 creation_date: 2026-01-16
 date: 2026-01-16
 tags: [GCP, CloudRun, Go, Serverless, DevOps]
