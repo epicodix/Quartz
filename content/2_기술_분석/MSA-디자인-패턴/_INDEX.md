@@ -5,7 +5,7 @@ tags:
   - MSA
   - architecture
   - design-patterns
-date: 2026-01-02
+date: 2026-01-05
 status: 완성
 ---
 
@@ -40,77 +40,82 @@ MSA-디자인-패턴/
 ├── 01-통신-패턴/                                ← Communication Patterns
 │   ├── _README.md                              (폴더 개요)
 │   ├── API-Gateway-패턴.md                     [완성]
+│   ├── 서비스-디스커버리-패턴.md                [완성]
 │   ├── Service-Mesh-패턴.md                    [완성]
 │   └── Event-Driven-Architecture.md            [완성]
 │
 ├── 02-데이터-관리-패턴/                         ← Data Management Patterns
 │   ├── _README.md                              (폴더 개요)
 │   ├── Database-per-Service.md                 [완성]
+│   ├── Saga-패턴.md                            [완성]
 │   ├── CQRS-패턴.md                            [완성]
-│   ├── Event-Sourcing.md                       [완성]
-│   └── Saga-패턴.md                            [완성]
+│   └── Event-Sourcing-패턴.md                  [완성]
 │
 ├── 03-복원력-패턴/                              ← Resilience Patterns
 │   ├── _README.md                              (폴더 개요)
-│   ├── Circuit-Breaker-패턴.md                 [완성]
-│   ├── Retry-Timeout-패턴.md                   [완성]
-│   └── Bulkhead-패턴.md                        [완성]
+│   ├── 서킷브레이커-패턴.md                     [완성]
+│   ├── Retry-패턴.md                           [완성]
+│   ├── Timeout-패턴.md                         [완성]
+│   ├── Bulkhead-패턴.md                        [완성]
+│   └── Rate-Limiter-패턴.md                    [완성]
 │
 ├── 04-배포-인프라-패턴/                         ← Deployment Patterns
 │   ├── _README.md                              (폴더 개요)
+│   ├── Blue-Green-Deployment.md                [완성]
+│   ├── Canary-Deployment-패턴.md               [완성]
 │   ├── Sidecar-패턴.md                         [완성]
-│   ├── Strangler-Fig-패턴.md                   [완성]
-│   └── Blue-Green-Canary-배포.md               [완성]
+│   └── Ambassador-패턴.md                      [완성]
 │
 ├── 05-보안-거버넌스-패턴/                       ← Security & Governance
 │   ├── _README.md                              (폴더 개요)
+│   ├── API-Gateway-Security.md                 [완성]
 │   ├── Zero-Trust-Architecture.md              [완성]
-│   └── API-Gateway-Security.md                 [완성]
+│   └── Service-to-Service-Auth.md              [완성]
 │
 └── 99-실전-적용/                                ← Practical Application
-    ├── _README.md                              (폴더 개요)
-    ├── 패턴-선택-가이드.md                      [완성]
-    ├── 2026-추천-아키텍처-스택.md               [완성]
-    ├── 학습-로드맵.md                           [완성]
-    └── 실전-체크리스트.md                       [완성]
+    ├── _README.md                              (실전 가이드)
+    ├── 실습/                                    (실습 자료)
+    └── 케이스스터디/                            (사례 연구)
 ```
 
 ---
 
-## 📊 완성도 현황 (2026-01-02 기준)
+## 📊 완성도 현황 (2026-01-05 기준)
 
-### ✅ 완성된 문서 (15개)
+### ✅ 완성된 문서 (21개)
 
-**통신 패턴 (3개)**
-- [x] API Gateway 패턴 ← **새로 작성 완료**
+**통신 패턴 (4개)**
+- [x] API Gateway 패턴
+- [x] 서비스 디스커버리 패턴
 - [x] Service Mesh 패턴
 - [x] Event-Driven Architecture
 
 **데이터 관리 패턴 (4개)**
 - [x] Database per Service
-- [x] CQRS 패턴
-- [x] Event Sourcing
 - [x] Saga 패턴
+- [x] CQRS 패턴
+- [x] Event Sourcing 패턴
 
-**복원력 패턴 (3개)**
-- [x] Circuit Breaker 패턴
-- [x] Retry & Timeout 패턴
+**복원력 패턴 (5개)**
+- [x] 서킷브레이커 패턴
+- [x] Retry 패턴
+- [x] Timeout 패턴
 - [x] Bulkhead 패턴
+- [x] Rate Limiter 패턴
 
-**배포 & 인프라 패턴 (3개)**
+**배포 & 인프라 패턴 (4개)**
+- [x] Blue-Green Deployment
+- [x] Canary Deployment 패턴
 - [x] Sidecar 패턴
-- [x] Strangler Fig 패턴
-- [x] Blue-Green & Canary 배포
+- [x] Ambassador 패턴
 
-**보안 & 거버넌스 (2개)**
-- [x] Zero Trust Architecture
+**보안 & 거버넌스 (3개)**
 - [x] API Gateway Security
+- [x] Zero Trust Architecture
+- [x] Service-to-Service Auth
 
-**실전 적용 (4개)**
-- [x] 패턴 선택 가이드
-- [x] 2026 추천 스택
-- [x] 학습 로드맵
-- [x] 실전 체크리스트
+**실전 적용 (1개)**
+- [x] 실전 적용 가이드 (_README.md)
 
 ---
 
@@ -121,6 +126,12 @@ MSA-디자인-패턴/
 현재 모든 핵심 패턴 문서가 완성되었습니다.
 
 ### 🟡 중간 우선순위 (향후 추가 예정)
+
+**99-실전-적용 폴더 보강**
+- [ ] 학습-로드맵.md 작성
+- [ ] 패턴-선택-가이드.md 작성
+- [ ] 2026-추천-아키텍처-스택.md 작성
+- [ ] 실전-체크리스트.md 작성
 
 **실습 자료**
 - [ ] Kafka 실습 (Event-Driven Architecture)
@@ -154,21 +165,30 @@ MSA-디자인-패턴/
 1. [[00-MSA-디자인-패턴-MOC]] - 전체 개요
 2. [[01-통신-패턴/API-Gateway-패턴]] - 가장 기본적인 패턴
 3. [[02-데이터-관리-패턴/Database-per-Service]] - MSA의 핵심 원칙
-4. [[03-복원력-패턴/Circuit-Breaker-패턴]] - 장애 처리의 기본
+4. [[03-복원력-패턴/서킷브레이커-패턴]] - 장애 처리의 기본
+5. [[03-복원력-패턴/Retry-패턴]] - 재시도 패턴
+6. [[03-복원력-패턴/Timeout-패턴]] - 타임아웃 설정
 
 ### 중급 (실무 적용)
 
-5. [[01-통신-패턴/Event-Driven-Architecture]] - 비동기 통신의 핵심
-6. [[02-데이터-관리-패턴/CQRS-패턴]] - 읽기/쓰기 분리
-7. [[02-데이터-관리-패턴/Saga-패턴]] - 분산 트랜잭션 관리
-8. [[01-통신-패턴/Service-Mesh-패턴]] - 현대적 통신 인프라
+7. [[01-통신-패턴/서비스-디스커버리-패턴]] - 동적 서비스 탐색
+8. [[01-통신-패턴/Event-Driven-Architecture]] - 비동기 통신의 핵심
+9. [[02-데이터-관리-패턴/Saga-패턴]] - 분산 트랜잭션 관리
+10. [[01-통신-패턴/Service-Mesh-패턴]] - 현대적 통신 인프라
+11. [[04-배포-인프라-패턴/Sidecar-패턴]] - Service Mesh의 기반
+12. [[04-배포-인프라-패턴/Blue-Green-Deployment]] - 무중단 배포
+13. [[04-배포-인프라-패턴/Canary-Deployment-패턴]] - 점진적 배포
+14. [[03-복원력-패턴/Bulkhead-패턴]] - 리소스 격리
+15. [[03-복원력-패턴/Rate-Limiter-패턴]] - 속도 제한
 
 ### 고급 (아키텍처 설계)
 
-9. [[02-데이터-관리-패턴/Event-Sourcing]] - 이벤트 기반 상태 관리
-10. [[04-배포-인프라-패턴/Strangler-Fig-패턴]] - 레거시 마이그레이션
-11. [[05-보안-거버넌스-패턴/Zero-Trust-Architecture]] - 보안 강화
-12. [[99-실전-적용/패턴-선택-가이드]] - 실전 적용
+16. [[02-데이터-관리-패턴/CQRS-패턴]] - 읽기/쓰기 분리
+17. [[02-데이터-관리-패턴/Event-Sourcing-패턴]] - 이벤트 기반 상태 관리
+18. [[05-보안-거버넌스-패턴/API-Gateway-Security]] - API 보안
+19. [[05-보안-거버넌스-패턴/Zero-Trust-Architecture]] - 보안 강화
+20. [[05-보안-거버넌스-패턴/Service-to-Service-Auth]] - 서비스 간 인증
+21. [[04-배포-인프라-패턴/Ambassador-패턴]] - 프록시 패턴
 
 ---
 
@@ -327,6 +347,7 @@ next_steps:
 
 ## 🔄 마지막 업데이트
 
-- **날짜**: 2026-01-02
-- **주요 변경**: Database per Service 패턴 문서 작성 완료
-- **다음 계획**: CQRS 패턴 문서 작성
+- **날짜**: 2026-01-05
+- **주요 변경**: 전체 디렉토리 구조 및 파일명 정리, 21개 패턴 완성 반영
+- **완성 패턴**: 21개 (통신 4개, 데이터 4개, 복원력 5개, 배포 4개, 보안 3개, 실전 1개)
+- **다음 계획**: 99-실전-적용 폴더 문서 작성 (학습 로드맵, 패턴 선택 가이드 등)

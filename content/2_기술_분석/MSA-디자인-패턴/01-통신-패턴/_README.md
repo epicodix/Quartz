@@ -55,7 +55,35 @@ MSA에서 통신은 가장 중요한 아키텍처 결정 중 하나입니다. �
 
 ---
 
-### 2. Service Mesh 패턴 ⭐⭐⭐
+### 2. 서비스 디스커버리 패턴 ⭐⭐⭐
+
+**문서**: [[서비스-디스커버리-패턴]]
+
+**핵심 개념**: 동적으로 서비스의 위치를 찾고 등록하는 메커니즘
+
+**언제 사용**:
+- 서비스 인스턴스가 동적으로 생성/제거됨
+- Auto Scaling으로 인스턴스 수가 변함
+- 서비스 IP 주소가 고정되지 않음
+- Kubernetes 같은 오케스트레이션 환경
+
+**난이도**: 중급
+**중요도**: ⭐⭐⭐ 필수
+
+**주요 기술**:
+- Consul
+- Eureka (Netflix)
+- etcd
+- Kubernetes DNS
+- Zookeeper
+
+**2026년 트렌드**:
+- Kubernetes 네이티브 서비스 디스커버리 표준화
+- Service Mesh와 통합
+
+---
+
+### 3. Service Mesh 패턴 ⭐⭐⭐
 
 **문서**: [[Service-Mesh-패턴]]
 
@@ -82,7 +110,7 @@ MSA에서 통신은 가장 중요한 아키텍처 결정 중 하나입니다. �
 
 ---
 
-### 3. Event-Driven Architecture (EDA) ⭐⭐⭐
+### 4. Event-Driven Architecture (EDA) ⭐⭐⭐
 
 **문서**: [[Event-Driven-Architecture]]
 
@@ -114,10 +142,11 @@ MSA에서 통신은 가장 중요한 아키텍처 결정 중 하나입니다. �
 
 ```mermaid
 graph LR
-    A[API Gateway] --> B[Service Mesh]
-    A --> C[Event-Driven]
-    B --> D[고급 통신 패턴]
-    C --> D
+    A[API Gateway] --> B[서비스 디스커버리]
+    B --> C[Service Mesh]
+    B --> D[Event-Driven]
+    C --> E[고급 통신 패턴]
+    D --> E
 ```
 
 ### 1단계: API Gateway (필수)
@@ -131,7 +160,18 @@ graph LR
 
 ---
 
-### 2단계: Event-Driven Architecture 또는 Service Mesh
+### 2단계: 서비스 디스커버리 (필수)
+
+**학습해야 하는 이유**:
+- 동적 서비스 환경에서 필수
+- Service Mesh의 선행 지식
+- Kubernetes 환경 이해에 도움
+
+**학습 시간**: 2-3일
+
+---
+
+### 3단계: Event-Driven Architecture 또는 Service Mesh
 
 **병렬 학습 가능**:
 - Event-Driven: 비동기 통신에 관심이 있다면
@@ -141,24 +181,24 @@ graph LR
 
 ---
 
-### 3단계: 통합 적용
+### 4단계: 통합 적용
 
-두 패턴을 함께 사용하는 하이브리드 아키텍처 설계
+여러 패턴을 함께 사용하는 하이브리드 아키텍처 설계
 
 ---
 
 ## 📊 패턴 비교
 
-| 항목 | API Gateway | Service Mesh | Event-Driven |
-|------|-------------|--------------|--------------|
-| **통신 방식** | 동기 (Sync) | 동기 (Sync) | 비동기 (Async) |
-| **결합도** | 중간 | 낮음 | 매우 낮음 |
-| **복잡도** | 낮음 | 높음 | 중간 |
-| **확장성** | 중간 | 높음 | 매우 높음 |
-| **즉시 응답** | ✅ | ✅ | ❌ |
-| **장애 격리** | ❌ | ✅ | ✅ |
-| **학습 곡선** | 완만 | 가파름 | 중간 |
-| **운영 복잡도** | 낮음 | 높음 | 중간 |
+| 항목 | API Gateway | 서비스 디스커버리 | Service Mesh | Event-Driven |
+|------|-------------|------------------|--------------|--------------|
+| **통신 방식** | 동기 (Sync) | N/A (인프라) | 동기 (Sync) | 비동기 (Async) |
+| **결합도** | 중간 | 낮음 | 낮음 | 매우 낮음 |
+| **복잡도** | 낮음 | 중간 | 높음 | 중간 |
+| **확장성** | 중간 | 높음 | 높음 | 매우 높음 |
+| **즉시 응답** | ✅ | N/A | ✅ | ❌ |
+| **장애 격리** | ❌ | N/A | ✅ | ✅ |
+| **학습 곡선** | 완만 | 중간 | 가파름 | 중간 |
+| **운영 복잡도** | 낮음 | 중간 | 높음 | 중간 |
 
 ---
 
@@ -315,6 +355,7 @@ Client → Gateway → Service A → Service B → Service C → Service D
 학습 완료 후 확인:
 
 - [ ] API Gateway의 역할과 책임을 설명할 수 있다
+- [ ] 서비스 디스커버리의 Client-Side vs Server-Side 방식을 이해한다
 - [ ] Service Mesh가 해결하는 문제를 이해한다
 - [ ] Sidecar 패턴의 동작 원리를 안다
 - [ ] 동기 vs 비동기 통신의 trade-off를 설명할 수 있다
@@ -325,4 +366,4 @@ Client → Gateway → Service A → Service B → Service C → Service D
 ---
 
 **상위 문서**: [[../00-MSA-디자인-패턴-MOC|MSA 디자인 패턴 MOC]]
-**마지막 업데이트**: 2026-01-02
+**마지막 업데이트**: 2026-01-05
