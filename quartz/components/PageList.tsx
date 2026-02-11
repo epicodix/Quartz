@@ -74,34 +74,45 @@ export const PageList: QuartzComponent = ({ cfg, fileData, allFiles, limit, sort
         const visibleTags = tags.slice(0, MAX_TAGS)
         const remainingCount = tags.length - MAX_TAGS
 
+        const firstImage = page.firstImage
+
         return (
           <li class="section-li">
             <div class="section">
-              <div class="desc">
-                <h3>
+              {firstImage && (
+                <div class="section-thumb">
                   <a href={resolveRelative(fileData.slug!, page.slug!)} class="internal">
-                    {title}
+                    <img src={firstImage} alt="" loading="lazy" />
                   </a>
-                </h3>
-              </div>
-              <p class="meta">
-                {page.dates && <Date date={getDate(cfg, page)!} locale={cfg.locale} />}
-              </p>
-              <ul class="tags">
-                {visibleTags.map((tag) => (
-                  <li>
-                    <a
-                      class="internal tag-link"
-                      href={resolveRelative(fileData.slug!, `tags/${tag}` as FullSlug)}
-                    >
-                      {tag}
+                </div>
+              )}
+              <div class="section-body">
+                <div class="desc">
+                  <h3>
+                    <a href={resolveRelative(fileData.slug!, page.slug!)} class="internal">
+                      {title}
                     </a>
-                  </li>
-                ))}
-                {remainingCount > 0 && (
-                  <li class="tag-more">+{remainingCount}</li>
-                )}
-              </ul>
+                  </h3>
+                </div>
+                <p class="meta">
+                  {page.dates && <Date date={getDate(cfg, page)!} locale={cfg.locale} />}
+                </p>
+                <ul class="tags">
+                  {visibleTags.map((tag) => (
+                    <li>
+                      <a
+                        class="internal tag-link"
+                        href={resolveRelative(fileData.slug!, `tags/${tag}` as FullSlug)}
+                      >
+                        {tag}
+                      </a>
+                    </li>
+                  ))}
+                  {remainingCount > 0 && (
+                    <li class="tag-more">+{remainingCount}</li>
+                  )}
+                </ul>
+              </div>
             </div>
           </li>
         )
