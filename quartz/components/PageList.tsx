@@ -64,18 +64,19 @@ export const PageList: QuartzComponent = ({ cfg, fileData, allFiles, limit, sort
     list = list.slice(0, limit)
   }
 
+  const MAX_TAGS = 3
+
   return (
     <ul class="section-ul">
       {list.map((page) => {
         const title = page.frontmatter?.title
         const tags = page.frontmatter?.tags ?? []
+        const visibleTags = tags.slice(0, MAX_TAGS)
+        const remainingCount = tags.length - MAX_TAGS
 
         return (
           <li class="section-li">
             <div class="section">
-              <p class="meta">
-                {page.dates && <Date date={getDate(cfg, page)!} locale={cfg.locale} />}
-              </p>
               <div class="desc">
                 <h3>
                   <a href={resolveRelative(fileData.slug!, page.slug!)} class="internal">
@@ -83,8 +84,11 @@ export const PageList: QuartzComponent = ({ cfg, fileData, allFiles, limit, sort
                   </a>
                 </h3>
               </div>
+              <p class="meta">
+                {page.dates && <Date date={getDate(cfg, page)!} locale={cfg.locale} />}
+              </p>
               <ul class="tags">
-                {tags.map((tag) => (
+                {visibleTags.map((tag) => (
                   <li>
                     <a
                       class="internal tag-link"
@@ -94,6 +98,9 @@ export const PageList: QuartzComponent = ({ cfg, fileData, allFiles, limit, sort
                     </a>
                   </li>
                 ))}
+                {remainingCount > 0 && (
+                  <li class="tag-more">+{remainingCount}</li>
+                )}
               </ul>
             </div>
           </li>
