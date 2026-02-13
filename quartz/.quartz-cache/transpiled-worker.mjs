@@ -11668,6 +11668,32 @@ var blockquoteRegex = new RegExp(/(\[\[>\]\])\s*(.*)/, "g");
 var roamHighlightRegex = new RegExp(/\^\^(.+)\^\^/, "g");
 var roamItalicRegex = new RegExp(/__(.+)__/, "g");
 
+// quartz/plugins/transformers/firstImage.ts
+import { visit as visit6 } from "unist-util-visit";
+var FirstImage = /* @__PURE__ */ __name(() => {
+  return {
+    name: "FirstImage",
+    htmlPlugins() {
+      return [
+        () => {
+          return (tree, file) => {
+            if (file.data.frontmatter?.socialImage) {
+              file.data.firstImage = file.data.frontmatter.socialImage;
+              return;
+            }
+            visit6(tree, "element", (node) => {
+              if (file.data.firstImage) return;
+              if (node.tagName === "img" && node.properties?.src) {
+                file.data.firstImage = node.properties.src;
+              }
+            });
+          };
+        }
+      ];
+    }
+  };
+}, "FirstImage");
+
 // quartz/plugins/filters/draft.ts
 var RemoveDrafts = /* @__PURE__ */ __name(() => ({
   name: "RemoveDrafts",
@@ -11765,7 +11791,7 @@ function concatenateResources(...resources) {
 __name(concatenateResources, "concatenateResources");
 
 // quartz/components/renderPage.tsx
-import { visit as visit6 } from "unist-util-visit";
+import { visit as visit7 } from "unist-util-visit";
 import { styleText as styleText2 } from "util";
 import { jsx as jsx4, jsxs } from "preact/jsx-runtime";
 var headerRegex = new RegExp(/h[1-6]/);
@@ -11805,7 +11831,7 @@ function pageResources(baseDir, staticResources) {
 }
 __name(pageResources, "pageResources");
 function renderTranscludes(root, cfg, slug, componentData, visited) {
-  visit6(root, "element", (node, _index, _parent) => {
+  visit7(root, "element", (node, _index, _parent) => {
     if (node.tagName === "blockquote") {
       const classNames2 = node.properties?.className ?? [];
       if (classNames2.includes("transclude")) {
@@ -12095,20 +12121,33 @@ var PageList = /* @__PURE__ */ __name(({ cfg, fileData, allFiles, limit, sort })
   if (limit) {
     list = list.slice(0, limit);
   }
+  const MAX_TAGS = 3;
   return /* @__PURE__ */ jsx9("ul", { class: "section-ul", children: list.map((page) => {
     const title = page.frontmatter?.title;
     const tags = page.frontmatter?.tags ?? [];
+    const visibleTags = tags.slice(0, MAX_TAGS);
+    const remainingCount = tags.length - MAX_TAGS;
+    const firstImage = page.firstImage;
     return /* @__PURE__ */ jsx9("li", { class: "section-li", children: /* @__PURE__ */ jsxs3("div", { class: "section", children: [
-      /* @__PURE__ */ jsx9("p", { class: "meta", children: page.dates && /* @__PURE__ */ jsx9(Date2, { date: getDate(cfg, page), locale: cfg.locale }) }),
-      /* @__PURE__ */ jsx9("div", { class: "desc", children: /* @__PURE__ */ jsx9("h3", { children: /* @__PURE__ */ jsx9("a", { href: resolveRelative(fileData.slug, page.slug), class: "internal", children: title }) }) }),
-      /* @__PURE__ */ jsx9("ul", { class: "tags", children: tags.map((tag) => /* @__PURE__ */ jsx9("li", { children: /* @__PURE__ */ jsx9(
-        "a",
-        {
-          class: "internal tag-link",
-          href: resolveRelative(fileData.slug, `tags/${tag}`),
-          children: tag
-        }
-      ) })) })
+      firstImage && /* @__PURE__ */ jsx9("div", { class: "section-thumb", children: /* @__PURE__ */ jsx9("a", { href: resolveRelative(fileData.slug, page.slug), class: "internal", children: /* @__PURE__ */ jsx9("img", { src: firstImage, alt: "", loading: "lazy" }) }) }),
+      /* @__PURE__ */ jsxs3("div", { class: "section-body", children: [
+        /* @__PURE__ */ jsx9("div", { class: "desc", children: /* @__PURE__ */ jsx9("h3", { children: /* @__PURE__ */ jsx9("a", { href: resolveRelative(fileData.slug, page.slug), class: "internal", children: title }) }) }),
+        /* @__PURE__ */ jsx9("p", { class: "meta", children: page.dates && /* @__PURE__ */ jsx9(Date2, { date: getDate(cfg, page), locale: cfg.locale }) }),
+        /* @__PURE__ */ jsxs3("ul", { class: "tags", children: [
+          visibleTags.map((tag) => /* @__PURE__ */ jsx9("li", { children: /* @__PURE__ */ jsx9(
+            "a",
+            {
+              class: "internal tag-link",
+              href: resolveRelative(fileData.slug, `tags/${tag}`),
+              children: tag
+            }
+          ) })),
+          remainingCount > 0 && /* @__PURE__ */ jsxs3("li", { class: "tag-more", children: [
+            "+",
+            remainingCount
+          ] })
+        ] })
+      ] })
     ] }) });
   }) });
 }, "PageList");
@@ -15127,6 +15166,7 @@ var config = {
       TableOfContents(),
       CrawlLinks({ markdownLinkResolution: "shortest" }),
       Description(),
+      FirstImage(),
       Latex({ renderEngine: "katex" })
     ],
     filters: [RemoveDrafts()],
