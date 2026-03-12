@@ -995,15 +995,15 @@ def iterative_refinement(seed_data: List[Dict], iterations: int = 3):
         print(f"\n🔄 반복 {i+1}/{iterations}")
 
         # 1. 현재 데이터로 파인튜닝
-        print("  1️⃣ 파인튜닝 중...")
+        print("  1 파인튜닝 중...")
         # (실제 파인튜닝 코드)
 
         # 2. 파인튜닝된 모델로 새 데이터 생성
-        print("  2️⃣ 새 데이터 생성 중...")
+        print("  2 새 데이터 생성 중...")
         new_data = generate_new_tasks(current_data, num_new_tasks=100)
 
         # 3. 품질 필터링
-        print("  3️⃣ 품질 필터링 중...")
+        print("  3 품질 필터링 중...")
         filtered = filter_synthetic_data(new_data)
 
         # 4. 기존 데이터와 병합

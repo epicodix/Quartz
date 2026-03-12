@@ -122,25 +122,25 @@ type MyResponse struct {
 // 📋 핸들러 함수
 func myHandler() http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
-        // 1️⃣ CORS 헤더 (필수!)
+        // 1 CORS 헤더 (필수!)
         w.Header().Set("Access-Control-Allow-Origin", "*")
         w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
         w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
         w.Header().Set("Content-Type", "application/json")
 
-        // 2️⃣ OPTIONS 요청 처리
+        // 2 OPTIONS 요청 처리
         if r.Method == "OPTIONS" {
             w.WriteHeader(http.StatusOK)
             return
         }
 
-        // 3️⃣ HTTP 메서드 검증
+        // 3 HTTP 메서드 검증
         if r.Method != "POST" {
             http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
             return
         }
 
-        // 4️⃣ 요청 바디 파싱
+        // 4 요청 바디 파싱
         var request struct {
             Param string `json:"param"`
         }
@@ -149,10 +149,10 @@ func myHandler() http.HandlerFunc {
             return
         }
 
-        // 5️⃣ 비즈니스 로직
+        // 5 비즈니스 로직
         result := processData(request.Param)
 
-        // 6️⃣ 응답 반환
+        // 6 응답 반환
         response := MyResponse{
             Data:    result,
             Success: true,

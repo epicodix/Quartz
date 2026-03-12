@@ -222,7 +222,7 @@ Service C ──┤
 
 ## 4. 핵심 구성 요소
 
-### 1️⃣ Control Plane (제어 플레인)
+### 1 Control Plane (제어 플레인)
 
 **역할**: 전체 메시의 설정, 정책, 관리를 담당
 
@@ -280,7 +280,7 @@ spec:
 
 ---
 
-### 2️⃣ Data Plane (데이터 플레인)
+### 2 Data Plane (데이터 플레인)
 
 **역할**: 실제 트래픽을 처리하는 프록시 계층
 
@@ -307,7 +307,7 @@ Response → Upstream → Downstream
 
 ---
 
-### 3️⃣ Sidecar 패턴
+### 3 Sidecar 패턴
 
 **역할**: 각 서비스에 프록시를 동반 컨테이너로 배치
 
@@ -342,7 +342,7 @@ spec:
 
 ## 5. 주요 기능들
 
-### 1️⃣ 트래픽 관리 (Traffic Management)
+### 1 트래픽 관리 (Traffic Management)
 
 #### 라우팅 및 부하 분산
 
@@ -413,7 +413,7 @@ spec:
 
 ---
 
-### 2️⃣ 보안 (Security)
+### 2 보안 (Security)
 
 #### mTLS 자동화
 
@@ -468,7 +468,7 @@ spec:
 
 ---
 
-### 3️⃣ 관찰 가능성 (Observability)
+### 3 관찰 가능성 (Observability)
 
 #### 분산 트레이싱
 
@@ -511,7 +511,7 @@ spec:
 
 ---
 
-### 4️⃣ 복원력 (Resilience)
+### 4 복원력 (Resilience)
 
 #### Circuit Breaker
 

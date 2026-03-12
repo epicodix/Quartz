@@ -107,7 +107,7 @@ kubectl delete pvc persistent-data
 echo "=== 🧪 실습 2: 접근 모드 테스트 ==="
 
 # ReadWriteOnce 테스트
-echo "1️⃣ ReadWriteOnce 테스트"
+echo "1 ReadWriteOnce 테스트"
 kubectl create pvc rwo-pvc --claim-size=1Gi --access-modes=ReadWriteOnce
 
 # 첫 번째 Pod 생성
@@ -245,16 +245,16 @@ echo "🏁 미션 1: 스토리지 레이싱 (시간 측정)"
 start_time=$(date +%s)
 
 # 1. PVC 생성
-echo "1️⃣ PVC 생성 중..."
+echo "1 PVC 생성 중..."
 kubectl create pvc racing-pvc --claim-size=1Gi
 
 # 2. Bound 상태까지 시간 측정
-echo "2️⃣ Bound 상태까지 대기..."
+echo "2 Bound 상태까지 대기..."
 kubectl wait --for=jsonpath='{.status.phase}'=Bound pvc/racing-pvc --timeout=60s
 bound_time=$(date +%s)
 
 # 3. Pod 생성 및 마운트
-echo "3️⃣ Pod 생성 및 마운트..."
+echo "3 Pod 생성 및 마운트..."
 kubectl run racing-pod --image=alpine --command sleep 60 \
   --overrides='{
     "spec": {
@@ -273,7 +273,7 @@ kubectl wait --for=condition=Ready pod/racing-pod --timeout=60s
 ready_time=$(date +%s)
 
 # 5. 데이터 쓰기 테스트
-echo "4️⃣ 데이터 쓰기 테스트..."
+echo "4 데이터 쓰기 테스트..."
 kubectl exec racing-pod -- sh -c "echo 'Racing complete!' > /data/result.txt"
 kubectl exec racing-pod -- cat /data/result.txt
 complete_time=$(date +%s)

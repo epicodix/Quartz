@@ -73,7 +73,7 @@ const config: QuartzConfig = {
       Plugin.CrawlLinks({ markdownLinkResolution: "shortest" }),
       Plugin.Description(),
       Plugin.FirstImage(),
-      Plugin.Latex({ renderEngine: "katex" }),
+      // Plugin.Latex({ renderEngine: "katex" }), // 비활성화: $...$ 한국어 math mode 오류
     ],
     filters: [Plugin.RemoveDrafts()],
     emitters: [

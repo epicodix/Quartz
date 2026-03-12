@@ -241,7 +241,7 @@ API Gateway
 
 ## 4. 핵심 기능들
 
-### 1️⃣ 요청 라우팅 (Request Routing)
+### 1 요청 라우팅 (Request Routing)
 
 **역할**: 들어온 요청을 적절한 마이크로서비스로 전달
 
@@ -275,7 +275,7 @@ routes:
 
 ---
 
-### 2️⃣ 인증 및 인가 (Authentication & Authorization)
+### 2 인증 및 인가 (Authentication & Authorization)
 
 **역할**: 모든 요청의 보안을 중앙에서 관리
 
@@ -304,7 +304,7 @@ services:
 
 ---
 
-### 3️⃣ Rate Limiting (속도 제한)
+### 3 Rate Limiting (속도 제한)
 
 **역할**: 서비스 보호를 위한 요청 수 제한
 
@@ -336,7 +336,7 @@ rate_limits:
 
 ---
 
-### 4️⃣ 로깅 및 모니터링 (Logging & Monitoring)
+### 4 로깅 및 모니터링 (Logging & Monitoring)
 
 **역할**: 모든 요청/응답의 가시성 확보
 
@@ -360,7 +360,7 @@ API Gateway Dashboard
 
 ---
 
-### 5️⃣ 프로토콜 변환 (Protocol Transformation)
+### 5 프로토콜 변환 (Protocol Transformation)
 
 **역할**: 외부 클라이언트와 내부 서비스 간 프로토콜 변환
 
@@ -388,7 +388,7 @@ query GetUserOrders($userId: ID!) {
 
 ---
 
-### 6️⃣ 캐싱 (Caching)
+### 6 캐싱 (Caching)
 
 **역할**: 반복 요청에 대한 응답을 캐시하여 성능 향상
 

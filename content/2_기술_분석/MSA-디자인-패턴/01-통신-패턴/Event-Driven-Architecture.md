@@ -211,7 +211,7 @@ Order Service → [Event] → Kafka
 
 ## 4. 핵심 구성 요소
 
-### 1️⃣ Event Producer (이벤트 생산자)
+### 1 Event Producer (이벤트 생산자)
 
 **역할**: 도메인 이벤트를 생성하고 발행
 
@@ -252,7 +252,7 @@ public class OrderService {
 
 ---
 
-### 2️⃣ Event Bus (이벤트 버스)
+### 2 Event Bus (이벤트 버스)
 
 **역할**: 이벤트 전송을 위한 중앙 통신 채널
 
@@ -278,7 +278,7 @@ inventory.released      # 재고 해제 이벤트
 
 ---
 
-### 3️⃣ Event Consumer (이벤트 소비자)
+### 3 Event Consumer (이벤트 소비자)
 
 **역할**: 이벤트를 수신하고 비즈니스 로직 처리
 
@@ -328,7 +328,7 @@ Consumer Group: inventory-service-group
 
 ---
 
-### 4️⃣ Event Store (이벤트 저장소)
+### 4 Event Store (이벤트 저장소)
 
 **역할**: 이벤트를 영구 저장하여 시스템 이력의 신뢰할 수 있는 소스 제공
 
