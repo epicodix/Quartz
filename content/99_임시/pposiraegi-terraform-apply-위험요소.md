@@ -152,6 +152,99 @@ aws_lb, cloudfront                      : 병렬
 
 ---
 
+## 8. 실제 배포 장애 기록 (2026-03-19)
+
+### 8-1. prod 프로파일 ddl-auto: validate + 빈 RDS (높음)
+
+**상황**: `application-prod.yaml`에 `ddl-auto: validate`로 설정되어 있음
+
+**문제**: EC2 user_data.sh가 RDS에 스키마를 생성하지 않고 앱을 바로 기동 → RDS가 비어있으면 앱이 즉시 종료
+
+```
+SchemaManagementException: Schema validation: missing table [categories]
+```
+
+**근본 원인**: user_data.sh에 스키마 초기화 로직 없음. prod 첫 배포 시 RDS는 항상 비어있음
+
+**해결책**:
+- docker-compose.prod.yml 오버라이드에 `SPRING_JPA_HIBERNATE_DDL_AUTO: update` 주입
+- 또는 Flyway 도입으로 마이그레이션 관리
+
+> [!danger] validate 상태에서 배포하면 컨테이너가 즉시 Exited(1) 됨. apply 후 반드시 확인
+
+---
+
+### 8-2. docker-compose.yml 환경변수 하드코딩 (높음)
+
+**상황**: git에 올라간 `docker-compose.yml`이 DB/Redis를 하드코딩
+
+```yaml
+# docker-compose.yml (문제)
+backend:
+  environment:
+    SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ecommerce  # 로컬 컨테이너
+    SPRING_DATA_REDIS_HOST: redis                               # 로컬 컨테이너
+```
+
+**문제**: `.env` 파일이나 shell 환경변수로 오버라이드 불가. RDS/ElastiCache 연결 안 됨
+
+**해결책**: `docker-compose.prod.yml` 오버라이드 파일로 배포 시 환경변수 덮어쓰기
+
+```bash
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d backend
+```
+
+> [!warning] user_data.sh의 `.env` 생성은 `backend/` 하위에 생성하지만 docker-compose가 읽는 위치는 `app/` 루트임 → 적용 안 됨
+
+---
+
+### 8-3. Redis AUTH 에러 (ElastiCache 무인증) (중간)
+
+**상황**: ElastiCache Redis를 비밀번호 없이 구성 (`auth-token` 미설정)
+
+**문제**: `SPRING_DATA_REDIS_PASSWORD=''` (빈 문자열)로 설정해도 Redisson이 AUTH 명령 전송
+
+```
+ERR AUTH <password> called without any password configured for the default user
+```
+
+**해결책**: docker-compose.prod.yml에서 `SPRING_DATA_REDIS_PASSWORD` 항목 자체를 제거 (키 없음 = AUTH 안 보냄)
+
+> [!tip] ElastiCache 무인증 구성 시 반드시 password 환경변수를 아예 빼야 함. 빈 문자열도 AUTH 전송됨
+
+---
+
+### 8-4. Hibernate 7 enum 타입 매핑 변경 (중간)
+
+**상황**: `@Enumerated` 어노테이션 없는 enum 필드가 Hibernate 7에서 `TINYINT`(ordinal) 기대
+
+**영향 테이블**: `orders.status`, `order_items.status`, `shipments.status`
+
+```
+SchemaManagementException: wrong column type encountered in column [status] in table [order_items];
+found [varchar (Types#VARCHAR)], but expecting [smallint (Types#TINYINT)]
+```
+
+**해결책**: 해당 enum 필드에 `@Enumerated(EnumType.STRING)` 추가하거나, DB 컬럼을 `SMALLINT`으로 생성
+
+> [!note] Hibernate 7(Spring Boot 4) 업그레이드 시 `@Enumerated` 없는 enum 전수 검사 필요
+
+---
+
+### 8-5. @Embeddable 컬럼명 충돌 (낮음)
+
+**상황**: `Shipments` 엔티티의 `PhoneNumber` 임베디드 필드에 `@Embedded` + `@AttributeOverride` 없이 `@Column(name="receiver_phone")` 만 선언
+
+**문제**: Hibernate가 실제로 사용하는 컬럼명은 `PhoneNumber` 클래스 내부의 `@Column(name="phone_number")`
+
+```
+SchemaManagementException: missing column [phone_number] in table [shipments]
+```
+
+**해결책**: `@Embedded` + `@AttributeOverride`로 명시적 컬럼명 지정 권장
+
+---
+
 ## 롤백 방법
 
 ```bash
