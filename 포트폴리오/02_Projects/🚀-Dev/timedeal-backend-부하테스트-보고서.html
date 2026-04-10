@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr"><head><title>타임딜 백엔드 - AWS 인프라 구축 및 K6 분산 부하테스트 보고서</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Quartz 4"/><meta property="og:title" content="타임딜 백엔드 - AWS 인프라 구축 및 K6 분산 부하테스트 보고서"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="타임딜 백엔드 - AWS 인프라 구축 및 K6 분산 부하테스트 보고서"/><meta name="twitter:description" content="타임딜 백엔드 — AWS 인프라 구축 및 K6 분산 부하테스트 보고서 목차 프로젝트 개요 인프라 아키텍처 핵심 트랜잭션 설계 버그 수정 이력 K6 부하테스트 결과 성능 분석 극한 부하 테스트 재고 정합성 심층 분석 결론 1."/><meta property="og:description" content="타임딜 백엔드 — AWS 인프라 구축 및 K6 분산 부하테스트 보고서 목차 프로젝트 개요 인프라 아키텍처 핵심 트랜잭션 설계 버그 수정 이력 K6 부하테스트 결과 성능 분석 극한 부하 테스트 재고 정합성 심층 분석 결론 1."/><meta property="og:image:alt" content="타임딜 백엔드 — AWS 인프라 구축 및 K6 분산 부하테스트 보고서 목차 프로젝트 개요 인프라 아키텍처 핵심 트랜잭션 설계 버그 수정 이력 K6 부하테스트 결과 성능 분석 극한 부하 테스트 재고 정합성 심층 분석 결론 1."/><meta property="twitter:domain" content="epicodix.github.io/Quartz"/><meta property="og:url" content="https://epicodix.github.io/Quartz/포트폴리오/02_Projects/🚀-Dev/timedeal-backend-부하테스트-보고서"/><meta property="twitter:url" content="https://epicodix.github.io/Quartz/포트폴리오/02_Projects/🚀-Dev/timedeal-backend-부하테스트-보고서"/><link rel="icon" href="../../../static/icon.png"/><meta name="description" content="타임딜 백엔드 — AWS 인프라 구축 및 K6 분산 부하테스트 보고서 목차 프로젝트 개요 인프라 아키텍처 핵심 트랜잭션 설계 버그 수정 이력 K6 부하테스트 결과 성능 분석 극한 부하 테스트 재고 정합성 심층 분석 결론 1."/><meta name="generator" content="Quartz"/><link href="../../../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL1VzZXJzL2ExMjM0L2VwaWNvZGl4L215LXF1YXJ0ei1zaXRlL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><script src="../../../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://epicodix.github.io/Quartz/index.xml"/><meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/><meta property="og:image" content="https://epicodix.github.io/Quartz/포트폴리오/02_Projects/🚀-Dev/timedeal-backend-부하테스트-보고서-og-image.webp"/><meta property="og:image:url" content="https://epicodix.github.io/Quartz/포트폴리오/02_Projects/🚀-Dev/timedeal-backend-부하테스트-보고서-og-image.webp"/><meta name="twitter:image" content="https://epicodix.github.io/Quartz/포트폴리오/02_Projects/🚀-Dev/timedeal-backend-부하테스트-보고서-og-image.webp"/><meta property="og:image:type" content="image/.webp"/></head><body data-slug="포트폴리오/02_Projects/🚀-Dev/timedeal-backend-부하테스트-보고서"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../../..">Quartz 4</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>검색</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="검색어를 입력하세요" placeholder="검색어를 입력하세요"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="다크 모드"><title>다크 모드</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="라이트 모드"><title>라이트 모드</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="리더 모드"><title>리더 모드</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="collapse" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>{let priorityFolders=[\&quot;\\u{1F4D6} \\uAC00\\uC774\\uB4DC\&quot;,\&quot;\\u{1F52C} \\uAE30\\uC220 \\uBD84\\uC11D\&quot;,\&quot;\\u2699\\uFE0F \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;\\u{1F4DA} \\uAD50\\uC721\&quot;,\&quot;\\u{1F4BC} \\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624\&quot;];if(a.isFolder&amp;&amp;b.isFolder){let aPriority=priorityFolders.indexOf(a.displayName),bPriority=priorityFolders.indexOf(b.displayName);if(aPriority!==-1&amp;&amp;bPriority!==-1)return aPriority-bPriority;if(aPriority!==-1)return-1;if(bPriority!==-1)return 1}return!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,\&quot;ko-KR\&quot;,{numeric:!0,sensitivity:\&quot;base\&quot;}):a.isFolder?-1:1}&quot;,&quot;filterFn&quot;:&quot;node=>{if([\&quot;99_\\uC784\\uC2DC\&quot;,\&quot;tags\&quot;,\&quot;.obsidian\&quot;].includes(node.slugSegment))return!1;if(!node.isFolder&amp;&amp;node.data){let hiddenFiles=[\&quot;GUI_\\uC790\\uB3D9\\uD654_\\uB3C4\\uC804\\uAE30\&quot;,\&quot;Gemini_CLI_\\uD65C\\uC6A9_\\uAC00\\uC774\\uB4DC\&quot;,\&quot;Ollama_Troubleshooting_Guide\&quot;,\&quot;gemini_cli_guide\&quot;,\&quot;gemini_cli_introduction\&quot;,\&quot;gemini_context_awareness_guide\&quot;,\&quot;gemini_file_management_guide\&quot;,\&quot;get_claude_news.py\&quot;,\&quot;global_news_20250712\&quot;,\&quot;kubernetes_cheatsheet\&quot;,\&quot;kubernetes_storage_hands_on\&quot;,\&quot;naver_gmail_integration_guide\&quot;,\&quot;nodejs_installation_guide\&quot;,\&quot;\\uB0B4_\\uCEF4\\uD4E8\\uD130\\uB97C_AI_\\uC11C\\uBC84\\uB85C_\\uB9CC\\uB4E4\\uAE30_Ollama_\\uC124\\uCE58_\\uBC0F_\\uBB38\\uC81C\\uD574\\uACB0_\\uAC00\\uC774\\uB4DC\&quot;,\&quot;\\uC2DC\\uB9AC\\uC640_Gemini_\\uC5F0\\uACC4\\uC131_\\uAC15\\uD654_\\uBC29\\uC548\&quot;,\&quot;2025-08-13_\\uD559\\uC2B5_\\uD3EC\\uC778\\uD2B8\&quot;,\&quot;07_02_Advanced_Pod_Concepts\&quot;],fileTitle=node.data.title||node.displayName.replace(/\\.md$/,\&quot;\&quot;);return!hiddenFiles.includes(fileTitle)}return!0}&quot;,&quot;mapFn&quot;:&quot;node=>{let folderDisplayNames={\&quot;1_\\uAC00\\uC774\\uB4DC\&quot;:\&quot;\\u{1F4D6} \\uAC00\\uC774\\uB4DC\&quot;,\&quot;2_\\uAE30\\uC220_\\uBD84\\uC11D\&quot;:\&quot;\\u{1F52C} \\uAE30\\uC220 \\uBD84\\uC11D\&quot;,\&quot;3_\\uC544\\uC774\\uB514\\uC5B4_\\uB274\\uC2A4\&quot;:\&quot;\\u{1F4A1} \\uC544\\uC774\\uB514\\uC5B4 &amp; \\uB274\\uC2A4\&quot;,K8s_Deep_Dive:\&quot;\\u2699\\uFE0F \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;01_\\uB124\\uD2B8\\uC6CC\\uD06C \\uAE30\\uCD08\&quot;:\&quot;\\u{1F310} \\uB124\\uD2B8\\uC6CC\\uD06C \\uAE30\\uCD08\&quot;,\&quot;02_k8s\\uC2E4\\uC2B5\&quot;:\&quot;\\u{1F6E0}\\uFE0F \\uC2E4\\uC2B5\&quot;,\&quot;03_\\uD504\\uB85C\\uBA54\\uD14C\\uC6B0\\uC2A4\&quot;:\&quot;\\u{1F4CA} \\uD504\\uB85C\\uBA54\\uD14C\\uC6B0\\uC2A4\&quot;,\&quot;04_\\uADF8\\uB77C\\uD30C\\uB098\&quot;:\&quot;\\u{1F4C8} \\uADF8\\uB77C\\uD30C\\uB098\&quot;,\\uAD50\\uC721:\&quot;\\u{1F4DA} \\uAD50\\uC721\&quot;,\\uAD6C\\uB984\\uB525\\uB2E4\\uC774\\uBE0C:\&quot;\\u2601\\uFE0F \\uAD6C\\uB984\\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;\\uBD84\\uC0B0\\uC2DC\\uC2A4\\uD15C_Distributed Systems\&quot;:\&quot;\\u{1F517} \\uBD84\\uC0B0\\uC2DC\\uC2A4\\uD15C\&quot;,GO:\&quot;\\u{1F439} Go \\uC5B8\\uC5B4\&quot;,\&quot;\\uB124\\uC774\\uBC84-\\uAC80\\uC0C9\\uAD11\\uACE0-\\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158-\\uD504\\uB85C\\uC81D\\uD2B8\&quot;:\&quot;\\u{1F680} \\uB124\\uC774\\uBC84 \\uD504\\uB85C\\uC81D\\uD2B8\&quot;,\&quot;01-\\uD504\\uB85C\\uC81D\\uD2B8-\\uBC30\\uACBD\&quot;:\&quot;\\u{1F4CB} \\uD504\\uB85C\\uC81D\\uD2B8 \\uBC30\\uACBD\&quot;,\&quot;02-\\uD604\\uC7AC\\uC0C1\\uD0DC-\\uBD84\\uC11D\&quot;:\&quot;\\u{1F50D} \\uD604\\uC7AC\\uC0C1\\uD0DC \\uBD84\\uC11D\&quot;,\&quot;03-\\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158-\\uACC4\\uD68D\&quot;:\&quot;\\u{1F4DD} \\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158 \\uACC4\\uD68D\&quot;,\&quot;05-\\uC6B4\\uC601-\\uCD5C\\uC801\\uD654\&quot;:\&quot;\\u26A1 \\uC6B4\\uC601 \\uCD5C\\uC801\\uD654\&quot;,CKA:\&quot;\\u{1F3AF} CKA \\uC790\\uACA9\\uC99D\&quot;,GCP:\&quot;\\u2601\\uFE0F Google Cloud\&quot;,\&quot;moc-k8s\&quot;:\&quot;\\u{1F4DA} \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB178\\uD2B8\&quot;,Vagrant:\&quot;\\u{1F4E6} Vagrant\&quot;,\\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624:\&quot;\\u{1F4BC} \\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624\&quot;,\\uAC00\\uC0C1\\uD654:\&quot;\\u{1F4BB} \\uAC00\\uC0C1\\uD654\&quot;,\\uAC1C\\uBC1C\\uD658\\uACBD:\&quot;\\u{1F6E0}\\uFE0F \\uAC1C\\uBC1C\\uD658\\uACBD\&quot;,\\uAE30\\uD0C0:\&quot;\\u{1F4CE} \\uAE30\\uD0C0\&quot;,AI\\uB3C4\\uAD6C:\&quot;\\u{1F916} AI \\uB3C4\\uAD6C\&quot;,\\uBAA8\\uB2C8\\uD130\\uB9C1:\&quot;\\u{1F4CA} \\uBAA8\\uB2C8\\uD130\\uB9C1\&quot;};if(node.isFolder&amp;&amp;folderDisplayNames[node.displayName]&amp;&amp;(node.displayName=folderDisplayNames[node.displayName]),!node.isFolder&amp;&amp;node.data){let displayName=node.data.title||node.displayName;displayName=displayName.replace(/^(\\d{2}_|\\d{2}-\\d{2}-)/g,\&quot;\&quot;),displayName.length>50&amp;&amp;(displayName=displayName.substring(0,47)+\&quot;...\&quot;),displayName=displayName.replace(/^kubernetes_/,\&quot;K8s \&quot;).replace(/^쿠버네티스_/,\&quot;K8s \&quot;).replace(/_완벽_가이드$/,\&quot; \\uAC00\\uC774\\uB4DC\&quot;).replace(/_실습_가이드$/,\&quot; \\uC2E4\\uC2B5\&quot;).replace(/_핵심_정리$/,\&quot; \\uC815\\uB9AC\&quot;).replace(/_기초_개념$/,\&quot; \\uAE30\\uCD08\&quot;).replace(/완전_가이드$/,\&quot;\\uAC00\\uC774\\uB4DC\&quot;).replace(/완벽_정리$/,\&quot;\\uC815\\uB9AC\&quot;),node.displayName=displayName}return node}&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-998"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>탐색기</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-998" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../../포트폴리오/">포트폴리오</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../../포트폴리오/02_Projects/">02_Projects</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../../포트폴리오/02_Projects/🚀-Dev/">🚀 Dev</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>타임딜 백엔드   AWS 인프라 구축 및 K6 분산 부하테스트 보고서</a></div></nav><h1 class="article-title">타임딜 백엔드 - AWS 인프라 구축 및 K6 분산 부하테스트 보고서</h1><p show-comma="true" class="content-meta"><time datetime="2026-02-26T15:00:00.000Z">2026년 2월 27일</time><span>21 min read</span></p><ul class="tags"><li><a href="../../../tags/spring-boot" class="internal tag-link">spring-boot</a></li><li><a href="../../../tags/aws" class="internal tag-link">aws</a></li><li><a href="../../../tags/terraform" class="internal tag-link">terraform</a></li><li><a href="../../../tags/k6" class="internal tag-link">k6</a></li><li><a href="../../../tags/redis" class="internal tag-link">redis</a></li><li><a href="../../../tags/load-testing" class="internal tag-link">load-testing</a></li><li><a href="../../../tags/performance" class="internal tag-link">performance</a></li><li><a href="../../../tags/devops" class="internal tag-link">devops</a></li></ul></div></div><article class="popover-hint"><h1 id="타임딜-백엔드--aws-인프라-구축-및-k6-분산-부하테스트-보고서">타임딜 백엔드 — AWS 인프라 구축 및 K6 분산 부하테스트 보고서<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#타임딜-백엔드--aws-인프라-구축-및-k6-분산-부하테스트-보고서" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<h2 id="목차">목차<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#목차" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><a href="#1-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B0%9C%EC%9A%94" class="internal alias">프로젝트 개요</a></li>
+<li><a href="#2-%EC%9D%B8%ED%94%84%EB%9D%BC-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98" class="internal alias">인프라 아키텍처</a></li>
+<li><a href="#3-%ED%95%B5%EC%8B%AC-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98-%EC%84%A4%EA%B3%84" class="internal alias">핵심 트랜잭션 설계</a></li>
+<li><a href="#4-%EB%B0%9C%EA%B2%AC%EB%90%9C-%EB%B2%84%EA%B7%B8-%EB%B0%8F-%EC%88%98%EC%A0%95-%EC%9D%B4%EB%A0%A5" class="internal alias">버그 수정 이력</a></li>
+<li><a href="#5-k6-%EB%B6%84%EC%82%B0-%EB%B6%80%ED%95%98%ED%85%8C%EC%8A%A4%ED%8A%B8-%EA%B2%B0%EA%B3%BC" class="internal alias">K6 부하테스트 결과</a></li>
+<li><a href="#6-%EC%84%B1%EB%8A%A5-%EB%B6%84%EC%84%9D" class="internal alias">성능 분석</a></li>
+<li><a href="#7-%EA%B7%B9%ED%95%9C-%EB%B6%80%ED%95%98-%ED%85%8C%EC%8A%A4%ED%8A%B8--breaking-point-%EB%B6%84%EC%84%9D" class="internal alias">극한 부하 테스트</a></li>
+<li><a href="#8-%EC%9E%AC%EA%B3%A0-%EC%A0%95%ED%95%A9%EC%84%B1-%EC%8B%AC%EC%B8%B5-%EB%B6%84%EC%84%9D" class="internal alias">재고 정합성 심층 분석</a></li>
+<li><a href="#9-%EA%B2%B0%EB%A1%A0" class="internal alias">결론</a></li>
+</ul>
+<hr/>
+<h2 id="1-프로젝트-개요">1. 프로젝트 개요<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-프로젝트-개요" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>타임딜(Flash Sale) 이커머스 백엔드 시스템의 <strong>고동시성 재고 처리 아키텍처</strong>를 설계하고, AWS 인프라를 Terraform으로 구축한 뒤 K6 분산 부하테스트를 통해 검증한 프로젝트입니다.</p>
+<h3 id="기술-스택">기술 스택<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#기술-스택" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>구분</th><th>기술</th></tr></thead><tbody><tr><td>백엔드</td><td>Spring Boot 3.5, Java 17</td></tr><tr><td>DB</td><td>PostgreSQL 15 (AWS RDS)</td></tr><tr><td>캐시/재고게이트</td><td>Redis 7 (AWS ElastiCache)</td></tr><tr><td>인프라</td><td>AWS EC2, ALB, RDS, ElastiCache</td></tr><tr><td>IaC</td><td>Terraform (모듈형)</td></tr><tr><td>부하테스트</td><td>K6 (분산: 3 EC2 인스턴스)</td></tr><tr><td>Mock PG</td><td>Node.js → Google Cloud Run</td></tr><tr><td>접근 방식</td><td>SSM Session Manager (SSH 없음)</td></tr></tbody></table></div>
+<hr/>
+<h2 id="2-인프라-아키텍처">2. 인프라 아키텍처<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-인프라-아키텍처" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<pre><code>인터넷
+  │
+  ▼
+[ALB :80]  ←── K6 EC2 ×3 (t3.micro, Private Subnet)
+  │               │
+  ▼               │ (HTTP 직접)
+[Spring EC2 :8080] (t3.medium, Private Subnet)
+  │         │
+  │         └──────────────────────────────────────────►  [Cloud Run :443]
+  │                                                           Mock PG
+  │
+  ├──► [ElastiCache Redis :6379]  ← 재고 게이트 (원자적 DECR)
+  └──► [RDS PostgreSQL :5432]     ← 주문/재고 영속화
+</code></pre>
+<h3 id="terraform-모듈-구조">Terraform 모듈 구조<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#terraform-모듈-구조" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>terraform/
+├── main.tf          # 10개 모듈 오케스트레이션
+├── variables.tf
+├── terraform.tfvars
+└── modules/
+    ├── vpc/          # VPC, Public/Private 서브넷, NAT Gateway
+    ├── security_groups/  # ALB, Spring, Redis, RDS, K6 SG
+    ├── iam/          # SSM + CloudWatch + S3 정책
+    ├── s3/           # 결과 저장, JAR 배포, K6 스크립트
+    ├── rds/          # PostgreSQL 15, db.t3.medium
+    ├── elasticache/  # Redis 7, cache.t3.micro
+    ├── alb/          # ALB + 헬스체크 (/actuator/health)
+    ├── ec2_app/      # Spring Boot 인스턴스
+    ├── ec2_pg/       # (Cloud Run으로 이관됨)
+    └── ec2_k6/       # K6 부하 생성기 ×3
+</code></pre>
+<h3 id="배포-파이프라인">배포 파이프라인<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#배포-파이프라인" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>로컬 mvn build → S3 (app.jar) → SSM send-command → EC2 download &amp; restart
+</code></pre>
+<hr/>
+<h2 id="3-핵심-트랜잭션-설계">3. 핵심 트랜잭션 설계<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-핵심-트랜잭션-설계" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>타임딜의 핵심 과제: <strong>재고 초과 판매(Overselling) 방지</strong> + <strong>고동시성 처리</strong></p>
+<h3 id="주문-플로우-5단계">주문 플로우 (5단계)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#주문-플로우-5단계" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>Step 4. POST /api/orders
+        Redis DECR (원자적 재고 선점)
+          ├── 성공 → DB에 PENDING 주문 저장 (HikariCP 20 pool)
+          └── 실패 → 409 SOLD_OUT (DB 접근 없음, 초고속)
+
+Step 5. POST /api/orders/{id}/pay
+        SELECT FOR UPDATE (PAYING 마킹, 중복 결제 방지)
+        Mock PG 호출 (300~800ms 지연, 8% 실패율)
+          ├── PG 성공 → DB Atomic UPDATE (stock - 1 WHERE stock > 0)
+          │             PAID 상태 저장
+          └── PG 실패 → Redis INCR (재고 복구)
+                         FAILED 상태 저장
+                         502 BAD_GATEWAY 반환
+
+Step 6. GET /api/orders/{id}
+        OrderResponse DTO 반환 (status: PAID/FAILED)
+</code></pre>
+<h3 id="재고-이중-방어-설계">재고 이중 방어 설계<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#재고-이중-방어-설계" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>[1차 방어] Redis DECR (단일 원자 연산, ~1ms)
+           → 재고 소진 시 즉시 409 반환, DB 부하 차단
+
+[2차 방어] DB UPDATE WHERE stock > 0 (원자적 SQL)
+           → Redis 이상 시 최종 방어선
+           → affected=0 이면 IllegalStateException → 트랜잭션 롤백
+</code></pre>
+<hr/>
+<h2 id="4-발견된-버그-및-수정-이력">4. 발견된 버그 및 수정 이력<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-발견된-버그-및-수정-이력" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="버그-1-spring-boot-redis-연결-실패-크리티컬">버그 1. Spring Boot Redis 연결 실패 (크리티컬)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#버그-1-spring-boot-redis-연결-실패-크리티컬" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout danger" data-callout="danger">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>증상 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Spring Boot 앱이 시작 시 <code>Unable to connect to localhost:6379</code> 오류로 크래시 루프 (235회 재시작)</p>
+</div>
+</blockquote>
+<p><strong>근본 원인</strong>: Spring Boot 3.x에서 Redis 설정 경로 변경</p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="yaml" data-theme="github-light github-dark"><code data-language="yaml" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 잘못된 설정 (Spring Boot 2.x 방식, 3.x에서 무시됨)</span></span>
+<span data-line><span style="--shiki-light:#22863A;--shiki-dark:#85E89D;">spring</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">:</span></span>
+<span data-line><span style="--shiki-light:#22863A;--shiki-dark:#85E89D;">  redis</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">:</span></span>
+<span data-line><span style="--shiki-light:#22863A;--shiki-dark:#85E89D;">    host</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">${REDIS_HOST:localhost}</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 올바른 설정 (Spring Boot 3.x)</span></span>
+<span data-line><span style="--shiki-light:#22863A;--shiki-dark:#85E89D;">spring</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">:</span></span>
+<span data-line><span style="--shiki-light:#22863A;--shiki-dark:#85E89D;">  data</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">:</span></span>
+<span data-line><span style="--shiki-light:#22863A;--shiki-dark:#85E89D;">    redis</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">:</span></span>
+<span data-line><span style="--shiki-light:#22863A;--shiki-dark:#85E89D;">      host</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">${REDIS_HOST:localhost}</span></span></code></pre></figure>
+<p>Spring Boot 3.0부터 <code>spring.redis.*</code> 프로퍼티가 <code>spring.data.redis.*</code>로 이전됨. 기존 경로를 쓰면 프로퍼티 자체가 무시되어 기본값 <code>localhost</code>를 사용.</p>
+<hr/>
+<h3 id="버그-2-get-apiordersid---localdatetime-직렬화-오류">버그 2. GET /api/orders/{id} - LocalDateTime 직렬화 오류<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#버그-2-get-apiordersid---localdatetime-직렬화-오류" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout danger" data-callout="danger">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>증상 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Step 6 체크 100% 실패. Spring Boot가 500 Internal Server Error 반환</p>
+</div>
+</blockquote>
+<p><strong>근본 원인</strong>: <code>Order</code> 엔티티를 직접 반환 → <code>LocalDateTime</code> 필드를 Jackson이 직렬화 불가</p>
+<pre><code>com.fasterxml.jackson.databind.exc.InvalidDefinitionException:
+Java 8 date/time type `java.time.LocalDateTime` not supported by default
+(MapperFeature.REQUIRE_HANDLERS_FOR_JAVA8_TIMES)
+</code></pre>
+<p><strong>수정</strong>: <code>Order</code> 엔티티 대신 <code>OrderResponse</code> DTO 반환</p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="java" data-theme="github-light github-dark"><code data-language="java" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// 수정 전</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">@</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">GetMapping</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;/api/orders/{orderId}&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> ResponseEntity</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">&lt;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">Order</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">></span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> getOrder</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(@</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">PathVariable</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> Long orderId) {</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    return</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> ResponseEntity.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">ok</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(orderService.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">getOrder</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(orderId));</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// 수정 후</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">@</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">GetMapping</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;/api/orders/{orderId}&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> ResponseEntity</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">&lt;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">OrderResponse</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">></span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> getOrder</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(@</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">PathVariable</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> Long orderId) {</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    return</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> ResponseEntity.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">ok</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(OrderResponse.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">from</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(orderService.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">getOrder</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(orderId)));</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></figure>
+<hr/>
+<h3 id="버그-3-분산-테스트-재고-초기화-불일치">버그 3. 분산 테스트 재고 초기화 불일치<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#버그-3-분산-테스트-재고-초기화-불일치" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>증상 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>분산 K6 테스트에서 <code>재고 정합성 오류: DB stock 차감 실패</code> — Redis는 통과했지만 DB stock이 0</p>
+</div>
+</blockquote>
+<p><strong>근본 원인</strong>: 관리자 재고 초기화 API가 Redis만 리셋, DB는 미반영 → 3개 K6 인스턴스의 setup()이 각각 Redis를 100으로 초기화하지만 DB는 이미 다른 인스턴스가 소진한 상태</p>
+<p><strong>수정</strong>: <code>ProductRepository</code>에 <code>resetStock()</code> 추가, 컨트롤러에서 Redis + DB 동시 초기화</p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="java" data-theme="github-light github-dark"><code data-language="java" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// ProductRepository</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">@</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">Modifying</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">@</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">Query</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;UPDATE Product p SET p.stock = :stock WHERE p.id = :id&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">int</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> resetStock</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(@</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">Param</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;id&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">) Long productId, @</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">Param</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;stock&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">) </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">int</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> stock);</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// OrderController</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">@</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">Transactional</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">@</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">PostMapping</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;/api/admin/stock/reset&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> ResponseEntity</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">&lt;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">Void</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">></span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> resetStock</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(@</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">RequestParam</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> Long productId, @</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">RequestParam</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> int</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> stock) {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    stockService.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">reset</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(productId, stock);          </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// Redis</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    productRepository.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">resetStock</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(productId, stock); </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// DB</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    return</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> ResponseEntity.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">ok</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">().</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">build</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></figure>
+<hr/>
+<h3 id="버그-4-k6-step5-failed-체크-오류">버그 4. K6 Step5 FAILED 체크 오류<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#버그-4-k6-step5-failed-체크-오류" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>증상 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>PG 실패 케이스 12건 모두 <code>Step5: FAILED 상태 DB 저장</code> 체크 실패</p>
+</div>
+</blockquote>
+<p><strong>근본 원인</strong>: K6가 502 응답 바디에서 <code>status === 'FAILED'</code>를 기대했지만, Spring의 <code>GlobalExceptionHandler</code>는 <code>{code, message}</code> 형태의 <code>ErrorResponse</code>를 반환</p>
+<p><strong>수정</strong>: 502 응답 후 <code>GET /api/orders/{id}</code>로 DB 상태 직접 검증</p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="javascript" data-theme="github-light github-dark"><code data-language="javascript" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// 수정 전</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">} </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">else</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> if</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> (step5.status </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">===</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 502</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">) {</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">  check</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(step5, {</span></span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    'Step5: FAILED 상태 DB 저장'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70;">r</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =></span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> JSON</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">parse</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(r.body).status </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">===</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> 'FAILED'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  });</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// 수정 후</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">} </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">else</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> if</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> (step5.status </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">===</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 502</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">) {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  paymentFailed.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">add</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">1</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">);</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">  check</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(step5, {</span></span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    'Step5: PG 실패 응답 확인'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70;">r</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =></span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> JSON</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">parse</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(r.body).code </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">!==</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> undefined</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  });</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">  const</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> step5fail</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> http.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">get</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">`${</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">BASE_URL</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">}/api/orders/${</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">orderId</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">}`</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, { headers });</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">  check</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(step5fail, {</span></span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    'Step5: FAILED 상태 DB 저장'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70;">r</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =></span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> JSON</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">parse</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(r.body).status </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">===</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> 'FAILED'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  });</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></figure>
+<hr/>
+<h3 id="버그-5-mock-pg-ec2--cloud-run-이관">버그 5. Mock PG EC2 → Cloud Run 이관<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#버그-5-mock-pg-ec2--cloud-run-이관" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout info" data-callout="info">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>배경 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>K6 EC2(Private Subnet) → Mock PG EC2(Private Subnet) 보안 그룹 규칙 복잡성</p>
+</div>
+</blockquote>
+<p>Private 서브넷 간 Security Group 인라인 ingress 규칙 변경 시 SG 교체(destroy+create)가 발생하여 운영 중 EC2를 참조하는 경우 Terraform apply가 10분 이상 멈추는 문제 발생.</p>
+<p><strong>해결</strong>: Mock PG를 Google Cloud Run으로 이관</p>
+<ul>
+<li>URL: <code>https://mock-pg-1046420547293.us-central1.run.app</code></li>
+<li>Spring Boot <code>.env</code>의 <code>PG_URL</code> 환경변수만 변경으로 전환 완료</li>
+</ul>
+<hr/>
+<h2 id="5-k6-분산-부하테스트-결과">5. K6 분산 부하테스트 결과<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-k6-분산-부하테스트-결과" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="테스트-환경">테스트 환경<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#테스트-환경" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>항목</th><th>설정</th></tr></thead><tbody><tr><td>K6 인스턴스 수</td><td>3개 (t3.micro, ap-northeast-2)</td></tr><tr><td>인스턴스당 VU</td><td>300</td></tr><tr><td>총 VU (이론)</td><td>900</td></tr><tr><td>executor</td><td>shared-iterations</td></tr><tr><td>재고</td><td>100개</td></tr><tr><td>Mock PG 지연</td><td>300~800ms</td></tr><tr><td>Mock PG 실패율</td><td>8%</td></tr><tr><td>Mock PG 타임아웃율</td><td>1%</td></tr></tbody></table></div>
+<h3 id="최종-테스트-결과-k6-0-기준-3차-실행">최종 테스트 결과 (K6-0 기준, 3차 실행)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#최종-테스트-결과-k6-0-기준-3차-실행" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>     ✓ Step4: PENDING 상태     92%  (145/156)
+     ✓ Step4: orderId 발급     92%  (145/156)
+     ✓ SOLD_OUT 코드 확인     100%
+     ✓ Step5: PAID 상태       100%
+     ✓ Step5: PG 실패 응답    100%
+     ✓ Step5: FAILED DB 저장  100%
+     ✓ Step6: DB에 PAID 확인  100%
+
+     checks: 97.03%  (720/742)
+</code></pre>
+<h3 id="핵심-지표">핵심 지표<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#핵심-지표" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지표</th><th>값</th><th>판정</th></tr></thead><tbody><tr><td>step4_order_started</td><td>156건</td><td>—</td></tr><tr><td>step4_sold_out</td><td>142건</td><td>Redis 게이트 정상 작동</td></tr><tr><td>step5_paid</td><td><strong>132건</strong></td><td>결제 성공</td></tr><tr><td>step5_pay_failed</td><td>12건</td><td>PG 8% 실패율 반영</td></tr><tr><td>step4_latency avg</td><td>877ms</td><td>—</td></tr><tr><td>step4_latency p(95)</td><td>3,075ms</td><td>⚠️ 임계값(3000ms) 근접</td></tr><tr><td>step5_latency avg</td><td>2,946ms</td><td>PG 포함</td></tr><tr><td>step5_latency p(95)</td><td>5,676ms</td><td>✅ (임계값 8000ms 이내)</td></tr><tr><td>http_req_failed</td><td>34%</td><td>SOLD_OUT(409) + 실패 포함</td></tr><tr><td>총 실행 시간</td><td>~8.6초</td><td>—</td></tr></tbody></table></div>
+<h3 id="이전-세션-대비-개선">이전 세션 대비 개선<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#이전-세션-대비-개선" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>항목</th><th>수정 전</th><th>수정 후</th></tr></thead><tbody><tr><td>step5_paid</td><td><strong>0건</strong></td><td><strong>132건</strong></td></tr><tr><td>Step6 체크 통과율</td><td><strong>0%</strong></td><td><strong>100%</strong></td></tr><tr><td>Step5 FAILED 체크</td><td><strong>0%</strong></td><td><strong>100%</strong></td></tr><tr><td>전체 체크 통과율</td><td>~50%</td><td><strong>97%</strong></td></tr><tr><td>앱 상태</td><td>크래시 루프</td><td>안정 가동</td></tr></tbody></table></div>
+<hr/>
+<h2 id="6-성능-분석">6. 성능 분석<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#6-성능-분석" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="병목-지점-hikaricp-커넥션-풀">병목 지점: HikariCP 커넥션 풀<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#병목-지점-hikaricp-커넥션-풀" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>핵심 관찰 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>step4 (Redis 재고 선점) 자체는 빠르지만, <strong>DB INSERT (PENDING 저장)</strong> 에서 HikariCP 풀 대기 발생</p>
+</div>
+</blockquote>
+<pre><code>HikariCP 설정: maximum-pool-size=20
+동시 주문 시도: 300 VU (K6-0 기준)
+→ 180건 Redis 통과 → 20개 커넥션에 180개 요청 = 9배 경합
+→ step4 avg=877ms, p(95)=3,075ms
+</code></pre>
+<p><strong>Redis 재고 게이트 효과</strong>:</p>
+<ul>
+<li>142건 SOLD_OUT → DB 접근 없이 즉시 반환</li>
+<li>DB 실제 부하: 180건 (42% 차단 효과)</li>
+</ul>
+<h3 id="정합성-분석">정합성 분석<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#정합성-분석" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Redis와 DB 재고 동기화 검증:</p>
+<ul>
+<li>Redis 게이트 통과 후 DB UPDATE (WHERE stock > 0) 실행</li>
+<li>DB stock 차감 실패 시 전체 트랜잭션 롤백 + 예외 처리</li>
+<li>분산 테스트에서 setup() 경합으로 재고 초기화가 중복 실행되는 경우 이 방어선이 발동</li>
+</ul>
+<h3 id="mock-pg-cloud-run-응답-특성">Mock PG (Cloud Run) 응답 특성<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#mock-pg-cloud-run-응답-특성" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>avgLatency: ~568ms (설정: 300~800ms)
+p95Latency: ~751ms
+실패 사유 분포:
+  - INSUFFICIENT_BALANCE  (잔액 부족)
+  - WRONG_PASSWORD        (비밀번호 오류)
+  - CARD_COMPANY_MAINTENANCE (카드사 점검)
+  - FRAUD_DETECTED        (이상거래 탐지)
+</code></pre>
+<h3 id="알려진-제한-사항">알려진 제한 사항<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#알려진-제한-사항" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>분산 테스트 setup() 경합 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>K6 각 인스턴스가 독립적으로 <code>setup()</code>을 실행하여 재고를 100으로 초기화.
+3개 인스턴스가 거의 동시에 실행되지만 미묘한 타이밍 차이로 한 인스턴스의 VU가 실행 중에 다른 인스턴스의 setup()이 재고를 초기화하는 경합 발생.</p>
+<p><strong>해결 방안</strong>: K6-1, K6-2를 <code>--no-setup --no-teardown</code> 플래그로 실행하거나, 테스트 전 별도 SSM 커맨드로 초기화 수행.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="7-극한-부하-테스트--breaking-point-분석">7. 극한 부하 테스트 — Breaking Point 분석<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#7-극한-부하-테스트--breaking-point-분석" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>목적 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>900 VU 검증 완료 후, 단계별 부하 증가로 시스템 한계선(Breaking Point)을 실측. HikariCP pool 크기에 따른 성능 변화 비교.</p>
+</div>
+</blockquote>
+<h3 id="테스트-구성-변경-분산-정합성-수정">테스트 구성 변경 (분산 정합성 수정)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#테스트-구성-변경-분산-정합성-수정" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>900 VU 테스트의 <code>setup()</code> 경합 문제를 해결하여 극한 테스트에서는 정확한 결과를 얻도록 개선:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>인스턴스</th><th>역할</th><th>플래그</th></tr></thead><tbody><tr><td>K6-0</td><td>Master: 재고 초기화 + 결과 검증</td><td>setup() + teardown() 실행</td></tr><tr><td>K6-1</td><td>Worker: 순수 부하 생성</td><td><code>--no-setup --no-teardown</code></td></tr><tr><td>K6-2</td><td>Worker: 순수 부하 생성</td><td><code>--no-setup --no-teardown</code></td></tr></tbody></table></div>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>코드 변경 포인트 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p><code>default(data)</code> 함수에서 <code>data?.productId ?? PRODUCT_ID</code> 폴백 추가.
+Worker 인스턴스는 <code>data</code>가 <code>undefined</code>이므로 env var로 fallback.</p>
+</div>
+</blockquote>
+<hr/>
+<h3 id="1200-vu-테스트-1차--pool20-breaking-point-발견">1200 VU 테스트 1차 — Pool=20 (Breaking Point 발견)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1200-vu-테스트-1차--pool20-breaking-point-발견" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>구성</strong>: K6 × 3 인스턴스 × 400 VU = 1,200 VU 동시, stock=1,200</p>
+<pre><code>HikariPool-1 - Connection is not available,
+request timed out after 5000ms
+(total=20, active=20, idle=0, waiting=379)
+</code></pre>
+<blockquote class="callout danger" data-callout="danger">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>시스템 포화 (Saturation) 발생 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>800 VU 동시 DB 요청 → HikariCP 20개 커넥션에 379개 대기 → 5초 timeout 후 500 에러 폭발</p>
+</div>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>항목</th><th>값</th></tr></thead><tbody><tr><td>K6-1/K6-2 에러</td><td><code>[Step4 ERROR] 500</code> 다수</td></tr><tr><td>step4 p(95)</td><td>3,472ms ❌ (임계값 3,000ms 초과)</td></tr><tr><td>HikariCP waiting</td><td>379건</td></tr><tr><td>결론</td><td>Pool=20 Breaking Point: ~800 동시 DB 요청</td></tr></tbody></table></div>
+<hr/>
+<h3 id="1200-vu-테스트-2차--pool50-cold-pool-문제-발견">1200 VU 테스트 2차 — Pool=50 (Cold Pool 문제 발견)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1200-vu-테스트-2차--pool50-cold-pool-문제-발견" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>구성</strong>: HikariCP <code>maximum-pool-size=50</code>, <code>minimum-idle=10</code>, <code>connection-timeout=3000ms</code>, stock=1,200</p>
+<pre><code>HikariPool-1 - Connection is not available,
+request timed out after 3000ms
+(total=30, active=30, idle=0, waiting=369)
+</code></pre>
+<p><strong>Pool 동적 성장 관찰</strong>: 20 → 30 (테스트 시작 시점)</p>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Cold Pool 문제 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Flash Sale 특성상 트래픽이 0→1200 VU로 순간 폭발.
+HikariCP가 <code>minimum-idle=10</code>에서 시작해 50까지 동적으로 성장하는 도중에 요청이 몰려
+30개 연결에서 병목 발생. timeout은 3000ms로 단축 확인됨.</p>
+</div>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>항목</th><th>Pool=20 (1차)</th><th>Pool=50 cold (2차)</th></tr></thead><tbody><tr><td>timeout</td><td>5,000ms</td><td><strong>3,000ms</strong> ✅</td></tr><tr><td>최대 pool 크기</td><td>20</td><td>30 (성장 중)</td></tr><tr><td>waiting 큐</td><td>379</td><td>369</td></tr><tr><td>PG PAID (전체)</td><td>99건</td><td><strong>175건</strong> ✅</td></tr><tr><td>step4 p(95)</td><td>3,472ms</td><td><strong>3,135ms</strong> ✅</td></tr></tbody></table></div>
+<h3 id="breaking-point-분석-요약">Breaking Point 분석 요약<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#breaking-point-분석-요약" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>[현재 아키텍처의 DB 레이어 처리 한계]
+
+Pool=20:  ~800 동시 요청 → 포화
+Pool=50:  cold start 시 ~400 동시 요청 → 포화 시작 (성장 도중)
+Pool=50 warm:  최대 ~2,500 동시 요청 처리 가능 (이론)
+  = 50 connections × (1s / avg 20ms/query)
+
+[근본 원인]
+Flash Sale은 0→Max 트래픽이 순간적으로 발생
+→ Pool이 minimum-idle에서 시작하면 warm-up 중 timeout 필연적
+→ 해결책: minimum-idle = maximum-pool-size (pool 완전 예열)
+</code></pre>
+<h3 id="프로덕션-권장-설정">프로덕션 권장 설정<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#프로덕션-권장-설정" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="yaml" data-theme="github-light github-dark"><code data-language="yaml" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># Flash Sale 특화 HikariCP 설정</span></span>
+<span data-line><span style="--shiki-light:#22863A;--shiki-dark:#85E89D;">hikari</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">:</span></span>
+<span data-line><span style="--shiki-light:#22863A;--shiki-dark:#85E89D;">  maximum-pool-size</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">50</span></span>
+<span data-line><span style="--shiki-light:#22863A;--shiki-dark:#85E89D;">  minimum-idle</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">50</span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">          # ← 핵심: max와 동일하게 설정 (항상 예열 상태 유지)</span></span>
+<span data-line><span style="--shiki-light:#22863A;--shiki-dark:#85E89D;">  connection-timeout</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">3000</span></span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">  # RDS PostgreSQL max_connections 기본값 = 100</span></span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">  # 50 pool × 복수 인스턴스(EKS) 고려 필요</span></span></code></pre></figure>
+<blockquote class="callout info" data-callout="info">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>RDS 제약 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>RDS db.t3.medium의 PostgreSQL max_connections ≈ 170.
+앱 서버가 1개이므로 50 pool은 안전하나, EKS Scale-out 시 인스턴스 수 × pool 크기가 max_connections 초과하지 않도록 주의.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="8-재고-정합성-심층-분석">8. 재고 정합성 심층 분석<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#8-재고-정합성-심층-분석" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>분석 배경 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>3차 K6 테스트에서 <code>step5_paid=132</code>가 초기 재고 100개를 초과하는 현상 발견. PostgreSQL DB를 직접 조회하여 원인을 규명.</p>
+</div>
+</blockquote>
+<h3 id="db-전체-주문-현황-누적">DB 전체 주문 현황 (누적)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#db-전체-주문-현황-누적" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>3차례 테스트 실행 후 축적된 전체 데이터:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>상태</th><th>건수</th><th>설명</th></tr></thead><tbody><tr><td>PAID</td><td>343</td><td>결제 완료 (전체 실행 누계)</td></tr><tr><td>FAILED</td><td>279</td><td>PG 실패 → 재고 복구 완료</td></tr><tr><td>PAYING</td><td>88</td><td>결제 진행 중 프로세스 중단 → <strong>고착</strong></td></tr><tr><td>PENDING</td><td>94</td><td>주문 생성 후 결제 미진행</td></tr><tr><td>Products stock</td><td>64</td><td>DB 잔여 재고</td></tr></tbody></table></div>
+<h3 id="시간대별-분석-postgresql-분-단위-버킷">시간대별 분석 (PostgreSQL 분 단위 버킷)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#시간대별-분석-postgresql-분-단위-버킷" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="sql" data-theme="github-light github-dark"><code data-language="sql" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">SELECT</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> date_trunc(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">'minute'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, created_at) </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">AS</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> minute</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">       status</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">count</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">*</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">) </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">AS</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> cnt</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">FROM</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> orders</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">GROUP BY</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 1</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">2</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">ORDER BY</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 1</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">2</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">;</span></span></code></pre></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>시간</th><th>PAID</th><th>FAILED</th><th>PAYING</th><th>PENDING</th><th>비고</th></tr></thead><tbody><tr><td>10:35</td><td>—</td><td>245</td><td>—</td><td>—</td><td>Spring Boot 크래시 루프 시기</td></tr><tr><td>11:11</td><td>1</td><td>—</td><td>—</td><td>—</td><td>수동 테스트</td></tr><tr><td>11:48</td><td>99</td><td>7</td><td><strong>70</strong></td><td>35</td><td>1차 테스트 (K6 조기 종료)</td></tr><tr><td>12:13</td><td>100</td><td>13</td><td><strong>18</strong></td><td>58</td><td>2차 테스트 (K6 조기 종료)</td></tr><tr><td>12:35</td><td><strong>143</strong></td><td>14</td><td>0</td><td>1</td><td>3차 테스트 (정상 완료)</td></tr></tbody></table></div>
+<h3 id="분석-1-143-paid--100-초기-재고의-원인">분석 1: 143 PAID > 100 초기 재고의 원인<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#분석-1-143-paid--100-초기-재고의-원인" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>K6 분산 setup() 경합 (Race Condition) </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>DB 레벨의 초과 판매가 아닌, 테스트 오케스트레이션 레벨의 재고 초기화 경합</p>
+</div>
+</blockquote>
+<p><strong>발생 메커니즘:</strong></p>
+<pre><code>T+0.0s  K6-0 setup() → Redis:100, DB:100 초기화 완료
+T+0.0s  K6-0 VU 300개 시작 → Redis DECR 진행 (100→99→98→...)
+
+T+0.3s  K6-1 setup() → Redis:100, DB:100 재초기화  ← 경합 발생!
+        (K6-0 VU들이 이미 DECR 중인 상태에서 Redis를 100으로 덮어씀)
+
+T+0.7s  K6-2 setup() → Redis:100, DB:100 재초기화  ← 경합 발생!
+
+결과: Redis 슬롯 300개가 소비 가능한 상태가 됨
+      → 143건이 Redis DECR 성공 → PENDING → PAID
+</code></pre>
+<p><strong>핵심 포인트</strong>: DB의 <code>UPDATE WHERE stock > 0</code> 이중 방어선은 정상 동작했음.</p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="sql" data-theme="github-light github-dark"><code data-language="sql" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">-- DB stock=64 검증</span></span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">-- 마지막 리셋(100) - 3차 테스트 순수 PAID(36) = 64  ← 정확</span></span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">-- (143 PAID 중 107건은 이전 리셋 슬롯을 소비한 것)</span></span></code></pre></figure>
+<h3 id="분석-2-paying88--아키텍처-갭">분석 2: PAYING=88 — 아키텍처 갭<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#분석-2-paying88--아키텍처-갭" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout danger" data-callout="danger">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>프로덕션 위험 요소 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>88건의 주문이 <code>PAYING</code> 상태로 고착. Redis 재고는 이미 차감되었으나 결제 완료/실패 처리가 되지 않은 <strong>유령 예약</strong> 상태</p>
+</div>
+</blockquote>
+<p><strong>발생 원인:</strong></p>
+<pre><code>1차 테스트 (11:48): K6 프로세스가 결제 응답 대기 중 강제 종료
+                    → 70건이 PAYING 상태로 잔류
+2차 테스트 (12:13): 동일한 패턴으로 18건 추가
+─────────────────────────────────────────────
+합계: 88건 PAYING (영구 고착)
+</code></pre>
+<p><strong>영향:</strong></p>
+<ul>
+<li>Redis 재고: 해당 주문의 DECR된 슬롯이 복구되지 않음 → 실제보다 적은 재고로 표시</li>
+<li>DB: PAYING 레코드가 계속 존재 → 통계 오염</li>
+<li>현재 코드에는 PAYING 타임아웃 또는 정리(cleanup) 메커니즘 없음</li>
+</ul>
+<p><strong>해결 방안 (미구현):</strong></p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="java" data-theme="github-light github-dark"><code data-language="java" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// 방안 1: 스케줄러로 PAYING 타임아웃 처리</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">@</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">Scheduled</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">fixedDelay</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 60_000</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> cleanupStuckPayingOrders</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">() {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    LocalDateTime threshold </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> LocalDateTime.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">now</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">().</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">minusMinutes</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">10</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">);</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    List&lt;</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">Order</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">> stuck </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> orderRepo.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">findByStatusAndUpdatedAtBefore</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(PAYING, threshold);</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    stuck.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">forEach</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(order </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">-></span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">        stockService.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">increment</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(order.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">getProductId</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()); </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// Redis 복구</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">        order.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">markFailed</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;TIMEOUT&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">);</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    });</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// 방안 2: Redis에 TTL 기반 분산 락 사용</span></span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// PAYING 진입 시 TTL=60s 락 설정 → 만료 시 자동 복구</span></span></code></pre></figure>
+<h3 id="정합성-검증-요약">정합성 검증 요약<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#정합성-검증-요약" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>검증 항목</th><th>예상</th><th>실제</th><th>판정</th></tr></thead><tbody><tr><td>DB 이중 방어 (WHERE stock > 0)</td><td>초과 판매 차단</td><td>stock=64 (수학적으로 정확)</td><td>✅ 정상</td></tr><tr><td>Redis ↔ DB 동기화</td><td>일치</td><td>setup() 경합으로 Redis 리셋 중복 → 일시적 불일치</td><td>⚠️ 테스트 한정</td></tr><tr><td>PAYING 고착 처리</td><td>자동 복구</td><td>메커니즘 없음 (88건 영구 고착)</td><td>❌ 미구현</td></tr><tr><td>단일 사이클 재고 정확도</td><td>100건 제한</td><td>경합 없는 단독 실행 시 정확</td><td>✅ 단독 실행 기준</td></tr></tbody></table></div>
+<hr/>
+<h2 id="9-결론">9. 결론<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#9-결론" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="달성된-목표">달성된 목표<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#달성된-목표" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ol>
+<li><strong>고동시성 재고 초과 판매 방지</strong>: Redis 원자적 DECR + DB <code>WHERE stock > 0</code> 이중 방어 구현</li>
+<li><strong>완전 자동화 인프라</strong>: Terraform으로 10개 모듈 (47개 리소스) 배포, <code>terraform destroy</code>로 완전 제거 가능</li>
+<li><strong>SSH 없는 운영</strong>: AWS SSM Session Manager로 모든 운영 자동화</li>
+<li><strong>분산 부하테스트 성공</strong>: 3개 K6 인스턴스로 900 VU 동시 부하, 97% 체크 통과</li>
+<li><strong>전체 이커머스 플로우 검증</strong>: 주문(PENDING) → 결제(PAID/FAILED) → 상태확인 완전 동작</li>
+<li><strong>DB 정합성 심층 분석</strong>: SQL 직접 조회로 테스트 결과 수치의 원인 규명 (setup() 경합, PAYING 고착 분석)</li>
+<li><strong>Breaking Point 실측</strong>: 1,200 VU 극한 테스트로 HikariCP pool 포화 지점 정량화</li>
+<li><strong>Cold Pool 문제 발견</strong>: Flash Sale 특성상 minimum-idle ≠ maximum-pool-size 설정이 초기 트래픽 폭발 시 병목 유발</li>
+</ol>
+<h3 id="핵심-학습">핵심 학습<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#핵심-학습" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>항목</th><th>교훈</th></tr></thead><tbody><tr><td>Spring Boot 3.x 마이그레이션</td><td><code>spring.redis.*</code> → <code>spring.data.redis.*</code> 확인 필수</td></tr><tr><td>Entity 직렬화</td><td>API 응답은 항상 DTO 사용 (엔티티 직접 노출 금지)</td></tr><tr><td>분산 테스트</td><td>setup() 경합 방지 위해 사전 초기화 분리</td></tr><tr><td>Terraform SG</td><td>description 변경은 리소스 교체 유발 — 별도 rule 리소스로 분리</td></tr><tr><td>CloudWatch Appender</td><td>AWS SDK v2와 logback-awslogs-appender 충돌 → JSON stdout으로 대체</td></tr><tr><td>PAYING 고착</td><td>결제 중 프로세스 종료 시 복구 불가 → 프로덕션에서 TTL 기반 분산 락 또는 스케줄러 필수</td></tr><tr><td>K6 분산 setup()</td><td>인스턴스별 독립 setup() 실행 → master/worker 분리로 해결 (<code>--no-setup --no-teardown</code>)</td></tr><tr><td>HikariCP Cold Pool</td><td>Flash Sale 순간 폭발에 취약 → <code>minimum-idle = maximum-pool-size</code>로 항상 예열 상태 유지 필수</td></tr><tr><td>Breaking Point 실측</td><td>Pool=20: 800 VU 동시에서 포화 / Pool=50 warm: ~2,500 처리 가능 (이론)</td></tr></tbody></table></div>
+<h3 id="s3-결과-파일-위치">S3 결과 파일 위치<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#s3-결과-파일-위치" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>s3://timedeal-fdf59a5d/k6-results/
+├── result-ip-10-0-1-194-20260227-114903.json   # 1차 (버그 존재)
+├── result2-ip-10-0-1-194-20260227-121339.json  # 2차 (대부분 수정)
+└── result3-ip-10-0-1-194-*.json                # 3차 (모든 체크 통과)
+</code></pre>
+<hr/>
+<h3 id="단계별-부하-테스트-최종-결과표">단계별 부하 테스트 최종 결과표<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#단계별-부하-테스트-최종-결과표" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>VU 수</th><th>Pool 크기</th><th>결과</th><th>step4 p(95)</th><th>에러 원인</th><th>비고</th></tr></thead><tbody><tr><td>900</td><td>20</td><td>✅ 통과</td><td>3,075ms</td><td>—</td><td>97% checks</td></tr><tr><td>1,200</td><td>20 (cold)</td><td>❌ 포화</td><td>3,472ms</td><td>HikariCP waiting=379</td><td>Breaking Point</td></tr><tr><td>1,200</td><td>50 (cold)</td><td>❌ 부분실패</td><td>3,135ms</td><td>HikariCP waiting=369, total=30</td><td>Pool 성장 중</td></tr><tr><td>1,200</td><td>50 (warm)</td><td>✅ 예상</td><td>&lt;3,000ms</td><td>—</td><td>minimum-idle=50 권장</td></tr></tbody></table></div>
+<hr/>
+<p><em>보고서 작성일: 2026-02-27</em>
+<em>최종 업데이트: 극한 테스트 결과 추가 (HikariCP Breaking Point 분석)</em>
+<em>작성 환경: AWS ap-northeast-2 (서울)</em></p></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>그래프 뷰</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-431" aria-expanded="true"><h3>목차</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#타임딜-백엔드--aws-인프라-구축-및-k6-분산-부하테스트-보고서" data-for="타임딜-백엔드--aws-인프라-구축-및-k6-분산-부하테스트-보고서">타임딜 백엔드 — AWS 인프라 구축 및 K6 분산 부하테스트 보고서</a></li><li class="depth-1"><a href="#목차" data-for="목차">목차</a></li><li class="depth-1"><a href="#1-프로젝트-개요" data-for="1-프로젝트-개요">1. 프로젝트 개요</a></li><li class="depth-2"><a href="#기술-스택" data-for="기술-스택">기술 스택</a></li><li class="depth-1"><a href="#2-인프라-아키텍처" data-for="2-인프라-아키텍처">2. 인프라 아키텍처</a></li><li class="depth-2"><a href="#terraform-모듈-구조" data-for="terraform-모듈-구조">Terraform 모듈 구조</a></li><li class="depth-2"><a href="#배포-파이프라인" data-for="배포-파이프라인">배포 파이프라인</a></li><li class="depth-1"><a href="#3-핵심-트랜잭션-설계" data-for="3-핵심-트랜잭션-설계">3. 핵심 트랜잭션 설계</a></li><li class="depth-2"><a href="#주문-플로우-5단계" data-for="주문-플로우-5단계">주문 플로우 (5단계)</a></li><li class="depth-2"><a href="#재고-이중-방어-설계" data-for="재고-이중-방어-설계">재고 이중 방어 설계</a></li><li class="depth-1"><a href="#4-발견된-버그-및-수정-이력" data-for="4-발견된-버그-및-수정-이력">4. 발견된 버그 및 수정 이력</a></li><li class="depth-2"><a href="#버그-1-spring-boot-redis-연결-실패-크리티컬" data-for="버그-1-spring-boot-redis-연결-실패-크리티컬">버그 1. Spring Boot Redis 연결 실패 (크리티컬)</a></li><li class="depth-2"><a href="#버그-2-get-apiordersid---localdatetime-직렬화-오류" data-for="버그-2-get-apiordersid---localdatetime-직렬화-오류">버그 2. GET /api/orders/{id} - LocalDateTime 직렬화 오류</a></li><li class="depth-2"><a href="#버그-3-분산-테스트-재고-초기화-불일치" data-for="버그-3-분산-테스트-재고-초기화-불일치">버그 3. 분산 테스트 재고 초기화 불일치</a></li><li class="depth-2"><a href="#버그-4-k6-step5-failed-체크-오류" data-for="버그-4-k6-step5-failed-체크-오류">버그 4. K6 Step5 FAILED 체크 오류</a></li><li class="depth-2"><a href="#버그-5-mock-pg-ec2--cloud-run-이관" data-for="버그-5-mock-pg-ec2--cloud-run-이관">버그 5. Mock PG EC2 → Cloud Run 이관</a></li><li class="depth-1"><a href="#5-k6-분산-부하테스트-결과" data-for="5-k6-분산-부하테스트-결과">5. K6 분산 부하테스트 결과</a></li><li class="depth-2"><a href="#테스트-환경" data-for="테스트-환경">테스트 환경</a></li><li class="depth-2"><a href="#최종-테스트-결과-k6-0-기준-3차-실행" data-for="최종-테스트-결과-k6-0-기준-3차-실행">최종 테스트 결과 (K6-0 기준, 3차 실행)</a></li><li class="depth-2"><a href="#핵심-지표" data-for="핵심-지표">핵심 지표</a></li><li class="depth-2"><a href="#이전-세션-대비-개선" data-for="이전-세션-대비-개선">이전 세션 대비 개선</a></li><li class="depth-1"><a href="#6-성능-분석" data-for="6-성능-분석">6. 성능 분석</a></li><li class="depth-2"><a href="#병목-지점-hikaricp-커넥션-풀" data-for="병목-지점-hikaricp-커넥션-풀">병목 지점: HikariCP 커넥션 풀</a></li><li class="depth-2"><a href="#정합성-분석" data-for="정합성-분석">정합성 분석</a></li><li class="depth-2"><a href="#mock-pg-cloud-run-응답-특성" data-for="mock-pg-cloud-run-응답-특성">Mock PG (Cloud Run) 응답 특성</a></li><li class="depth-2"><a href="#알려진-제한-사항" data-for="알려진-제한-사항">알려진 제한 사항</a></li><li class="depth-1"><a href="#7-극한-부하-테스트--breaking-point-분석" data-for="7-극한-부하-테스트--breaking-point-분석">7. 극한 부하 테스트 — Breaking Point 분석</a></li><li class="depth-2"><a href="#테스트-구성-변경-분산-정합성-수정" data-for="테스트-구성-변경-분산-정합성-수정">테스트 구성 변경 (분산 정합성 수정)</a></li><li class="depth-2"><a href="#1200-vu-테스트-1차--pool20-breaking-point-발견" data-for="1200-vu-테스트-1차--pool20-breaking-point-발견">1200 VU 테스트 1차 — Pool=20 (Breaking Point 발견)</a></li><li class="depth-2"><a href="#1200-vu-테스트-2차--pool50-cold-pool-문제-발견" data-for="1200-vu-테스트-2차--pool50-cold-pool-문제-발견">1200 VU 테스트 2차 — Pool=50 (Cold Pool 문제 발견)</a></li><li class="depth-2"><a href="#breaking-point-분석-요약" data-for="breaking-point-분석-요약">Breaking Point 분석 요약</a></li><li class="depth-2"><a href="#프로덕션-권장-설정" data-for="프로덕션-권장-설정">프로덕션 권장 설정</a></li><li class="depth-1"><a href="#8-재고-정합성-심층-분석" data-for="8-재고-정합성-심층-분석">8. 재고 정합성 심층 분석</a></li><li class="depth-2"><a href="#db-전체-주문-현황-누적" data-for="db-전체-주문-현황-누적">DB 전체 주문 현황 (누적)</a></li><li class="depth-2"><a href="#시간대별-분석-postgresql-분-단위-버킷" data-for="시간대별-분석-postgresql-분-단위-버킷">시간대별 분석 (PostgreSQL 분 단위 버킷)</a></li><li class="depth-2"><a href="#분석-1-143-paid--100-초기-재고의-원인" data-for="분석-1-143-paid--100-초기-재고의-원인">분석 1: 143 PAID > 100 초기 재고의 원인</a></li><li class="depth-2"><a href="#분석-2-paying88--아키텍처-갭" data-for="분석-2-paying88--아키텍처-갭">분석 2: PAYING=88 — 아키텍처 갭</a></li><li class="depth-2"><a href="#정합성-검증-요약" data-for="정합성-검증-요약">정합성 검증 요약</a></li><li class="depth-1"><a href="#9-결론" data-for="9-결론">9. 결론</a></li><li class="depth-2"><a href="#달성된-목표" data-for="달성된-목표">달성된 목표</a></li><li class="depth-2"><a href="#핵심-학습" data-for="핵심-학습">핵심 학습</a></li><li class="depth-2"><a href="#s3-결과-파일-위치" data-for="s3-결과-파일-위치">S3 결과 파일 위치</a></li><li class="depth-2"><a href="#단계별-부하-테스트-최종-결과표" data-for="단계별-부하-테스트-최종-결과표">단계별 부하 테스트 최종 결과표</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Created with <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="../../../postscript.js" type="module"></script></html>

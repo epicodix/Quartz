@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr"><head><title>Terraform 트레이드오프 분석 - 언제 써야 하고 언제 안 써야 하나</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Quartz 4"/><meta property="og:title" content="Terraform 트레이드오프 분석 - 언제 써야 하고 언제 안 써야 하나"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Terraform 트레이드오프 분석 - 언제 써야 하고 언제 안 써야 하나"/><meta name="twitter:description" content="⚖️ Terraform 트레이드오프 분석 핵심 질문 “모든 인프라를 Terraform으로 관리해야 할까?” 정답: 아니다. 상황에 따라 ClickOps가 더 나을 수 있다."/><meta property="og:description" content="⚖️ Terraform 트레이드오프 분석 핵심 질문 “모든 인프라를 Terraform으로 관리해야 할까?” 정답: 아니다. 상황에 따라 ClickOps가 더 나을 수 있다."/><meta property="og:image:alt" content="⚖️ Terraform 트레이드오프 분석 핵심 질문 “모든 인프라를 Terraform으로 관리해야 할까?” 정답: 아니다. 상황에 따라 ClickOps가 더 나을 수 있다."/><meta property="twitter:domain" content="epicodix.github.io/Quartz"/><meta property="og:url" content="https://epicodix.github.io/Quartz/Terraform/00_기초/Terraform-트레이드오프-분석"/><meta property="twitter:url" content="https://epicodix.github.io/Quartz/Terraform/00_기초/Terraform-트레이드오프-분석"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="⚖️ Terraform 트레이드오프 분석 핵심 질문 “모든 인프라를 Terraform으로 관리해야 할까?” 정답: 아니다. 상황에 따라 ClickOps가 더 나을 수 있다."/><meta name="generator" content="Quartz"/><link href="../../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL1VzZXJzL2ExMjM0L2VwaWNvZGl4L215LXF1YXJ0ei1zaXRlL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><script src="../../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://epicodix.github.io/Quartz/index.xml"/><meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/><meta property="og:image" content="https://epicodix.github.io/Quartz/Terraform/00_기초/Terraform-트레이드오프-분석-og-image.webp"/><meta property="og:image:url" content="https://epicodix.github.io/Quartz/Terraform/00_기초/Terraform-트레이드오프-분석-og-image.webp"/><meta name="twitter:image" content="https://epicodix.github.io/Quartz/Terraform/00_기초/Terraform-트레이드오프-분석-og-image.webp"/><meta property="og:image:type" content="image/.webp"/></head><body data-slug="Terraform/00_기초/Terraform-트레이드오프-분석"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../..">Quartz 4</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>검색</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="검색어를 입력하세요" placeholder="검색어를 입력하세요"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="다크 모드"><title>다크 모드</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="라이트 모드"><title>라이트 모드</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="리더 모드"><title>리더 모드</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="collapse" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>{let priorityFolders=[\&quot;\\u{1F4D6} \\uAC00\\uC774\\uB4DC\&quot;,\&quot;\\u{1F52C} \\uAE30\\uC220 \\uBD84\\uC11D\&quot;,\&quot;\\u2699\\uFE0F \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;\\u{1F4DA} \\uAD50\\uC721\&quot;,\&quot;\\u{1F4BC} \\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624\&quot;];if(a.isFolder&amp;&amp;b.isFolder){let aPriority=priorityFolders.indexOf(a.displayName),bPriority=priorityFolders.indexOf(b.displayName);if(aPriority!==-1&amp;&amp;bPriority!==-1)return aPriority-bPriority;if(aPriority!==-1)return-1;if(bPriority!==-1)return 1}return!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,\&quot;ko-KR\&quot;,{numeric:!0,sensitivity:\&quot;base\&quot;}):a.isFolder?-1:1}&quot;,&quot;filterFn&quot;:&quot;node=>{if([\&quot;99_\\uC784\\uC2DC\&quot;,\&quot;tags\&quot;,\&quot;.obsidian\&quot;].includes(node.slugSegment))return!1;if(!node.isFolder&amp;&amp;node.data){let hiddenFiles=[\&quot;GUI_\\uC790\\uB3D9\\uD654_\\uB3C4\\uC804\\uAE30\&quot;,\&quot;Gemini_CLI_\\uD65C\\uC6A9_\\uAC00\\uC774\\uB4DC\&quot;,\&quot;Ollama_Troubleshooting_Guide\&quot;,\&quot;gemini_cli_guide\&quot;,\&quot;gemini_cli_introduction\&quot;,\&quot;gemini_context_awareness_guide\&quot;,\&quot;gemini_file_management_guide\&quot;,\&quot;get_claude_news.py\&quot;,\&quot;global_news_20250712\&quot;,\&quot;kubernetes_cheatsheet\&quot;,\&quot;kubernetes_storage_hands_on\&quot;,\&quot;naver_gmail_integration_guide\&quot;,\&quot;nodejs_installation_guide\&quot;,\&quot;\\uB0B4_\\uCEF4\\uD4E8\\uD130\\uB97C_AI_\\uC11C\\uBC84\\uB85C_\\uB9CC\\uB4E4\\uAE30_Ollama_\\uC124\\uCE58_\\uBC0F_\\uBB38\\uC81C\\uD574\\uACB0_\\uAC00\\uC774\\uB4DC\&quot;,\&quot;\\uC2DC\\uB9AC\\uC640_Gemini_\\uC5F0\\uACC4\\uC131_\\uAC15\\uD654_\\uBC29\\uC548\&quot;,\&quot;2025-08-13_\\uD559\\uC2B5_\\uD3EC\\uC778\\uD2B8\&quot;,\&quot;07_02_Advanced_Pod_Concepts\&quot;],fileTitle=node.data.title||node.displayName.replace(/\\.md$/,\&quot;\&quot;);return!hiddenFiles.includes(fileTitle)}return!0}&quot;,&quot;mapFn&quot;:&quot;node=>{let folderDisplayNames={\&quot;1_\\uAC00\\uC774\\uB4DC\&quot;:\&quot;\\u{1F4D6} \\uAC00\\uC774\\uB4DC\&quot;,\&quot;2_\\uAE30\\uC220_\\uBD84\\uC11D\&quot;:\&quot;\\u{1F52C} \\uAE30\\uC220 \\uBD84\\uC11D\&quot;,\&quot;3_\\uC544\\uC774\\uB514\\uC5B4_\\uB274\\uC2A4\&quot;:\&quot;\\u{1F4A1} \\uC544\\uC774\\uB514\\uC5B4 &amp; \\uB274\\uC2A4\&quot;,K8s_Deep_Dive:\&quot;\\u2699\\uFE0F \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;01_\\uB124\\uD2B8\\uC6CC\\uD06C \\uAE30\\uCD08\&quot;:\&quot;\\u{1F310} \\uB124\\uD2B8\\uC6CC\\uD06C \\uAE30\\uCD08\&quot;,\&quot;02_k8s\\uC2E4\\uC2B5\&quot;:\&quot;\\u{1F6E0}\\uFE0F \\uC2E4\\uC2B5\&quot;,\&quot;03_\\uD504\\uB85C\\uBA54\\uD14C\\uC6B0\\uC2A4\&quot;:\&quot;\\u{1F4CA} \\uD504\\uB85C\\uBA54\\uD14C\\uC6B0\\uC2A4\&quot;,\&quot;04_\\uADF8\\uB77C\\uD30C\\uB098\&quot;:\&quot;\\u{1F4C8} \\uADF8\\uB77C\\uD30C\\uB098\&quot;,\\uAD50\\uC721:\&quot;\\u{1F4DA} \\uAD50\\uC721\&quot;,\\uAD6C\\uB984\\uB525\\uB2E4\\uC774\\uBE0C:\&quot;\\u2601\\uFE0F \\uAD6C\\uB984\\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;\\uBD84\\uC0B0\\uC2DC\\uC2A4\\uD15C_Distributed Systems\&quot;:\&quot;\\u{1F517} \\uBD84\\uC0B0\\uC2DC\\uC2A4\\uD15C\&quot;,GO:\&quot;\\u{1F439} Go \\uC5B8\\uC5B4\&quot;,\&quot;\\uB124\\uC774\\uBC84-\\uAC80\\uC0C9\\uAD11\\uACE0-\\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158-\\uD504\\uB85C\\uC81D\\uD2B8\&quot;:\&quot;\\u{1F680} \\uB124\\uC774\\uBC84 \\uD504\\uB85C\\uC81D\\uD2B8\&quot;,\&quot;01-\\uD504\\uB85C\\uC81D\\uD2B8-\\uBC30\\uACBD\&quot;:\&quot;\\u{1F4CB} \\uD504\\uB85C\\uC81D\\uD2B8 \\uBC30\\uACBD\&quot;,\&quot;02-\\uD604\\uC7AC\\uC0C1\\uD0DC-\\uBD84\\uC11D\&quot;:\&quot;\\u{1F50D} \\uD604\\uC7AC\\uC0C1\\uD0DC \\uBD84\\uC11D\&quot;,\&quot;03-\\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158-\\uACC4\\uD68D\&quot;:\&quot;\\u{1F4DD} \\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158 \\uACC4\\uD68D\&quot;,\&quot;05-\\uC6B4\\uC601-\\uCD5C\\uC801\\uD654\&quot;:\&quot;\\u26A1 \\uC6B4\\uC601 \\uCD5C\\uC801\\uD654\&quot;,CKA:\&quot;\\u{1F3AF} CKA \\uC790\\uACA9\\uC99D\&quot;,GCP:\&quot;\\u2601\\uFE0F Google Cloud\&quot;,\&quot;moc-k8s\&quot;:\&quot;\\u{1F4DA} \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB178\\uD2B8\&quot;,Vagrant:\&quot;\\u{1F4E6} Vagrant\&quot;,\\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624:\&quot;\\u{1F4BC} \\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624\&quot;,\\uAC00\\uC0C1\\uD654:\&quot;\\u{1F4BB} \\uAC00\\uC0C1\\uD654\&quot;,\\uAC1C\\uBC1C\\uD658\\uACBD:\&quot;\\u{1F6E0}\\uFE0F \\uAC1C\\uBC1C\\uD658\\uACBD\&quot;,\\uAE30\\uD0C0:\&quot;\\u{1F4CE} \\uAE30\\uD0C0\&quot;,AI\\uB3C4\\uAD6C:\&quot;\\u{1F916} AI \\uB3C4\\uAD6C\&quot;,\\uBAA8\\uB2C8\\uD130\\uB9C1:\&quot;\\u{1F4CA} \\uBAA8\\uB2C8\\uD130\\uB9C1\&quot;};if(node.isFolder&amp;&amp;folderDisplayNames[node.displayName]&amp;&amp;(node.displayName=folderDisplayNames[node.displayName]),!node.isFolder&amp;&amp;node.data){let displayName=node.data.title||node.displayName;displayName=displayName.replace(/^(\\d{2}_|\\d{2}-\\d{2}-)/g,\&quot;\&quot;),displayName.length>50&amp;&amp;(displayName=displayName.substring(0,47)+\&quot;...\&quot;),displayName=displayName.replace(/^kubernetes_/,\&quot;K8s \&quot;).replace(/^쿠버네티스_/,\&quot;K8s \&quot;).replace(/_완벽_가이드$/,\&quot; \\uAC00\\uC774\\uB4DC\&quot;).replace(/_실습_가이드$/,\&quot; \\uC2E4\\uC2B5\&quot;).replace(/_핵심_정리$/,\&quot; \\uC815\\uB9AC\&quot;).replace(/_기초_개념$/,\&quot; \\uAE30\\uCD08\&quot;).replace(/완전_가이드$/,\&quot;\\uAC00\\uC774\\uB4DC\&quot;).replace(/완벽_정리$/,\&quot;\\uC815\\uB9AC\&quot;),node.displayName=displayName}return node}&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-796"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>탐색기</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-796" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../Terraform/">Terraform</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../Terraform/00_기초/">00_기초</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>Terraform 트레이드오프 분석   언제 써야 하고 언제 안 써야 하나</a></div></nav><h1 class="article-title">Terraform 트레이드오프 분석 - 언제 써야 하고 언제 안 써야 하나</h1><p show-comma="true" class="content-meta"><time datetime="2025-12-30T15:00:00.000Z">2025년 12월 31일</time><span>23 min read</span></p><ul class="tags"><li><a href="../../tags/terraform" class="internal tag-link">terraform</a></li><li><a href="../../tags/iac" class="internal tag-link">iac</a></li><li><a href="../../tags/의사결정" class="internal tag-link">의사결정</a></li><li><a href="../../tags/트레이드오프" class="internal tag-link">트레이드오프</a></li><li><a href="../../tags/실무" class="internal tag-link">실무</a></li><li><a href="../../tags/tradeoff" class="internal tag-link">tradeoff</a></li><li><a href="../../tags/ROI" class="internal tag-link">ROI</a></li></ul></div></div><article class="popover-hint"><h1 id="️-terraform-트레이드오프-분석">⚖️ Terraform 트레이드오프 분석<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#️-terraform-트레이드오프-분석" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<blockquote class="callout quote" data-callout="quote">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>핵심 질문 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>“모든 인프라를 Terraform으로 관리해야 할까?”
+<strong>정답: 아니다. 상황에 따라 ClickOps가 더 나을 수 있다.</strong></p>
+</div>
+</blockquote>
+<h2 id="-목차">📑 목차<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-목차" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><a href="#1-%ED%95%B5%EC%8B%AC-%EA%B0%9C%EB%85%90" class="internal alias">핵심 개념</a></li>
+<li><a href="#2-%EC%95%88-%EC%8D%A8%EB%8F%84-%EB%90%98%EB%8A%94-%EA%B2%BD%EC%9A%B0" class="internal alias">ClickOps가 나은 경우</a></li>
+<li><a href="#3-%EB%B0%98%EB%93%9C%EC%8B%9C-%EC%8D%A8%EC%95%BC-%ED%95%98%EB%8A%94-%EA%B2%BD%EC%9A%B0" class="internal alias">Terraform이 필수인 경우</a></li>
+<li><a href="#4-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95-%ED%94%84%EB%A0%88%EC%9E%84%EC%9B%8C%ED%81%AC" class="internal alias">의사결정 기준</a></li>
+<li><a href="#5-%EC%8B%A4%EB%AC%B4-%EC%82%AC%EB%A1%80" class="internal alias">실무 사례</a></li>
+</ul>
+<hr/>
+<h2 id="1-핵심-개념-terraform의-본질">1. 핵심 개념: Terraform의 본질<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-핵심-개념-terraform의-본질" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Terraform = 자동화 도구 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>“라면 하나 끓이는데 요리 로봇을 프로그래밍할 필요는 없다.”
+하지만 “매일 100인분 단체 급식을 만든다면 자동화 시스템이 필수다.”</p>
+</div>
+</blockquote>
+<h3 id="-마케터-관점의-비유">💡 마케터 관점의 비유<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-마케터-관점의-비유" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>업무</th><th>수동 방식</th><th>자동화 방식</th><th>선택 기준</th></tr></thead><tbody><tr><td><strong>일회성 광고 리포트</strong></td><td>엑셀 수작업</td><td>Python + SQL 자동화</td><td>횟수 1회 → 수작업</td></tr><tr><td><strong>월간 정기 리포트</strong></td><td>매달 수작업 반복</td><td>매크로/스크립트</td><td>월 1회 이상 → 자동화</td></tr><tr><td><strong>실시간 대시보드</strong></td><td>불가능</td><td>BI 도구 필수</td><td>실시간 → 자동화 필수</td></tr></tbody></table></div>
+<p><strong>인프라도 똑같습니다:</strong></p>
+<ul>
+<li><strong>1회성 테스트 서버</strong> → 콘솔 클릭 (ClickOps)</li>
+<li><strong>주기적으로 생성/삭제하는 환경</strong> → Terraform</li>
+<li><strong>운영 환경 (Production)</strong> → Terraform 필수</li>
+</ul>
+<hr/>
+<h2 id="2-안-써도-되는-경우-manualclickops-승리">2. 안 써도 되는 경우 (Manual/ClickOps 승리)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-안-써도-되는-경우-manualclickops-승리" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>ClickOps가 나은 상황 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Terraform의 <strong>학습 비용</strong>과 <strong>관리 오버헤드</strong>가 효과보다 클 때</p>
+</div>
+</blockquote>
+<h3 id="-case-1-빠른-프로토타이핑--학습">🚫 Case 1. 빠른 프로토타이핑 &amp; 학습<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-case-1-빠른-프로토타이핑--학습" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<h4 id="-상황">📋 상황<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-상황" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<pre><code>개발자: &quot;그냥 EC2 하나 띄워서 파이썬 코드 돌려보고 싶어요.&quot;
+예상 생명주기: 1-2시간
+</code></pre>
+<h4 id="-분석">🔍 분석<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-분석" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p><strong>ClickOps (콘솔):</strong></p>
+<ul>
+<li>시간: 5분 (클릭 몇 번)</li>
+<li>코드: 0줄</li>
+<li>삭제: 인스턴스 Terminate 버튼 클릭</li>
+</ul>
+<p><strong>Terraform:</strong></p>
+<ul>
+<li>시간: 20분 (main.tf 작성 + init + plan + apply)</li>
+<li>코드: 30-50줄</li>
+<li>관리: terraform.tfstate 파일 관리</li>
+<li>삭제: terraform destroy</li>
+</ul>
+<p><strong>결론:</strong> 🏆 <strong>ClickOps 승리</strong> (4배 빠름)</p>
+<h4 id="️-주의사항">⚠️ 주의사항<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#️-주의사항" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>함정 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>“빠른 테스트”가 계속 반복되면 ClickOps는 손해입니다!</p>
+<ul>
+<li>3번 이상 반복 → Terraform 고려</li>
+<li>팀원이 똑같은 환경 필요 → Terraform 필수</li>
+</ul>
+</div>
+</blockquote>
+<h3 id="-case-2-변동이-거의-없는-초소규모-프로젝트">🚫 Case 2. 변동이 거의 없는 초소규모 프로젝트<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-case-2-변동이-거의-없는-초소규모-프로젝트" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<h4 id="-상황-1">📋 상황<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-상황-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<pre><code>프로젝트: 정적 웹사이트 호스팅
+리소스: S3 버킷 1개
+변경 주기: 1년에 0-1회
+팀 규모: 1명
+</code></pre>
+<h4 id="-분석-1">🔍 분석<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-분석-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>항목</th><th>ClickOps</th><th>Terraform</th></tr></thead><tbody><tr><td><strong>초기 구축 시간</strong></td><td>5분</td><td>15분</td></tr><tr><td><strong>유지보수</strong></td><td>없음</td><td>State 파일 관리</td></tr><tr><td><strong>변경 빈도</strong></td><td>거의 없음</td><td>거의 없음</td></tr><tr><td><strong>복잡도</strong></td><td>매우 낮음</td><td>불필요하게 높음</td></tr></tbody></table></div>
+<p><strong>결론:</strong> 🏆 <strong>ClickOps 승리</strong> (과도한 엔지니어링 방지)</p>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>실제 사례 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>회사 소개 페이지를 S3에 올리는 경우, Terraform으로 관리하는 건 “닭 잡는데 소 잡는 칼 쓰는 격”입니다.</p>
+</div>
+</blockquote>
+<h3 id="-case-3-복잡한-1회성-마이그레이션">🚫 Case 3. 복잡한 1회성 마이그레이션<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-case-3-복잡한-1회성-마이그레이션" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<h4 id="-상황-2">📋 상황<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-상황-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<pre><code>작업: 레거시 온프레미스 → AWS 마이그레이션
+특수성: DB 스키마 수동 조정, 애플리케이션별 세밀한 설정 필요
+반복 가능성: 0% (한 번 옮기면 끝)
+</code></pre>
+<h4 id="-분석-2">🔍 분석<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-분석-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p><strong>Terraform으로 자동화하려면:</strong></p>
+<ol>
+<li>현재 인프라 분석 (1일)</li>
+<li>Terraform 코드 작성 (2-3일)</li>
+<li>테스트 및 디버깅 (1-2일)</li>
+<li>실제 마이그레이션 (1일)</li>
+</ol>
+<p><strong>수동으로 마이그레이션:</strong></p>
+<ol>
+<li>AWS Migration Hub 사용</li>
+<li>수동 설정 및 테스트 (2-3일)</li>
+<li>완료</li>
+</ol>
+<p><strong>결론:</strong> 🏆 <strong>수동 마이그레이션 승리</strong> (1회성 작업에는 자동화 오버헤드)</p>
+<hr/>
+<h2 id="3-반드시-써야-하는-경우-terraform-essential">3. 반드시 써야 하는 경우 (Terraform Essential)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-반드시-써야-하는-경우-terraform-essential" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote class="callout danger" data-callout="danger">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>안 쓰면 재앙 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>이런 상황에서 ClickOps를 고집하면 <strong>팀 전체가 고통</strong>받습니다.</p>
+</div>
+</blockquote>
+<h3 id="-case-1-환경의-일치-dev--staging--prod">✅ Case 1. 환경의 일치 (Dev / Staging / Prod)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-case-1-환경의-일치-dev--staging--prod" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<h4 id="-상황-3">📋 상황<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-상황-3" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<pre><code>환경: 개발(Dev), 스테이징(Staging), 운영(Prod) 3개
+요구사항: &quot;세 환경이 완전히 동일해야 함&quot;
+</code></pre>
+<h4 id="-clickops의-재앙">🚨 ClickOps의 재앙<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-clickops의-재앙" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p><strong>시나리오:</strong></p>
+<pre><code>개발자 A: Dev 서버를 수동으로 세팅 (보안 그룹 포트 8080 오픈)
+개발자 B: Staging 서버를 수동으로 세팅 (실수로 포트 8081 오픈)
+운영팀: Prod 서버를 수동으로 세팅 (포트 80 오픈)
+
+결과:
+✅ Dev에서 테스트 성공
+✅ Staging에서 테스트... 포트 에러!
+❌ Prod 배포... 장애 발생!
+🔥 새벽 3시 긴급 전화
+</code></pre>
+<h4 id="-terraform의-승리">🏆 Terraform의 승리<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-terraform의-승리" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="hcl" data-theme="github-light github-dark"><code data-language="hcl" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># variables.tf</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">variable</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;environment&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  type</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> string</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">variable</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;app_port&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  type</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> number</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  default</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 8080</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># main.tf</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">resource</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;aws_security_group&quot;</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;app&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  name</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">${</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">var</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">environment</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">}</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">-app-sg&quot;</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">  ingress</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    from_port</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">   =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> var</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">app_port</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    to_port</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">     =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> var</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">app_port</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    protocol</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;tcp&quot;</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    cidr_blocks</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> [</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;0.0.0.0/0&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">]</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  }</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></figure>
+<p><strong>실행:</strong></p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="bash" data-theme="github-light github-dark"><code data-language="bash" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># Dev 환경</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">terraform</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> apply</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> -var=</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;environment=dev&quot;</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># Staging 환경</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">terraform</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> apply</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> -var=</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;environment=staging&quot;</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># Prod 환경</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">terraform</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> apply</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> -var=</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;environment=prod&quot;</span></span></code></pre></figure>
+<p><strong>결과:</strong></p>
+<ul>
+<li>✅ 모든 환경이 <strong>100% 동일</strong></li>
+<li>✅ 인간의 실수(Human Error) <strong>0%</strong></li>
+<li>✅ 코드 리뷰로 사전 검증</li>
+</ul>
+<blockquote class="callout success" data-callout="success">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>ROI 계산 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p><strong>투자:</strong> Terraform 학습 1주 + 코드 작성 1일
+<strong>수익:</strong> 환경 불일치 장애 0건, 디버깅 시간 월 10시간 절약
+<strong>회수 기간:</strong> 1개월</p>
+</div>
+</blockquote>
+<h3 id="-case-2-재해-복구-disaster-recovery">✅ Case 2. 재해 복구 (Disaster Recovery)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-case-2-재해-복구-disaster-recovery" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<h4 id="-상황-4">📋 상황<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-상황-4" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<pre><code>사고: AWS 리전 장애 / 해킹 / 실수로 리소스 삭제
+복구 목표: 1시간 이내
+</code></pre>
+<h4 id="-clickops의-재앙-1">🚨 ClickOps의 재앙<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-clickops의-재앙-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p><strong>시나리오:</strong></p>
+<pre><code>새벽 2시: &quot;서울 리전이 다운됐습니다!&quot;
+인프라팀: &quot;도쿄 리전으로 긴급 이전!&quot;
+
+수동 작업:
+1. VPC 생성 (클릭 20번)
+2. 서브넷 4개 생성 (클릭 80번)
+3. 보안 그룹 5개 생성 (클릭 100번)
+4. EC2 인스턴스 10대 생성 (클릭 200번)
+5. 로드밸런서 설정 (클릭 50번)
+...
+
+예상 시간: 4-6시간
+문제: &quot;예전 설정이 어땠더라...?&quot;
+결과: 불완전한 복구, 숨은 버그 발생
+</code></pre>
+<h4 id="-terraform의-승리-1">🏆 Terraform의 승리<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-terraform의-승리-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="bash" data-theme="github-light github-dark"><code data-language="bash" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 1. 리전 변경</span></span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># terraform.tfvars</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">aws_region</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;ap-northeast-1&quot;</span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">  # 서울 → 도쿄</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 2. 복구 실행</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">terraform</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> apply</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> -auto-approve</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 소요 시간: 10-15분</span></span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 정확도: 100% (기존과 동일)</span></span></code></pre></figure>
+<p><strong>추가 효과:</strong></p>
+<ul>
+<li>📋 <strong>인프라 문서화 자동 완성</strong> (코드 = 문서)</li>
+<li>🔍 <strong>변경 이력 추적</strong> (Git History)</li>
+<li>✅ <strong>감사 대응</strong> (Compliance Audit)</li>
+</ul>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>실제 사례 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>2021년 AWS 서울 리전 장애 시, Terraform으로 관리하던 회사들은 1시간 내에 도쿄 리전으로 이전 완료. 수동 관리 회사들은 복구에 하루 이상 소요.</p>
+</div>
+</blockquote>
+<h3 id="-case-3-팀-협업-및-변경-이력-추적">✅ Case 3. 팀 협업 및 변경 이력 추적<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-case-3-팀-협업-및-변경-이력-추적" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<h4 id="-상황-5">📋 상황<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-상황-5" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<pre><code>팀 규모: 5명 이상
+변경 빈도: 주 1회 이상
+보안 요구: 누가, 언제, 왜 바꿨는지 추적 필요
+</code></pre>
+<h4 id="-clickops의-재앙-2">🚨 ClickOps의 재앙<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-clickops의-재앙-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p><strong>시나리오:</strong></p>
+<pre><code>월요일 아침:
+보안팀: &quot;보안 그룹이 0.0.0.0/0으로 열려있습니다!&quot;
+CTO: &quot;누가 했어?!&quot;
+
+AWS CloudTrail 확인:
+- 변경자: admin 계정 (5명이 공유)
+- 이유: 기록 없음
+- 승인: 없음
+
+결과:
+😡 범인 찾기 미팅 1시간
+😡 재발 방지 대책 회의 2시간
+😡 보안 감사 리포트 작성 4시간
+</code></pre>
+<h4 id="-terraform의-승리-2">🏆 Terraform의 승리<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-terraform의-승리-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p><strong>Git 기반 워크플로우:</strong></p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="bash" data-theme="github-light github-dark"><code data-language="bash" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 1. 개발자가 브랜치 생성</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">git</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> checkout</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> -b</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> feature/add-new-sg</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 2. 코드 수정</span></span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># security_group.tf</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">resource</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;aws_security_group&quot;</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;web&quot;</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> {</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">  ingress</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> {</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">    from_port</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">   =</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 443</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">    to_port</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">     =</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 443</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">    cidr_blocks</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> [</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;10.0.0.0/16&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">]  </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 내부 네트워크만 허용</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  }</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 3. Pull Request 생성</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">git</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> push</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> origin</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> feature/add-new-sg</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 4. 코드 리뷰</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">팀원</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> A:</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;왜 443만 열었나요?&quot;</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">개발자:</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;HTTPS만 필요해서요. HTTP는 리다이렉트 처리합니다.&quot;</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">팀원</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> B:</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;LGTM (Looks Good To Me)&quot;</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 5. 승인 후 Merge</span></span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 6. terraform apply 자동 실행 (CI/CD)</span></span></code></pre></figure>
+<p><strong>추적 가능한 이력:</strong></p>
+<pre><code>commit a1b2c3d
+Author: 김개발 &lt;kim@company.com>
+Date: 2025-12-31
+
+feat: Add HTTPS-only security group for web servers
+
+- Remove HTTP (port 80) ingress rule
+- Add HTTPS (port 443) with internal CIDR only
+- Related: JIRA-1234 (보안 정책 강화)
+
+Reviewed-by: 이보안 &lt;lee@company.com>
+</code></pre>
+<p><strong>효과:</strong></p>
+<ul>
+<li>✅ <strong>누가 (Who)</strong>: Git Author</li>
+<li>✅ <strong>언제 (When)</strong>: Commit Timestamp</li>
+<li>✅ <strong>무엇을 (What)</strong>: Code Diff</li>
+<li>✅ <strong>왜 (Why)</strong>: Commit Message + PR Description</li>
+<li>✅ <strong>승인자</strong>: Git Reviewer</li>
+</ul>
+<blockquote class="callout success" data-callout="success">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>ROI 계산 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p><strong>투자:</strong> Git + Terraform 워크플로우 구축 1주
+<strong>수익:</strong> 사고 조사 시간 0시간, 보안 감사 대응 30분 (자동 추출)
+<strong>추가 효과:</strong> 팀 신뢰도 향상, 사고율 감소</p>
+</div>
+</blockquote>
+<h3 id="-case-4-비용-절감-생성과-파괴의-자유">✅ Case 4. 비용 절감 (생성과 파괴의 자유)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-case-4-비용-절감-생성과-파괴의-자유" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<h4 id="-상황-6">📋 상황<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-상황-6" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<pre><code>리소스: GPU 인스턴스 (시간당 $3.06)
+사용 패턴: 업무시간(9-18시)만 사용
+현재 문제: 퇴근 후 끄는 걸 깜빡함
+</code></pre>
+<h4 id="-clickops의-재앙-3">🚨 ClickOps의 재앙<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-clickops의-재앙-3" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p><strong>비용 계산:</strong></p>
+<pre><code>시나리오 1: 항상 켜둠
+- 월 비용: $3.06 × 24시간 × 30일 = $2,203
+- 실제 사용: 9시간/일
+- 낭비: $1,468 (67%)
+
+시나리오 2: 수동으로 켜고 끔
+- 깜빡한 날: 월 5일
+- 낭비: $3.06 × 15시간 × 5일 = $230
+</code></pre>
+<h4 id="-terraform의-승리-3">🏆 Terraform의 승리<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-terraform의-승리-3" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p><strong>방법 1: 완전 삭제 후 재생성</strong></p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="bash" data-theme="github-light github-dark"><code data-language="bash" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 출근 시</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">terraform</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> apply</span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">    # 2분 소요</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 퇴근 시</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">terraform</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> destroy</span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">  # 1분 소요</span></span></code></pre></figure>
+<p><strong>방법 2: Auto Scaling Schedule</strong></p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="hcl" data-theme="github-light github-dark"><code data-language="hcl" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">resource</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;aws_autoscaling_schedule&quot;</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;scale_down&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  scheduled_action_name</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">  =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;scale-down-evening&quot;</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  min_size</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">              =</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 0</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  max_size</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">              =</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 0</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  desired_capacity</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">      =</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 0</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  recurrence</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">            =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;0 18 * * 1-5&quot;</span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">  # 평일 18시</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  autoscaling_group_name</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> aws_autoscaling_group</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">gpu</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">name</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">resource</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;aws_autoscaling_schedule&quot;</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;scale_up&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  scheduled_action_name</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">  =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;scale-up-morning&quot;</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  min_size</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">              =</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 1</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  max_size</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">              =</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 5</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  desired_capacity</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">      =</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 2</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  recurrence</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">            =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;0 9 * * 1-5&quot;</span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">  # 평일 9시</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  autoscaling_group_name</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> aws_autoscaling_group</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">gpu</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">name</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></figure>
+<p><strong>비용 절감:</strong></p>
+<pre><code>월 비용: $3.06 × 9시간 × 22일 = $606
+절감액: $2,203 - $606 = $1,597 (72% 절감)
+연간 절감: $19,164
+</code></pre>
+<blockquote class="callout success" data-callout="success">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>ROI 계산 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p><strong>투자:</strong> Terraform 코드 작성 2시간
+<strong>수익:</strong> 연간 $19,164 절감
+<strong>회수 기간:</strong> 즉시</p>
+</div>
+</blockquote>
+<h3 id="-case-5-멀티-클라우드--하이브리드-클라우드">✅ Case 5. 멀티 클라우드 &amp; 하이브리드 클라우드<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-case-5-멀티-클라우드--하이브리드-클라우드" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<h4 id="-상황-7">📋 상황<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-상황-7" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<pre><code>요구사항: AWS + GCP + Azure 동시 사용
+이유: 각 클라우드의 특화 서비스 활용
+- AWS: 메인 인프라
+- GCP: BigQuery (데이터 분석)
+- Azure: Active Directory 연동
+</code></pre>
+<h4 id="-clickops의-재앙-4">🚨 ClickOps의 재앙<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-clickops의-재앙-4" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p><strong>관리 포인트:</strong></p>
+<ul>
+<li>AWS 콘솔</li>
+<li>GCP 콘솔</li>
+<li>Azure Portal</li>
+<li>3가지 다른 UI/UX 학습</li>
+<li>3가지 다른 권한 체계</li>
+<li>통합 관리 불가능</li>
+</ul>
+<h4 id="-terraform의-승리-4">🏆 Terraform의 승리<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-terraform의-승리-4" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="hcl" data-theme="github-light github-dark"><code data-language="hcl" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># AWS 리소스</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">provider</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;aws&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  region</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;ap-northeast-2&quot;</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">resource</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;aws_instance&quot;</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;web&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  ami</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">           =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;ami-0c55b159cbfafe1f0&quot;</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  instance_type</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;t3.micro&quot;</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># GCP 리소스</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">provider</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;google&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  project</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;my-project&quot;</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  region</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">  =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;asia-northeast3&quot;</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">resource</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;google_bigquery_dataset&quot;</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;analytics&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  dataset_id</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;analytics_data&quot;</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  location</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">   =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;asia-northeast3&quot;</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># Azure 리소스</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">provider</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;azurerm&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">  features</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {}</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">resource</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;azurerm_virtual_network&quot;</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;main&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  name</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">                =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;main-network&quot;</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  address_space</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">       =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> [</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;10.0.0.0/16&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">]</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  location</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">            =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;koreacentral&quot;</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  resource_group_name</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> azurerm_resource_group</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">main</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">name</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></figure>
+<p><strong>효과:</strong></p>
+<ul>
+<li>✅ <strong>단일 도구</strong>로 모든 클라우드 관리</li>
+<li>✅ <strong>일관된 문법</strong> (HCL)</li>
+<li>✅ <strong>통합 State 관리</strong></li>
+<li>✅ <strong>크로스 클라우드 참조</strong> 가능</li>
+</ul>
+<hr/>
+<h2 id="4-의사결정-프레임워크">4. 의사결정 프레임워크<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-의사결정-프레임워크" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-terraform-도입-결정-매트릭스">🎯 Terraform 도입 결정 매트릭스<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-terraform-도입-결정-매트릭스" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>점수 계산법 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>각 항목에 점수를 매긴 후 합산하세요.</p>
+<ul>
+<li><strong>0-15점</strong>: ClickOps 권장</li>
+<li><strong>16-30점</strong>: 선택적 도입</li>
+<li><strong>31-50점</strong>: Terraform 필수</li>
+</ul>
+</div>
+</blockquote>
+<h4 id="-체크리스트">📊 체크리스트<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-체크리스트" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>평가 항목</th><th>점수</th><th>배점 기준</th></tr></thead><tbody><tr><td><strong>리소스 개수</strong></td><td></td><td>1-5개(0점), 6-20개(3점), 21개 이상(5점)</td></tr><tr><td><strong>환경 개수</strong></td><td></td><td>1개(0점), 2개(5점), 3개 이상(10점)</td></tr><tr><td><strong>팀 규모</strong></td><td></td><td>1명(0점), 2-5명(5점), 6명 이상(10점)</td></tr><tr><td><strong>변경 빈도</strong></td><td></td><td>월 1회 미만(0점), 주 1회(5점), 일 1회 이상(10점)</td></tr><tr><td><strong>생명주기</strong></td><td></td><td>1주 미만(0점), 1개월-1년(3점), 1년 이상(5점)</td></tr><tr><td><strong>재생성 필요성</strong></td><td></td><td>없음(0점), 가끔(3점), 자주(5점)</td></tr><tr><td><strong>컴플라이언스</strong></td><td></td><td>불필요(0점), 선택(3점), 필수(5점)</td></tr></tbody></table></div>
+<h4 id="-예제-계산">🧮 예제 계산<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-예제-계산" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p><strong>Case A: 스타트업 초기</strong></p>
+<pre><code>리소스 개수: 8개 (3점)
+환경 개수: Dev + Prod (5점)
+팀 규모: 3명 (5점)
+변경 빈도: 주 2회 (5점)
+생명주기: 2년 예상 (5점)
+재생성: 가끔 (3점)
+컴플라이언스: 불필요 (0점)
+
+총점: 26점 → 선택적 도입 (권장)
+</code></pre>
+<p><strong>Case B: 엔터프라이즈</strong></p>
+<pre><code>리소스 개수: 150개 (5점)
+환경 개수: Dev + Staging + Prod + DR (10점)
+팀 규모: 15명 (10점)
+변경 빈도: 일 5회 (10점)
+생명주기: 5년 이상 (5점)
+재생성: 자주 (5점)
+컴플라이언스: 필수 (5점)
+
+총점: 50점 → Terraform 필수
+</code></pre>
+<h3 id="-단계별-도입-전략">🔄 단계별 도입 전략<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-단계별-도입-전략" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>점진적 도입 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>“한 번에 모든 걸 Terraform으로 옮기지 마세요!“</p>
+</div>
+</blockquote>
+<h4 id="1단계-파일럿-1-2주">1단계: 파일럿 (1-2주)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1단계-파일럿-1-2주" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p><strong>목표:</strong> 작은 성공 경험</p>
+<pre><code>대상: 개발 환경의 일부 (EC2 2-3대)
+범위: main.tf 하나로 관리
+학습: terraform init/plan/apply/destroy
+</code></pre>
+<h4 id="2단계-확장-1개월">2단계: 확장 (1개월)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2단계-확장-1개월" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p><strong>목표:</strong> 모듈화 및 구조화</p>
+<pre><code>대상: 개발 환경 전체
+구조: modules/ 디렉토리 도입
+학습: 모듈, 변수, 출력
+</code></pre>
+<h4 id="3단계-프로덕션-2-3개월">3단계: 프로덕션 (2-3개월)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3단계-프로덕션-2-3개월" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p><strong>목표:</strong> 운영 환경 적용</p>
+<pre><code>대상: Staging → Prod 순차 적용
+필수: 원격 백엔드 (S3 + DynamoDB)
+학습: State 관리, Locking
+</code></pre>
+<h4 id="4단계-고도화-지속">4단계: 고도화 (지속)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4단계-고도화-지속" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p><strong>목표:</strong> 완전 자동화</p>
+<pre><code>대상: 모든 인프라
+구현: CI/CD 파이프라인 통합
+학습: Terraform Cloud, Atlantis
+</code></pre>
+<hr/>
+<h2 id="5-실무-사례">5. 실무 사례<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-실무-사례" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-case-study-1-스타트업-a사">💼 Case Study 1: 스타트업 A사<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-case-study-1-스타트업-a사" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>배경:</strong></p>
+<ul>
+<li>팀: 개발자 5명</li>
+<li>인프라: AWS 기반</li>
+<li>문제: 개발자마다 다르게 서버 세팅</li>
+</ul>
+<p><strong>도입 전:</strong></p>
+<pre><code>개발자 A: &quot;내 로컬에선 되는데...&quot;
+개발자 B: &quot;저는 보안 그룹 이렇게 설정했는데요?&quot;
+CTO: &quot;누가 Prod 서버 설정 바꿨어?!&quot;
+
+결과: 주 1회 환경 불일치 이슈
+</code></pre>
+<p><strong>도입 과정:</strong></p>
+<pre><code>Week 1: CTO가 Terraform 학습
+Week 2: Dev 환경 Terraform 적용 (파일럿)
+Week 3: Staging 환경 추가
+Week 4: Prod 환경 적용 + Git 워크플로우 구축
+</code></pre>
+<p><strong>도입 후:</strong></p>
+<pre><code>✅ 환경 불일치 이슈: 0건
+✅ 신규 개발자 온보딩: 1일 → 1시간
+✅ 인프라 변경 추적: 100% Git History
+✅ 비용 절감: 월 $500 (불필요한 리소스 자동 정리)
+</code></pre>
+<h3 id="-case-study-2-대기업-b사">💼 Case Study 2: 대기업 B사<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-case-study-2-대기업-b사" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>배경:</strong></p>
+<ul>
+<li>팀: 인프라 15명, 개발 50명</li>
+<li>인프라: AWS + GCP + On-Premise</li>
+<li>문제: 감사 대응 어려움, 변경 관리 혼란</li>
+</ul>
+<p><strong>도입 전:</strong></p>
+<pre><code>감사팀: &quot;지난달 보안 그룹 변경 내역 제출하세요.&quot;
+인프라팀: *3일간 CloudTrail 로그 분석*
+         *엑셀로 수작업 정리*
+         *30페이지 리포트 작성*
+</code></pre>
+<p><strong>도입 과정:</strong></p>
+<pre><code>Month 1-2: Terraform 교육 및 표준 수립
+Month 3-4: 신규 프로젝트에만 Terraform 적용
+Month 5-6: 기존 인프라 Import (terraform import)
+Month 7-12: 레거시 점진적 마이그레이션
+</code></pre>
+<p><strong>도입 후:</strong></p>
+<pre><code>✅ 감사 대응: Git 로그 추출 10분
+✅ 변경 승인: PR 리뷰 프로세스 자동화
+✅ 장애 복구: 평균 4시간 → 30분
+✅ 인프라 문서: 자동 생성 (terraform-docs)
+✅ 비용 가시성: 태그 기반 자동 분류
+</code></pre>
+<h3 id="-case-study-3-교육기관-c사-안-쓴-사례">💼 Case Study 3: 교육기관 C사 (안 쓴 사례)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-case-study-3-교육기관-c사-안-쓴-사례" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>배경:</strong></p>
+<ul>
+<li>팀: 교수 1명, 조교 2명</li>
+<li>인프라: AWS 교육용 계정</li>
+<li>사용: 학기 중 3개월만 사용</li>
+</ul>
+<p><strong>Terraform 미도입 결정:</strong></p>
+<pre><code>이유:
+1. 리소스: EC2 5대, S3 버킷 2개 (매우 단순)
+2. 생명주기: 학기 종료 후 모두 삭제
+3. 변경: 학기 중 거의 없음
+4. 팀: 비개발자 위주
+
+결정: AWS CloudFormation Template 1개로 관리
+     (학기 시작: Create Stack, 종료: Delete Stack)
+</code></pre>
+<p><strong>결과:</strong></p>
+<pre><code>✅ 학습 비용 최소화
+✅ 목적 달성 (교육용 환경 제공)
+✅ 관리 부담 없음
+</code></pre>
+<hr/>
+<h2 id="-학습-전략-훈련생-관점">🎓 학습 전략 (훈련생 관점)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-학습-전략-훈련생-관점" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-단계별-학습-로드맵">📚 단계별 학습 로드맵<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-단계별-학습-로드맵" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>학습 단계 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>“콘솔로 이해 → Terraform으로 구현”</p>
+</div>
+</blockquote>
+<h4 id="phase-1-구조-이해-콘솔-학습">Phase 1: 구조 이해 (콘솔 학습)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#phase-1-구조-이해-콘솔-학습" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p><strong>목표:</strong> AWS 리소스 간 관계 파악</p>
+<pre><code>방법: AWS 콘솔에서 직접 클릭
+학습 내용:
+- VPC 안에 Subnet이 있구나
+- Subnet 안에 EC2가 있구나
+- EC2는 Security Group으로 보호되는구나
+- Load Balancer가 트래픽을 분산하는구나
+
+시간: 1-2주
+</code></pre>
+<h4 id="phase-2-코드로-전환-terraform-학습">Phase 2: 코드로 전환 (Terraform 학습)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#phase-2-코드로-전환-terraform-학습" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p><strong>목표:</strong> 구조를 코드로 표현</p>
+<pre><code>방법: Terraform 기초 가이드 학습
+학습 내용:
+- 콘솔에서 클릭한 것을 코드로 작성
+- terraform plan으로 미리보기
+- terraform apply로 생성
+
+시간: 1주
+</code></pre>
+<h4 id="phase-3-실전-프로젝트-포트폴리오">Phase 3: 실전 프로젝트 (포트폴리오)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#phase-3-실전-프로젝트-포트폴리오" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p><strong>목표:</strong> 채용 담당자 감동시키기</p>
+<pre><code>방법: 파이널 프로젝트를 Terraform으로 구성
+구성:
+├── terraform/
+│   ├── modules/          # 재사용 가능한 모듈
+│   ├── environments/
+│   │   ├── dev/
+│   │   ├── staging/
+│   │   └── prod/
+│   └── README.md
+
+강조점:
+✅ &quot;환경 재현 가능&quot; (면접관이 terraform apply 한 번에 실행 가능)
+✅ &quot;모범 사례 적용&quot; (모듈화, 원격 백엔드)
+✅ &quot;문서화&quot; (README + 주석)
+
+시간: 파이널 프로젝트 기간 (2-4주)
+</code></pre>
+<h3 id="-면접-어필-포인트">💡 면접 어필 포인트<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-면접-어필-포인트" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout quote" data-callout="quote">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>면접에서 이렇게 말하세요 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>“프로젝트 인프라를 Terraform으로 코드화했습니다.
+덕분에 팀원들이 5분 안에 동일한 환경을 구축할 수 있었고,
+Dev/Staging/Prod 환경 불일치 문제가 0건이었습니다.”</p>
+</div>
+</blockquote>
+<p><strong>추가 어필:</strong></p>
+<pre><code>면접관: &quot;Terraform 왜 썼어요? 콘솔이 더 쉽지 않나요?&quot;
+
+답변 (초급):
+&quot;처음엔 콘솔이 더 쉬웠지만, 팀원들이
+같은 환경을 만들 때 Terraform이 훨씬 빨랐습니다.&quot;
+
+답변 (중급):
+&quot;IaC를 통해 인프라 변경 이력을 Git으로 관리하고,
+코드 리뷰를 통해 실수를 사전에 방지했습니다.&quot;
+
+답변 (고급):
+&quot;CI/CD 파이프라인과 통합하여 PR 머지 시
+자동으로 terraform plan을 실행하고,
+승인 후 apply하는 GitOps 워크플로우를 구축했습니다.&quot;
+</code></pre>
+<hr/>
+<h2 id="-핵심-정리">🔑 핵심 정리<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-핵심-정리" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-terraform을-쓸-때">✅ Terraform을 쓸 때<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-terraform을-쓸-때" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ol>
+<li><strong>환경이 2개 이상</strong> (Dev/Prod)</li>
+<li><strong>팀원이 2명 이상</strong></li>
+<li><strong>변경이 주 1회 이상</strong></li>
+<li><strong>재생성 필요성 있음</strong></li>
+<li><strong>컴플라이언스 필요</strong></li>
+<li><strong>비용 최적화 중요</strong></li>
+</ol>
+<h3 id="-terraform을-안-써도-될-때">❌ Terraform을 안 써도 될 때<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-terraform을-안-써도-될-때" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ol>
+<li><strong>1회성 테스트</strong></li>
+<li><strong>초소규모 (리소스 5개 미만)</strong></li>
+<li><strong>변경이 거의 없음</strong></li>
+<li><strong>혼자 관리</strong></li>
+<li><strong>학습/프로토타이핑</strong></li>
+</ol>
+<h3 id="️-결론">⚖️ 결론<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#️-결론" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout quote" data-callout="quote">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>골든 룰 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p><strong>“반복되면 Terraform, 1회성이면 ClickOps”</strong></p>
+</div>
+</blockquote>
+<blockquote class="callout success" data-callout="success">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>실무 조언 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>회사에 입사하면 사수에게 이렇게 물어보세요:</p>
+<p><strong>“지금 이 작업, Terraform으로 모듈화해 두면
+다음에 다른 팀원들이 재사용할 수 있을 것 같은데
+제가 한번 만들어볼까요?”</strong></p>
+<p>→ 사수가 감동의 눈물을 흘립니다 🥹</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="-roi-요약표">📊 ROI 요약표<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-roi-요약표" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>상황</th><th>Terraform 투자</th><th>Terraform 수익</th><th>회수 기간</th></tr></thead><tbody><tr><td><strong>멀티 환경</strong></td><td>학습 1주 + 코드 2일</td><td>환경 불일치 장애 0건</td><td>1개월</td></tr><tr><td><strong>재해 복구</strong></td><td>코드 작성 3일</td><td>복구 시간 6시간 → 15분</td><td>첫 장애 시</td></tr><tr><td><strong>팀 협업</strong></td><td>워크플로우 구축 1주</td><td>사고 조사 4시간 → 0시간</td><td>2주</td></tr><tr><td><strong>비용 절감</strong></td><td>코드 작성 2시간</td><td>연 $19,164 절감</td><td>즉시</td></tr></tbody></table></div>
+<hr/>
+<blockquote>
+<p>Created: 2025-12-31
+Tags: <a href="../.././../tags/terraform" class="tag-link internal alias" data-slug="tags/terraform">terraform</a> <a href="../.././../tags/tradeoff" class="tag-link internal alias" data-slug="tags/tradeoff">tradeoff</a> <a href="../.././../tags/의사결정" class="tag-link internal alias" data-slug="tags/의사결정">의사결정</a> <a href="../.././../tags/실무" class="tag-link internal alias" data-slug="tags/실무">실무</a> <a href="../.././../tags/ROI" class="tag-link internal alias" data-slug="tags/ROI">ROI</a>
+Category: 기술분석</p>
+</blockquote></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>그래프 뷰</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-360" aria-expanded="true"><h3>목차</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#️-terraform-트레이드오프-분석" data-for="️-terraform-트레이드오프-분석">⚖️ Terraform 트레이드오프 분석</a></li><li class="depth-1"><a href="#-목차" data-for="-목차">📑 목차</a></li><li class="depth-1"><a href="#1-핵심-개념-terraform의-본질" data-for="1-핵심-개념-terraform의-본질">1. 핵심 개념: Terraform의 본질</a></li><li class="depth-2"><a href="#-마케터-관점의-비유" data-for="-마케터-관점의-비유">💡 마케터 관점의 비유</a></li><li class="depth-1"><a href="#2-안-써도-되는-경우-manualclickops-승리" data-for="2-안-써도-되는-경우-manualclickops-승리">2. 안 써도 되는 경우 (Manual/ClickOps 승리)</a></li><li class="depth-2"><a href="#-case-1-빠른-프로토타이핑--학습" data-for="-case-1-빠른-프로토타이핑--학습">🚫 Case 1. 빠른 프로토타이핑 &amp; 학습</a></li><li class="depth-2"><a href="#-case-2-변동이-거의-없는-초소규모-프로젝트" data-for="-case-2-변동이-거의-없는-초소규모-프로젝트">🚫 Case 2. 변동이 거의 없는 초소규모 프로젝트</a></li><li class="depth-2"><a href="#-case-3-복잡한-1회성-마이그레이션" data-for="-case-3-복잡한-1회성-마이그레이션">🚫 Case 3. 복잡한 1회성 마이그레이션</a></li><li class="depth-1"><a href="#3-반드시-써야-하는-경우-terraform-essential" data-for="3-반드시-써야-하는-경우-terraform-essential">3. 반드시 써야 하는 경우 (Terraform Essential)</a></li><li class="depth-2"><a href="#-case-1-환경의-일치-dev--staging--prod" data-for="-case-1-환경의-일치-dev--staging--prod">✅ Case 1. 환경의 일치 (Dev / Staging / Prod)</a></li><li class="depth-2"><a href="#-case-2-재해-복구-disaster-recovery" data-for="-case-2-재해-복구-disaster-recovery">✅ Case 2. 재해 복구 (Disaster Recovery)</a></li><li class="depth-2"><a href="#-case-3-팀-협업-및-변경-이력-추적" data-for="-case-3-팀-협업-및-변경-이력-추적">✅ Case 3. 팀 협업 및 변경 이력 추적</a></li><li class="depth-2"><a href="#-case-4-비용-절감-생성과-파괴의-자유" data-for="-case-4-비용-절감-생성과-파괴의-자유">✅ Case 4. 비용 절감 (생성과 파괴의 자유)</a></li><li class="depth-2"><a href="#-case-5-멀티-클라우드--하이브리드-클라우드" data-for="-case-5-멀티-클라우드--하이브리드-클라우드">✅ Case 5. 멀티 클라우드 &amp; 하이브리드 클라우드</a></li><li class="depth-1"><a href="#4-의사결정-프레임워크" data-for="4-의사결정-프레임워크">4. 의사결정 프레임워크</a></li><li class="depth-2"><a href="#-terraform-도입-결정-매트릭스" data-for="-terraform-도입-결정-매트릭스">🎯 Terraform 도입 결정 매트릭스</a></li><li class="depth-2"><a href="#-단계별-도입-전략" data-for="-단계별-도입-전략">🔄 단계별 도입 전략</a></li><li class="depth-1"><a href="#5-실무-사례" data-for="5-실무-사례">5. 실무 사례</a></li><li class="depth-2"><a href="#-case-study-1-스타트업-a사" data-for="-case-study-1-스타트업-a사">💼 Case Study 1: 스타트업 A사</a></li><li class="depth-2"><a href="#-case-study-2-대기업-b사" data-for="-case-study-2-대기업-b사">💼 Case Study 2: 대기업 B사</a></li><li class="depth-2"><a href="#-case-study-3-교육기관-c사-안-쓴-사례" data-for="-case-study-3-교육기관-c사-안-쓴-사례">💼 Case Study 3: 교육기관 C사 (안 쓴 사례)</a></li><li class="depth-1"><a href="#-학습-전략-훈련생-관점" data-for="-학습-전략-훈련생-관점">🎓 학습 전략 (훈련생 관점)</a></li><li class="depth-2"><a href="#-단계별-학습-로드맵" data-for="-단계별-학습-로드맵">📚 단계별 학습 로드맵</a></li><li class="depth-2"><a href="#-면접-어필-포인트" data-for="-면접-어필-포인트">💡 면접 어필 포인트</a></li><li class="depth-1"><a href="#-핵심-정리" data-for="-핵심-정리">🔑 핵심 정리</a></li><li class="depth-2"><a href="#-terraform을-쓸-때" data-for="-terraform을-쓸-때">✅ Terraform을 쓸 때</a></li><li class="depth-2"><a href="#-terraform을-안-써도-될-때" data-for="-terraform을-안-써도-될-때">❌ Terraform을 안 써도 될 때</a></li><li class="depth-2"><a href="#️-결론" data-for="️-결론">⚖️ 결론</a></li><li class="depth-1"><a href="#-roi-요약표" data-for="-roi-요약표">📊 ROI 요약표</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Created with <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="../../postscript.js" type="module"></script></html>

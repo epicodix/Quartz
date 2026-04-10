@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr"><head><title>SAA 패턴 암기법 통합본 🧠</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Quartz 4"/><meta property="og:title" content="SAA 패턴 암기법 통합본 🧠"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="SAA 패턴 암기법 통합본 🧠"/><meta name="twitter:description" content="SAA는 문해력보다 패턴 인식! 이 문서 하나로 정리 끝! 📦 스토리지 패턴 S3 스토리지 클래스 키워드정답암기 이미지”자주 접근”S3 Standard책상 위 📚 - 바로 손 닿는 곳”자주 안 씀 + 즉시 접근”S3 Standard-IA창고 앞쪽 선반 - 안 쓰지만 바로 꺼냄”패턴 모름 / 변동”S3 Intelligent-TieringAI 정리왕 🤖 - 알아서 옮겨줌”90일+ 거의 안 봄”Glacier Instant Retrieval냉동실 🧊 - 얼렸지만 바로 해동”분~시간 대기 OK”Glacier Flexible Retr..."/><meta property="og:description" content="SAA는 문해력보다 패턴 인식! 이 문서 하나로 정리 끝! 📦 스토리지 패턴 S3 스토리지 클래스 키워드정답암기 이미지”자주 접근”S3 Standard책상 위 📚 - 바로 손 닿는 곳”자주 안 씀 + 즉시 접근”S3 Standard-IA창고 앞쪽 선반 - 안 쓰지만 바로 꺼냄”패턴 모름 / 변동”S3 Intelligent-TieringAI 정리왕 🤖 - 알아서 옮겨줌”90일+ 거의 안 봄”Glacier Instant Retrieval냉동실 🧊 - 얼렸지만 바로 해동”분~시간 대기 OK”Glacier Flexible Retr..."/><meta property="og:image:alt" content="SAA는 문해력보다 패턴 인식! 이 문서 하나로 정리 끝! 📦 스토리지 패턴 S3 스토리지 클래스 키워드정답암기 이미지”자주 접근”S3 Standard책상 위 📚 - 바로 손 닿는 곳”자주 안 씀 + 즉시 접근”S3 Standard-IA창고 앞쪽 선반 - 안 쓰지만 바로 꺼냄”패턴 모름 / 변동”S3 Intelligent-TieringAI 정리왕 🤖 - 알아서 옮겨줌”90일+ 거의 안 봄”Glacier Instant Retrieval냉동실 🧊 - 얼렸지만 바로 해동”분~시간 대기 OK”Glacier Flexible Retr..."/><meta property="twitter:domain" content="epicodix.github.io/Quartz"/><meta property="og:url" content="https://epicodix.github.io/Quartz/교육/SAA-패턴-암기법-통합본-🧠"/><meta property="twitter:url" content="https://epicodix.github.io/Quartz/교육/SAA-패턴-암기법-통합본-🧠"/><link rel="icon" href="../static/icon.png"/><meta name="description" content="SAA는 문해력보다 패턴 인식! 이 문서 하나로 정리 끝! 📦 스토리지 패턴 S3 스토리지 클래스 키워드정답암기 이미지”자주 접근”S3 Standard책상 위 📚 - 바로 손 닿는 곳”자주 안 씀 + 즉시 접근”S3 Standard-IA창고 앞쪽 선반 - 안 쓰지만 바로 꺼냄”패턴 모름 / 변동”S3 Intelligent-TieringAI 정리왕 🤖 - 알아서 옮겨줌”90일+ 거의 안 봄”Glacier Instant Retrieval냉동실 🧊 - 얼렸지만 바로 해동”분~시간 대기 OK”Glacier Flexible Retr..."/><meta name="generator" content="Quartz"/><link href="../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL1VzZXJzL2ExMjM0L2VwaWNvZGl4L215LXF1YXJ0ei1zaXRlL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><script src="../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://epicodix.github.io/Quartz/index.xml"/><meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/><meta property="og:image" content="https://epicodix.github.io/Quartz/교육/SAA-패턴-암기법-통합본-🧠-og-image.webp"/><meta property="og:image:url" content="https://epicodix.github.io/Quartz/교육/SAA-패턴-암기법-통합본-🧠-og-image.webp"/><meta name="twitter:image" content="https://epicodix.github.io/Quartz/교육/SAA-패턴-암기법-통합본-🧠-og-image.webp"/><meta property="og:image:type" content="image/.webp"/></head><body data-slug="교육/SAA-패턴-암기법-통합본-🧠"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="..">Quartz 4</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>검색</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="검색어를 입력하세요" placeholder="검색어를 입력하세요"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="다크 모드"><title>다크 모드</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="라이트 모드"><title>라이트 모드</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="리더 모드"><title>리더 모드</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="collapse" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>{let priorityFolders=[\&quot;\\u{1F4D6} \\uAC00\\uC774\\uB4DC\&quot;,\&quot;\\u{1F52C} \\uAE30\\uC220 \\uBD84\\uC11D\&quot;,\&quot;\\u2699\\uFE0F \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;\\u{1F4DA} \\uAD50\\uC721\&quot;,\&quot;\\u{1F4BC} \\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624\&quot;];if(a.isFolder&amp;&amp;b.isFolder){let aPriority=priorityFolders.indexOf(a.displayName),bPriority=priorityFolders.indexOf(b.displayName);if(aPriority!==-1&amp;&amp;bPriority!==-1)return aPriority-bPriority;if(aPriority!==-1)return-1;if(bPriority!==-1)return 1}return!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,\&quot;ko-KR\&quot;,{numeric:!0,sensitivity:\&quot;base\&quot;}):a.isFolder?-1:1}&quot;,&quot;filterFn&quot;:&quot;node=>{if([\&quot;99_\\uC784\\uC2DC\&quot;,\&quot;tags\&quot;,\&quot;.obsidian\&quot;].includes(node.slugSegment))return!1;if(!node.isFolder&amp;&amp;node.data){let hiddenFiles=[\&quot;GUI_\\uC790\\uB3D9\\uD654_\\uB3C4\\uC804\\uAE30\&quot;,\&quot;Gemini_CLI_\\uD65C\\uC6A9_\\uAC00\\uC774\\uB4DC\&quot;,\&quot;Ollama_Troubleshooting_Guide\&quot;,\&quot;gemini_cli_guide\&quot;,\&quot;gemini_cli_introduction\&quot;,\&quot;gemini_context_awareness_guide\&quot;,\&quot;gemini_file_management_guide\&quot;,\&quot;get_claude_news.py\&quot;,\&quot;global_news_20250712\&quot;,\&quot;kubernetes_cheatsheet\&quot;,\&quot;kubernetes_storage_hands_on\&quot;,\&quot;naver_gmail_integration_guide\&quot;,\&quot;nodejs_installation_guide\&quot;,\&quot;\\uB0B4_\\uCEF4\\uD4E8\\uD130\\uB97C_AI_\\uC11C\\uBC84\\uB85C_\\uB9CC\\uB4E4\\uAE30_Ollama_\\uC124\\uCE58_\\uBC0F_\\uBB38\\uC81C\\uD574\\uACB0_\\uAC00\\uC774\\uB4DC\&quot;,\&quot;\\uC2DC\\uB9AC\\uC640_Gemini_\\uC5F0\\uACC4\\uC131_\\uAC15\\uD654_\\uBC29\\uC548\&quot;,\&quot;2025-08-13_\\uD559\\uC2B5_\\uD3EC\\uC778\\uD2B8\&quot;,\&quot;07_02_Advanced_Pod_Concepts\&quot;],fileTitle=node.data.title||node.displayName.replace(/\\.md$/,\&quot;\&quot;);return!hiddenFiles.includes(fileTitle)}return!0}&quot;,&quot;mapFn&quot;:&quot;node=>{let folderDisplayNames={\&quot;1_\\uAC00\\uC774\\uB4DC\&quot;:\&quot;\\u{1F4D6} \\uAC00\\uC774\\uB4DC\&quot;,\&quot;2_\\uAE30\\uC220_\\uBD84\\uC11D\&quot;:\&quot;\\u{1F52C} \\uAE30\\uC220 \\uBD84\\uC11D\&quot;,\&quot;3_\\uC544\\uC774\\uB514\\uC5B4_\\uB274\\uC2A4\&quot;:\&quot;\\u{1F4A1} \\uC544\\uC774\\uB514\\uC5B4 &amp; \\uB274\\uC2A4\&quot;,K8s_Deep_Dive:\&quot;\\u2699\\uFE0F \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;01_\\uB124\\uD2B8\\uC6CC\\uD06C \\uAE30\\uCD08\&quot;:\&quot;\\u{1F310} \\uB124\\uD2B8\\uC6CC\\uD06C \\uAE30\\uCD08\&quot;,\&quot;02_k8s\\uC2E4\\uC2B5\&quot;:\&quot;\\u{1F6E0}\\uFE0F \\uC2E4\\uC2B5\&quot;,\&quot;03_\\uD504\\uB85C\\uBA54\\uD14C\\uC6B0\\uC2A4\&quot;:\&quot;\\u{1F4CA} \\uD504\\uB85C\\uBA54\\uD14C\\uC6B0\\uC2A4\&quot;,\&quot;04_\\uADF8\\uB77C\\uD30C\\uB098\&quot;:\&quot;\\u{1F4C8} \\uADF8\\uB77C\\uD30C\\uB098\&quot;,\\uAD50\\uC721:\&quot;\\u{1F4DA} \\uAD50\\uC721\&quot;,\\uAD6C\\uB984\\uB525\\uB2E4\\uC774\\uBE0C:\&quot;\\u2601\\uFE0F \\uAD6C\\uB984\\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;\\uBD84\\uC0B0\\uC2DC\\uC2A4\\uD15C_Distributed Systems\&quot;:\&quot;\\u{1F517} \\uBD84\\uC0B0\\uC2DC\\uC2A4\\uD15C\&quot;,GO:\&quot;\\u{1F439} Go \\uC5B8\\uC5B4\&quot;,\&quot;\\uB124\\uC774\\uBC84-\\uAC80\\uC0C9\\uAD11\\uACE0-\\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158-\\uD504\\uB85C\\uC81D\\uD2B8\&quot;:\&quot;\\u{1F680} \\uB124\\uC774\\uBC84 \\uD504\\uB85C\\uC81D\\uD2B8\&quot;,\&quot;01-\\uD504\\uB85C\\uC81D\\uD2B8-\\uBC30\\uACBD\&quot;:\&quot;\\u{1F4CB} \\uD504\\uB85C\\uC81D\\uD2B8 \\uBC30\\uACBD\&quot;,\&quot;02-\\uD604\\uC7AC\\uC0C1\\uD0DC-\\uBD84\\uC11D\&quot;:\&quot;\\u{1F50D} \\uD604\\uC7AC\\uC0C1\\uD0DC \\uBD84\\uC11D\&quot;,\&quot;03-\\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158-\\uACC4\\uD68D\&quot;:\&quot;\\u{1F4DD} \\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158 \\uACC4\\uD68D\&quot;,\&quot;05-\\uC6B4\\uC601-\\uCD5C\\uC801\\uD654\&quot;:\&quot;\\u26A1 \\uC6B4\\uC601 \\uCD5C\\uC801\\uD654\&quot;,CKA:\&quot;\\u{1F3AF} CKA \\uC790\\uACA9\\uC99D\&quot;,GCP:\&quot;\\u2601\\uFE0F Google Cloud\&quot;,\&quot;moc-k8s\&quot;:\&quot;\\u{1F4DA} \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB178\\uD2B8\&quot;,Vagrant:\&quot;\\u{1F4E6} Vagrant\&quot;,\\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624:\&quot;\\u{1F4BC} \\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624\&quot;,\\uAC00\\uC0C1\\uD654:\&quot;\\u{1F4BB} \\uAC00\\uC0C1\\uD654\&quot;,\\uAC1C\\uBC1C\\uD658\\uACBD:\&quot;\\u{1F6E0}\\uFE0F \\uAC1C\\uBC1C\\uD658\\uACBD\&quot;,\\uAE30\\uD0C0:\&quot;\\u{1F4CE} \\uAE30\\uD0C0\&quot;,AI\\uB3C4\\uAD6C:\&quot;\\u{1F916} AI \\uB3C4\\uAD6C\&quot;,\\uBAA8\\uB2C8\\uD130\\uB9C1:\&quot;\\u{1F4CA} \\uBAA8\\uB2C8\\uD130\\uB9C1\&quot;};if(node.isFolder&amp;&amp;folderDisplayNames[node.displayName]&amp;&amp;(node.displayName=folderDisplayNames[node.displayName]),!node.isFolder&amp;&amp;node.data){let displayName=node.data.title||node.displayName;displayName=displayName.replace(/^(\\d{2}_|\\d{2}-\\d{2}-)/g,\&quot;\&quot;),displayName.length>50&amp;&amp;(displayName=displayName.substring(0,47)+\&quot;...\&quot;),displayName=displayName.replace(/^kubernetes_/,\&quot;K8s \&quot;).replace(/^쿠버네티스_/,\&quot;K8s \&quot;).replace(/_완벽_가이드$/,\&quot; \\uAC00\\uC774\\uB4DC\&quot;).replace(/_실습_가이드$/,\&quot; \\uC2E4\\uC2B5\&quot;).replace(/_핵심_정리$/,\&quot; \\uC815\\uB9AC\&quot;).replace(/_기초_개념$/,\&quot; \\uAE30\\uCD08\&quot;).replace(/완전_가이드$/,\&quot;\\uAC00\\uC774\\uB4DC\&quot;).replace(/완벽_정리$/,\&quot;\\uC815\\uB9AC\&quot;),node.displayName=displayName}return node}&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-925"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>탐색기</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-925" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../교육/">교육</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>SAA 패턴 암기법 통합본 🧠</a></div></nav><h1 class="article-title">SAA 패턴 암기법 통합본 🧠</h1><p show-comma="true" class="content-meta"><time datetime="2026-04-10T06:34:45.476Z">2026년 4월 10일</time><span>21 min read</span></p></div></div><article class="popover-hint"><blockquote>
+<p><strong>SAA는 문해력보다 패턴 인식! 이 문서 하나로 정리 끝!</strong></p>
+</blockquote>
+<hr/>
+<h2 id="-스토리지-패턴">📦 스토리지 패턴<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-스토리지-패턴" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="s3-스토리지-클래스">S3 스토리지 클래스<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#s3-스토리지-클래스" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>암기 이미지</th></tr></thead><tbody><tr><td>”자주 접근”</td><td>S3 Standard</td><td><strong>책상 위</strong> 📚 - 바로 손 닿는 곳</td></tr><tr><td>”자주 안 씀 + 즉시 접근”</td><td>S3 Standard-IA</td><td><strong>창고 앞쪽 선반</strong> - 안 쓰지만 바로 꺼냄</td></tr><tr><td>”패턴 모름 / 변동”</td><td>S3 Intelligent-Tiering</td><td><strong>AI 정리왕</strong> 🤖 - 알아서 옮겨줌</td></tr><tr><td>”90일+ 거의 안 봄”</td><td>Glacier Instant Retrieval</td><td><strong>냉동실</strong> 🧊 - 얼렸지만 바로 해동</td></tr><tr><td>”분~시간 대기 OK”</td><td>Glacier Flexible Retrieval</td><td><strong>창고 깊숙이</strong> - 찾는데 시간 걸림</td></tr><tr><td>”연 1~2회 감사용”</td><td>Glacier Deep Archive</td><td><strong>땅에 묻은 타임캡슐</strong> ⏰ - 12시간 기다림</td></tr></tbody></table></div>
+<h3 id="ebsefs기타-스토리지">EBS/EFS/기타 스토리지<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ebsefs기타-스토리지" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>암기 이미지</th></tr></thead><tbody><tr><td>”고성능 + 공유 파일”</td><td>EFS</td><td><strong>공용 Google Drive</strong> ☁️</td></tr><tr><td>”고성능 + 한 서버만”</td><td>Instance Store</td><td><strong>RAM디스크</strong> 💨 - 끄면 증발</td></tr><tr><td>”Windows 파일 공유”</td><td>FSx for Windows</td><td><strong>회사 공유폴더</strong> 📁</td></tr><tr><td>“HPC / 수백만 IOPS”</td><td>FSx for Lustre</td><td><strong>슈퍼컴퓨터 전용 SSD</strong> 🚀</td></tr><tr><td>“NetApp 호환”</td><td>FSx for NetApp ONTAP</td><td><strong>엔터프라이즈 NAS</strong></td></tr><tr><td>”단일 AZ 저렴”</td><td>EFS One Zone</td><td><strong>저렴한 창고</strong> - 재해 취약</td></tr></tbody></table></div>
+<h3 id="-스토리지-선택-공식">💡 스토리지 선택 공식<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-스토리지-선택-공식" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>공유 필요?
+  ├─ Yes → 파일 시스템
+  │         ├─ Linux  → EFS
+  │         ├─ Windows → FSx for Windows  
+  │         └─ HPC    → FSx for Lustre
+  └─ No  → 블록 스토리지
+            ├─ 영구 저장 → EBS
+            └─ 임시/초고속 → Instance Store
+</code></pre>
+<hr/>
+<h2 id="-보안-패턴">🔐 보안 패턴<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-보안-패턴" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="탐지--방어-서비스">탐지 &amp; 방어 서비스<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#탐지--방어-서비스" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>암기 이미지</th></tr></thead><tbody><tr><td>”이상 탐지 / 위협 탐지”</td><td>GuardDuty</td><td><strong>경비원</strong> 👮 - 신고만, 체포 안 함</td></tr><tr><td>”SQL Injection / XSS”</td><td>WAF</td><td><strong>공항 보안검색대</strong> ✈️</td></tr><tr><td>”DDoS 방어”</td><td>Shield Advanced</td><td><strong>방패 든 기사</strong> 🛡️</td></tr><tr><td>”VPC 트래픽 차단”</td><td>Network Firewall</td><td><strong>소방 방화문</strong> 🚪</td></tr><tr><td>“설정 변경 추적”</td><td>Config</td><td><strong>CCTV</strong> 📹 - 녹화만, 막지 않음</td></tr><tr><td>”API 호출 기록”</td><td>CloudTrail</td><td><strong>블랙박스</strong> 📦 - 누가 뭘 했는지 기록</td></tr><tr><td>”취약점 스캔”</td><td>Inspector</td><td><strong>건물 안전점검</strong> 🔍</td></tr><tr><td>“민감정보 탐지 (S3)“</td><td>Macie</td><td><strong>개인정보 탐정</strong> 🕵️</td></tr></tbody></table></div>
+<h3 id="키--비밀-관리">키 &amp; 비밀 관리<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#키--비밀-관리" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>암기 이미지</th></tr></thead><tbody><tr><td>”비밀번호 자동 로테이션”</td><td>Secrets Manager</td><td><strong>스마트 금고</strong> 🔐 - 자동으로 바꿔줌</td></tr><tr><td>”그냥 설정값 저장”</td><td>Parameter Store</td><td><strong>포스트잇</strong> 📝 - 저장만, 안 바꿔줌</td></tr><tr><td>”암호화 키 관리”</td><td>KMS</td><td><strong>마스터키 보관함</strong> 🔑</td></tr><tr><td>“HSM 전용”</td><td>CloudHSM</td><td><strong>전용 금고실</strong> 🏦</td></tr></tbody></table></div>
+<h3 id="암호화-선택-공식">암호화 선택 공식<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#암호화-선택-공식" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>누가 키 관리?
+
+AWS가 전부       → SSE-S3 (가장 간단)
+AWS + 내가 감사  → SSE-KMS (감사 로그 O) ⭐ 자주 출제
+내가 전부        → SSE-C (Customer 제공)
+
+💡 &quot;규정 준수 / 감사 / 키 관리&quot; = KMS!
+</code></pre>
+<h3 id="접근-제어-계층">접근 제어 계층<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#접근-제어-계층" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>레벨</th><th>서비스</th><th>암기</th></tr></thead><tbody><tr><td>조직 전체</td><td>SCP</td><td><strong>회사 취업규칙</strong> 📋 - 예외 없음</td></tr><tr><td>사용자/역할</td><td>IAM Policy</td><td><strong>개인 출입증</strong> 🎫</td></tr><tr><td>리소스</td><td>Resource Policy</td><td><strong>문 앞 명단</strong> 📃</td></tr><tr><td>네트워크</td><td>Security Group / NACL</td><td><strong>건물 경비실</strong> 🏢</td></tr></tbody></table></div>
+<pre><code>⚠️ &quot;SCP가 Deny하면 IAM이 Allow해도 안 됨!&quot;
+
+넓음 ←――――――――――――――――――――→ 좁음
+  SCP → IAM → Resource Policy → SG/NACL
+</code></pre>
+<hr/>
+<h2 id="-네트워크-패턴">🌐 네트워크 패턴<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-네트워크-패턴" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="연결-서비스">연결 서비스<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#연결-서비스" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>암기 이미지</th></tr></thead><tbody><tr><td>”VPC 여러 개 연결”</td><td>Transit Gateway</td><td><strong>고속도로 IC</strong> 🛣️</td></tr><tr><td>”온프레미스 + 전용선”</td><td>Direct Connect</td><td><strong>해저 케이블</strong> 🔌</td></tr><tr><td>“Direct Connect 백업”</td><td>Site-to-Site VPN</td><td><strong>예비 터널</strong> 🚇</td></tr><tr><td>“VPC 간 직접 연결”</td><td>VPC Peering</td><td><strong>직통 전화</strong> ☎️</td></tr><tr><td>”온프레미스 DNS 연동”</td><td>Route 53 Resolver</td><td><strong>전화번호부 공유</strong> 📖</td></tr></tbody></table></div>
+<h3 id="vpc-엔드포인트">VPC 엔드포인트<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#vpc-엔드포인트" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>암기 이미지</th></tr></thead><tbody><tr><td>”프라이빗 S3/DynamoDB”</td><td>Gateway Endpoint</td><td><strong>VIP 전용문</strong> 🚪 - 무료!</td></tr><tr><td>”프라이빗 API/Lambda”</td><td>Interface Endpoint</td><td><strong>내선전화</strong> ☎️ - 돈 나감</td></tr></tbody></table></div>
+<pre><code>💡 Gateway vs Interface
+
+Gateway Endpoint (무료)
+  - S3, DynamoDB만!
+  - 라우팅 테이블에 추가
+  
+Interface Endpoint (유료)
+  - 나머지 전부 (API GW, Lambda, SNS...)
+  - ENI 생성됨 (프라이빗 IP)
+</code></pre>
+<h3 id="로드밸런싱">로드밸런싱<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#로드밸런싱" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>암기 이미지</th></tr></thead><tbody><tr><td>”HTTP/HTTPS 라우팅”</td><td>ALB</td><td><strong>웹 안내데스크</strong> 🖥️</td></tr><tr><td>”TCP/UDP 초고속”</td><td>NLB</td><td><strong>고속 터널</strong> 🚄</td></tr><tr><td>“고정 IP 필요”</td><td>NLB</td><td>NLB는 고정 IP 지원!</td></tr><tr><td>”어플라이언스 검사”</td><td>GWLB</td><td><strong>세관 검사대</strong> 🛃</td></tr><tr><td>“레거시 / Classic”</td><td>CLB</td><td><strong>구형</strong> - 신규 비추천</td></tr></tbody></table></div>
+<h3 id="글로벌-네트워크">글로벌 네트워크<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#글로벌-네트워크" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>암기 이미지</th></tr></thead><tbody><tr><td>”정적 콘텐츠 캐싱”</td><td>CloudFront</td><td><strong>편의점 체인</strong> 🏪</td></tr><tr><td>“고정 IP + 글로벌 분산”</td><td>Global Accelerator</td><td><strong>전세계 대리점 번호</strong> 🌍</td></tr></tbody></table></div>
+<pre><code>💡 CloudFront vs Global Accelerator
+
+CloudFront
+  - 콘텐츠 캐싱 (이미지, 동영상)
+  - 엣지에서 응답
+  
+Global Accelerator  
+  - 캐싱 없음, TCP/UDP
+  - 고정 IP 2개 제공
+  - 가장 가까운 엣지 → AWS 백본
+</code></pre>
+<hr/>
+<h2 id="-컴퓨팅-패턴">⚡ 컴퓨팅 패턴<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-컴퓨팅-패턴" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="ec2-관련">EC2 관련<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ec2-관련" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>암기 이미지</th></tr></thead><tbody><tr><td>”서버 완전 제어”</td><td>EC2</td><td><strong>자가용</strong> 🚗 - 내가 다 관리</td></tr><tr><td>”70%+ 저렴 / 중단 가능”</td><td>Spot Instance</td><td><strong>땡처리 항공권</strong> ✈️</td></tr><tr><td>”1~3년 약정”</td><td>Reserved Instance</td><td><strong>헬스장 연회원</strong> 💪</td></tr><tr><td>“유연한 약정”</td><td>Savings Plan</td><td><strong>통신사 약정</strong> 📱</td></tr><tr><td>“물리 서버 전용”</td><td>Dedicated Host</td><td><strong>전용 별장</strong> 🏠</td></tr><tr><td>“배치 그룹 / 저지연”</td><td>Cluster Placement Group</td><td><strong>같은 방 배치</strong></td></tr><tr><td>”분산 / 장애 격리”</td><td>Spread Placement Group</td><td><strong>각 방 1명씩</strong></td></tr></tbody></table></div>
+<h3 id="컨테이너">컨테이너<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#컨테이너" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>암기 이미지</th></tr></thead><tbody><tr><td>”컨테이너 + 서버 관리 싫음”</td><td>Fargate</td><td><strong>렌터카</strong> 🚗 - 차만 몰면 됨</td></tr><tr><td>”컨테이너 + 서버 제어”</td><td>ECS on EC2</td><td><strong>내 차</strong> - 엔진도 관리</td></tr><tr><td>”Kubernetes 필요”</td><td>EKS</td><td><strong>쿠버네티스</strong> ☸️</td></tr><tr><td>”컨테이너 이미지 저장”</td><td>ECR</td><td><strong>컨테이너 창고</strong> 📦</td></tr></tbody></table></div>
+<h3 id="서버리스--배치">서버리스 &amp; 배치<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#서버리스--배치" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>암기 이미지</th></tr></thead><tbody><tr><td>”이벤트 기반 / 짧은 작업”</td><td>Lambda</td><td><strong>자판기</strong> 🎰 - 버튼 누르면 실행</td></tr><tr><td>”15분 이상 작업”</td><td>Fargate / EC2</td><td>Lambda는 15분 제한!</td></tr><tr><td>”배치 / 대규모 병렬”</td><td>AWS Batch</td><td><strong>공장 야간작업</strong> 🏭</td></tr><tr><td>“크론잡 / 스케줄”</td><td>EventBridge + Lambda</td><td><strong>알람시계</strong> ⏰</td></tr></tbody></table></div>
+<h3 id="-컴퓨팅-선택-공식">💡 컴퓨팅 선택 공식<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-컴퓨팅-선택-공식" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>서버 관리 할래?
+  ├─ Yes → EC2 / ECS on EC2
+  └─ No  → 서버리스
+            ├─ 짧은 작업 (15분↓) → Lambda
+            ├─ 컨테이너 → Fargate
+            └─ 배치 작업 → AWS Batch
+</code></pre>
+<hr/>
+<h2 id="️-데이터베이스-패턴">🗄️ 데이터베이스 패턴<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#️-데이터베이스-패턴" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="관계형-db">관계형 DB<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#관계형-db" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>암기 이미지</th></tr></thead><tbody><tr><td>”관계형 + 관리형”</td><td>RDS</td><td><strong>아파트</strong> 🏢 - 관리비 내고 편하게</td></tr><tr><td>”관계형 + 5배 성능”</td><td>Aurora</td><td><strong>펜트하우스</strong> 🌟 - 비싸고 빠름</td></tr><tr><td>”서버리스 DB + 간헐적”</td><td>Aurora Serverless</td><td><strong>모텔</strong> 🏨 - 쓸 때만 결제</td></tr><tr><td>”읽기 부하 분산”</td><td>Read Replica</td><td><strong>분신술</strong> 👥</td></tr><tr><td>“장애 자동 복구”</td><td>Multi-AZ</td><td><strong>보험</strong> 🛡️</td></tr></tbody></table></div>
+<pre><code>💡 Multi-AZ vs Read Replica
+
+Multi-AZ = &quot;보험&quot; 🛡️
+  - 동기 복제, 장애 시 자동 전환
+  - 성능 향상 X, 같은 리전
+  
+Read Replica = &quot;분신술&quot; 👥  
+  - 비동기 복제, 읽기 분산
+  - 장애조치 수동, 다른 리전 가능
+</code></pre>
+<h3 id="nosql--특수-db">NoSQL &amp; 특수 DB<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#nosql--특수-db" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>암기 이미지</th></tr></thead><tbody><tr><td>”Key-Value + 무한 확장”</td><td>DynamoDB</td><td><strong>해시태그 검색</strong> #</td></tr><tr><td>“밀리초 → 마이크로초”</td><td>DAX</td><td><strong>DynamoDB 터보</strong> 🏎️</td></tr><tr><td>”인메모리 캐시”</td><td>ElastiCache</td><td><strong>냉장고 앞 메모판</strong> 📋</td></tr><tr><td>“Redis vs Memcached”</td><td>Redis=고급 / Memcached=단순</td><td><strong>스위스칼 vs 커터칼</strong> 🔪</td></tr><tr><td>“그래프 / 관계”</td><td>Neptune</td><td><strong>인맥 지도</strong> 🕸️</td></tr><tr><td>”시계열 / IoT”</td><td>Timestream</td><td><strong>심전도 그래프</strong> 📈</td></tr><tr><td>“원장 / 불변”</td><td>QLDB</td><td><strong>공증 문서</strong> 📜 - 수정 불가</td></tr><tr><td>”문서형 / MongoDB”</td><td>DocumentDB</td><td><strong>JSON 서랍장</strong> 📂</td></tr></tbody></table></div>
+<h3 id="-db-선택-공식">💡 DB 선택 공식<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-db-선택-공식" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>SQL 필요?
+  ├─ Yes → 고가용성/성능?
+  │         ├─ 최고 성능 → Aurora
+  │         └─ 일반     → RDS
+  └─ No  → 뭘 저장?
+            ├─ Key-Value  → DynamoDB
+            ├─ 캐시       → ElastiCache
+            ├─ 그래프     → Neptune  
+            ├─ 시계열     → Timestream
+            ├─ 불변 원장  → QLDB
+            └─ 문서(JSON) → DocumentDB
+</code></pre>
+<hr/>
+<h2 id="-메시징--통합-패턴">📨 메시징 &amp; 통합 패턴<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-메시징--통합-패턴" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="메시지-큐">메시지 큐<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#메시지-큐" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>암기 이미지</th></tr></thead><tbody><tr><td>”순서 보장 / 중복 방지”</td><td>SQS FIFO</td><td><strong>은행 번호표</strong> 🎫</td></tr><tr><td>“대용량 / 순서 상관X”</td><td>SQS Standard</td><td><strong>뷔페 줄</strong> 🍽️ - 빠른 사람 먼저</td></tr><tr><td>”1:N 알림 / 팬아웃”</td><td>SNS</td><td><strong>확성기</strong> 📢</td></tr><tr><td>“SNS + SQS 조합”</td><td>팬아웃 패턴</td><td><strong>확성기 → 여러 줄</strong></td></tr></tbody></table></div>
+<h3 id="이벤트--스트리밍">이벤트 &amp; 스트리밍<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#이벤트--스트리밍" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>암기 이미지</th></tr></thead><tbody><tr><td>”이벤트 라우팅 / 규칙”</td><td>EventBridge</td><td><strong>우체국 분류기</strong> 📮</td></tr><tr><td>“실시간 스트리밍”</td><td>Kinesis Data Streams</td><td><strong>컨베이어 벨트</strong> �icing</td></tr><tr><td>”실시간 → S3 전송”</td><td>Kinesis Firehose</td><td><strong>소방호스</strong> 🚒 → S3에 쏨</td></tr><tr><td>”실시간 SQL 분석”</td><td>Kinesis Data Analytics</td><td><strong>실시간 스코어보드</strong></td></tr></tbody></table></div>
+<h3 id="kinesis-가족-정리">Kinesis 가족 정리<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#kinesis-가족-정리" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>💡 Kinesis Family = &quot;실시간&quot; 키워드!
+
+┌─────────────────────┬─────────────────────────────┐
+│ Data Streams        │ 실시간 수집 (커스텀 처리)   │
+│ Data Firehose       │ 실시간 전송 (S3/Redshift)   │
+│ Data Analytics      │ 실시간 분석 (SQL)           │
+│ Video Streams       │ 실시간 영상                 │
+└─────────────────────┴─────────────────────────────┘
+
+⭐ Firehose = &quot;소방호스로 S3에 쏴버림&quot; 🚒
+</code></pre>
+<h3 id="워크플로우">워크플로우<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#워크플로우" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>암기 이미지</th></tr></thead><tbody><tr><td>”워크플로우 오케스트레이션”</td><td>Step Functions</td><td><strong>플로우차트</strong> 📐</td></tr><tr><td>“레거시 SWF”</td><td>SWF</td><td><strong>구형</strong> - Step Functions 추천</td></tr></tbody></table></div>
+<h3 id="-메시징-선택-공식">💡 메시징 선택 공식<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-메시징-선택-공식" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>1:1 vs 1:N?
+  ├─ 1:1 → SQS
+  │        ├─ 순서 필요 → FIFO
+  │        └─ 순서 불필요 → Standard
+  └─ 1:N → SNS (팬아웃)
+  
+실시간?
+  ├─ Yes → Kinesis
+  └─ No  → SQS/SNS
+
+이벤트 규칙 라우팅?
+  └─ EventBridge
+</code></pre>
+<hr/>
+<h2 id="-분석--빅데이터-패턴">📊 분석 &amp; 빅데이터 패턴<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-분석--빅데이터-패턴" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="분석-서비스">분석 서비스<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#분석-서비스" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>암기 이미지</th></tr></thead><tbody><tr><td>”S3 쿼리 / 서버리스 SQL”</td><td>Athena</td><td><strong>S3 위 돋보기</strong> 🔍</td></tr><tr><td>“데이터 웨어하우스”</td><td>Redshift</td><td><strong>거대한 엑셀</strong> 📊</td></tr><tr><td>“BI 대시보드”</td><td>QuickSight</td><td><strong>예쁜 차트 PPT</strong> 📈</td></tr><tr><td>“하둡/스파크”</td><td>EMR</td><td><strong>빅데이터 공장</strong> 🏭</td></tr><tr><td>“검색 엔진 / 로그”</td><td>OpenSearch</td><td><strong>사이트 내 검색창</strong> 🔎</td></tr></tbody></table></div>
+<h3 id="etl--카탈로그">ETL &amp; 카탈로그<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#etl--카탈로그" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>암기 이미지</th></tr></thead><tbody><tr><td>”ETL 서버리스”</td><td>Glue</td><td><strong>데이터 믹서기</strong> 🧃</td></tr><tr><td>“데이터 카탈로그”</td><td>Glue Data Catalog</td><td><strong>도서관 색인</strong> 📚</td></tr><tr><td>“스키마 자동 발견”</td><td>Glue Crawler</td><td><strong>데이터 탐험가</strong> 🔦</td></tr></tbody></table></div>
+<h3 id="데이터-이동">데이터 이동<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#데이터-이동" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>암기 이미지</th></tr></thead><tbody><tr><td>”파일 동기화”</td><td>DataSync</td><td><strong>이삿짐 센터</strong> 🚚</td></tr><tr><td>“대용량 물리 이동 (TB~PB)“</td><td>Snowball Edge</td><td><strong>택배 트럭</strong> 📦</td></tr><tr><td>“엑사바이트 이동”</td><td>Snowmobile</td><td><strong>컨테이너 트럭</strong> 🚛</td></tr><tr><td>“하이브리드 스토리지”</td><td>Storage Gateway</td><td><strong>클라우드 연결 창고</strong></td></tr></tbody></table></div>
+<pre><code>💡 데이터 이동 선택
+
+네트워크로 가능?
+  ├─ Yes → DataSync (자동화)
+  └─ No  → 물리적 이동
+            ├─ TB~PB   → Snowball Edge
+            └─ EB 이상 → Snowmobile (트럭 옴!)
+</code></pre>
+<hr/>
+<h2 id="-aiml-패턴">🤖 AI/ML 패턴<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-aiml-패턴" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>암기 이미지</th></tr></thead><tbody><tr><td>”이미지 분석 / 얼굴”</td><td>Rekognition</td><td><strong>얼굴 인식 카메라</strong> 📷</td></tr><tr><td>“텍스트 → 음성”</td><td>Polly</td><td><strong>AI 성우</strong> 🎙️</td></tr><tr><td>”음성 → 텍스트”</td><td>Transcribe</td><td><strong>속기사</strong> ✍️</td></tr><tr><td>”번역”</td><td>Translate</td><td><strong>통역사</strong> 🌐</td></tr><tr><td>“문서 OCR / 추출”</td><td>Textract</td><td><strong>OCR 스캐너</strong> 📄</td></tr><tr><td>“자연어 이해 / 감정”</td><td>Comprehend</td><td><strong>국어 선생님</strong> 📖</td></tr><tr><td>“추천 시스템”</td><td>Personalize</td><td><strong>넷플릭스 추천</strong> 🎬</td></tr><tr><td>“이상 탐지 (지표)“</td><td>Lookout for Metrics</td><td><strong>이상 감지 센서</strong> 🚨</td></tr><tr><td>“ML 모델 구축”</td><td>SageMaker</td><td><strong>AI 연구소</strong> 🔬</td></tr><tr><td>“챗봇”</td><td>Lex</td><td><strong>AI 상담원</strong> 💬</td></tr><tr><td>“예측”</td><td>Forecast</td><td><strong>일기예보</strong> 🌤️</td></tr><tr><td>”사기 탐지”</td><td>Fraud Detector</td><td><strong>신용카드 이상거래</strong> 💳</td></tr><tr><td>“코드 추천”</td><td>CodeWhisperer</td><td><strong>AI 페어 프로그래머</strong> 👨‍💻</td></tr></tbody></table></div>
+<hr/>
+<h2 id="-마이그레이션-패턴">🔄 마이그레이션 패턴<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-마이그레이션-패턴" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>암기 이미지</th></tr></thead><tbody><tr><td>”DB 마이그레이션”</td><td>DMS</td><td><strong>DB 이삿짐</strong> 🚚</td></tr><tr><td>“스키마 변환”</td><td>SCT</td><td><strong>통역 + 이사</strong> - DMS 세트</td></tr><tr><td>”서버 마이그레이션”</td><td>MGN</td><td><strong>서버 복제기</strong> 📠</td></tr><tr><td>“VMware 그대로”</td><td>VMware Cloud on AWS</td><td><strong>VMware 호텔</strong> 🏨</td></tr><tr><td>“마이그레이션 현황”</td><td>Migration Hub</td><td><strong>이사 현황판</strong> 📋</td></tr></tbody></table></div>
+<h3 id="-마이그레이션-선택-공식">💡 마이그레이션 선택 공식<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-마이그레이션-선택-공식" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>뭘 옮김?
+  ├─ DB     → DMS (+ SCT 스키마 변환)
+  ├─ 서버   → MGN (Application Migration Service)
+  ├─ 파일   → DataSync
+  └─ 대용량 → Snowball / Snowmobile
+
+&quot;이기종 DB (Oracle→Aurora)&quot; = DMS + SCT!
+</code></pre>
+<hr/>
+<h2 id="-dr재해복구-패턴">🔄 DR(재해복구) 패턴<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-dr재해복구-패턴" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="4단계-전략---백파워멀-로-외우기">4단계 전략 - <strong>“백파워멀”</strong> 로 외우기!<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4단계-전략---백파워멀-로-외우기" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>💰 비용 낮음 ←―――――――――――――――――――――→ 비용 높음
+⏰ RTO 길음 ←―――――――――――――――――――――→ RTO 짧음
+
+   Backup     Pilot      Warm       Multi-Site
+   Restore    Light     Standby     Active
+     ↓         ↓          ↓           ↓
+   백업      파일럿      워밍업       멀티
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>전략</th><th>암기 이미지</th><th>RTO</th><th>비용</th></tr></thead><tbody><tr><td><strong>Backup &amp; Restore</strong></td><td>📦 이삿짐 - 다 풀어야 함</td><td>24시간+</td><td>💰</td></tr><tr><td><strong>Pilot Light</strong></td><td>🔥 가스레인지 종불 - 불 붙이면 됨</td><td>수십 분</td><td>💰💰</td></tr><tr><td><strong>Warm Standby</strong></td><td>🚗 공회전 차 - 악셀만 밟으면 됨</td><td>수 분</td><td>💰💰💰</td></tr><tr><td><strong>Multi-Site Active</strong></td><td>🏃‍♂️🏃‍♂️ 쌍둥이 - 둘 다 뛰는 중</td><td>즉시</td><td>💰💰💰💰</td></tr></tbody></table></div>
+<pre><code>💡 Pilot Light vs Warm Standby 구분
+
+Pilot Light = 최소한만 실행 (DB만 켜둠)
+              → 서버 시작 필요
+              
+Warm Standby = 축소 버전 실행 중 
+               → 스케일 업만 필요
+</code></pre>
+<hr/>
+<h2 id="-글로벌-서비스-패턴">🌍 글로벌 서비스 패턴<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-글로벌-서비스-패턴" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="글로벌-데이터베이스">글로벌 데이터베이스<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#글로벌-데이터베이스" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>설명</th></tr></thead><tbody><tr><td>”DynamoDB 글로벌”</td><td>Global Tables</td><td><strong>전세계 동기화</strong> 🌍</td></tr><tr><td>“Aurora 글로벌”</td><td>Global Database</td><td><strong>1초 내 복제</strong> ⚡</td></tr><tr><td>“S3 글로벌”</td><td>Cross-Region Replication</td><td><strong>버킷 복제</strong></td></tr></tbody></table></div>
+<h3 id="route-53-라우팅-정책">Route 53 라우팅 정책<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#route-53-라우팅-정책" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>정책</th><th>키워드</th><th>암기</th></tr></thead><tbody><tr><td><strong>Simple</strong></td><td>기본</td><td>그냥 하나 (밸런싱 X)</td></tr><tr><td><strong>Weighted</strong></td><td>비율 / A/B테스트</td><td><strong>저울</strong> ⚖️</td></tr><tr><td><strong>Latency</strong></td><td>빠른 곳 / 성능</td><td><strong>스톱워치</strong> ⏱️</td></tr><tr><td><strong>Failover</strong></td><td>Primary-Secondary</td><td><strong>예비 발전기</strong></td></tr><tr><td><strong>Geolocation</strong></td><td>접속 국가 / 법규</td><td><strong>여권 검사</strong> 🛂</td></tr><tr><td><strong>Geoproximity</strong></td><td>거리 + 가중치</td><td><strong>거리순 + 조절</strong></td></tr><tr><td><strong>Multivalue</strong></td><td>헬스체크 + 다중</td><td><strong>예비 여러 개</strong></td></tr></tbody></table></div>
+<pre><code>💡 Route 53 선택 공식
+
+성능 최적화? → Latency
+법적 규제?   → Geolocation  
+장애조치?    → Failover
+A/B테스트?   → Weighted
+</code></pre>
+<hr/>
+<h2 id="-비용-최적화-패턴">💰 비용 최적화 패턴<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-비용-최적화-패턴" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="비용-관리-도구">비용 관리 도구<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#비용-관리-도구" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>키워드</th><th>정답</th><th>암기 이미지</th></tr></thead><tbody><tr><td>”미사용 리소스 찾기”</td><td>Trusted Advisor</td><td><strong>재무 상담사</strong> 💼</td></tr><tr><td>“비용 시각화”</td><td>Cost Explorer</td><td><strong>가계부 앱</strong> 📱</td></tr><tr><td>“예산 알림”</td><td>AWS Budgets</td><td><strong>예산 초과 알림</strong> 🔔</td></tr><tr><td>“RI 추천”</td><td>Compute Optimizer</td><td><strong>절약 코치</strong> 🏋️</td></tr><tr><td>”리소스 최적화”</td><td>Compute Optimizer</td><td><strong>다이어트 코치</strong></td></tr></tbody></table></div>
+<h3 id="ec2-구매-옵션">EC2 구매 옵션<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ec2-구매-옵션" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>💵 비용 비교 (같은 사양 기준)
+
+On-Demand ████████████████████ 100%
+Reserved  ████████████         60% (1년)
+Reserved  ██████████           40% (3년 전체 선결제)  
+Spot      ██████               30% (언제든 뺏김!)
+Savings P ████████████         유연한 RI
+
+💡 선택 기준
+- 확실하면 → Reserved / Savings Plan
+- 중단 가능 → Spot
+- 모르겠음 → On-Demand
+</code></pre>
+<hr/>
+<h2 id="️-아키텍처-패턴">🏗️ 아키텍처 패턴<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#️-아키텍처-패턴" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="결합도-낮추기-decoupling">결합도 낮추기 (Decoupling)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#결합도-낮추기-decoupling" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>상황</th><th>정답</th><th>이유</th></tr></thead><tbody><tr><td>”동기 → 비동기”</td><td>SQS</td><td>큐에 넣고 잊어버림</td></tr><tr><td>”1:N 팬아웃”</td><td>SNS + SQS</td><td>확성기 → 여러 줄</td></tr><tr><td>”이벤트 기반 라우팅”</td><td>EventBridge</td><td>규칙별 분기</td></tr><tr><td>”워크플로우”</td><td>Step Functions</td><td>플로우차트</td></tr></tbody></table></div>
+<h3 id="고가용성-ha">고가용성 (HA)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#고가용성-ha" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>상황</th><th>정답</th></tr></thead><tbody><tr><td>”EC2 자동 복구”</td><td>Auto Scaling + ALB</td></tr><tr><td>”RDS 장애조치”</td><td>Multi-AZ</td></tr><tr><td>”읽기 부하 분산”</td><td>Read Replica</td></tr><tr><td>”리전 장애 대비”</td><td>다중 리전 + Route 53</td></tr><tr><td>”S3 고가용성”</td><td>기본 99.999999999% (11 9’s)</td></tr></tbody></table></div>
+<h3 id="well-architected-6가지-축">Well-Architected 6가지 축<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#well-architected-6가지-축" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>💡 &quot;보신성비운지&quot; 로 외우기!
+
+보 - 보안 (Security)
+신 - 신뢰성 (Reliability)  
+성 - 성능 효율성 (Performance Efficiency)
+비 - 비용 최적화 (Cost Optimization)
+운 - 운영 우수성 (Operational Excellence)
+지 - 지속 가능성 (Sustainability) ← 신규!
+</code></pre>
+<hr/>
+<h2 id="-오답-신호-키워드">❌ 오답 신호 키워드<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-오답-신호-키워드" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>보이면 의심!</th><th>이유</th></tr></thead><tbody><tr><td>”CloudWatch로 <strong>차단</strong>”</td><td>❌ 모니터링만 함</td></tr><tr><td>”GuardDuty로 <strong>차단</strong>”</td><td>❌ 탐지만 함</td></tr><tr><td>”Config로 <strong>차단</strong>”</td><td>❌ 기록만 함</td></tr><tr><td>”S3 Standard로 <strong>아카이브</strong>”</td><td>❌ 비쌈</td></tr><tr><td>”Lambda <strong>24시간</strong> 실행”</td><td>❌ 15분 제한</td></tr><tr><td>”SQS로 <strong>실시간</strong>”</td><td>❌ 폴링 방식 (Kinesis!)</td></tr><tr><td>”NAT Gateway로 <strong>인바운드</strong>”</td><td>❌ 아웃바운드 전용</td></tr><tr><td>”Read Replica로 <strong>장애조치</strong>”</td><td>❌ 수동임 (Multi-AZ!)</td></tr><tr><td>”Interface Endpoint로 <strong>S3</strong>”</td><td>❌ Gateway가 무료!</td></tr></tbody></table></div>
+<hr/>
+<h2 id="-최종-점검-퀴즈">🧪 최종 점검 퀴즈<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-최종-점검-퀴즈" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote>
+<p><strong>Q1.</strong> “로그 파일 90일 후 삭제, 연 1회 감사 접근”</p>
+<details><summary>정답</summary>S3 + Lifecycle → Glacier Deep Archive</details>
+</blockquote>
+<blockquote>
+<p><strong>Q2.</strong> “VPC 3개를 서로 연결, 풀메시 피하고 싶음”</p>
+<details><summary>정답</summary>Transit Gateway</details>
+</blockquote>
+<blockquote>
+<p><strong>Q3.</strong> “RDS 비밀번호 30일마다 자동 변경”</p>
+<details><summary>정답</summary>Secrets Manager</details>
+</blockquote>
+<blockquote>
+<p><strong>Q4.</strong> “주문 처리 순서 보장 + 중복 방지”</p>
+<details><summary>정답</summary>SQS FIFO</details>
+</blockquote>
+<blockquote>
+<p><strong>Q5.</strong> “S3 데이터를 서버리스로 SQL 분석”</p>
+<details><summary>정답</summary>Athena</details>
+</blockquote>
+<blockquote>
+<p><strong>Q6.</strong> “DynamoDB 읽기 지연을 마이크로초로”</p>
+<details><summary>정답</summary>DAX</details>
+</blockquote>
+<blockquote>
+<p><strong>Q7.</strong> “Oracle → Aurora PostgreSQL 마이그레이션”</p>
+<details><summary>정답</summary>DMS + SCT</details>
+</blockquote>
+<blockquote>
+<p><strong>Q8.</strong> “글로벌 유저, 가장 빠른 리전으로 라우팅”</p>
+<details><summary>정답</summary>Route 53 Latency Routing</details>
+</blockquote>
+<blockquote>
+<p><strong>Q9.</strong> “페타바이트 데이터를 AWS로 물리 이동”</p>
+<details><summary>정답</summary>Snowball Edge</details>
+</blockquote>
+<blockquote>
+<p><strong>Q10.</strong> “실시간 클릭스트림 → S3 저장”</p>
+<details><summary>정답</summary>Kinesis Data Firehose</details>
+</blockquote>
+<blockquote>
+<p><strong>Q11.</strong> “프라이빗 서브넷에서 S3 접근 (비용 최소화)”</p>
+<details><summary>정답</summary>Gateway Endpoint (무료)</details>
+</blockquote>
+<blockquote>
+<p><strong>Q12.</strong> “RTO 1시간, 비용 최소화 DR”</p>
+<details><summary>정답</summary>Pilot Light</details>
+</blockquote>
+<blockquote>
+<p><strong>Q13.</strong> “SQL Injection 방어”</p>
+<details><summary>정답</summary>WAF</details>
+</blockquote>
+<blockquote>
+<p><strong>Q14.</strong> “멀티 어카운트 S3 퍼블릭 차단 강제”</p>
+<details><summary>정답</summary>SCP</details>
+</blockquote>
+<blockquote>
+<p><strong>Q15.</strong> “EC2에서 짧은 이벤트 처리로 전환 (비용 최소화)”</p>
+<details><summary>정답</summary>Lambda</details>
+</blockquote>
+<hr/>
+<h2 id="-시험-직전-체크리스트">📝 시험 직전 체크리스트<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-시험-직전-체크리스트" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<pre><code>□ S3 스토리지 클래스 6개 (비용/속도 순서)
+□ DR 전략 4단계 (백파워멀)
+□ Kinesis 가족 4개 구분
+□ SQS Standard vs FIFO
+□ Multi-AZ vs Read Replica  
+□ VPC Endpoint (Gateway vs Interface)
+□ SSE-S3 vs SSE-KMS vs SSE-C
+□ Route 53 라우팅 정책 7개
+□ GuardDuty vs Config vs CloudTrail (탐지 vs 기록)
+□ Secrets Manager vs Parameter Store
+□ ALB vs NLB vs GWLB
+□ EFS vs FSx (Linux vs Windows vs HPC)
+□ Athena vs Redshift (서버리스 vs 웨어하우스)
+□ DMS + SCT (이기종 DB 마이그레이션)
+□ Global Accelerator vs CloudFront
+</code></pre>
+<hr/>
+<p><strong>🎯 시험 팁:</strong></p>
+<ol>
+<li><strong>“가장 비용 효율적”</strong> = 서버리스 우선 (Lambda, Fargate, Athena…)</li>
+<li><strong>“최소 운영 오버헤드”</strong> = 관리형 서비스 (RDS, Aurora, Fargate…)</li>
+<li><strong>“가장 빠른”</strong> = 캐시 또는 엣지 (CloudFront, DAX, ElastiCache…)</li>
+<li><strong>“규정 준수 / 감사”</strong> = KMS, CloudTrail, Config</li>
+</ol>
+<hr/>
+<p>화이팅! 🚀 합격 기원합니다! 🎉</p></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>그래프 뷰</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-398" aria-expanded="true"><h3>목차</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#-스토리지-패턴" data-for="-스토리지-패턴">📦 스토리지 패턴</a></li><li class="depth-1"><a href="#s3-스토리지-클래스" data-for="s3-스토리지-클래스">S3 스토리지 클래스</a></li><li class="depth-1"><a href="#ebsefs기타-스토리지" data-for="ebsefs기타-스토리지">EBS/EFS/기타 스토리지</a></li><li class="depth-1"><a href="#-스토리지-선택-공식" data-for="-스토리지-선택-공식">💡 스토리지 선택 공식</a></li><li class="depth-0"><a href="#-보안-패턴" data-for="-보안-패턴">🔐 보안 패턴</a></li><li class="depth-1"><a href="#탐지--방어-서비스" data-for="탐지--방어-서비스">탐지 &amp; 방어 서비스</a></li><li class="depth-1"><a href="#키--비밀-관리" data-for="키--비밀-관리">키 &amp; 비밀 관리</a></li><li class="depth-1"><a href="#암호화-선택-공식" data-for="암호화-선택-공식">암호화 선택 공식</a></li><li class="depth-1"><a href="#접근-제어-계층" data-for="접근-제어-계층">접근 제어 계층</a></li><li class="depth-0"><a href="#-네트워크-패턴" data-for="-네트워크-패턴">🌐 네트워크 패턴</a></li><li class="depth-1"><a href="#연결-서비스" data-for="연결-서비스">연결 서비스</a></li><li class="depth-1"><a href="#vpc-엔드포인트" data-for="vpc-엔드포인트">VPC 엔드포인트</a></li><li class="depth-1"><a href="#로드밸런싱" data-for="로드밸런싱">로드밸런싱</a></li><li class="depth-1"><a href="#글로벌-네트워크" data-for="글로벌-네트워크">글로벌 네트워크</a></li><li class="depth-0"><a href="#-컴퓨팅-패턴" data-for="-컴퓨팅-패턴">⚡ 컴퓨팅 패턴</a></li><li class="depth-1"><a href="#ec2-관련" data-for="ec2-관련">EC2 관련</a></li><li class="depth-1"><a href="#컨테이너" data-for="컨테이너">컨테이너</a></li><li class="depth-1"><a href="#서버리스--배치" data-for="서버리스--배치">서버리스 &amp; 배치</a></li><li class="depth-1"><a href="#-컴퓨팅-선택-공식" data-for="-컴퓨팅-선택-공식">💡 컴퓨팅 선택 공식</a></li><li class="depth-0"><a href="#️-데이터베이스-패턴" data-for="️-데이터베이스-패턴">🗄️ 데이터베이스 패턴</a></li><li class="depth-1"><a href="#관계형-db" data-for="관계형-db">관계형 DB</a></li><li class="depth-1"><a href="#nosql--특수-db" data-for="nosql--특수-db">NoSQL &amp; 특수 DB</a></li><li class="depth-1"><a href="#-db-선택-공식" data-for="-db-선택-공식">💡 DB 선택 공식</a></li><li class="depth-0"><a href="#-메시징--통합-패턴" data-for="-메시징--통합-패턴">📨 메시징 &amp; 통합 패턴</a></li><li class="depth-1"><a href="#메시지-큐" data-for="메시지-큐">메시지 큐</a></li><li class="depth-1"><a href="#이벤트--스트리밍" data-for="이벤트--스트리밍">이벤트 &amp; 스트리밍</a></li><li class="depth-1"><a href="#kinesis-가족-정리" data-for="kinesis-가족-정리">Kinesis 가족 정리</a></li><li class="depth-1"><a href="#워크플로우" data-for="워크플로우">워크플로우</a></li><li class="depth-1"><a href="#-메시징-선택-공식" data-for="-메시징-선택-공식">💡 메시징 선택 공식</a></li><li class="depth-0"><a href="#-분석--빅데이터-패턴" data-for="-분석--빅데이터-패턴">📊 분석 &amp; 빅데이터 패턴</a></li><li class="depth-1"><a href="#분석-서비스" data-for="분석-서비스">분석 서비스</a></li><li class="depth-1"><a href="#etl--카탈로그" data-for="etl--카탈로그">ETL &amp; 카탈로그</a></li><li class="depth-1"><a href="#데이터-이동" data-for="데이터-이동">데이터 이동</a></li><li class="depth-0"><a href="#-aiml-패턴" data-for="-aiml-패턴">🤖 AI/ML 패턴</a></li><li class="depth-0"><a href="#-마이그레이션-패턴" data-for="-마이그레이션-패턴">🔄 마이그레이션 패턴</a></li><li class="depth-1"><a href="#-마이그레이션-선택-공식" data-for="-마이그레이션-선택-공식">💡 마이그레이션 선택 공식</a></li><li class="depth-0"><a href="#-dr재해복구-패턴" data-for="-dr재해복구-패턴">🔄 DR(재해복구) 패턴</a></li><li class="depth-1"><a href="#4단계-전략---백파워멀-로-외우기" data-for="4단계-전략---백파워멀-로-외우기">4단계 전략 - “백파워멀” 로 외우기!</a></li><li class="depth-0"><a href="#-글로벌-서비스-패턴" data-for="-글로벌-서비스-패턴">🌍 글로벌 서비스 패턴</a></li><li class="depth-1"><a href="#글로벌-데이터베이스" data-for="글로벌-데이터베이스">글로벌 데이터베이스</a></li><li class="depth-1"><a href="#route-53-라우팅-정책" data-for="route-53-라우팅-정책">Route 53 라우팅 정책</a></li><li class="depth-0"><a href="#-비용-최적화-패턴" data-for="-비용-최적화-패턴">💰 비용 최적화 패턴</a></li><li class="depth-1"><a href="#비용-관리-도구" data-for="비용-관리-도구">비용 관리 도구</a></li><li class="depth-1"><a href="#ec2-구매-옵션" data-for="ec2-구매-옵션">EC2 구매 옵션</a></li><li class="depth-0"><a href="#️-아키텍처-패턴" data-for="️-아키텍처-패턴">🏗️ 아키텍처 패턴</a></li><li class="depth-1"><a href="#결합도-낮추기-decoupling" data-for="결합도-낮추기-decoupling">결합도 낮추기 (Decoupling)</a></li><li class="depth-1"><a href="#고가용성-ha" data-for="고가용성-ha">고가용성 (HA)</a></li><li class="depth-1"><a href="#well-architected-6가지-축" data-for="well-architected-6가지-축">Well-Architected 6가지 축</a></li><li class="depth-0"><a href="#-오답-신호-키워드" data-for="-오답-신호-키워드">❌ 오답 신호 키워드</a></li><li class="depth-0"><a href="#-최종-점검-퀴즈" data-for="-최종-점검-퀴즈">🧪 최종 점검 퀴즈</a></li><li class="depth-0"><a href="#-시험-직전-체크리스트" data-for="-시험-직전-체크리스트">📝 시험 직전 체크리스트</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Created with <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="../postscript.js" type="module"></script></html>

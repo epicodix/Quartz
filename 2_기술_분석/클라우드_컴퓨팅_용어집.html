@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr"><head><title>클라우드 컴퓨팅 용어집 - 개발자를 위한 핵심 개념</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Quartz 4"/><meta property="og:title" content="클라우드 컴퓨팅 용어집 - 개발자를 위한 핵심 개념"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="클라우드 컴퓨팅 용어집 - 개발자를 위한 핵심 개념"/><meta name="twitter:description" content="🎯 클라우드 컴퓨팅 용어집 📑 목차 기본 개념 서비스 모델 배포 모델 컴퓨팅 서비스 스토리지 서비스 네트워킹 서비스 데이터베이스 서비스 보안 및 권한 관리 모니터링 및 로깅 DevOps 및 배포 1."/><meta property="og:description" content="🎯 클라우드 컴퓨팅 용어집 📑 목차 기본 개념 서비스 모델 배포 모델 컴퓨팅 서비스 스토리지 서비스 네트워킹 서비스 데이터베이스 서비스 보안 및 권한 관리 모니터링 및 로깅 DevOps 및 배포 1."/><meta property="og:image:alt" content="🎯 클라우드 컴퓨팅 용어집 📑 목차 기본 개념 서비스 모델 배포 모델 컴퓨팅 서비스 스토리지 서비스 네트워킹 서비스 데이터베이스 서비스 보안 및 권한 관리 모니터링 및 로깅 DevOps 및 배포 1."/><meta property="twitter:domain" content="epicodix.github.io/Quartz"/><meta property="og:url" content="https://epicodix.github.io/Quartz/2_기술_분석/클라우드_컴퓨팅_용어집"/><meta property="twitter:url" content="https://epicodix.github.io/Quartz/2_기술_분석/클라우드_컴퓨팅_용어집"/><link rel="icon" href="../static/icon.png"/><meta name="description" content="🎯 클라우드 컴퓨팅 용어집 📑 목차 기본 개념 서비스 모델 배포 모델 컴퓨팅 서비스 스토리지 서비스 네트워킹 서비스 데이터베이스 서비스 보안 및 권한 관리 모니터링 및 로깅 DevOps 및 배포 1."/><meta name="generator" content="Quartz"/><link href="../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL1VzZXJzL2ExMjM0L2VwaWNvZGl4L215LXF1YXJ0ei1zaXRlL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><script src="../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://epicodix.github.io/Quartz/index.xml"/><meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/><meta property="og:image" content="https://epicodix.github.io/Quartz/2_기술_분석/클라우드_컴퓨팅_용어집-og-image.webp"/><meta property="og:image:url" content="https://epicodix.github.io/Quartz/2_기술_분석/클라우드_컴퓨팅_용어집-og-image.webp"/><meta name="twitter:image" content="https://epicodix.github.io/Quartz/2_기술_분석/클라우드_컴퓨팅_용어집-og-image.webp"/><meta property="og:image:type" content="image/.webp"/></head><body data-slug="2_기술_분석/클라우드_컴퓨팅_용어집"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="..">Quartz 4</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>검색</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="검색어를 입력하세요" placeholder="검색어를 입력하세요"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="다크 모드"><title>다크 모드</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="라이트 모드"><title>라이트 모드</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="리더 모드"><title>리더 모드</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="collapse" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>{let priorityFolders=[\&quot;\\u{1F4D6} \\uAC00\\uC774\\uB4DC\&quot;,\&quot;\\u{1F52C} \\uAE30\\uC220 \\uBD84\\uC11D\&quot;,\&quot;\\u2699\\uFE0F \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;\\u{1F4DA} \\uAD50\\uC721\&quot;,\&quot;\\u{1F4BC} \\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624\&quot;];if(a.isFolder&amp;&amp;b.isFolder){let aPriority=priorityFolders.indexOf(a.displayName),bPriority=priorityFolders.indexOf(b.displayName);if(aPriority!==-1&amp;&amp;bPriority!==-1)return aPriority-bPriority;if(aPriority!==-1)return-1;if(bPriority!==-1)return 1}return!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,\&quot;ko-KR\&quot;,{numeric:!0,sensitivity:\&quot;base\&quot;}):a.isFolder?-1:1}&quot;,&quot;filterFn&quot;:&quot;node=>{if([\&quot;99_\\uC784\\uC2DC\&quot;,\&quot;tags\&quot;,\&quot;.obsidian\&quot;].includes(node.slugSegment))return!1;if(!node.isFolder&amp;&amp;node.data){let hiddenFiles=[\&quot;GUI_\\uC790\\uB3D9\\uD654_\\uB3C4\\uC804\\uAE30\&quot;,\&quot;Gemini_CLI_\\uD65C\\uC6A9_\\uAC00\\uC774\\uB4DC\&quot;,\&quot;Ollama_Troubleshooting_Guide\&quot;,\&quot;gemini_cli_guide\&quot;,\&quot;gemini_cli_introduction\&quot;,\&quot;gemini_context_awareness_guide\&quot;,\&quot;gemini_file_management_guide\&quot;,\&quot;get_claude_news.py\&quot;,\&quot;global_news_20250712\&quot;,\&quot;kubernetes_cheatsheet\&quot;,\&quot;kubernetes_storage_hands_on\&quot;,\&quot;naver_gmail_integration_guide\&quot;,\&quot;nodejs_installation_guide\&quot;,\&quot;\\uB0B4_\\uCEF4\\uD4E8\\uD130\\uB97C_AI_\\uC11C\\uBC84\\uB85C_\\uB9CC\\uB4E4\\uAE30_Ollama_\\uC124\\uCE58_\\uBC0F_\\uBB38\\uC81C\\uD574\\uACB0_\\uAC00\\uC774\\uB4DC\&quot;,\&quot;\\uC2DC\\uB9AC\\uC640_Gemini_\\uC5F0\\uACC4\\uC131_\\uAC15\\uD654_\\uBC29\\uC548\&quot;,\&quot;2025-08-13_\\uD559\\uC2B5_\\uD3EC\\uC778\\uD2B8\&quot;,\&quot;07_02_Advanced_Pod_Concepts\&quot;],fileTitle=node.data.title||node.displayName.replace(/\\.md$/,\&quot;\&quot;);return!hiddenFiles.includes(fileTitle)}return!0}&quot;,&quot;mapFn&quot;:&quot;node=>{let folderDisplayNames={\&quot;1_\\uAC00\\uC774\\uB4DC\&quot;:\&quot;\\u{1F4D6} \\uAC00\\uC774\\uB4DC\&quot;,\&quot;2_\\uAE30\\uC220_\\uBD84\\uC11D\&quot;:\&quot;\\u{1F52C} \\uAE30\\uC220 \\uBD84\\uC11D\&quot;,\&quot;3_\\uC544\\uC774\\uB514\\uC5B4_\\uB274\\uC2A4\&quot;:\&quot;\\u{1F4A1} \\uC544\\uC774\\uB514\\uC5B4 &amp; \\uB274\\uC2A4\&quot;,K8s_Deep_Dive:\&quot;\\u2699\\uFE0F \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;01_\\uB124\\uD2B8\\uC6CC\\uD06C \\uAE30\\uCD08\&quot;:\&quot;\\u{1F310} \\uB124\\uD2B8\\uC6CC\\uD06C \\uAE30\\uCD08\&quot;,\&quot;02_k8s\\uC2E4\\uC2B5\&quot;:\&quot;\\u{1F6E0}\\uFE0F \\uC2E4\\uC2B5\&quot;,\&quot;03_\\uD504\\uB85C\\uBA54\\uD14C\\uC6B0\\uC2A4\&quot;:\&quot;\\u{1F4CA} \\uD504\\uB85C\\uBA54\\uD14C\\uC6B0\\uC2A4\&quot;,\&quot;04_\\uADF8\\uB77C\\uD30C\\uB098\&quot;:\&quot;\\u{1F4C8} \\uADF8\\uB77C\\uD30C\\uB098\&quot;,\\uAD50\\uC721:\&quot;\\u{1F4DA} \\uAD50\\uC721\&quot;,\\uAD6C\\uB984\\uB525\\uB2E4\\uC774\\uBE0C:\&quot;\\u2601\\uFE0F \\uAD6C\\uB984\\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;\\uBD84\\uC0B0\\uC2DC\\uC2A4\\uD15C_Distributed Systems\&quot;:\&quot;\\u{1F517} \\uBD84\\uC0B0\\uC2DC\\uC2A4\\uD15C\&quot;,GO:\&quot;\\u{1F439} Go \\uC5B8\\uC5B4\&quot;,\&quot;\\uB124\\uC774\\uBC84-\\uAC80\\uC0C9\\uAD11\\uACE0-\\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158-\\uD504\\uB85C\\uC81D\\uD2B8\&quot;:\&quot;\\u{1F680} \\uB124\\uC774\\uBC84 \\uD504\\uB85C\\uC81D\\uD2B8\&quot;,\&quot;01-\\uD504\\uB85C\\uC81D\\uD2B8-\\uBC30\\uACBD\&quot;:\&quot;\\u{1F4CB} \\uD504\\uB85C\\uC81D\\uD2B8 \\uBC30\\uACBD\&quot;,\&quot;02-\\uD604\\uC7AC\\uC0C1\\uD0DC-\\uBD84\\uC11D\&quot;:\&quot;\\u{1F50D} \\uD604\\uC7AC\\uC0C1\\uD0DC \\uBD84\\uC11D\&quot;,\&quot;03-\\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158-\\uACC4\\uD68D\&quot;:\&quot;\\u{1F4DD} \\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158 \\uACC4\\uD68D\&quot;,\&quot;05-\\uC6B4\\uC601-\\uCD5C\\uC801\\uD654\&quot;:\&quot;\\u26A1 \\uC6B4\\uC601 \\uCD5C\\uC801\\uD654\&quot;,CKA:\&quot;\\u{1F3AF} CKA \\uC790\\uACA9\\uC99D\&quot;,GCP:\&quot;\\u2601\\uFE0F Google Cloud\&quot;,\&quot;moc-k8s\&quot;:\&quot;\\u{1F4DA} \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB178\\uD2B8\&quot;,Vagrant:\&quot;\\u{1F4E6} Vagrant\&quot;,\\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624:\&quot;\\u{1F4BC} \\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624\&quot;,\\uAC00\\uC0C1\\uD654:\&quot;\\u{1F4BB} \\uAC00\\uC0C1\\uD654\&quot;,\\uAC1C\\uBC1C\\uD658\\uACBD:\&quot;\\u{1F6E0}\\uFE0F \\uAC1C\\uBC1C\\uD658\\uACBD\&quot;,\\uAE30\\uD0C0:\&quot;\\u{1F4CE} \\uAE30\\uD0C0\&quot;,AI\\uB3C4\\uAD6C:\&quot;\\u{1F916} AI \\uB3C4\\uAD6C\&quot;,\\uBAA8\\uB2C8\\uD130\\uB9C1:\&quot;\\u{1F4CA} \\uBAA8\\uB2C8\\uD130\\uB9C1\&quot;};if(node.isFolder&amp;&amp;folderDisplayNames[node.displayName]&amp;&amp;(node.displayName=folderDisplayNames[node.displayName]),!node.isFolder&amp;&amp;node.data){let displayName=node.data.title||node.displayName;displayName=displayName.replace(/^(\\d{2}_|\\d{2}-\\d{2}-)/g,\&quot;\&quot;),displayName.length>50&amp;&amp;(displayName=displayName.substring(0,47)+\&quot;...\&quot;),displayName=displayName.replace(/^kubernetes_/,\&quot;K8s \&quot;).replace(/^쿠버네티스_/,\&quot;K8s \&quot;).replace(/_완벽_가이드$/,\&quot; \\uAC00\\uC774\\uB4DC\&quot;).replace(/_실습_가이드$/,\&quot; \\uC2E4\\uC2B5\&quot;).replace(/_핵심_정리$/,\&quot; \\uC815\\uB9AC\&quot;).replace(/_기초_개념$/,\&quot; \\uAE30\\uCD08\&quot;).replace(/완전_가이드$/,\&quot;\\uAC00\\uC774\\uB4DC\&quot;).replace(/완벽_정리$/,\&quot;\\uC815\\uB9AC\&quot;),node.displayName=displayName}return node}&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-245"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>탐색기</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-245" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../2_기술_분석/">2_기술_분석</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>클라우드 컴퓨팅 용어집   개발자를 위한 핵심 개념</a></div></nav><h1 class="article-title">클라우드 컴퓨팅 용어집 - 개발자를 위한 핵심 개념</h1><p show-comma="true" class="content-meta"><time datetime="2025-12-28T15:00:00.000Z">2025년 12월 29일</time><span>30 min read</span></p><ul class="tags"><li><a href="../tags/클라우드" class="internal tag-link">클라우드</a></li><li><a href="../tags/AWS" class="internal tag-link">AWS</a></li><li><a href="../tags/Azure" class="internal tag-link">Azure</a></li><li><a href="../tags/GCP" class="internal tag-link">GCP</a></li><li><a href="../tags/devops" class="internal tag-link">devops</a></li><li><a href="../tags/infrastructure" class="internal tag-link">infrastructure</a></li></ul></div></div><article class="popover-hint"><h1 id="-클라우드-컴퓨팅-용어집">🎯 클라우드 컴퓨팅 용어집<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-클라우드-컴퓨팅-용어집" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<h2 id="-목차">📑 목차<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-목차" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><a href="#1-%EA%B8%B0%EB%B3%B8-%EA%B0%9C%EB%85%90" class="internal alias">기본 개념</a></li>
+<li><a href="#2-%EC%84%9C%EB%B9%84%EC%8A%A4-%EB%AA%A8%EB%8D%B8" class="internal alias">서비스 모델</a></li>
+<li><a href="#3-%EB%B0%B0%ED%8F%AC-%EB%AA%A8%EB%8D%B8" class="internal alias">배포 모델</a></li>
+<li><a href="#4-%EC%BB%B4%ED%93%A8%ED%8C%85-%EC%84%9C%EB%B9%84%EC%8A%A4" class="internal alias">컴퓨팅 서비스</a></li>
+<li><a href="#5-%EC%8A%A4%ED%86%A0%EB%A6%AC%EC%A7%80-%EC%84%9C%EB%B9%84%EC%8A%A4" class="internal alias">스토리지 서비스</a></li>
+<li><a href="#6-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%84%9C%EB%B9%84%EC%8A%A4" class="internal alias">네트워킹 서비스</a></li>
+<li><a href="#7-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EC%84%9C%EB%B9%84%EC%8A%A4" class="internal alias">데이터베이스 서비스</a></li>
+<li><a href="#8-%EB%B3%B4%EC%95%88-%EB%B0%8F-%EA%B6%8C%ED%95%9C-%EA%B4%80%EB%A6%AC" class="internal alias">보안 및 권한 관리</a></li>
+<li><a href="#9-%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81-%EB%B0%8F-%EB%A1%9C%EA%B9%85" class="internal alias">모니터링 및 로깅</a></li>
+<li><a href="#10-devops-%EB%B0%8F-%EB%B0%B0%ED%8F%AC" class="internal alias">DevOps 및 배포</a></li>
+</ul>
+<hr/>
+<h2 id="1-기본-개념">1. 기본 개념<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-기본-개념" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-클라우드cloud">🌐 클라우드(Cloud)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-클라우드cloud" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 인터넷으로 서버나 스토리지 같은 자원을 빌려 쓰는 개념
+<strong>특징</strong>: 직접 하드웨어를 구입·운영할 필요가 없어 초기 비용 부담이 적고, 필요할 때 빠르게 늘리거나 줄일 수 있어 유연함</p>
+</blockquote>
+<h3 id="️-클라우드-컴퓨팅-cloud-computing">☁️ 클라우드 컴퓨팅 (Cloud Computing)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#️-클라우드-컴퓨팅-cloud-computing" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 네트워크를 통해 원격 데이터 센터에서 제공하는 컴퓨팅 자원을 필요한 만큼만 쓰고 사용량에 따라 과금하는 모델
+<strong>장점</strong>: 서비스 제공자는 인프라 관리와 보안 패치를 맡고, 사용자는 애플리케이션 개발·운영에 집중</p>
+</blockquote>
+<h3 id="-멀티-테넌시-multi-tenancy">🏢 멀티 테넌시 (Multi-tenancy)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-멀티-테넌시-multi-tenancy" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 퍼블릭 클라우드에서 여러 고객이 물리 인프라를 공유해 사용하는 구조
+<strong>특징</strong>: 각 고객은 논리적으로 격리되어 서로 영향을 주지 않고, 운영 효율을 높여 비용을 낮출 수 있음</p>
+</blockquote>
+<h3 id="-탄력성-elasticity">⚡ 탄력성 (Elasticity)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-탄력성-elasticity" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 수요 급증 시 VM·컨테이너 등을 자동으로 늘리고, 트래픽 감소 시 줄여서 비용을 최소화하는 클라우드 특성
+<strong>활용</strong>: 오토 스케일링을 대표 예로 들 수 있으며, 일시적 트래픽 급증이나 시즌성 이벤트에도 유연하게 대응</p>
+</blockquote>
+<h3 id="-오토-스케일링-auto-scaling">🔄 오토 스케일링 (Auto-Scaling)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-오토-스케일링-auto-scaling" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: CPU·메모리 사용량이나 큐 길이 등의 메트릭이 일정 임계치를 넘어서면 VM·컨테이너 수를 자동으로 늘리거나 줄이는 기능
+<strong>효과</strong>: 수동 개입 없이도 탄력적으로 대응해 비용을 절감하고, 안정적인 서비스 성능을 유지</p>
+</blockquote>
+<h3 id="-공동-책임-모델-shared-responsibility-model">🔒 공동 책임 모델 (Shared Responsibility Model)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-공동-책임-모델-shared-responsibility-model" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 클라우드 보안 책임을 공급자와 고객이 나누어 담당하는 원칙
+<strong>분담</strong>: 하드웨어, 호스팅 환경 보안은 CSP 몫이고, 애플리케이션 설정이나 데이터 암호화 등은 고객 책임</p>
+</blockquote>
+<h3 id="-하이퍼바이저-hypervisor">🔧 하이퍼바이저 (Hypervisor)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-하이퍼바이저-hypervisor" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 물리 서버 자원을 추상화해 여러 VM을 올리는 소프트웨어 계층
+<strong>역할</strong>: 클라우드 데이터 센터에서 핵심 역할을 하며, VM 간 격리를 보장</p>
+</blockquote>
+<h3 id="-클라우드-확장성-scalability">🎯 클라우드 확장성 (Scalability)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-클라우드-확장성-scalability" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 트래픽이 증가하면 VM 수를 늘리는 등 확장이 쉽고, 수요가 줄면 자원을 자동 축소해 비용 낭비를 줄이는 특성
+<strong>장점</strong>: 비즈니스 변동이 큰 환경에 특히 유용함</p>
+</blockquote>
+<h3 id="️-고가용성-high-availability">🛡️ 고가용성 (High Availability)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#️-고가용성-high-availability" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 클라우드가 중단 없이 지속 운영될 수 있도록 중복 구성, 가용성 영역 등을 마련해 시스템이 장애가 발생해도 빠르게 복구 또는 Failover하는 능력
+<strong>보장</strong>: 대부분 클라우드 서비스는 SLA 99.9% 이상을 보장해 비즈니스 연속성을 향상</p>
+</blockquote>
+<hr/>
+<h2 id="2-서비스-모델">2. 서비스 모델<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-서비스-모델" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="️-iaas-infrastructure-as-a-service">🏗️ IaaS (Infrastructure as a Service)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#️-iaas-infrastructure-as-a-service" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 가상화된 컴퓨팅 인프라를 서비스로 제공
+<strong>예시</strong>: AWS EC2, Azure Virtual Machines, GCP Compute Engine
+<strong>특징</strong>: 가장 높은 제어권, OS 선택 가능</p>
+</blockquote>
+<h3 id="️-paas-platform-as-a-service">🛠️ PaaS (Platform as a Service)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#️-paas-platform-as-a-service" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 애플리케이션 개발 및 배포를 위한 플랫폼을 서비스로 제공
+<strong>예시</strong>: AWS Elastic Beanstalk, Azure App Service, Google App Engine
+<strong>특징</strong>: 런타임, 미들웨어, OS 관리 불필요</p>
+</blockquote>
+<h3 id="-saas-software-as-a-service">📱 SaaS (Software as a Service)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-saas-software-as-a-service" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 완성된 소프트웨어 애플리케이션을 서비스로 제공
+<strong>예시</strong>: Gmail, Office 365, Salesforce
+<strong>특징</strong>: 즉시 사용 가능, 유지보수 불필요</p>
+</blockquote>
+<h3 id="-faas-function-as-a-service">🔧 FaaS (Function as a Service)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-faas-function-as-a-service" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 서버리스 방식을 구현한 대표 모델
+<strong>특징</strong>: 특정 트리거(HTTP 요청, 타이머, 메시지 등)가 발생하면 함수 코드가 실행되고, 종료 후 자원을 반환하며, Azure Functions, AWS Lambda 등이 있어 짧은 로직을 빠르게 개발·배포하기에 편리</p>
+</blockquote>
+<h3 id="-서버리스-serverless">🔄 서버리스 (Serverless)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-서버리스-serverless" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 서버 인프라를 직접 운영하지 않고, 함수(Function) 형태 코드를 이벤트 기반으로 실행하는 아키텍처
+<strong>장점</strong>: 사용한 만큼만 비용을 내며, 클라우드가 확장·패치를 자동 담당하므로 짧은 로직이나 이벤트 처리에 용이</p>
+</blockquote>
+<h3 id="️-마이크로서비스-microservices">🏗️ 마이크로서비스 (Microservices)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#️-마이크로서비스-microservices" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 큰 애플리케이션을 작고 독립된 서비스 단위로 분할하는 아키텍처 패턴
+<strong>장점</strong>: 각 마이크로서비스를 컨테이너 등으로 배포해 클라우드의 자동 확장성을 극대화하며, 특정 서비스가 과부하되면 해당 부분만 확장·배포 가능해 유연성을 높임</p>
+</blockquote>
+<h3 id="-이벤트-기반-아키텍처-event-driven-architecture">🎭 이벤트 기반 아키텍처 (Event-Driven Architecture)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-이벤트-기반-아키텍처-event-driven-architecture" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 어떤 이벤트가 발생할 때 해당 이벤트를 처리하는 컴포넌트(함수 등)가 자동 실행되는 구조
+<strong>시너지</strong>: 클라우드의 서버리스와 결합하면, 이벤트 규모에 따라 함수가 확장되므로 높은 효율성과 유연성을 확보할 수 있음</p>
+</blockquote>
+<h3 id="-재해-복구-disaster-recovery">🚑 재해 복구 (Disaster Recovery)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-재해-복구-disaster-recovery" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 클라우드에서 여러 리전간 데이터 복제와 자동 Failover 설정으로 장애나 재해 발생 시 빠르게 복원하는 전략
+<strong>설정</strong>: RPO, RTO 목표에 따라 DR 구성을 다르게 적용하며, Azure Site Recovery 같은 서비스를 사용하기도 함</p>
+</blockquote>
+<h3 id="-클라우드-마이그레이션-cloud-migration">📤 클라우드 마이그레이션 (Cloud Migration)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-클라우드-마이그레이션-cloud-migration" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 온프레미스 인프라나 앱을 클라우드로 이전하는 과정
+<strong>포함</strong>: 사전 평가, 비용 분석, 네트워크 설계, 데이터 마이그레이션, 재해 복구 구성이 포함되며, IaaS 리프트 앤 시프트 또는 PaaS 리팩터링 등 전략에 따라 접근 방식이 달라짐</p>
+</blockquote>
+<h3 id="-클라우드-네이티브-cloud-native">🌐 클라우드 네이티브 (Cloud-Native)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-클라우드-네이티브-cloud-native" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 클라우드 환경 특성(자동 확장, 분산 아키텍처, 자가 복구 등)을 최대한 활용해 설계된 애플리케이션 접근 방식
+<strong>예시</strong>: 컨테이너, 마이크로서비스, 서버리스 등이 대표 예시이며, 민첩성과 확장성을 극대화할 수 있음</p>
+</blockquote>
+<h3 id="-멀티-클라우드-multi-cloud">🌍 멀티 클라우드 (Multi-Cloud)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-멀티-클라우드-multi-cloud" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 여러 클라우드 공급자(Azure, AWS, GCP 등)를 동시에 사용하는 전략
+<strong>장점</strong>: 특정 벤더 종속을 피하고, 각 플랫폼의 장점을 조합해 활용하지만, 관리·보안 복잡도가 증가하므로 Azure Arc 같은 통합 관리 툴이 필요할 수 있음</p>
+</blockquote>
+<h3 id="-모놀리식-vs-클라우드-네이티브">🚀 모놀리식 vs 클라우드 네이티브<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-모놀리식-vs-클라우드-네이티브" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>차이점</strong>: 전통적 모놀리식 앱은 모든 기능이 한 덩어리이지만, 클라우드 네이티브는 마이크로서비스, 컨테이너 등으로 쪼개 관리
+<strong>장점</strong>: 확장성, 배포 주기, 장애 격리 측면에서 클라우드 네이티브 방식이 유리</p>
+</blockquote>
+<h3 id="-devtest-시나리오">🧪 Dev/Test 시나리오<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-devtest-시나리오" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 클라우드로 개발·테스트 환경을 필요할 때마다 빠르게 만들고, 종료 시 비용을 절약할 수 있는 활용 방식
+<strong>장점</strong>: 온프레미스처럼 하드웨어를 미리 구매할 필요가 없어, 프로젝트에 맞춰 다양한 실험적 테스트를 수행하기에 유리</p>
+</blockquote>
+<hr/>
+<h2 id="3-배포-모델">3. 배포 모델<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-배포-모델" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-public-cloud-퍼블릭-클라우드">🌍 Public Cloud (퍼블릭 클라우드)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-public-cloud-퍼블릭-클라우드" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 일반 대중에게 개방된 클라우드 서비스
+<strong>장점</strong>: 비용 효율적, 확장성 우수
+<strong>단점</strong>: 보안 우려, 제한된 커스터마이징</p>
+</blockquote>
+<h3 id="-private-cloud-프라이빗-클라우드">🏢 Private Cloud (프라이빗 클라우드)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-private-cloud-프라이빗-클라우드" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 특정 조직을 위해 독점적으로 운영되는 클라우드
+<strong>장점</strong>: 높은 보안성, 완전한 제어권
+<strong>단점</strong>: 높은 구축 비용, 전문 인력 필요</p>
+</blockquote>
+<h3 id="-hybrid-cloud-하이브리드-클라우드">🔀 Hybrid Cloud (하이브리드 클라우드)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-hybrid-cloud-하이브리드-클라우드" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 퍼블릭과 프라이빗 클라우드를 결합한 형태
+<strong>장점</strong>: 유연성, 비용 최적화
+<strong>사용 사례</strong>: 민감한 데이터는 프라이빗, 확장 작업은 퍼블릭</p>
+</blockquote>
+<h3 id="-multi-cloud-멀티-클라우드">🌐 Multi-Cloud (멀티 클라우드)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-multi-cloud-멀티-클라우드" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 여러 클라우드 제공업체의 서비스를 동시에 사용
+<strong>장점</strong>: 종속성 방지, 최적 서비스 선택
+<strong>단점</strong>: 복잡한 관리, 높은 운영 비용</p>
+</blockquote>
+<hr/>
+<h2 id="4-컴퓨팅-서비스">4. 컴퓨팅 서비스<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-컴퓨팅-서비스" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-virtual-machine-가상머신">💻 Virtual Machine (가상머신)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-virtual-machine-가상머신" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 물리적 서버에서 소프트웨어로 구현된 컴퓨터
+<strong>AWS</strong>: EC2 (Elastic Compute Cloud)
+<strong>Azure</strong>: Virtual Machines
+<strong>GCP</strong>: Compute Engine</p>
+</blockquote>
+<h3 id="-container-컨테이너">📦 Container (컨테이너)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-container-컨테이너" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 애플리케이션과 의존성을 패키징하는 경량 가상화 기술
+<strong>도구</strong>: Docker, Podman
+<strong>오케스트레이션</strong>: Kubernetes, Docker Swarm</p>
+</blockquote>
+<h3 id="-container-orchestration-컨테이너-오케스트레이션">🚢 Container Orchestration (컨테이너 오케스트레이션)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-container-orchestration-컨테이너-오케스트레이션" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 컨테이너의 배포, 관리, 확장을 자동화하는 시스템
+<strong>AWS</strong>: EKS (Elastic Kubernetes Service)
+<strong>Azure</strong>: AKS (Azure Kubernetes Service)
+<strong>GCP</strong>: GKE (Google Kubernetes Engine)</p>
+</blockquote>
+<h3 id="-serverless-computing-서버리스-컴퓨팅">⚡ Serverless Computing (서버리스 컴퓨팅)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-serverless-computing-서버리스-컴퓨팅" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 서버 관리 없이 코드를 실행하는 컴퓨팅 모델
+<strong>특징</strong>: 이벤트 기반, 자동 확장, 사용량 기반 과금
+<strong>제약</strong>: 실행 시간 제한, 콜드 스타트</p>
+</blockquote>
+<hr/>
+<h2 id="5-스토리지-서비스">5. 스토리지 서비스<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-스토리지-서비스" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="️-object-storage-객체-스토리지">🗂️ Object Storage (객체 스토리지)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#️-object-storage-객체-스토리지" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 파일을 객체로 저장하는 분산 스토리지 시스템
+<strong>AWS</strong>: S3 (Simple Storage Service)
+<strong>Azure</strong>: Blob Storage
+<strong>GCP</strong>: Cloud Storage
+<strong>특징</strong>: 무제한 확장, REST API 접근, 메타데이터 지원</p>
+</blockquote>
+<h3 id="-block-storage-블록-스토리지">💽 Block Storage (블록 스토리지)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-block-storage-블록-스토리지" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 데이터를 고정 크기 블록으로 저장하는 저수준 스토리지
+<strong>AWS</strong>: EBS (Elastic Block Store)
+<strong>Azure</strong>: Disk Storage
+<strong>GCP</strong>: Persistent Disk
+<strong>용도</strong>: 데이터베이스, 파일 시스템</p>
+</blockquote>
+<h3 id="-file-storage-파일-스토리지">📁 File Storage (파일 스토리지)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-file-storage-파일-스토리지" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 파일과 폴더 계층 구조를 제공하는 스토리지
+<strong>AWS</strong>: EFS (Elastic File System)
+<strong>Azure</strong>: Files
+<strong>GCP</strong>: Filestore
+<strong>프로토콜</strong>: NFS, SMB/CIFS</p>
+</blockquote>
+<h3 id="-cold-storage-콜드-스토리지">🧊 Cold Storage (콜드 스토리지)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-cold-storage-콜드-스토리지" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 자주 액세스하지 않는 데이터를 위한 저비용 스토리지
+<strong>AWS</strong>: Glacier, Deep Archive
+<strong>Azure</strong>: Archive Storage
+<strong>특징</strong>: 낮은 비용, 높은 검색 지연시간</p>
+</blockquote>
+<hr/>
+<h2 id="6-네트워킹-서비스">6. 네트워킹 서비스<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#6-네트워킹-서비스" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-vpc-virtual-private-cloud">🌐 VPC (Virtual Private Cloud)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-vpc-virtual-private-cloud" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 클라우드 내에서 논리적으로 격리된 네트워크 공간
+<strong>AWS</strong>: VPC
+<strong>Azure</strong>: Virtual Network (VNet)
+<strong>GCP</strong>: VPC
+<strong>구성요소</strong>: 서브넷, 라우팅 테이블, 게이트웨이</p>
+</blockquote>
+<h3 id="-subnet-서브넷">🏠 Subnet (서브넷)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-subnet-서브넷" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: VPC 내에서 IP 주소 범위를 분할한 네트워크 세그먼트
+<strong>유형</strong>: 퍼블릭 서브넷, 프라이빗 서브넷
+<strong>용도</strong>: 리소스 격리, 보안 강화</p>
+</blockquote>
+<h3 id="-load-balancer-로드-밸런서">🔄 Load Balancer (로드 밸런서)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-load-balancer-로드-밸런서" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 트래픽을 여러 서버에 분산시키는 서비스
+<strong>AWS</strong>: ALB (Application), NLB (Network), CLB (Classic)
+<strong>유형</strong>: L4 (Transport Layer), L7 (Application Layer)
+<strong>알고리즘</strong>: Round Robin, Least Connection, IP Hash</p>
+</blockquote>
+<h3 id="-cdn-content-delivery-network">📡 CDN (Content Delivery Network)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-cdn-content-delivery-network" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 전 세계에 분산된 서버를 통해 콘텐츠를 빠르게 전달
+<strong>AWS</strong>: CloudFront
+<strong>Azure</strong>: CDN
+<strong>GCP</strong>: Cloud CDN
+<strong>장점</strong>: 지연시간 감소, 서버 부하 분산</p>
+</blockquote>
+<h3 id="-vpn-virtual-private-network">🔐 VPN (Virtual Private Network)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-vpn-virtual-private-network" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 인터넷을 통해 안전한 연결을 제공하는 서비스
+<strong>Site-to-Site VPN</strong>: 온프레미스와 클라우드 연결
+<strong>Client VPN</strong>: 개별 사용자의 안전한 접속</p>
+</blockquote>
+<hr/>
+<h2 id="7-데이터베이스-서비스">7. 데이터베이스 서비스<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#7-데이터베이스-서비스" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="️-relational-database-관계형-데이터베이스">🗄️ Relational Database (관계형 데이터베이스)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#️-relational-database-관계형-데이터베이스" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 테이블 간 관계를 기반으로 하는 구조화된 데이터베이스
+<strong>AWS</strong>: RDS (MySQL, PostgreSQL, Oracle, SQL Server)
+<strong>Azure</strong>: SQL Database
+<strong>GCP</strong>: Cloud SQL</p>
+</blockquote>
+<h3 id="-nosql-database-nosql-데이터베이스">📊 NoSQL Database (NoSQL 데이터베이스)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-nosql-database-nosql-데이터베이스" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 관계형 모델을 사용하지 않는 분산 데이터베이스
+<strong>문서 DB</strong>: MongoDB, AWS DocumentDB
+<strong>키-값 DB</strong>: Redis, AWS DynamoDB
+<strong>그래프 DB</strong>: Neo4j, AWS Neptune</p>
+</blockquote>
+<h3 id="-data-warehouse-데이터-웨어하우스">💾 Data Warehouse (데이터 웨어하우스)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-data-warehouse-데이터-웨어하우스" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 대용량 데이터 분석을 위한 중앙집중식 저장소
+<strong>AWS</strong>: Redshift
+<strong>Azure</strong>: Synapse Analytics
+<strong>GCP</strong>: BigQuery
+<strong>특징</strong>: 컬럼 지향 저장, 대용량 처리</p>
+</blockquote>
+<h3 id="-database-migration-데이터베이스-마이그레이션">🔍 Database Migration (데이터베이스 마이그레이션)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-database-migration-데이터베이스-마이그레이션" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 데이터베이스를 한 환경에서 다른 환경으로 이동
+<strong>AWS</strong>: DMS (Database Migration Service)
+<strong>방법</strong>: 동종 마이그레이션, 이종 마이그레이션</p>
+</blockquote>
+<hr/>
+<h2 id="8-보안-및-권한-관리">8. 보안 및 권한 관리<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#8-보안-및-권한-관리" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-iam-identity-and-access-management">🔑 IAM (Identity and Access Management)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-iam-identity-and-access-management" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 사용자 신원 확인 및 리소스 접근 권한 관리
+<strong>구성요소</strong>: 사용자, 그룹, 역할, 정책
+<strong>원칙</strong>: 최소 권한 원칙 (Principle of Least Privilege)</p>
+</blockquote>
+<h3 id="️-security-group-보안-그룹">🛡️ Security Group (보안 그룹)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#️-security-group-보안-그룹" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 인스턴스 수준의 가상 방화벽
+<strong>기능</strong>: 인바운드/아웃바운드 트래픽 제어
+<strong>규칙</strong>: 프로토콜, 포트, 소스/대상 지정</p>
+</blockquote>
+<h3 id="-encryption-암호화">🔒 Encryption (암호화)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-encryption-암호화" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>전송 중 암호화</strong>: HTTPS, TLS/SSL
+<strong>저장 시 암호화</strong>: AES-256, 키 관리 서비스
+<strong>AWS</strong>: KMS (Key Management Service)
+<strong>Azure</strong>: Key Vault</p>
+</blockquote>
+<h3 id="-compliance-컴플라이언스">📋 Compliance (컴플라이언스)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-compliance-컴플라이언스" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 규정 및 표준 준수
+<strong>표준</strong>: SOC 2, ISO 27001, PCI DSS
+<strong>지역 규정</strong>: GDPR (유럽), HIPAA (미국 의료)</p>
+</blockquote>
+<hr/>
+<h2 id="9-모니터링-및-로깅">9. 모니터링 및 로깅<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#9-모니터링-및-로깅" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-monitoring-모니터링">📊 Monitoring (모니터링)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-monitoring-모니터링" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 시스템 성능과 상태를 지속적으로 관찰
+<strong>AWS</strong>: CloudWatch
+<strong>Azure</strong>: Monitor
+<strong>GCP</strong>: Cloud Monitoring
+<strong>메트릭</strong>: CPU, 메모리, 네트워크, 디스크</p>
+</blockquote>
+<h3 id="-logging-로깅">📝 Logging (로깅)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-logging-로깅" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 시스템과 애플리케이션 이벤트 기록
+<strong>중앙집중식</strong>: ELK Stack (Elasticsearch, Logstash, Kibana)
+<strong>클라우드 서비스</strong>: CloudWatch Logs, Azure Logs</p>
+</blockquote>
+<h3 id="-alerting-알림">🔔 Alerting (알림)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-alerting-알림" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 임계값 초과 시 자동 알림 전송
+<strong>채널</strong>: 이메일, SMS, Slack, PagerDuty
+<strong>유형</strong>: 경고, 심각, 정보</p>
+</blockquote>
+<h3 id="-application-performance-monitoring-apm">📈 Application Performance Monitoring (APM)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-application-performance-monitoring-apm" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 애플리케이션 성능과 사용자 경험 모니터링
+<strong>도구</strong>: New Relic, Datadog, AWS X-Ray
+<strong>기능</strong>: 분산 추적, 성능 분석</p>
+</blockquote>
+<hr/>
+<h2 id="10-devops-및-배포">10. DevOps 및 배포<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#10-devops-및-배포" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-cicd-continuous-integrationcontinuous-deployment">🚀 CI/CD (Continuous Integration/Continuous Deployment)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-cicd-continuous-integrationcontinuous-deployment" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 지속적 통합 및 지속적 배포 자동화
+<strong>AWS</strong>: CodePipeline, CodeBuild, CodeDeploy
+<strong>도구</strong>: Jenkins, GitLab CI, GitHub Actions</p>
+</blockquote>
+<h3 id="-infrastructure-as-code-iac">📦 Infrastructure as Code (IaC)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-infrastructure-as-code-iac" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 코드로 인프라를 정의하고 관리
+<strong>도구</strong>: Terraform, AWS CloudFormation, Azure ARM
+<strong>장점</strong>: 버전 관리, 재현 가능성, 자동화</p>
+</blockquote>
+<h3 id="-blue-green-deployment-블루-그린-배포">🔄 Blue-Green Deployment (블루-그린 배포)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-blue-green-deployment-블루-그린-배포" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 두 개의 동일한 환경을 사용한 무중단 배포
+<strong>과정</strong>: 새 버전을 그린 환경에 배포 → 트래픽 전환
+<strong>장점</strong>: 빠른 롤백, 무중단 서비스</p>
+</blockquote>
+<h3 id="-canary-deployment-카나리-배포">🎯 Canary Deployment (카나리 배포)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-canary-deployment-카나리-배포" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 일부 사용자에게만 새 버전을 배포하는 방식
+<strong>과정</strong>: 소량 트래픽으로 테스트 → 점진적 확대
+<strong>장점</strong>: 위험 최소화, 문제 조기 발견</p>
+</blockquote>
+<h3 id="-rolling-deployment-롤링-배포">🌊 Rolling Deployment (롤링 배포)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-rolling-deployment-롤링-배포" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 인스턴스를 순차적으로 업데이트하는 방식
+<strong>과정</strong>: 일부 인스턴스 중지 → 업데이트 → 재시작
+<strong>장점</strong>: 리소스 절약, 점진적 업데이트</p>
+</blockquote>
+<hr/>
+<h2 id="-비용-및-재무-모델">💰 비용 및 재무 모델<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-비용-및-재무-모델" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-pay-as-you-go">💳 Pay-As-You-Go<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-pay-as-you-go" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 사용량만큼만 지불하는 클라우드 과금 모델
+<strong>특징</strong>: VM 실행 시간, 스토리지 GB, API 호출 수 등에 따라 비용이 부과되며, 서비스 규모를 자유롭게 조정할 수 있어 비용 효율성이 높음</p>
+</blockquote>
+<h3 id="️-예약-인스턴스-reserved-instance">🏷️ 예약 인스턴스 (Reserved Instance)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#️-예약-인스턴스-reserved-instance" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 1년 혹은 3년 등 약정 기간을 미리 예약해 VM 요금을 할인받는 방식
+<strong>장점</strong>: 장기적으로 안정적인 워크로드라면 큰 비용 절감이 가능하나, 중도 해지나 환불 시 제약이 있을 수 있음</p>
+</blockquote>
+<h3 id="-스팟-인스턴스-spot-instance">🎲 스팟 인스턴스 (Spot Instance)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-스팟-인스턴스-spot-instance" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 클라우드 유휴 자원을 저렴하게 임대하는 VM
+<strong>특징</strong>: 사용 중 필요하다면 공급자가 해당 자원을 회수할 수 있어 SLA 보장은 어렵지만, 최대 90%까지 비용 절감도 가능</p>
+</blockquote>
+<h3 id="-tco-total-cost-of-ownership">📊 TCO (Total Cost of Ownership)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-tco-total-cost-of-ownership" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: IT 인프라 소유·운영 시 발생하는 모든 비용(직접·간접)을 합한 개념
+<strong>활용</strong>: 온프레미스 vs 클라우드 전환 시 TCO를 비교해 효율성을 평가하며, Azure TCO 계산기를 통해 예상 절감 효과를 미리 산출할 수 있음</p>
+</blockquote>
+<h3 id="️-capex-capital-expenditure">🏗️ CapEx (Capital Expenditure)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#️-capex-capital-expenditure" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 서버·네트워크 장비 등 물리 인프라를 구매·설치하는 데 드는 초기 투자 비용
+<strong>특징</strong>: 물리적으로 서버 등 장비를 구매할 때 인프라에 대한 지출을 선불로 지불하며, 높은 초기 비용이 들지만 투자 가치는 시간이 지남에 따라 감소</p>
+</blockquote>
+<h3 id="️-opex-operational-expenditure">⚙️ OpEx (Operational Expenditure)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#️-opex-operational-expenditure" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 클라우드 사용료, 유지보수, 전력, 인건비 등 운영 단계에서 반복적으로 드는 비용
+<strong>특징</strong>: 필요에 따라 서비스 또는 제품에 지출되고 즉시 청구되며, 클라우드는 Pay-As-You-Go로 OpEx 비중이 커져 서비스 사용량에 따라 유연하게 비용을 조절할 수 있음</p>
+</blockquote>
+<h3 id="-예측-가능-비용-predictable-cost">📈 예측 가능 비용 (Predictable Cost)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-예측-가능-비용-predictable-cost" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 클라우드는 사용량에 따른 과금 구조가 투명하여, 일정 규모 이상 사용 시 예상 비용을 비교적 정확히 산출할 수 있는 특성
+<strong>장점</strong>: 온프레미스처럼 초기 대규모 투자가 필요 없고, 운영 단계도 지표 기반으로 비용을 모니터링해 조절이 가능</p>
+</blockquote>
+<h3 id="-재무적-유연성-financial-flexibility">💪 재무적 유연성 (Financial Flexibility)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-재무적-유연성-financial-flexibility" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 클라우드 과금은 월 단위나 사용량 단위로 지불하므로, 기업이 재무 계획을 유연하게 세울 수 있는 능력
+<strong>이점</strong>: 장비 구입 등 CapEx가 크지 않아 초기 예산 부담이 낮고, 비용 증가가 예상될 때는 규모를 조정해 대응이 가능</p>
+</blockquote>
+<hr/>
+<h2 id="-보안-및-컴플라이언스">🔒 보안 및 컴플라이언스<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-보안-및-컴플라이언스" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-일관된-보안-consistent-security">🔐 일관된 보안 (Consistent Security)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-일관된-보안-consistent-security" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 클라우드는 전 세계 데이터 센터에서 표준화된 보안 프레임워크와 정책을 적용
+<strong>특징</strong>: 고객은 애플리케이션 계층이나 데이터 암호화만 잘 관리하면 되며, 백단 인프라는 CSP가 지속적으로 패치·점검해 균일한 수준의 보안을 유지</p>
+</blockquote>
+<h3 id="-보안규정-준수-compliance">📋 보안·규정 준수 (Compliance)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-보안규정-준수-compliance" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 클라우드는 ISO, SOC, HIPAA, GDPR 등 다양한 인증·규제 준수 옵션을 갖추어 고객이 쉽게 대응하도록 도움
+<strong>장점</strong>: 고객은 자체 앱 레벨 보안만 집중해도 되므로, 글로벌 표준을 빠르게 만족할 수 있음</p>
+</blockquote>
+<h3 id="-데이터-주권-data-sovereignty">🌍 데이터 주권 (Data Sovereignty)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-데이터-주권-data-sovereignty" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 특정 국가나 지역 법규에 따라 데이터가 어디에 저장되고 어떻게 이동되는지 제한하는 개념
+<strong>중요성</strong>: 금융·공공 분야는 지역 내 데이터 센터를 요구하기도 하므로, 클라우드 공급자의 리전 선택이 중요</p>
+</blockquote>
+<h3 id="-업타임-uptime">⏰ 업타임 (Uptime)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-업타임-uptime" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 시스템이 정상 동작하는 시간 비율로, SLA(가용성)를 측정하는 지표
+<strong>예시</strong>: 99.9% SLA는 월간 다운타임이 수십 분 이내로 제한됨을 의미하며, 클라우드는 중복구성과 자동 Failover를 통해 높은 업타임을 유지</p>
+</blockquote>
+<h3 id="-sla-service-level-agreement">📜 SLA (Service Level Agreement)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-sla-service-level-agreement" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 클라우드 서비스 제공자가 보장하는 가용성, 성능, 지원 수준 등의 계약
+<strong>예시</strong>: 99.9% 가용성 미달 시 서비스 크레딧을 환급해주며, 복수 서비스를 결합해 아키텍처를 꾸리면 실효 SLA는 곱산으로 계산해야 함</p>
+</blockquote>
+<h3 id="-신뢰성-reliability">🔒 신뢰성 (Reliability)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-신뢰성-reliability" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 시스템이 예측 가능한 성능으로 안정적으로 동작하는 능력
+<strong>특징</strong>: 클라우드는 여러 리전, 중복 인프라를 통해 장애 위험을 줄이고, 보안 패치 등을 자동 적용해 가동 시간을 극대화</p>
+</blockquote>
+<h3 id="️-내결함성-fault-tolerance">🛡️ 내결함성 (Fault tolerance)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#️-내결함성-fault-tolerance" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 시스템을 구성하는 부품의 일부에서 결함 또는 고장이 발생하여도 정상적 혹은 부분적으로 기능을 수행할 수 있는 시스템
+<strong>목적</strong>: 예기치 않은 사고가 발생했을 때 고객이 영향을 받지 않도록 보장</p>
+</blockquote>
+<hr/>
+<h2 id="-개발-및-운영-혁신">🚀 개발 및 운영 혁신<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-개발-및-운영-혁신" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-그린-it-green-it">💚 그린 IT (Green IT)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-그린-it-green-it" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 에너지 효율을 높이고 탄소 배출을 줄이려는 IT 활동
+<strong>효과</strong>: 대형 클라우드는 친환경 데이터 센터 운영에 투자하므로, 자체 서버실보다 훨씬 낮은 PUE(전력효율)를 달성해 전력 절감을 실현</p>
+</blockquote>
+<h3 id="-실험-속도-experimentation-speed">⚡ 실험 속도 (Experimentation Speed)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-실험-속도-experimentation-speed" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 클라우드는 클릭 몇 번으로 테스트 환경을 만들고 폐기할 수 있어 새로운 아이디어를 빠르게 검증할 수 있는 능력
+<strong>장점</strong>: MVP(최소 기능 제품) 개발과 사용자 피드백 수집에 유리해 조직 혁신 속도를 높임</p>
+</blockquote>
+<h3 id="-애자일-개발-agile-development">🔄 애자일 개발 (Agile Development)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-애자일-개발-agile-development" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 클라우드는 DevOps, CI/CD 파이프라인과 결합해 애자일 개발을 지원
+<strong>효과</strong>: 자동 배포·스케일링 덕분에 기능을 소규모 단위로 자주 배포하고, 사용자의 즉각적 피드백을 반영해 품질을 지속 개선할 수 있음</p>
+</blockquote>
+<h3 id="️-devops-문화-devops-culture">🏗️ DevOps 문화 (DevOps Culture)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#️-devops-문화-devops-culture" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 개발(Dev)과 운영(Ops)을 긴밀히 결합해 소프트웨어 배포 속도와 품질을 높이는 문화·방법론
+<strong>시너지</strong>: 클라우드가 제공하는 자동화 툴(CI/CD, 모니터링 등)과 찰떡궁합이라, 빠른 주기로 안정적 배포가 가능</p>
+</blockquote>
+<h3 id="-관리-효율성-manageability">🏢 관리 효율성 (Manageability)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-관리-효율성-manageability" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 클라우드는 하드웨어 장비나 네트워크 인프라 관리를 대부분 자동화하므로, 운영자가 애플리케이션 운영·개발 등에 집중하기 쉬운 특성
+<strong>효과</strong>: 장애 감지, 모니터링, 백업 등도 간소화되어 IT 관리 효율이 크게 높아짐</p>
+</blockquote>
+<h3 id="-클라우드-민첩성-cloud-agility">🎯 클라우드 민첩성 (Cloud Agility)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-클라우드-민첩성-cloud-agility" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 끊임없이 변화하는 IT 환경에서 비즈니스 성장을 주도하는 애플리케이션을 신속하게 개발, 테스트 및 출시하는 능력</p>
+</blockquote>
+<h3 id="️-거버넌스-governance">🏛️ 거버넌스 (Governance)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#️-거버넌스-governance" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p><strong>정의</strong>: 조직이 클라우드를 사용할 때 권한 설정, 비용 관리, 보안 정책 등을 체계적으로 적용하고 준수하게 하는 관리 체계
+<strong>필요성</strong>: 클라우드가 급속히 확장될 수 있으므로, 무분별한 리소스 생성이나 보안 사고를 막기 위해 필수</p>
+</blockquote>
+<hr/>
+<h2 id="-추가-참고-자료">📚 추가 참고 자료<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-추가-참고-자료" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-핵심-키워드">🔍 핵심 키워드<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-핵심-키워드" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Microservices</strong>: 마이크로서비스 아키텍처</li>
+<li><strong>API Gateway</strong>: API 관리 및 라우팅 서비스</li>
+<li><strong>Message Queue</strong>: 비동기 메시지 처리 (SQS, Service Bus)</li>
+<li><strong>Disaster Recovery</strong>: 재해 복구 계획</li>
+<li><strong>Cloud Migration</strong>: 온프레미스에서 클라우드로의 전환</li>
+<li><strong>Dev/Test 시나리오</strong>: 개발·테스트 환경 구성</li>
+</ul>
+<h3 id="-추천-학습-경로">📖 추천 학습 경로<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-추천-학습-경로" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ol>
+<li><strong>기초</strong>: 클라우드 개념, 서비스 모델 이해</li>
+<li><strong>실습</strong>: 주요 클라우드 제공업체 계정 생성 및 기본 서비스 사용</li>
+<li><strong>심화</strong>: 아키텍처 설계, 보안, 비용 최적화</li>
+<li><strong>인증</strong>: AWS Solutions Architect, Azure Solutions Architect</li>
+</ol></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>그래프 뷰</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-92" aria-expanded="true"><h3>목차</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#-클라우드-컴퓨팅-용어집" data-for="-클라우드-컴퓨팅-용어집">🎯 클라우드 컴퓨팅 용어집</a></li><li class="depth-1"><a href="#-목차" data-for="-목차">📑 목차</a></li><li class="depth-1"><a href="#1-기본-개념" data-for="1-기본-개념">1. 기본 개념</a></li><li class="depth-2"><a href="#-클라우드cloud" data-for="-클라우드cloud">🌐 클라우드(Cloud)</a></li><li class="depth-2"><a href="#️-클라우드-컴퓨팅-cloud-computing" data-for="️-클라우드-컴퓨팅-cloud-computing">☁️ 클라우드 컴퓨팅 (Cloud Computing)</a></li><li class="depth-2"><a href="#-멀티-테넌시-multi-tenancy" data-for="-멀티-테넌시-multi-tenancy">🏢 멀티 테넌시 (Multi-tenancy)</a></li><li class="depth-2"><a href="#-탄력성-elasticity" data-for="-탄력성-elasticity">⚡ 탄력성 (Elasticity)</a></li><li class="depth-2"><a href="#-오토-스케일링-auto-scaling" data-for="-오토-스케일링-auto-scaling">🔄 오토 스케일링 (Auto-Scaling)</a></li><li class="depth-2"><a href="#-공동-책임-모델-shared-responsibility-model" data-for="-공동-책임-모델-shared-responsibility-model">🔒 공동 책임 모델 (Shared Responsibility Model)</a></li><li class="depth-2"><a href="#-하이퍼바이저-hypervisor" data-for="-하이퍼바이저-hypervisor">🔧 하이퍼바이저 (Hypervisor)</a></li><li class="depth-2"><a href="#-클라우드-확장성-scalability" data-for="-클라우드-확장성-scalability">🎯 클라우드 확장성 (Scalability)</a></li><li class="depth-2"><a href="#️-고가용성-high-availability" data-for="️-고가용성-high-availability">🛡️ 고가용성 (High Availability)</a></li><li class="depth-1"><a href="#2-서비스-모델" data-for="2-서비스-모델">2. 서비스 모델</a></li><li class="depth-2"><a href="#️-iaas-infrastructure-as-a-service" data-for="️-iaas-infrastructure-as-a-service">🏗️ IaaS (Infrastructure as a Service)</a></li><li class="depth-2"><a href="#️-paas-platform-as-a-service" data-for="️-paas-platform-as-a-service">🛠️ PaaS (Platform as a Service)</a></li><li class="depth-2"><a href="#-saas-software-as-a-service" data-for="-saas-software-as-a-service">📱 SaaS (Software as a Service)</a></li><li class="depth-2"><a href="#-faas-function-as-a-service" data-for="-faas-function-as-a-service">🔧 FaaS (Function as a Service)</a></li><li class="depth-2"><a href="#-서버리스-serverless" data-for="-서버리스-serverless">🔄 서버리스 (Serverless)</a></li><li class="depth-2"><a href="#️-마이크로서비스-microservices" data-for="️-마이크로서비스-microservices">🏗️ 마이크로서비스 (Microservices)</a></li><li class="depth-2"><a href="#-이벤트-기반-아키텍처-event-driven-architecture" data-for="-이벤트-기반-아키텍처-event-driven-architecture">🎭 이벤트 기반 아키텍처 (Event-Driven Architecture)</a></li><li class="depth-2"><a href="#-재해-복구-disaster-recovery" data-for="-재해-복구-disaster-recovery">🚑 재해 복구 (Disaster Recovery)</a></li><li class="depth-2"><a href="#-클라우드-마이그레이션-cloud-migration" data-for="-클라우드-마이그레이션-cloud-migration">📤 클라우드 마이그레이션 (Cloud Migration)</a></li><li class="depth-2"><a href="#-클라우드-네이티브-cloud-native" data-for="-클라우드-네이티브-cloud-native">🌐 클라우드 네이티브 (Cloud-Native)</a></li><li class="depth-2"><a href="#-멀티-클라우드-multi-cloud" data-for="-멀티-클라우드-multi-cloud">🌍 멀티 클라우드 (Multi-Cloud)</a></li><li class="depth-2"><a href="#-모놀리식-vs-클라우드-네이티브" data-for="-모놀리식-vs-클라우드-네이티브">🚀 모놀리식 vs 클라우드 네이티브</a></li><li class="depth-2"><a href="#-devtest-시나리오" data-for="-devtest-시나리오">🧪 Dev/Test 시나리오</a></li><li class="depth-1"><a href="#3-배포-모델" data-for="3-배포-모델">3. 배포 모델</a></li><li class="depth-2"><a href="#-public-cloud-퍼블릭-클라우드" data-for="-public-cloud-퍼블릭-클라우드">🌍 Public Cloud (퍼블릭 클라우드)</a></li><li class="depth-2"><a href="#-private-cloud-프라이빗-클라우드" data-for="-private-cloud-프라이빗-클라우드">🏢 Private Cloud (프라이빗 클라우드)</a></li><li class="depth-2"><a href="#-hybrid-cloud-하이브리드-클라우드" data-for="-hybrid-cloud-하이브리드-클라우드">🔀 Hybrid Cloud (하이브리드 클라우드)</a></li><li class="depth-2"><a href="#-multi-cloud-멀티-클라우드" data-for="-multi-cloud-멀티-클라우드">🌐 Multi-Cloud (멀티 클라우드)</a></li><li class="depth-1"><a href="#4-컴퓨팅-서비스" data-for="4-컴퓨팅-서비스">4. 컴퓨팅 서비스</a></li><li class="depth-2"><a href="#-virtual-machine-가상머신" data-for="-virtual-machine-가상머신">💻 Virtual Machine (가상머신)</a></li><li class="depth-2"><a href="#-container-컨테이너" data-for="-container-컨테이너">📦 Container (컨테이너)</a></li><li class="depth-2"><a href="#-container-orchestration-컨테이너-오케스트레이션" data-for="-container-orchestration-컨테이너-오케스트레이션">🚢 Container Orchestration (컨테이너 오케스트레이션)</a></li><li class="depth-2"><a href="#-serverless-computing-서버리스-컴퓨팅" data-for="-serverless-computing-서버리스-컴퓨팅">⚡ Serverless Computing (서버리스 컴퓨팅)</a></li><li class="depth-1"><a href="#5-스토리지-서비스" data-for="5-스토리지-서비스">5. 스토리지 서비스</a></li><li class="depth-2"><a href="#️-object-storage-객체-스토리지" data-for="️-object-storage-객체-스토리지">🗂️ Object Storage (객체 스토리지)</a></li><li class="depth-2"><a href="#-block-storage-블록-스토리지" data-for="-block-storage-블록-스토리지">💽 Block Storage (블록 스토리지)</a></li><li class="depth-2"><a href="#-file-storage-파일-스토리지" data-for="-file-storage-파일-스토리지">📁 File Storage (파일 스토리지)</a></li><li class="depth-2"><a href="#-cold-storage-콜드-스토리지" data-for="-cold-storage-콜드-스토리지">🧊 Cold Storage (콜드 스토리지)</a></li><li class="depth-1"><a href="#6-네트워킹-서비스" data-for="6-네트워킹-서비스">6. 네트워킹 서비스</a></li><li class="depth-2"><a href="#-vpc-virtual-private-cloud" data-for="-vpc-virtual-private-cloud">🌐 VPC (Virtual Private Cloud)</a></li><li class="depth-2"><a href="#-subnet-서브넷" data-for="-subnet-서브넷">🏠 Subnet (서브넷)</a></li><li class="depth-2"><a href="#-load-balancer-로드-밸런서" data-for="-load-balancer-로드-밸런서">🔄 Load Balancer (로드 밸런서)</a></li><li class="depth-2"><a href="#-cdn-content-delivery-network" data-for="-cdn-content-delivery-network">📡 CDN (Content Delivery Network)</a></li><li class="depth-2"><a href="#-vpn-virtual-private-network" data-for="-vpn-virtual-private-network">🔐 VPN (Virtual Private Network)</a></li><li class="depth-1"><a href="#7-데이터베이스-서비스" data-for="7-데이터베이스-서비스">7. 데이터베이스 서비스</a></li><li class="depth-2"><a href="#️-relational-database-관계형-데이터베이스" data-for="️-relational-database-관계형-데이터베이스">🗄️ Relational Database (관계형 데이터베이스)</a></li><li class="depth-2"><a href="#-nosql-database-nosql-데이터베이스" data-for="-nosql-database-nosql-데이터베이스">📊 NoSQL Database (NoSQL 데이터베이스)</a></li><li class="depth-2"><a href="#-data-warehouse-데이터-웨어하우스" data-for="-data-warehouse-데이터-웨어하우스">💾 Data Warehouse (데이터 웨어하우스)</a></li><li class="depth-2"><a href="#-database-migration-데이터베이스-마이그레이션" data-for="-database-migration-데이터베이스-마이그레이션">🔍 Database Migration (데이터베이스 마이그레이션)</a></li><li class="depth-1"><a href="#8-보안-및-권한-관리" data-for="8-보안-및-권한-관리">8. 보안 및 권한 관리</a></li><li class="depth-2"><a href="#-iam-identity-and-access-management" data-for="-iam-identity-and-access-management">🔑 IAM (Identity and Access Management)</a></li><li class="depth-2"><a href="#️-security-group-보안-그룹" data-for="️-security-group-보안-그룹">🛡️ Security Group (보안 그룹)</a></li><li class="depth-2"><a href="#-encryption-암호화" data-for="-encryption-암호화">🔒 Encryption (암호화)</a></li><li class="depth-2"><a href="#-compliance-컴플라이언스" data-for="-compliance-컴플라이언스">📋 Compliance (컴플라이언스)</a></li><li class="depth-1"><a href="#9-모니터링-및-로깅" data-for="9-모니터링-및-로깅">9. 모니터링 및 로깅</a></li><li class="depth-2"><a href="#-monitoring-모니터링" data-for="-monitoring-모니터링">📊 Monitoring (모니터링)</a></li><li class="depth-2"><a href="#-logging-로깅" data-for="-logging-로깅">📝 Logging (로깅)</a></li><li class="depth-2"><a href="#-alerting-알림" data-for="-alerting-알림">🔔 Alerting (알림)</a></li><li class="depth-2"><a href="#-application-performance-monitoring-apm" data-for="-application-performance-monitoring-apm">📈 Application Performance Monitoring (APM)</a></li><li class="depth-1"><a href="#10-devops-및-배포" data-for="10-devops-및-배포">10. DevOps 및 배포</a></li><li class="depth-2"><a href="#-cicd-continuous-integrationcontinuous-deployment" data-for="-cicd-continuous-integrationcontinuous-deployment">🚀 CI/CD (Continuous Integration/Continuous Deployment)</a></li><li class="depth-2"><a href="#-infrastructure-as-code-iac" data-for="-infrastructure-as-code-iac">📦 Infrastructure as Code (IaC)</a></li><li class="depth-2"><a href="#-blue-green-deployment-블루-그린-배포" data-for="-blue-green-deployment-블루-그린-배포">🔄 Blue-Green Deployment (블루-그린 배포)</a></li><li class="depth-2"><a href="#-canary-deployment-카나리-배포" data-for="-canary-deployment-카나리-배포">🎯 Canary Deployment (카나리 배포)</a></li><li class="depth-2"><a href="#-rolling-deployment-롤링-배포" data-for="-rolling-deployment-롤링-배포">🌊 Rolling Deployment (롤링 배포)</a></li><li class="depth-1"><a href="#-비용-및-재무-모델" data-for="-비용-및-재무-모델">💰 비용 및 재무 모델</a></li><li class="depth-2"><a href="#-pay-as-you-go" data-for="-pay-as-you-go">💳 Pay-As-You-Go</a></li><li class="depth-2"><a href="#️-예약-인스턴스-reserved-instance" data-for="️-예약-인스턴스-reserved-instance">🏷️ 예약 인스턴스 (Reserved Instance)</a></li><li class="depth-2"><a href="#-스팟-인스턴스-spot-instance" data-for="-스팟-인스턴스-spot-instance">🎲 스팟 인스턴스 (Spot Instance)</a></li><li class="depth-2"><a href="#-tco-total-cost-of-ownership" data-for="-tco-total-cost-of-ownership">📊 TCO (Total Cost of Ownership)</a></li><li class="depth-2"><a href="#️-capex-capital-expenditure" data-for="️-capex-capital-expenditure">🏗️ CapEx (Capital Expenditure)</a></li><li class="depth-2"><a href="#️-opex-operational-expenditure" data-for="️-opex-operational-expenditure">⚙️ OpEx (Operational Expenditure)</a></li><li class="depth-2"><a href="#-예측-가능-비용-predictable-cost" data-for="-예측-가능-비용-predictable-cost">📈 예측 가능 비용 (Predictable Cost)</a></li><li class="depth-2"><a href="#-재무적-유연성-financial-flexibility" data-for="-재무적-유연성-financial-flexibility">💪 재무적 유연성 (Financial Flexibility)</a></li><li class="depth-1"><a href="#-보안-및-컴플라이언스" data-for="-보안-및-컴플라이언스">🔒 보안 및 컴플라이언스</a></li><li class="depth-2"><a href="#-일관된-보안-consistent-security" data-for="-일관된-보안-consistent-security">🔐 일관된 보안 (Consistent Security)</a></li><li class="depth-2"><a href="#-보안규정-준수-compliance" data-for="-보안규정-준수-compliance">📋 보안·규정 준수 (Compliance)</a></li><li class="depth-2"><a href="#-데이터-주권-data-sovereignty" data-for="-데이터-주권-data-sovereignty">🌍 데이터 주권 (Data Sovereignty)</a></li><li class="depth-2"><a href="#-업타임-uptime" data-for="-업타임-uptime">⏰ 업타임 (Uptime)</a></li><li class="depth-2"><a href="#-sla-service-level-agreement" data-for="-sla-service-level-agreement">📜 SLA (Service Level Agreement)</a></li><li class="depth-2"><a href="#-신뢰성-reliability" data-for="-신뢰성-reliability">🔒 신뢰성 (Reliability)</a></li><li class="depth-2"><a href="#️-내결함성-fault-tolerance" data-for="️-내결함성-fault-tolerance">🛡️ 내결함성 (Fault tolerance)</a></li><li class="depth-1"><a href="#-개발-및-운영-혁신" data-for="-개발-및-운영-혁신">🚀 개발 및 운영 혁신</a></li><li class="depth-2"><a href="#-그린-it-green-it" data-for="-그린-it-green-it">💚 그린 IT (Green IT)</a></li><li class="depth-2"><a href="#-실험-속도-experimentation-speed" data-for="-실험-속도-experimentation-speed">⚡ 실험 속도 (Experimentation Speed)</a></li><li class="depth-2"><a href="#-애자일-개발-agile-development" data-for="-애자일-개발-agile-development">🔄 애자일 개발 (Agile Development)</a></li><li class="depth-2"><a href="#️-devops-문화-devops-culture" data-for="️-devops-문화-devops-culture">🏗️ DevOps 문화 (DevOps Culture)</a></li><li class="depth-2"><a href="#-관리-효율성-manageability" data-for="-관리-효율성-manageability">🏢 관리 효율성 (Manageability)</a></li><li class="depth-2"><a href="#-클라우드-민첩성-cloud-agility" data-for="-클라우드-민첩성-cloud-agility">🎯 클라우드 민첩성 (Cloud Agility)</a></li><li class="depth-2"><a href="#️-거버넌스-governance" data-for="️-거버넌스-governance">🏛️ 거버넌스 (Governance)</a></li><li class="depth-1"><a href="#-추가-참고-자료" data-for="-추가-참고-자료">📚 추가 참고 자료</a></li><li class="depth-2"><a href="#-핵심-키워드" data-for="-핵심-키워드">🔍 핵심 키워드</a></li><li class="depth-2"><a href="#-추천-학습-경로" data-for="-추천-학습-경로">📖 추천 학습 경로</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Created with <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="../postscript.js" type="module"></script></html>

@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: log-generator-script
+  namespace: default
+data:
+  log_gen.py: |
+    import time
+    import random
+    import datetime
+    import sys
+
+    LEVELS = ["INFO", "WARN", "ERROR"]
+    MESSAGES = {
+        "INFO": ["Processing request", "User login", "Health check OK", "Data sync started"],
+        "WARN": ["API response slow", "High memory usage", "Disk space low", "Retrying connection"],
+        "ERROR": ["Database connection failed", "Timeout exception", "Internal server error", "Payment gateway error"]
+    }
+
+    print("Starting log generator...")
+    
+    while True:
+        try:
+            level = random.choices(LEVELS, weights=[70, 20, 10])[0]
+            msg = random.choice(MESSAGES[level])
+            user_id = random.randint(100, 500)
+            latency = random.randint(10, 1000)
+            
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            
+            # Log format matching the tutorial
+            log_line = f"{timestamp} {level}: {msg} - user_id={user_id} latency={latency}ms"
+            
+            print(log_line)
+            sys.stdout.flush()
+            
+            time.sleep(random.uniform(0.1, 1.5))
+        except Exception as e:
+            print(f"Error generating log: {e}")
+            time.sleep(1)
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-generator
+  namespace: default
+  labels:
+    app: log-generator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-generator
+  template:
+    metadata:
+      labels:
+        app: log-generator
+    spec:
+      containers:
+      - name: logger
+        image: python:3.9-slim
+        command: ["python", "/app/log_gen.py"]
+        volumeMounts:
+        - name: script-volume
+          mountPath: /app
+      volumes:
+      - name: script-volume
+        configMap:
+          name: log-generator-script

@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr"><head><title>타임딜 백엔드 - 면접 질문 &amp; 답변 (팀원용)</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Quartz 4"/><meta property="og:title" content="타임딜 백엔드 - 면접 질문 &amp; 답변 (팀원용)"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="타임딜 백엔드 - 면접 질문 &amp; 답변 (팀원용)"/><meta name="twitter:description" content="타임딜 백엔드 — 면접 질문 &amp; 답변 (팀원용) 이 문서 읽는 법 면접관이 날카롭게 물어볼 법한 질문들을 미리 뽑아서 답변까지 정리해놨어요."/><meta property="og:description" content="타임딜 백엔드 — 면접 질문 &amp; 답변 (팀원용) 이 문서 읽는 법 면접관이 날카롭게 물어볼 법한 질문들을 미리 뽑아서 답변까지 정리해놨어요."/><meta property="og:image:alt" content="타임딜 백엔드 — 면접 질문 &amp; 답변 (팀원용) 이 문서 읽는 법 면접관이 날카롭게 물어볼 법한 질문들을 미리 뽑아서 답변까지 정리해놨어요."/><meta property="twitter:domain" content="epicodix.github.io/Quartz"/><meta property="og:url" content="https://epicodix.github.io/Quartz/포트폴리오/02_Projects/🚀-Dev/timedeal-backend-면접준비"/><meta property="twitter:url" content="https://epicodix.github.io/Quartz/포트폴리오/02_Projects/🚀-Dev/timedeal-backend-면접준비"/><link rel="icon" href="../../../static/icon.png"/><meta name="description" content="타임딜 백엔드 — 면접 질문 &amp; 답변 (팀원용) 이 문서 읽는 법 면접관이 날카롭게 물어볼 법한 질문들을 미리 뽑아서 답변까지 정리해놨어요."/><meta name="generator" content="Quartz"/><link href="../../../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL1VzZXJzL2ExMjM0L2VwaWNvZGl4L215LXF1YXJ0ei1zaXRlL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><script src="../../../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://epicodix.github.io/Quartz/index.xml"/><meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/><meta property="og:image" content="https://epicodix.github.io/Quartz/포트폴리오/02_Projects/🚀-Dev/timedeal-backend-면접준비-og-image.webp"/><meta property="og:image:url" content="https://epicodix.github.io/Quartz/포트폴리오/02_Projects/🚀-Dev/timedeal-backend-면접준비-og-image.webp"/><meta name="twitter:image" content="https://epicodix.github.io/Quartz/포트폴리오/02_Projects/🚀-Dev/timedeal-backend-면접준비-og-image.webp"/><meta property="og:image:type" content="image/.webp"/></head><body data-slug="포트폴리오/02_Projects/🚀-Dev/timedeal-backend-면접준비"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../../..">Quartz 4</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>검색</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="검색어를 입력하세요" placeholder="검색어를 입력하세요"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="다크 모드"><title>다크 모드</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="라이트 모드"><title>라이트 모드</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="리더 모드"><title>리더 모드</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="collapse" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>{let priorityFolders=[\&quot;\\u{1F4D6} \\uAC00\\uC774\\uB4DC\&quot;,\&quot;\\u{1F52C} \\uAE30\\uC220 \\uBD84\\uC11D\&quot;,\&quot;\\u2699\\uFE0F \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;\\u{1F4DA} \\uAD50\\uC721\&quot;,\&quot;\\u{1F4BC} \\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624\&quot;];if(a.isFolder&amp;&amp;b.isFolder){let aPriority=priorityFolders.indexOf(a.displayName),bPriority=priorityFolders.indexOf(b.displayName);if(aPriority!==-1&amp;&amp;bPriority!==-1)return aPriority-bPriority;if(aPriority!==-1)return-1;if(bPriority!==-1)return 1}return!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,\&quot;ko-KR\&quot;,{numeric:!0,sensitivity:\&quot;base\&quot;}):a.isFolder?-1:1}&quot;,&quot;filterFn&quot;:&quot;node=>{if([\&quot;99_\\uC784\\uC2DC\&quot;,\&quot;tags\&quot;,\&quot;.obsidian\&quot;].includes(node.slugSegment))return!1;if(!node.isFolder&amp;&amp;node.data){let hiddenFiles=[\&quot;GUI_\\uC790\\uB3D9\\uD654_\\uB3C4\\uC804\\uAE30\&quot;,\&quot;Gemini_CLI_\\uD65C\\uC6A9_\\uAC00\\uC774\\uB4DC\&quot;,\&quot;Ollama_Troubleshooting_Guide\&quot;,\&quot;gemini_cli_guide\&quot;,\&quot;gemini_cli_introduction\&quot;,\&quot;gemini_context_awareness_guide\&quot;,\&quot;gemini_file_management_guide\&quot;,\&quot;get_claude_news.py\&quot;,\&quot;global_news_20250712\&quot;,\&quot;kubernetes_cheatsheet\&quot;,\&quot;kubernetes_storage_hands_on\&quot;,\&quot;naver_gmail_integration_guide\&quot;,\&quot;nodejs_installation_guide\&quot;,\&quot;\\uB0B4_\\uCEF4\\uD4E8\\uD130\\uB97C_AI_\\uC11C\\uBC84\\uB85C_\\uB9CC\\uB4E4\\uAE30_Ollama_\\uC124\\uCE58_\\uBC0F_\\uBB38\\uC81C\\uD574\\uACB0_\\uAC00\\uC774\\uB4DC\&quot;,\&quot;\\uC2DC\\uB9AC\\uC640_Gemini_\\uC5F0\\uACC4\\uC131_\\uAC15\\uD654_\\uBC29\\uC548\&quot;,\&quot;2025-08-13_\\uD559\\uC2B5_\\uD3EC\\uC778\\uD2B8\&quot;,\&quot;07_02_Advanced_Pod_Concepts\&quot;],fileTitle=node.data.title||node.displayName.replace(/\\.md$/,\&quot;\&quot;);return!hiddenFiles.includes(fileTitle)}return!0}&quot;,&quot;mapFn&quot;:&quot;node=>{let folderDisplayNames={\&quot;1_\\uAC00\\uC774\\uB4DC\&quot;:\&quot;\\u{1F4D6} \\uAC00\\uC774\\uB4DC\&quot;,\&quot;2_\\uAE30\\uC220_\\uBD84\\uC11D\&quot;:\&quot;\\u{1F52C} \\uAE30\\uC220 \\uBD84\\uC11D\&quot;,\&quot;3_\\uC544\\uC774\\uB514\\uC5B4_\\uB274\\uC2A4\&quot;:\&quot;\\u{1F4A1} \\uC544\\uC774\\uB514\\uC5B4 &amp; \\uB274\\uC2A4\&quot;,K8s_Deep_Dive:\&quot;\\u2699\\uFE0F \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;01_\\uB124\\uD2B8\\uC6CC\\uD06C \\uAE30\\uCD08\&quot;:\&quot;\\u{1F310} \\uB124\\uD2B8\\uC6CC\\uD06C \\uAE30\\uCD08\&quot;,\&quot;02_k8s\\uC2E4\\uC2B5\&quot;:\&quot;\\u{1F6E0}\\uFE0F \\uC2E4\\uC2B5\&quot;,\&quot;03_\\uD504\\uB85C\\uBA54\\uD14C\\uC6B0\\uC2A4\&quot;:\&quot;\\u{1F4CA} \\uD504\\uB85C\\uBA54\\uD14C\\uC6B0\\uC2A4\&quot;,\&quot;04_\\uADF8\\uB77C\\uD30C\\uB098\&quot;:\&quot;\\u{1F4C8} \\uADF8\\uB77C\\uD30C\\uB098\&quot;,\\uAD50\\uC721:\&quot;\\u{1F4DA} \\uAD50\\uC721\&quot;,\\uAD6C\\uB984\\uB525\\uB2E4\\uC774\\uBE0C:\&quot;\\u2601\\uFE0F \\uAD6C\\uB984\\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;\\uBD84\\uC0B0\\uC2DC\\uC2A4\\uD15C_Distributed Systems\&quot;:\&quot;\\u{1F517} \\uBD84\\uC0B0\\uC2DC\\uC2A4\\uD15C\&quot;,GO:\&quot;\\u{1F439} Go \\uC5B8\\uC5B4\&quot;,\&quot;\\uB124\\uC774\\uBC84-\\uAC80\\uC0C9\\uAD11\\uACE0-\\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158-\\uD504\\uB85C\\uC81D\\uD2B8\&quot;:\&quot;\\u{1F680} \\uB124\\uC774\\uBC84 \\uD504\\uB85C\\uC81D\\uD2B8\&quot;,\&quot;01-\\uD504\\uB85C\\uC81D\\uD2B8-\\uBC30\\uACBD\&quot;:\&quot;\\u{1F4CB} \\uD504\\uB85C\\uC81D\\uD2B8 \\uBC30\\uACBD\&quot;,\&quot;02-\\uD604\\uC7AC\\uC0C1\\uD0DC-\\uBD84\\uC11D\&quot;:\&quot;\\u{1F50D} \\uD604\\uC7AC\\uC0C1\\uD0DC \\uBD84\\uC11D\&quot;,\&quot;03-\\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158-\\uACC4\\uD68D\&quot;:\&quot;\\u{1F4DD} \\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158 \\uACC4\\uD68D\&quot;,\&quot;05-\\uC6B4\\uC601-\\uCD5C\\uC801\\uD654\&quot;:\&quot;\\u26A1 \\uC6B4\\uC601 \\uCD5C\\uC801\\uD654\&quot;,CKA:\&quot;\\u{1F3AF} CKA \\uC790\\uACA9\\uC99D\&quot;,GCP:\&quot;\\u2601\\uFE0F Google Cloud\&quot;,\&quot;moc-k8s\&quot;:\&quot;\\u{1F4DA} \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB178\\uD2B8\&quot;,Vagrant:\&quot;\\u{1F4E6} Vagrant\&quot;,\\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624:\&quot;\\u{1F4BC} \\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624\&quot;,\\uAC00\\uC0C1\\uD654:\&quot;\\u{1F4BB} \\uAC00\\uC0C1\\uD654\&quot;,\\uAC1C\\uBC1C\\uD658\\uACBD:\&quot;\\u{1F6E0}\\uFE0F \\uAC1C\\uBC1C\\uD658\\uACBD\&quot;,\\uAE30\\uD0C0:\&quot;\\u{1F4CE} \\uAE30\\uD0C0\&quot;,AI\\uB3C4\\uAD6C:\&quot;\\u{1F916} AI \\uB3C4\\uAD6C\&quot;,\\uBAA8\\uB2C8\\uD130\\uB9C1:\&quot;\\u{1F4CA} \\uBAA8\\uB2C8\\uD130\\uB9C1\&quot;};if(node.isFolder&amp;&amp;folderDisplayNames[node.displayName]&amp;&amp;(node.displayName=folderDisplayNames[node.displayName]),!node.isFolder&amp;&amp;node.data){let displayName=node.data.title||node.displayName;displayName=displayName.replace(/^(\\d{2}_|\\d{2}-\\d{2}-)/g,\&quot;\&quot;),displayName.length>50&amp;&amp;(displayName=displayName.substring(0,47)+\&quot;...\&quot;),displayName=displayName.replace(/^kubernetes_/,\&quot;K8s \&quot;).replace(/^쿠버네티스_/,\&quot;K8s \&quot;).replace(/_완벽_가이드$/,\&quot; \\uAC00\\uC774\\uB4DC\&quot;).replace(/_실습_가이드$/,\&quot; \\uC2E4\\uC2B5\&quot;).replace(/_핵심_정리$/,\&quot; \\uC815\\uB9AC\&quot;).replace(/_기초_개념$/,\&quot; \\uAE30\\uCD08\&quot;).replace(/완전_가이드$/,\&quot;\\uAC00\\uC774\\uB4DC\&quot;).replace(/완벽_정리$/,\&quot;\\uC815\\uB9AC\&quot;),node.displayName=displayName}return node}&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-996"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>탐색기</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-996" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../../포트폴리오/">포트폴리오</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../../포트폴리오/02_Projects/">02_Projects</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../../포트폴리오/02_Projects/🚀-Dev/">🚀 Dev</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>타임딜 백엔드   면접 질문 &amp; 답변 (팀원용)</a></div></nav><h1 class="article-title">타임딜 백엔드 - 면접 질문 &amp; 답변 (팀원용)</h1><p show-comma="true" class="content-meta"><time datetime="2026-03-02T15:00:00.000Z">2026년 3월 03일</time><span>28 min read</span></p><ul class="tags"><li><a href="../../../tags/spring-boot" class="internal tag-link">spring-boot</a></li><li><a href="../../../tags/aws" class="internal tag-link">aws</a></li><li><a href="../../../tags/redis" class="internal tag-link">redis</a></li><li><a href="../../../tags/postgresql" class="internal tag-link">postgresql</a></li><li><a href="../../../tags/k6" class="internal tag-link">k6</a></li><li><a href="../../../tags/load-testing" class="internal tag-link">load-testing</a></li><li><a href="../../../tags/interview" class="internal tag-link">interview</a></li><li><a href="../../../tags/architecture" class="internal tag-link">architecture</a></li></ul></div></div><article class="popover-hint"><h1 id="타임딜-백엔드--면접-질문--답변-팀원용">타임딜 백엔드 — 면접 질문 &amp; 답변 (팀원용)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#타임딜-백엔드--면접-질문--답변-팀원용" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>이 문서 읽는 법 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>면접관이 날카롭게 물어볼 법한 질문들을 미리 뽑아서 답변까지 정리해놨어요.
+기술적으로 어려운 부분은 비유를 들어서 설명했으니, 팀원들이랑 같이 읽고 대화하면서 이해해보세요!</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="-목차">📑 목차<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-목차" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><a href="#1-%EC%9A%B0%EB%A6%AC-%EC%84%9C%EB%B9%84%EC%8A%A4%EA%B0%80-%EB%AD%90-%ED%95%98%EB%8A%94-%EA%B1%B4%EC%A7%80" class="internal alias">우리 서비스 한눈에 보기</a></li>
+<li><a href="#2-%EC%9E%AC%EA%B3%A0-%EC%B2%98%EB%A6%AC-%EA%B4%80%EB%A0%A8-%EC%A7%88%EB%AC%B8" class="internal alias">재고 처리 (가장 많이 물어봐요)</a></li>
+<li><a href="#3-%EC%84%B1%EB%8A%A5-%EA%B4%80%EB%A0%A8-%EC%A7%88%EB%AC%B8" class="internal alias">성능 &amp; 병목</a></li>
+<li><a href="#4-%EC%9E%A5%EC%95%A0-%EA%B4%80%EB%A0%A8-%EC%A7%88%EB%AC%B8" class="internal alias">장애 &amp; 복구</a></li>
+<li><a href="#5-%EC%84%A4%EA%B3%84-%EC%84%A0%ED%83%9D-%EA%B4%80%EB%A0%A8-%EC%A7%88%EB%AC%B8" class="internal alias">왜 이렇게 만들었어요?</a></li>
+<li><a href="#6-%EC%86%94%EC%A7%81%ED%95%98%EA%B2%8C-%EC%9D%B8%EC%A0%95%ED%95%A0-%EB%B6%80%EB%B6%84" class="internal alias">약점 솔직 정리</a></li>
+<li><a href="#7-%EB%B6%80%ED%95%98%ED%85%8C%EC%8A%A4%ED%8A%B8-%EA%B2%B0%EA%B3%BC-%EC%88%AB%EC%9E%90-%EC%A0%95%EB%A6%AC" class="internal alias">테스트 결과 숫자 모음</a></li>
+</ul>
+<hr/>
+<h2 id="1-우리-서비스가-뭐-하는-건지">1. 우리 서비스가 뭐 하는 건지<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-우리-서비스가-뭐-하는-건지" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="한-줄-요약">한 줄 요약<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#한-줄-요약" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote>
+<p>“수백 명이 동시에 달려들어도 재고를 정확하게 팔고, 돈을 받고, 결과를 알려주는 타임딜 시스템”</p>
+</blockquote>
+<h3 id="주문-한-건이-처리되는-과정">주문 한 건이 처리되는 과정<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#주문-한-건이-처리되는-과정" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>사용자가 &quot;구매하기&quot; 클릭
+        │
+        ▼
+1단계: Redis에서 재고 1개 선점 (~1ms, 매우 빠름)
+       ├── 재고 있음 → 다음 단계
+       └── 재고 없음 → 즉시 &quot;품절&quot; 응답 (DB도 안 건드림)
+        │
+        ▼
+2단계: DB에 &quot;주문 접수됨(PENDING)&quot; 저장
+        │
+        ▼
+3단계: 결제 준비 - &quot;결제 중(PAYING)&quot; 으로 변경
+        │
+        ▼
+4단계: 외부 결제 서버(Mock PG, Cloud Run)에 결제 요청
+       300~800ms 걸림, 8%는 실패
+       ※ 이 구간에는 DB 연결을 안 잡고 있음 (중요!)
+        │
+        ├── 결제 성공 → &quot;결제 완료(PAID)&quot; 저장
+        └── 결제 실패 → Redis 재고 복구 + &quot;결제 실패(FAILED)&quot; 저장
+        │
+        ▼
+5단계: 사용자가 결과 조회 → PAID or FAILED 반환
+</code></pre>
+<h3 id="인프라-구조-건물로-비유">인프라 구조 (건물로 비유)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#인프라-구조-건물로-비유" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>[인터넷 사용자들]
+        │
+        ▼
+[ALB - 입구 안내원]  ← K6 부하테스트 도구도 여기로 들어옴
+        │
+        ▼
+[Spring Boot EC2 - 주문 처리 직원]  t3.medium 1대
+        │                │
+        │                └──► [Cloud Run - 외부 카드결제 단말기]
+        │                      (우리가 만든 가짜 결제서버, Google 서버 사용)
+        │
+        ├──► [Redis - 재고 칠판]  가장 빠름, 1차 방어
+        └──► [RDS PostgreSQL - 장부]  최종 기록, 2차 방어
+</code></pre>
+<hr/>
+<h2 id="2-재고-처리-관련-질문">2. 재고 처리 관련 질문<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-재고-처리-관련-질문" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="q1-redis랑-db가-따로-있는데-둘이-재고가-안-맞으면-어떡해요">Q1. “Redis랑 DB가 따로 있는데, 둘이 재고가 안 맞으면 어떡해요?”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q1-redis랑-db가-따로-있는데-둘이-재고가-안-맞으면-어떡해요" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>쉽게 말하면:</strong>
+칠판(Redis)에 적힌 재고랑 장부(DB)에 적힌 재고가 다를 수 있다는 질문이에요.</p>
+<p><strong>답변:</strong></p>
+<p>두 줄 방어선을 만들어놨어요.</p>
+<pre><code>1차 방어: Redis에서 재고 1 빼기 (칠판에서 지우기)
+            → 0이 되면 더 이상 주문 못 받음 (빠름!)
+
+2차 방어: DB에서 &quot;재고 > 0인 경우에만 1 빼기&quot;
+            → Redis가 이상해도 DB에서 최종 차단
+</code></pre>
+<p>만약 Redis는 성공했는데 DB 저장이 실패하면? → Redis에서 뺀 재고는 복구가 안 됩니다. 이건 솔직히 MVP에서 구현 못 한 빈 곳이에요. 발생 확률은 낮지만 프로덕션에선 보완이 필요합니다.</p>
+<hr/>
+<h3 id="q2-수백-명이-동시에-주문하면-재고가-음수로-내려가는-거-아닌가요-overselling">Q2. “수백 명이 동시에 주문하면 재고가 음수로 내려가는 거 아닌가요? (Overselling)”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q2-수백-명이-동시에-주문하면-재고가-음수로-내려가는-거-아닌가요-overselling" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>쉽게 말하면:</strong>
+100개 남은데 200명이 동시에 달려들면, 100명 넘게 “주문 완료” 뜨는 거 아니냐는 질문이에요.</p>
+<p><strong>답변:</strong></p>
+<p>Redis의 DECR(빼기) 연산이 원자적(Atomic)이라서 괜찮아요.</p>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>원자적이란? </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>“딱 한 명씩만 처리된다”는 뜻이에요. 200명이 동시에 달려들어도 Redis는 한 명씩 순서대로 처리하고, 100명 째부터는 전부 “0 이하라 안 됨”을 반환해요.</p>
+</div>
+</blockquote>
+<p>비유하자면: 공중전화 부스에 줄 세우기예요. 동시에 문을 잡아당겨도 한 명만 들어갈 수 있어요.</p>
+<p>실제로 부하테스트에서 900명이 동시에 달려들었을 때:</p>
+<ul>
+<li>142명: Redis에서 “품절”로 즉시 차단 (DB도 안 건드림)</li>
+<li>14명: DB 2차 방어에서 추가 차단</li>
+<li>132명: 실제 결제 성공</li>
+</ul>
+<hr/>
+<h3 id="q3-테스트-결과에서-paid가-143건인데-재고가-100개였잖아요-초과판매-아닌가요">Q3. “테스트 결과에서 PAID가 143건인데 재고가 100개였잖아요. 초과판매 아닌가요?”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q3-테스트-결과에서-paid가-143건인데-재고가-100개였잖아요-초과판매-아닌가요" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>쉽게 말하면:</strong>
+100개 팔기로 했는데 143건 결제됐으면 43개 손해 본 거 아니냐는 질문이에요.</p>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>이 질문은 사실 우리한테 유리한 질문이에요! </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>“아, 그게 왜 그런지 설명드릴게요” 하면서 분산 테스트 인프라 구축 얘기를 자연스럽게 꺼낼 수 있거든요.
+K6 EC2 3대를 AWS SSM으로 동시에 제어해서 하나처럼 움직이게 만든 것 자체가 꽤 복잡한 인프라 작업이에요.</p>
+</div>
+</blockquote>
+<p><strong>답변:</strong></p>
+<p>초과판매가 아니에요! 테스트 도구(K6) 설정 문제였어요.</p>
+<pre><code>우리 분산 테스트 구조:
+K6-0 (EC2 t3.micro) ─┐
+K6-1 (EC2 t3.micro) ─┼─ AWS SSM으로 동시 명령 전송 → 3대가 동시에 부하 생성
+K6-2 (EC2 t3.micro) ─┘
+
+이 3대를 SSM으로 한 번에 제어하는 것 자체도 꽤 복잡한 작업이에요.
+(SSH 없이, IAM + SSM Agent로만 운영)
+</code></pre>
+<p>문제가 생긴 지점:</p>
+<pre><code>K6-0이 &quot;재고 100개로 초기화&quot; 실행 → 주문 받기 시작
+  그 사이에 K6-1도 &quot;재고 100개로 초기화&quot; 실행 → 칠판 덮어씀
+    그 사이에 K6-2도 &quot;재고 100개로 초기화&quot; 실행 → 또 덮어씀
+결과: 재고 슬롯이 사실상 300개처럼 동작
+</code></pre>
+<p>DB는 정상이었어요. 직접 SQL로 검증했어요:</p>
+<pre><code>마지막 재고 초기화(100) - 3차 테스트 순수 판매(36) = DB 남은 재고 64 ✅
+(DB의 &quot;재고>0 조건&quot; 이중 방어가 정상 동작했다는 증거)
+</code></pre>
+<p><strong>해결 방법:</strong> K6-0만 초기화 담당(마스터), K6-1/K6-2는 부하만 생성(워커)으로 역할 분리</p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="bash" data-theme="github-light github-dark"><code data-language="bash" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># K6-1, K6-2 실행 시 초기화 건너뜀</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">k6</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> run</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> --no-setup</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> --no-teardown</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> timedeal-test.js</span></span></code></pre></figure>
+<p>극한 부하 테스트(1,200 VU)에서 이 방식으로 실제 적용했어요.</p>
+<hr/>
+<h3 id="q4-select-for-update가-뭔가요-왜-쓰나요">Q4. “SELECT FOR UPDATE가 뭔가요? 왜 쓰나요?”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q4-select-for-update가-뭔가요-왜-쓰나요" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>쉽게 말하면:</strong>
+“이 주문, 내가 지금 처리할게요~ 다른 사람 손 대지 마세요!” 라고 잠금 거는 것이에요.</p>
+<p><strong>이게 왜 중요하냐면:</strong></p>
+<p>결제 버튼을 빠르게 두 번 클릭하거나, 네트워크 오류로 같은 요청이 두 번 날아오면 이중 결제가 날 수 있어요.</p>
+<p><strong>SELECT FOR UPDATE 없을 때 문제:</strong></p>
+<pre><code>요청A: &quot;주문 123번 결제할게요&quot;  → DB 읽기: PENDING 확인 → 결제 진행 중...
+요청B: &quot;주문 123번 결제할게요&quot;  → DB 읽기: 아직 PENDING 확인 → 결제 진행 중...
+                                    (A가 PAYING으로 바꾸기 전에 B도 읽어버림!)
+→ 결과: 같은 주문이 두 번 결제됨 💸
+</code></pre>
+<p><strong>SELECT FOR UPDATE 있을 때:</strong></p>
+<pre><code>요청A: &quot;주문 123번 결제할게요&quot;  → DB 잠금 획득 → PAYING으로 변경 → 결제 진행
+요청B: &quot;주문 123번 결제할게요&quot;  → DB 잠금 대기...
+                                   A가 끝나면 → &quot;이미 PAYING 상태&quot; 확인 → 거절
+→ 결과: 딱 한 번만 결제됨 ✅
+</code></pre>
+<p><strong>트랜잭션 경계로 보면:</strong></p>
+<pre><code>TX2 시작
+  └─ SELECT * FROM orders WHERE id=123 FOR UPDATE  ← 여기서 잠금
+  └─ 상태 확인: PENDING이 아니면 예외 발생
+  └─ UPDATE orders SET status='PAYING'
+TX2 종료 (커밋과 동시에 잠금 해제)
+
+→ TX2 동안은 아무도 이 주문 행을 건드릴 수 없음
+</code></pre>
+<p>데드락(서로 잠금 걸어서 아무것도 못 하는 상태) 걱정은 없어요. 주문 1건씩 잠그는 구조라 A→B, B→A 교차 잠금이 생길 일 자체가 없거든요.</p>
+<hr/>
+<h2 id="3-성능-관련-질문">3. 성능 관련 질문<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-성능-관련-질문" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="q5-ec2-t3medium-한-대로-900명-동시-처리가-가능한-건가요">Q5. “EC2 t3.medium 한 대로 900명 동시 처리가 가능한 건가요?”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q5-ec2-t3medium-한-대로-900명-동시-처리가-가능한-건가요" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>쉽게 말하면:</strong>
+작은 서버 한 대로 버틸 수 있냐는 질문이에요.</p>
+<p><strong>답변:</strong></p>
+<p>900 VU(동시 사용자) 기준으로 97% 성공률 달성했어요. 버텼어요!</p>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>97%가 뭘 의미하는 건가요? </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>K6가 검사하는 모든 체크 항목(주문 접수됐는지, 결제 상태 바뀌었는지, 조회 되는지 등) 중 97.03%가 기대한 결과였다는 뜻이에요.</p>
+<p>남은 ~3%는 <strong>PG(결제 서버) 자체의 실패율 8%</strong> 때문이에요. Mock PG는 실제 카드사처럼 일부러 결제를 실패시키도록 설계했고(8% 실패, 1% 타임아웃), 그 실패 케이스에 대한 체크 항목이 일부 포함된 거예요.</p>
+<p>즉, 우리 시스템(인프라, API) 오류로 인한 실패는 거의 없었어요. 재고 처리 정확성은 100% 달성했고요.</p>
+</div>
+</blockquote>
+<p>하지만 한계도 명확히 있어요:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>구성</th><th>결과</th></tr></thead><tbody><tr><td>900 VU, Pool=20</td><td>✅ 97% 통과</td></tr><tr><td>1,200 VU, Pool=20</td><td>❌ 서버 포화</td></tr><tr><td>1,200 VU, Pool=50 (차가운 상태)</td><td>❌ 부분 실패</td></tr></tbody></table></div>
+<p>“Pool”이 뭔지 모를 분들을 위해 👇</p>
+<hr/>
+<h3 id="q6-hikaricp-커넥션-풀이-뭔가요-왜-문제가-되나요">Q6. “HikariCP 커넥션 풀이 뭔가요? 왜 문제가 되나요?”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q6-hikaricp-커넥션-풀이-뭔가요-왜-문제가-되나요" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>쉽게 말하면:</strong>
+DB(장부)에 접근할 수 있는 창구가 20개밖에 없다는 이야기예요.</p>
+<p><strong>답변:</strong></p>
+<p>비유: 은행 창구가 20개뿐인데 180명이 줄을 선 상황</p>
+<pre><code>손님(요청)   : 180명
+창구(DB연결) : 20개
+→ 160명은 창구가 빌 때까지 대기
+→ 5초 넘게 기다리면 → 오류 반환
+</code></pre>
+<p>우리 서버에서 실측한 내용:</p>
+<pre><code>1,200 VU 테스트 결과:
+&quot;Connection is not available, request timed out after 5000ms&quot;
+(total=20, active=20, idle=0, waiting=379)
+→ 창구 20개 다 차고, 379명이 기다리다 포기
+</code></pre>
+<p>이게 “Breaking Point(한계점)” 이에요.</p>
+<hr/>
+<h3 id="q7-pool을-50으로-늘리면-해결-아닌가요">Q7. “Pool을 50으로 늘리면 해결 아닌가요?”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q7-pool을-50으로-늘리면-해결-아닌가요" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>쉽게 말하면:</strong>
+창구를 20개에서 50개로 늘리면 되는 거 아니냐는 질문이에요.</p>
+<p><strong>답변:</strong></p>
+<p>늘려봤는데, “Cold Pool(차가운 풀)” 문제가 있었어요.</p>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Cold Pool 비유 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>영업 시작하자마자 손님이 500명 몰려왔는데,
+창구 직원이 아직 출근 중이에요 (20명 출근 → 30명 → 50명 서서히 늘어나는 중)
+손님이 몰려오는 속도가 직원 출근 속도보다 빠르면? → 또 병목!</p>
+</div>
+</blockquote>
+<p>Flash Sale은 정확히 이런 상황이에요. 0명에서 갑자기 1,200명으로 터지는 거라서요.</p>
+<p><strong>해결책: 미리 창구 직원을 다 출근시켜 놓기</strong></p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="yaml" data-theme="github-light github-dark"><code data-language="yaml" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#22863A;--shiki-dark:#85E89D;">hikari</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">:</span></span>
+<span data-line><span style="--shiki-light:#22863A;--shiki-dark:#85E89D;">  maximum-pool-size</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">50</span></span>
+<span data-line><span style="--shiki-light:#22863A;--shiki-dark:#85E89D;">  minimum-idle</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">50</span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">   # ← 이게 핵심! 항상 50개 유지 (줄이지 말 것)</span></span></code></pre></figure>
+<p>이렇게 하면 Pool=50 warm 기준 이론상 약 2,500건/초 처리 가능해요.</p>
+<hr/>
+<h3 id="q8-왜-결제-요청하는-동안-db-연결을-안-잡나요-그게-가능한가요">Q8. “왜 결제 요청하는 동안 DB 연결을 안 잡나요? 그게 가능한가요?”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q8-왜-결제-요청하는-동안-db-연결을-안-잡나요-그게-가능한가요" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>쉽게 말하면:</strong>
+결제 기다리는 시간(300~800ms)에 DB 연결을 놓아주는 게 맞냐는 질문이에요.</p>
+<p><strong>답변:</strong></p>
+<p>이게 사실 이 서비스에서 가장 중요한 설계 포인트예요!</p>
+<p>비유: 카페에서 주문 받고 커피 나올 때까지 계산대 막아두면 안 되잖아요. 주문 받고 → 진동벨 주고 → 다음 손님 받는 거처럼요.</p>
+<pre><code>나쁜 방법 (안 한 것):
+주문 받기(DB 연결 시작) → 결제 기다리기 800ms → 결제 완료(DB 연결 종료)
+→ 800ms 동안 DB 연결 1개 낭비
+
+좋은 방법 (우리가 한 것):
+주문 받기(TX1 종료, DB 반환) → 결제 기다리기 800ms → 결제 완료(TX3 시작, DB 다시 받기)
+→ 800ms 동안 DB 연결을 다른 요청이 쓸 수 있음
+</code></pre>
+<p>덕분에 창구 20개로도 훨씬 더 많은 손님을 처리할 수 있어요.</p>
+<hr/>
+<h2 id="4-장애-관련-질문">4. 장애 관련 질문<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-장애-관련-질문" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="q9-paying-상태가-88건이나-고착됐다는-게-무슨-뜻이에요">Q9. “PAYING 상태가 88건이나 고착됐다는 게 무슨 뜻이에요?”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q9-paying-상태가-88건이나-고착됐다는-게-무슨-뜻이에요" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>쉽게 말하면:</strong>
+“결제 중” 상태로 멈춰서 영원히 완료도 실패도 안 되는 주문이 88건 있다는 거예요.</p>
+<p><strong>답변:</strong></p>
+<p>테스트 도중에 K6 프로그램이 강제 종료되면서 발생했어요.</p>
+<pre><code>정상 흐름:
+결제 중(PAYING) → 결제 완료 응답 도착 → PAID 또는 FAILED로 변경
+
+문제 발생 흐름:
+결제 중(PAYING) → K6가 응답 기다리다 프로그램 강제 종료
+               → Spring Boot가 응답 받을 곳이 없어짐
+               → PAYING 상태로 영구 고착
+               → Redis 재고도 복구 안 됨!
+</code></pre>
+<p><strong>실제 DB 조회 결과:</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>시간</th><th>결제 완료</th><th>결제 실패</th><th>결제 중(고착)</th><th>접수만 됨</th></tr></thead><tbody><tr><td>1차 테스트</td><td>99건</td><td>7건</td><td><strong>70건</strong></td><td>35건</td></tr><tr><td>2차 테스트</td><td>100건</td><td>13건</td><td><strong>18건</strong></td><td>58건</td></tr><tr><td>3차 테스트</td><td><strong>143건</strong></td><td>14건</td><td>0건</td><td>1건</td></tr><tr><td><strong>누적</strong></td><td><strong>343건</strong></td><td><strong>279건</strong></td><td><strong>88건 고착</strong></td><td><strong>94건</strong></td></tr></tbody></table></div>
+<p><strong>해결 방법은 사실 간단해요 — 타임아웃 처리:</strong></p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="java" data-theme="github-light github-dark"><code data-language="java" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// &quot;10분 이상 결제 중인 주문은 자동으로 실패 처리&quot; 스케줄러</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">@</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">Scheduled</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">fixedDelay</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 60_000</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)  </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// 1분마다 실행</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> cleanupStuckPayingOrders</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">() {</span></span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">    // 10분 이상 PAYING 상태인 주문 찾기</span></span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">    // → Redis 재고 복구 (INCR)</span></span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">    // → 주문 상태를 FAILED로 변경</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></figure>
+<p>코드 몇 줄이면 돼요. 지금 MVP에 추가할 수 있는 가장 임팩트 있는 개선이에요!</p>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>팀원 분들께 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>이 스케줄러 하나 추가하면 “고착 주문 처리”라는 실제 결함이 해결돼요.
+면접에서도 “발견했고 해결책도 알고 있어요”가 “못 했어요”보다 훨씬 강한 답변이 되고요.</p>
+</div>
+</blockquote>
+<hr/>
+<h3 id="q10-cloud-run결제-서버이-다운되면요">Q10. “Cloud Run(결제 서버)이 다운되면요?”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q10-cloud-run결제-서버이-다운되면요" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>쉽게 말하면:</strong>
+외부 결제 서비스가 먹통이 되면 어떻게 되냐는 질문이에요.</p>
+<p><strong>답변:</strong></p>
+<p>결제 시도 → 오류 → FAILED + Redis 재고 복구로 처리돼요.</p>
+<p>근데 재시도(Retry) 로직이 없어요. 카드사 서버가 잠깐 버벅여도 바로 실패 처리됩니다.</p>
+<p>프로덕션에서는 “CircuitBreaker + Retry” 패턴을 쓰면 되는데, MVP에서는 미구현이에요.</p>
+<hr/>
+<h3 id="q11-redis가-다운되면요">Q11. “Redis가 다운되면요?”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q11-redis가-다운되면요" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>쉽게 말하면:</strong>
+1차 방어선이 날아가면 어떻게 되냐는 질문이에요.</p>
+<p><strong>답변:</strong></p>
+<p>솔직히 말하면 주문 자체가 안 돼요. Redis DECR가 실패하면 예외가 발생하거든요.</p>
+<p>폴백(대안) 설계를 한다면 Redis 오류 감지 시 DB 직접 잠금으로 처리할 수 있는데, DB 부하가 훨씬 커지기 때문에 동시 허용 수를 제한해야 해요.</p>
+<p>MVP에서는 Redis 고가용성(AWS ElastiCache)을 인프라 레벨에서 보장하고, 애플리케이션 레벨 폴백은 구현하지 않았어요.</p>
+<hr/>
+<h2 id="5-설계-선택-관련-질문">5. 설계 선택 관련 질문<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-설계-선택-관련-질문" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="q12-왜-서버가-1대예요-1대-죽으면-서비스-전체-다운-아닌가요">Q12. “왜 서버가 1대예요? 1대 죽으면 서비스 전체 다운 아닌가요?”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q12-왜-서버가-1대예요-1대-죽으면-서비스-전체-다운-아닌가요" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>쉽게 말하면:</strong>
+“서버 2대 이상 써서 하나 죽어도 괜찮게 하면 되는 거 아닌가요?”라는 질문이에요.</p>
+<p><strong>답변:</strong></p>
+<p>의도적인 선택이에요. 단순 시간/비용 절약이 아니라 근거가 있어요.</p>
+<p>근거 1 — 무중단 배포가 생각보다 복잡해요:</p>
+<pre><code>EC2 2대로 무중단 배포 하려면...
+ALB 타겟 그룹 전환 설계 + 배포 스크립트 수정 + 세션 공유 처리 + ...
+→ 핵심 기능(재고 처리 정확성) 검증 기간에 이걸 다 하기엔 범위가 너무 넓었어요
+</code></pre>
+<p>근거 2 — 부하테스트 결과로 확인한 것:</p>
+<p>서버 2대 늘리기 전에, 지금 설정의 병목이 서버 수가 아니라 <strong>DB 커넥션 풀 설정</strong>이라는 걸 테스트로 알아냈어요.</p>
+<pre><code>서버 2대로 늘려도 → HikariCP Cold Pool 문제 그대로 있음
+→ 그냥 병목이 2배 생기는 것
+진짜 해결책: minimum-idle = maximum-pool-size 설정
+</code></pre>
+<p>나중에 EKS로 전환하면 그때 수평 확장 + HPA(자동 스케일링) 적용하면 가장 쉽게 해결되겠죠?</p>
+<hr/>
+<h3 id="q13-userid-검증이-왜-이-서비스에-없어요-보안-문제-아닌가요">Q13. “userId 검증이 왜 이 서비스에 없어요? 보안 문제 아닌가요?”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q13-userid-검증이-왜-이-서비스에-없어요-보안-문제-아닌가요" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>쉽게 말하면:</strong>
+“남의 아이디로 주문할 수 있는 거 아니에요?”라는 질문이에요.</p>
+<p><strong>답변:</strong></p>
+<p>userId 검증은 <strong>GitHub 코드와 아키텍처에 구현되어 있어요.</strong> 다만 내가 부하테스트를 돌린 시점과 팀원들의 개발 완료 시점에 약간 차이가 있었어요.</p>
+<p>MSA(마이크로서비스) 구조에서는 역할 분리가 원칙이에요:</p>
+<ul>
+<li>유저 서비스 → 로그인, 토큰 발급, userId 검증 담당</li>
+<li>타임딜 서비스 → 유저 서비스가 검증한 토큰에서 추출한 userId를 신뢰</li>
+</ul>
+<p>비유: 식당에서 웨이터가 손님 신분증을 보는 게 아니라, 입구 경비원(유저 서비스)이 확인하고 들어온 손님이면 신뢰하는 것과 같아요.</p>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>면접에서 이 질문 나오면 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>“GitHub 코드에 구현되어 있고, 아키텍처 설계에도 포함되어 있어요. 부하테스트 시점에 팀 개발 속도 차이로 테스트 환경에는 반영이 안 됐지만, 유저 서비스에서 토큰 검증 후 userId를 전달하는 구조예요” 라고 답하면 돼요.</p>
+</div>
+</blockquote>
+<hr/>
+<h3 id="q14-왜-redis랑-db-두-곳에-재고를-관리해요-하나로-통일하면-안-돼요">Q14. “왜 Redis랑 DB 두 곳에 재고를 관리해요? 하나로 통일하면 안 돼요?”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q14-왜-redis랑-db-두-곳에-재고를-관리해요-하나로-통일하면-안-돼요" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>쉽게 말하면:</strong>
+두 군데 관리하면 복잡하고 불일치 날 수 있는데 왜 그렇게 했냐는 질문이에요.</p>
+<p><strong>답변:</strong></p>
+<p>각자 역할이 달라서 같이 쓰는 거예요.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th></th><th>Redis (칠판)</th><th>DB (장부)</th></tr></thead><tbody><tr><td>속도</td><td>1ms (초고속)</td><td>20~30ms</td></tr><tr><td>역할</td><td>순간 차단 (품절 처리)</td><td>최종 기록</td></tr><tr><td>정확도</td><td>근사값 (약간 느슨해도 됨)</td><td>정확해야 함</td></tr></tbody></table></div>
+<p>Flash Sale은 1초에 수백 명이 동시에 달려들기 때문에 DB만 쓰면 DB가 버티질 못해요. Redis로 대부분을 걸러내고, DB에는 실제 주문만 보내는 구조예요.</p>
+<p>비유: 대형 콘서트 입장할 때 외부에 직원이 이미 마감됐으면 줄을 세우지 않고 자르고, 내부에서 좌석 확인하는 것과 같아요.</p>
+<hr/>
+<h2 id="6-트레이드오프--약점-정리">6. 트레이드오프 &amp; 약점 정리<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#6-트레이드오프--약점-정리" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>면접에서 &quot;완벽합니다&quot;라고 말하지 마세요! </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>단, 모든 약점이 다 같은 무게는 아니에요. 트레이드오프로 설명할 수 있는 것과, 공격받으면 진짜 아픈 것을 구분해서 대응하세요.</p>
+</div>
+</blockquote>
+<h3 id="유연하게-설명-가능한-트레이드오프-자신-있게-말해도-돼요">유연하게 설명 가능한 트레이드오프 (자신 있게 말해도 돼요)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#유연하게-설명-가능한-트레이드오프-자신-있게-말해도-돼요" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>항목</th><th>왜 이렇게 했나요?</th><th>개선 방향</th></tr></thead><tbody><tr><td>EC2 1대 (HA 없음)</td><td>병목이 서버 수가 아니라 Pool 설정임을 부하테스트로 확인. 무중단 배포 복잡성 대비 효과 미미</td><td>EKS 전환 시 HPA + Rolling Update</td></tr><tr><td>Redis + DB 이중 저장소</td><td>속도(Redis) vs 정확성(DB) 역할 분리가 명확한 의도</td><td>현 설계 유지가 적합</td></tr><tr><td>HikariCP Pool=20</td><td>MVP 검증 범위에서 Breaking Point를 실측으로 찾아냄</td><td><code>minimum-idle = maximum-pool-size = 50</code>으로 해결 가능, 근거 있음</td></tr><tr><td>K6 setup() 경합 발생</td><td>발견했고, 마스터/워커 분리로 극한 테스트에서 이미 해결</td><td>해결 완료 ✅</td></tr><tr><td>userId 검증이 이 서비스에 없음</td><td>MSA 구조에서 유저 서비스 담당. GitHub 코드와 아키텍처에는 구현됨</td><td>테스트 환경 반영 필요</td></tr></tbody></table></div>
+<hr/>
+<h3 id="공격받으면-뼈아픈-진짜-약점들-솔직하게-인정--개선책-세트로-답변">공격받으면 뼈아픈 진짜 약점들 (솔직하게 인정 + 개선책 세트로 답변)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#공격받으면-뼈아픈-진짜-약점들-솔직하게-인정--개선책-세트로-답변" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>약점</th><th>얼마나 아픈가요?</th><th>개선 방법</th></tr></thead><tbody><tr><td><strong>PAYING 고착 (88건 실측)</strong></td><td>🔴 실제 데이터로 증명된 결함. 사용자가 돈 물릴 수 있음</td><td><code>@Scheduled</code> 타임아웃 스케줄러 추가 (코드 몇 줄)</td></tr><tr><td><strong>Redis DECR 후 DB 실패 시 재고 복구 없음</strong></td><td>🟠 발생 빈도 낮지만 재고 1개씩 누수 가능. 로직 공백</td><td>DB 실패 catch에서 Redis INCR 보상 추가</td></tr><tr><td><strong>결제 서버 재시도 없음</strong></td><td>🟠 PG 서버 순간 버벅임에도 바로 결제 실패 처리됨</td><td>Resilience4j Retry 1~2회 추가</td></tr><tr><td><strong>Redis 다운 시 주문 불가</strong></td><td>🟠 1차 방어선 전체가 날아가는 상황</td><td>ElastiCache Multi-AZ + 앱 레벨 폴백 설계</td></tr></tbody></table></div>
+<hr/>
+<h2 id="7-부하테스트-결과-숫자-정리">7. 부하테스트 결과 숫자 정리<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#7-부하테스트-결과-숫자-정리" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="기본-테스트-900-vu-pool20">기본 테스트 (900 VU, Pool=20)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#기본-테스트-900-vu-pool20" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>VU가 뭔가요? </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Virtual User, 가상 사용자 수예요. 900 VU = 900명이 동시에 클릭하는 상황</p>
+</div>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>측정 항목</th><th>결과</th><th>좋은 건가요?</th></tr></thead><tbody><tr><td>전체 테스트 통과율</td><td>97.03%</td><td>✅ 좋음</td></tr><tr><td>주문 시도 건수</td><td>156건</td><td>—</td></tr><tr><td>Redis에서 품절 차단</td><td>142건</td><td>✅ 1차 방어 정상</td></tr><tr><td>결제 성공 (PAID)</td><td>132건</td><td>✅</td></tr><tr><td>PG 실패 (8% 실패율)</td><td>12건</td><td>✅ 의도된 수치</td></tr><tr><td>주문 API 평균 응답</td><td>877ms</td><td>보통</td></tr><tr><td>주문 API 상위 5% 응답</td><td>3,075ms</td><td>⚠️ 경계선</td></tr><tr><td>결제 API 평균 응답</td><td>2,946ms</td><td>PG 포함이라 느림이 정상</td></tr><tr><td>결제 API 상위 5% 응답</td><td>5,676ms</td><td>✅ 목표(8,000ms) 이내</td></tr></tbody></table></div>
+<h3 id="한계-테스트-1200-vu">한계 테스트 (1,200 VU)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#한계-테스트-1200-vu" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>구성</th><th>결과</th><th>왜요?</th></tr></thead><tbody><tr><td>Pool=20</td><td>❌ 서버 터짐</td><td>DB 창구 20개로 379명 대기 → 5초 뒤 오류</td></tr><tr><td>Pool=50 (처음 시작)</td><td>❌ 부분 실패</td><td>창구 늘리는 중(30개)에 손님이 몰려옴</td></tr><tr><td>Pool=50 (미리 예열)</td><td>✅ 예상 통과</td><td>minimum-idle=50으로 처음부터 50개 유지</td></tr></tbody></table></div>
+<h3 id="핵심-한계선-breaking-point">핵심 한계선 (Breaking Point)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#핵심-한계선-breaking-point" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>Pool=20 기준:
+동시 DB 요청 800건 = 한계선
+800건 초과 → 커넥션 대기 → timeout → 서버 에러 폭발
+</code></pre>
+<hr/>
+<h3 id="테스트하면서-고친-버그들">테스트하면서 고친 버그들<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#테스트하면서-고친-버그들" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>버그</th><th>증상</th><th>원인</th><th>수정 방법</th></tr></thead><tbody><tr><td>Redis 연결 실패</td><td>앱 시작하자마자 오류, 235번 재시작</td><td>Spring Boot 3.x에서 설정 경로 변경됨 (<code>spring.redis.</code> → <code>spring.data.redis.</code>)</td><td>설정 경로 수정</td></tr><tr><td>GET 주문조회 500 에러</td><td>주문 조회가 전부 실패</td><td><code>LocalDateTime</code> 타입을 JSON으로 못 변환함</td><td>Entity 직접 반환 → DTO(OrderResponse) 반환으로 변경</td></tr><tr><td>재고 초기화 불일치</td><td>Redis만 리셋, DB는 안 됨</td><td>관리자 API가 Redis만 초기화했음</td><td>Redis + DB 동시 초기화로 수정</td></tr><tr><td>K6 결제 실패 체크 오류</td><td>PG 실패 케이스 체크가 전부 실패</td><td>에러 응답 형식을 잘못 가정함</td><td>502 응답 후 GET으로 DB 상태 직접 확인으로 변경</td></tr><tr><td>Mock PG → Cloud Run</td><td>Terraform SG 변경 시 10분 이상 멈춤</td><td>EC2 인라인 SG 변경 시 destroy+create 발생</td><td>Cloud Run으로 이관 (월 ~$15 절약 보너스)</td></tr></tbody></table></div>
+<hr/>
+<p><em>작성일: 2026-03-03</em>
+<em>기준 아키텍처: timedeal-architecture-mvp.drawio</em>
+<em>부하테스트 날짜: 2026-02-27 AWS ap-northeast-2 실측</em></p></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>그래프 뷰</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-430" aria-expanded="true"><h3>목차</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#타임딜-백엔드--면접-질문--답변-팀원용" data-for="타임딜-백엔드--면접-질문--답변-팀원용">타임딜 백엔드 — 면접 질문 &amp; 답변 (팀원용)</a></li><li class="depth-1"><a href="#-목차" data-for="-목차">📑 목차</a></li><li class="depth-1"><a href="#1-우리-서비스가-뭐-하는-건지" data-for="1-우리-서비스가-뭐-하는-건지">1. 우리 서비스가 뭐 하는 건지</a></li><li class="depth-2"><a href="#한-줄-요약" data-for="한-줄-요약">한 줄 요약</a></li><li class="depth-2"><a href="#주문-한-건이-처리되는-과정" data-for="주문-한-건이-처리되는-과정">주문 한 건이 처리되는 과정</a></li><li class="depth-2"><a href="#인프라-구조-건물로-비유" data-for="인프라-구조-건물로-비유">인프라 구조 (건물로 비유)</a></li><li class="depth-1"><a href="#2-재고-처리-관련-질문" data-for="2-재고-처리-관련-질문">2. 재고 처리 관련 질문</a></li><li class="depth-2"><a href="#q1-redis랑-db가-따로-있는데-둘이-재고가-안-맞으면-어떡해요" data-for="q1-redis랑-db가-따로-있는데-둘이-재고가-안-맞으면-어떡해요">Q1. “Redis랑 DB가 따로 있는데, 둘이 재고가 안 맞으면 어떡해요?”</a></li><li class="depth-2"><a href="#q2-수백-명이-동시에-주문하면-재고가-음수로-내려가는-거-아닌가요-overselling" data-for="q2-수백-명이-동시에-주문하면-재고가-음수로-내려가는-거-아닌가요-overselling">Q2. “수백 명이 동시에 주문하면 재고가 음수로 내려가는 거 아닌가요? (Overselling)”</a></li><li class="depth-2"><a href="#q3-테스트-결과에서-paid가-143건인데-재고가-100개였잖아요-초과판매-아닌가요" data-for="q3-테스트-결과에서-paid가-143건인데-재고가-100개였잖아요-초과판매-아닌가요">Q3. “테스트 결과에서 PAID가 143건인데 재고가 100개였잖아요. 초과판매 아닌가요?”</a></li><li class="depth-2"><a href="#q4-select-for-update가-뭔가요-왜-쓰나요" data-for="q4-select-for-update가-뭔가요-왜-쓰나요">Q4. “SELECT FOR UPDATE가 뭔가요? 왜 쓰나요?”</a></li><li class="depth-1"><a href="#3-성능-관련-질문" data-for="3-성능-관련-질문">3. 성능 관련 질문</a></li><li class="depth-2"><a href="#q5-ec2-t3medium-한-대로-900명-동시-처리가-가능한-건가요" data-for="q5-ec2-t3medium-한-대로-900명-동시-처리가-가능한-건가요">Q5. “EC2 t3.medium 한 대로 900명 동시 처리가 가능한 건가요?”</a></li><li class="depth-2"><a href="#q6-hikaricp-커넥션-풀이-뭔가요-왜-문제가-되나요" data-for="q6-hikaricp-커넥션-풀이-뭔가요-왜-문제가-되나요">Q6. “HikariCP 커넥션 풀이 뭔가요? 왜 문제가 되나요?”</a></li><li class="depth-2"><a href="#q7-pool을-50으로-늘리면-해결-아닌가요" data-for="q7-pool을-50으로-늘리면-해결-아닌가요">Q7. “Pool을 50으로 늘리면 해결 아닌가요?”</a></li><li class="depth-2"><a href="#q8-왜-결제-요청하는-동안-db-연결을-안-잡나요-그게-가능한가요" data-for="q8-왜-결제-요청하는-동안-db-연결을-안-잡나요-그게-가능한가요">Q8. “왜 결제 요청하는 동안 DB 연결을 안 잡나요? 그게 가능한가요?”</a></li><li class="depth-1"><a href="#4-장애-관련-질문" data-for="4-장애-관련-질문">4. 장애 관련 질문</a></li><li class="depth-2"><a href="#q9-paying-상태가-88건이나-고착됐다는-게-무슨-뜻이에요" data-for="q9-paying-상태가-88건이나-고착됐다는-게-무슨-뜻이에요">Q9. “PAYING 상태가 88건이나 고착됐다는 게 무슨 뜻이에요?”</a></li><li class="depth-2"><a href="#q10-cloud-run결제-서버이-다운되면요" data-for="q10-cloud-run결제-서버이-다운되면요">Q10. “Cloud Run(결제 서버)이 다운되면요?”</a></li><li class="depth-2"><a href="#q11-redis가-다운되면요" data-for="q11-redis가-다운되면요">Q11. “Redis가 다운되면요?”</a></li><li class="depth-1"><a href="#5-설계-선택-관련-질문" data-for="5-설계-선택-관련-질문">5. 설계 선택 관련 질문</a></li><li class="depth-2"><a href="#q12-왜-서버가-1대예요-1대-죽으면-서비스-전체-다운-아닌가요" data-for="q12-왜-서버가-1대예요-1대-죽으면-서비스-전체-다운-아닌가요">Q12. “왜 서버가 1대예요? 1대 죽으면 서비스 전체 다운 아닌가요?”</a></li><li class="depth-2"><a href="#q13-userid-검증이-왜-이-서비스에-없어요-보안-문제-아닌가요" data-for="q13-userid-검증이-왜-이-서비스에-없어요-보안-문제-아닌가요">Q13. “userId 검증이 왜 이 서비스에 없어요? 보안 문제 아닌가요?”</a></li><li class="depth-2"><a href="#q14-왜-redis랑-db-두-곳에-재고를-관리해요-하나로-통일하면-안-돼요" data-for="q14-왜-redis랑-db-두-곳에-재고를-관리해요-하나로-통일하면-안-돼요">Q14. “왜 Redis랑 DB 두 곳에 재고를 관리해요? 하나로 통일하면 안 돼요?”</a></li><li class="depth-1"><a href="#6-트레이드오프--약점-정리" data-for="6-트레이드오프--약점-정리">6. 트레이드오프 &amp; 약점 정리</a></li><li class="depth-2"><a href="#유연하게-설명-가능한-트레이드오프-자신-있게-말해도-돼요" data-for="유연하게-설명-가능한-트레이드오프-자신-있게-말해도-돼요">유연하게 설명 가능한 트레이드오프 (자신 있게 말해도 돼요)</a></li><li class="depth-2"><a href="#공격받으면-뼈아픈-진짜-약점들-솔직하게-인정--개선책-세트로-답변" data-for="공격받으면-뼈아픈-진짜-약점들-솔직하게-인정--개선책-세트로-답변">공격받으면 뼈아픈 진짜 약점들 (솔직하게 인정 + 개선책 세트로 답변)</a></li><li class="depth-1"><a href="#7-부하테스트-결과-숫자-정리" data-for="7-부하테스트-결과-숫자-정리">7. 부하테스트 결과 숫자 정리</a></li><li class="depth-2"><a href="#기본-테스트-900-vu-pool20" data-for="기본-테스트-900-vu-pool20">기본 테스트 (900 VU, Pool=20)</a></li><li class="depth-2"><a href="#한계-테스트-1200-vu" data-for="한계-테스트-1200-vu">한계 테스트 (1,200 VU)</a></li><li class="depth-2"><a href="#핵심-한계선-breaking-point" data-for="핵심-한계선-breaking-point">핵심 한계선 (Breaking Point)</a></li><li class="depth-2"><a href="#테스트하면서-고친-버그들" data-for="테스트하면서-고친-버그들">테스트하면서 고친 버그들</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Created with <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="../../../postscript.js" type="module"></script></html>

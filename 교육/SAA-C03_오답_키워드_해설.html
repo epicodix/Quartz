@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr"><head><title>SAA-C03 오답 키워드 해설 - 지문에서 정답으로 가는 로직</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Quartz 4"/><meta property="og:title" content="SAA-C03 오답 키워드 해설 - 지문에서 정답으로 가는 로직"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="SAA-C03 오답 키워드 해설 - 지문에서 정답으로 가는 로직"/><meta name="twitter:description" content="🎯 SAA-C03 오답 키워드 해설 사용법 각 문제마다 지문 키워드 → 정답 서비스 연결 로직을 정리. 외우는 게 아니라 키워드 보는 순간 반사적으로 연결되도록 훈련."/><meta property="og:description" content="🎯 SAA-C03 오답 키워드 해설 사용법 각 문제마다 지문 키워드 → 정답 서비스 연결 로직을 정리. 외우는 게 아니라 키워드 보는 순간 반사적으로 연결되도록 훈련."/><meta property="og:image:alt" content="🎯 SAA-C03 오답 키워드 해설 사용법 각 문제마다 지문 키워드 → 정답 서비스 연결 로직을 정리. 외우는 게 아니라 키워드 보는 순간 반사적으로 연결되도록 훈련."/><meta property="twitter:domain" content="epicodix.github.io/Quartz"/><meta property="og:url" content="https://epicodix.github.io/Quartz/교육/SAA-C03_오답_키워드_해설"/><meta property="twitter:url" content="https://epicodix.github.io/Quartz/교육/SAA-C03_오답_키워드_해설"/><link rel="icon" href="../static/icon.png"/><meta name="description" content="🎯 SAA-C03 오답 키워드 해설 사용법 각 문제마다 지문 키워드 → 정답 서비스 연결 로직을 정리. 외우는 게 아니라 키워드 보는 순간 반사적으로 연결되도록 훈련."/><meta name="generator" content="Quartz"/><link href="../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL1VzZXJzL2ExMjM0L2VwaWNvZGl4L215LXF1YXJ0ei1zaXRlL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><script src="../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://epicodix.github.io/Quartz/index.xml"/><meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/><meta property="og:image" content="https://epicodix.github.io/Quartz/교육/SAA-C03_오답_키워드_해설-og-image.webp"/><meta property="og:image:url" content="https://epicodix.github.io/Quartz/교육/SAA-C03_오답_키워드_해설-og-image.webp"/><meta name="twitter:image" content="https://epicodix.github.io/Quartz/교육/SAA-C03_오답_키워드_해설-og-image.webp"/><meta property="og:image:type" content="image/.webp"/></head><body data-slug="교육/SAA-C03_오답_키워드_해설"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="..">Quartz 4</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>검색</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="검색어를 입력하세요" placeholder="검색어를 입력하세요"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="다크 모드"><title>다크 모드</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="라이트 모드"><title>라이트 모드</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="리더 모드"><title>리더 모드</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="collapse" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>{let priorityFolders=[\&quot;\\u{1F4D6} \\uAC00\\uC774\\uB4DC\&quot;,\&quot;\\u{1F52C} \\uAE30\\uC220 \\uBD84\\uC11D\&quot;,\&quot;\\u2699\\uFE0F \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;\\u{1F4DA} \\uAD50\\uC721\&quot;,\&quot;\\u{1F4BC} \\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624\&quot;];if(a.isFolder&amp;&amp;b.isFolder){let aPriority=priorityFolders.indexOf(a.displayName),bPriority=priorityFolders.indexOf(b.displayName);if(aPriority!==-1&amp;&amp;bPriority!==-1)return aPriority-bPriority;if(aPriority!==-1)return-1;if(bPriority!==-1)return 1}return!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,\&quot;ko-KR\&quot;,{numeric:!0,sensitivity:\&quot;base\&quot;}):a.isFolder?-1:1}&quot;,&quot;filterFn&quot;:&quot;node=>{if([\&quot;99_\\uC784\\uC2DC\&quot;,\&quot;tags\&quot;,\&quot;.obsidian\&quot;].includes(node.slugSegment))return!1;if(!node.isFolder&amp;&amp;node.data){let hiddenFiles=[\&quot;GUI_\\uC790\\uB3D9\\uD654_\\uB3C4\\uC804\\uAE30\&quot;,\&quot;Gemini_CLI_\\uD65C\\uC6A9_\\uAC00\\uC774\\uB4DC\&quot;,\&quot;Ollama_Troubleshooting_Guide\&quot;,\&quot;gemini_cli_guide\&quot;,\&quot;gemini_cli_introduction\&quot;,\&quot;gemini_context_awareness_guide\&quot;,\&quot;gemini_file_management_guide\&quot;,\&quot;get_claude_news.py\&quot;,\&quot;global_news_20250712\&quot;,\&quot;kubernetes_cheatsheet\&quot;,\&quot;kubernetes_storage_hands_on\&quot;,\&quot;naver_gmail_integration_guide\&quot;,\&quot;nodejs_installation_guide\&quot;,\&quot;\\uB0B4_\\uCEF4\\uD4E8\\uD130\\uB97C_AI_\\uC11C\\uBC84\\uB85C_\\uB9CC\\uB4E4\\uAE30_Ollama_\\uC124\\uCE58_\\uBC0F_\\uBB38\\uC81C\\uD574\\uACB0_\\uAC00\\uC774\\uB4DC\&quot;,\&quot;\\uC2DC\\uB9AC\\uC640_Gemini_\\uC5F0\\uACC4\\uC131_\\uAC15\\uD654_\\uBC29\\uC548\&quot;,\&quot;2025-08-13_\\uD559\\uC2B5_\\uD3EC\\uC778\\uD2B8\&quot;,\&quot;07_02_Advanced_Pod_Concepts\&quot;],fileTitle=node.data.title||node.displayName.replace(/\\.md$/,\&quot;\&quot;);return!hiddenFiles.includes(fileTitle)}return!0}&quot;,&quot;mapFn&quot;:&quot;node=>{let folderDisplayNames={\&quot;1_\\uAC00\\uC774\\uB4DC\&quot;:\&quot;\\u{1F4D6} \\uAC00\\uC774\\uB4DC\&quot;,\&quot;2_\\uAE30\\uC220_\\uBD84\\uC11D\&quot;:\&quot;\\u{1F52C} \\uAE30\\uC220 \\uBD84\\uC11D\&quot;,\&quot;3_\\uC544\\uC774\\uB514\\uC5B4_\\uB274\\uC2A4\&quot;:\&quot;\\u{1F4A1} \\uC544\\uC774\\uB514\\uC5B4 &amp; \\uB274\\uC2A4\&quot;,K8s_Deep_Dive:\&quot;\\u2699\\uFE0F \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;01_\\uB124\\uD2B8\\uC6CC\\uD06C \\uAE30\\uCD08\&quot;:\&quot;\\u{1F310} \\uB124\\uD2B8\\uC6CC\\uD06C \\uAE30\\uCD08\&quot;,\&quot;02_k8s\\uC2E4\\uC2B5\&quot;:\&quot;\\u{1F6E0}\\uFE0F \\uC2E4\\uC2B5\&quot;,\&quot;03_\\uD504\\uB85C\\uBA54\\uD14C\\uC6B0\\uC2A4\&quot;:\&quot;\\u{1F4CA} \\uD504\\uB85C\\uBA54\\uD14C\\uC6B0\\uC2A4\&quot;,\&quot;04_\\uADF8\\uB77C\\uD30C\\uB098\&quot;:\&quot;\\u{1F4C8} \\uADF8\\uB77C\\uD30C\\uB098\&quot;,\\uAD50\\uC721:\&quot;\\u{1F4DA} \\uAD50\\uC721\&quot;,\\uAD6C\\uB984\\uB525\\uB2E4\\uC774\\uBE0C:\&quot;\\u2601\\uFE0F \\uAD6C\\uB984\\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;\\uBD84\\uC0B0\\uC2DC\\uC2A4\\uD15C_Distributed Systems\&quot;:\&quot;\\u{1F517} \\uBD84\\uC0B0\\uC2DC\\uC2A4\\uD15C\&quot;,GO:\&quot;\\u{1F439} Go \\uC5B8\\uC5B4\&quot;,\&quot;\\uB124\\uC774\\uBC84-\\uAC80\\uC0C9\\uAD11\\uACE0-\\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158-\\uD504\\uB85C\\uC81D\\uD2B8\&quot;:\&quot;\\u{1F680} \\uB124\\uC774\\uBC84 \\uD504\\uB85C\\uC81D\\uD2B8\&quot;,\&quot;01-\\uD504\\uB85C\\uC81D\\uD2B8-\\uBC30\\uACBD\&quot;:\&quot;\\u{1F4CB} \\uD504\\uB85C\\uC81D\\uD2B8 \\uBC30\\uACBD\&quot;,\&quot;02-\\uD604\\uC7AC\\uC0C1\\uD0DC-\\uBD84\\uC11D\&quot;:\&quot;\\u{1F50D} \\uD604\\uC7AC\\uC0C1\\uD0DC \\uBD84\\uC11D\&quot;,\&quot;03-\\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158-\\uACC4\\uD68D\&quot;:\&quot;\\u{1F4DD} \\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158 \\uACC4\\uD68D\&quot;,\&quot;05-\\uC6B4\\uC601-\\uCD5C\\uC801\\uD654\&quot;:\&quot;\\u26A1 \\uC6B4\\uC601 \\uCD5C\\uC801\\uD654\&quot;,CKA:\&quot;\\u{1F3AF} CKA \\uC790\\uACA9\\uC99D\&quot;,GCP:\&quot;\\u2601\\uFE0F Google Cloud\&quot;,\&quot;moc-k8s\&quot;:\&quot;\\u{1F4DA} \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB178\\uD2B8\&quot;,Vagrant:\&quot;\\u{1F4E6} Vagrant\&quot;,\\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624:\&quot;\\u{1F4BC} \\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624\&quot;,\\uAC00\\uC0C1\\uD654:\&quot;\\u{1F4BB} \\uAC00\\uC0C1\\uD654\&quot;,\\uAC1C\\uBC1C\\uD658\\uACBD:\&quot;\\u{1F6E0}\\uFE0F \\uAC1C\\uBC1C\\uD658\\uACBD\&quot;,\\uAE30\\uD0C0:\&quot;\\u{1F4CE} \\uAE30\\uD0C0\&quot;,AI\\uB3C4\\uAD6C:\&quot;\\u{1F916} AI \\uB3C4\\uAD6C\&quot;,\\uBAA8\\uB2C8\\uD130\\uB9C1:\&quot;\\u{1F4CA} \\uBAA8\\uB2C8\\uD130\\uB9C1\&quot;};if(node.isFolder&amp;&amp;folderDisplayNames[node.displayName]&amp;&amp;(node.displayName=folderDisplayNames[node.displayName]),!node.isFolder&amp;&amp;node.data){let displayName=node.data.title||node.displayName;displayName=displayName.replace(/^(\\d{2}_|\\d{2}-\\d{2}-)/g,\&quot;\&quot;),displayName.length>50&amp;&amp;(displayName=displayName.substring(0,47)+\&quot;...\&quot;),displayName=displayName.replace(/^kubernetes_/,\&quot;K8s \&quot;).replace(/^쿠버네티스_/,\&quot;K8s \&quot;).replace(/_완벽_가이드$/,\&quot; \\uAC00\\uC774\\uB4DC\&quot;).replace(/_실습_가이드$/,\&quot; \\uC2E4\\uC2B5\&quot;).replace(/_핵심_정리$/,\&quot; \\uC815\\uB9AC\&quot;).replace(/_기초_개념$/,\&quot; \\uAE30\\uCD08\&quot;).replace(/완전_가이드$/,\&quot;\\uAC00\\uC774\\uB4DC\&quot;).replace(/완벽_정리$/,\&quot;\\uC815\\uB9AC\&quot;),node.displayName=displayName}return node}&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-930"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>탐색기</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-930" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../교육/">교육</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>SAA C03 오답 키워드 해설   지문에서 정답으로 가는 로직</a></div></nav><h1 class="article-title">SAA-C03 오답 키워드 해설 - 지문에서 정답으로 가는 로직</h1><p show-comma="true" class="content-meta"><time datetime="2026-03-09T15:00:00.000Z">2026년 3월 10일</time><span>16 min read</span></p><ul class="tags"><li><a href="../tags/SAA-C03" class="internal tag-link">SAA-C03</a></li><li><a href="../tags/AWS" class="internal tag-link">AWS</a></li><li><a href="../tags/자격증" class="internal tag-link">자격증</a></li><li><a href="../tags/오답노트" class="internal tag-link">오답노트</a></li></ul></div></div><article class="popover-hint"><h1 id="-saa-c03-오답-키워드-해설">🎯 SAA-C03 오답 키워드 해설<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-saa-c03-오답-키워드-해설" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>사용법 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>각 문제마다 <strong>지문 키워드 → 정답 서비스</strong> 연결 로직을 정리.
+외우는 게 아니라 <strong>키워드 보는 순간 반사적으로 연결</strong>되도록 훈련.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="-목차">📑 목차<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-목차" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><a href="#1-%EC%8B%A4%EC%88%98-%ED%82%A4%EC%9B%8C%EB%93%9C-%EB%86%93%EC%B9%A8" class="internal alias">실수 / 키워드 놓침 (9개)</a></li>
+<li><a href="#2-%EC%9D%91%EC%9A%A9-%EB%B6%80%EC%A1%B1" class="internal alias">응용 부족 (12개)</a></li>
+<li><a href="#3-%EC%A7%84%EC%A7%9C-%EB%AA%A8%EB%A6%84" class="internal alias">진짜 모름 (10개)</a></li>
+<li><a href="#4-%ED%95%B5%EC%8B%AC-%EB%B9%84%EA%B5%90%ED%91%9C-%EB%AA%A8%EC%9D%8C" class="internal alias">핵심 비교표 모음</a></li>
+</ul>
+<hr/>
+<h2 id="1-실수--키워드-놓침">1. 실수 / 키워드 놓침<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-실수--키워드-놓침" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>패턴 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>개념은 알고 있으나 지문에서 해당 키워드를 놓침. 시험에서 시간 여유 있으면 자연 해결.</p>
+</div>
+</blockquote>
+<h3 id="q75--트랜잭션-삭제--restful-api">Q75 — 트랜잭션 삭제 + RESTful API<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q75--트랜잭션-삭제--restful-api" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>트랜잭션 삭제, 메시지 큐</td><td>SQS</td></tr><tr><td>RESTful API 엔드포인트</td><td>API Gateway</td></tr></tbody></table></div>
+<p><strong>해답 로직:</strong> 삭제 요청 → SQS 큐잉 → API Gateway로 REST 노출</p>
+<hr/>
+<h3 id="q176--트래픽이-aws-네트워크를-벗어나지-않도록">Q176 — 트래픽이 AWS 네트워크를 벗어나지 않도록<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q176--트래픽이-aws-네트워크를-벗어나지-않도록" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>AWS 네트워크 벗어나지 않음</td><td>VPC 엔드포인트</td></tr><tr><td>DynamoDB / S3 접근</td><td>Gateway Endpoint (무료)</td></tr><tr><td>기타 AWS 서비스</td><td>Interface Endpoint</td></tr></tbody></table></div>
+<p><strong>해답 로직:</strong> “인터넷 경유 금지” = VPC Endpoint 즉시 선택</p>
+<hr/>
+<h3 id="q213--sql-주입--스크립팅-공격-차단">Q213 — SQL 주입 / 스크립팅 공격 차단<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q213--sql-주입--스크립팅-공격-차단" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>SQL 인젝션</td><td>WAF</td></tr><tr><td>XSS (크로스 사이트 스크립팅)</td><td>WAF</td></tr><tr><td>레이어7 공격</td><td>WAF</td></tr><tr><td>DDoS</td><td>Shield</td></tr></tbody></table></div>
+<p><strong>해답 로직:</strong> “SQL 주입” or “스크립팅” 단어 보이면 → WAF 반사 선택</p>
+<hr/>
+<h3 id="q310--구매-후-파일-액세스-url-제공">Q310 — 구매 후 파일 액세스 URL 제공<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q310--구매-후-파일-액세스-url-제공" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>구매 후 파일 접근 허용</td><td>Pre-signed URL</td></tr><tr><td>임시 URL, 시간 제한</td><td>Pre-signed URL</td></tr><tr><td>AWS 계정 없는 외부 사용자</td><td>Pre-signed URL</td></tr></tbody></table></div>
+<p><strong>해답 로직:</strong> “구매 → 파일 접근 URL” = Pre-signed URL. CloudFront Signed URL은 CDN 배포 시.</p>
+<hr/>
+<h3 id="q374--여러-vpc-연결-3개-이상">Q374 — 여러 VPC 연결 (3개 이상)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q374--여러-vpc-연결-3개-이상" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>모든 VPC가 서로 통신 (3개+)</td><td>Transit Gateway</td></tr><tr><td>전이적 라우팅 필요</td><td>Transit Gateway</td></tr><tr><td>VPC 2~3개 소규모</td><td>VPC Peering</td></tr></tbody></table></div>
+<p><strong>해답 로직:</strong> VPC 여러 개 + “모든 VPC 통신” = TGW. Peering은 N*(N-1)/2 연결 필요.</p>
+<hr/>
+<h3 id="q401--단일-실패-지점-방지">Q401 — 단일 실패 지점 방지<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q401--단일-실패-지점-방지" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>단일 실패 지점 제거</td><td>Multi-AZ</td></tr><tr><td>고가용성 (HA)</td><td>Multi-AZ</td></tr><tr><td>장애 조치 자동화</td><td>Multi-AZ + ALB</td></tr></tbody></table></div>
+<hr/>
+<h3 id="q474--모든-리전의-모든-vpc와-통신">Q474 — 모든 리전의 모든 VPC와 통신<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q474--모든-리전의-모든-vpc와-통신" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>모든 리전, 모든 VPC 통신</td><td>Transit Gateway (리전 간 피어링)</td></tr><tr><td>리전 간 TGW 연결</td><td>TGW Inter-Region Peering</td></tr></tbody></table></div>
+<hr/>
+<h3 id="q479--구성-검증-후-배포">Q479 — 구성 검증 후 배포<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q479--구성-검증-후-배포" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>인프라 코드로 배포</td><td>CloudFormation</td></tr><tr><td>배포 전 검증</td><td>CloudFormation Change Set</td></tr><tr><td>일관된 환경 복제</td><td>CloudFormation Template</td></tr></tbody></table></div>
+<hr/>
+<h3 id="q663--데이터베이스-요청-캐싱">Q663 — 데이터베이스 요청 캐싱<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q663--데이터베이스-요청-캐싱" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>DB 요청을 캐시</td><td>ElastiCache Redis</td></tr><tr><td>세션 저장, 리더보드</td><td>Redis</td></tr><tr><td>단순 캐시, 멀티스레드</td><td>Memcached</td></tr></tbody></table></div>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>습관 주의 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>“캐시” 보이면 바로 Redis 가는 습관 — 지문에서 “DB 요청 캐시” 명시 확인 필수.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="2-응용-부족">2. 응용 부족<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-응용-부족" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>패턴 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>개념은 알지만 지문의 특정 조건을 정답과 연결 못함.</p>
+</div>
+</blockquote>
+<h3 id="q52--다양한-크기-출력-파일--고가용성--최소-오버헤드">Q52 — 다양한 크기 출력 파일 + 고가용성 + 최소 오버헤드<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q52--다양한-크기-출력-파일--고가용성--최소-오버헤드" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>다양한 크기 파일 생성</td><td>EFS (크기 제한 없음, 자동 확장)</td></tr><tr><td>여러 EC2 동시 접근</td><td>EFS</td></tr><tr><td>고가용성</td><td>EFS (Multi-AZ 기본)</td></tr></tbody></table></div>
+<p><strong>함정:</strong> S3도 파일 저장 가능하나 → 마운트해서 직접 파일 I/O 필요 → EFS</p>
+<hr/>
+<h3 id="q128--상태-비저장--중단-허용--비용-최소화">Q128 — 상태 비저장 + 중단 허용 + 비용 최소화<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q128--상태-비저장--중단-허용--비용-최소화" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>상태 비저장 (Stateless)</td><td>컨테이너 (ECS/EKS) 적합</td></tr><tr><td>중단 허용 (Interruption Tolerant)</td><td>Spot Instance</td></tr><tr><td>비용 최소화</td><td>Spot</td></tr></tbody></table></div>
+<p><strong>해답 로직:</strong> 상태 비저장 + 중단 허용 = Spot이 핵심. ECS vs EKS는 “기존 Kubernetes 사용 여부”로 구분.</p>
+<hr/>
+<h3 id="q141--가능한-빨리-전-세계-사용자에게-콘텐츠-제공">Q141 — 가능한 빨리 전 세계 사용자에게 콘텐츠 제공<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q141--가능한-빨리-전-세계-사용자에게-콘텐츠-제공" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>정적 콘텐츠, 전 세계 배포</td><td>CloudFront</td></tr><tr><td>동적 콘텐츠, 전 세계 TCP 가속</td><td>Global Accelerator</td></tr><tr><td>단순 HTTP 트래픽 분산</td><td>ALB (리전 내)</td></tr></tbody></table></div>
+<p><strong>함정:</strong> “전 세계” 보인다고 Route53 리전 라우팅 선택 금지. 콘텐츠 전송이면 CloudFront.</p>
+<hr/>
+<h3 id="q200--cognito--api-gateway-접근-제어">Q200 — Cognito + API Gateway 접근 제어<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q200--cognito--api-gateway-접근-제어" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>사용자 로그인/인증</td><td>Cognito 사용자 풀</td></tr><tr><td>AWS 리소스 접근 권한</td><td>Cognito 자격증명 풀</td></tr><tr><td>API Gateway 접근 제어</td><td>Cognito 사용자 풀 권한 부여자</td></tr></tbody></table></div>
+<p><strong>해답 로직:</strong> “API Gateway + Cognito 검증” = 사용자 풀 권한 부여자(Authorizer) 설정</p>
+<pre><code>사용자 → 로그인(User Pool) → JWT 토큰 → API Gateway → Cognito Authorizer 검증 → 허용
+</code></pre>
+<hr/>
+<h3 id="q217--기본-인프라-정상-시-부하-처리-불필요--활성-수동-장애-조치">Q217 — 기본 인프라 정상 시 부하 처리 불필요 + 활성-수동 장애 조치<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q217--기본-인프라-정상-시-부하-처리-불필요--활성-수동-장애-조치" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>기본 인프라 정상 시 불필요</td><td>Pilot Light</td></tr><tr><td>활성-수동 장애 조치로 충분</td><td>Pilot Light 또는 Warm Standby</td></tr><tr><td>핵심 시스템만 최소 실행</td><td>Pilot Light</td></tr></tbody></table></div>
+<p><strong>DR 전략 키워드 매핑:</strong></p>
+<ul>
+<li>“수시간 RTO 허용” → Backup &amp; Restore</li>
+<li>“핵심만 최소 실행, 장애 시 스케일 업” → Pilot Light</li>
+<li>“축소 스케일로 항상 실행” → Warm Standby</li>
+<li>“항상 풀 스케일” → Active-Active</li>
+</ul>
+<hr/>
+<h3 id="q243--파일-기반-애플리케이션--최소-대기-시간">Q243 — 파일 기반 애플리케이션 + 최소 대기 시간<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q243--파일-기반-애플리케이션--최소-대기-시간" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>파일 기반</td><td>EFS 가능성 있음</td></tr><tr><td><strong>최소 대기 시간으로 데이터 제공</strong></td><td>S3 + CloudFront</td></tr><tr><td>전 세계 사용자</td><td>CloudFront 캐싱</td></tr></tbody></table></div>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>함정 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>“파일 기반” → EFS 선택 충동 주의.
+“최소 대기 시간 + 전 세계” 키워드가 있으면 CloudFront가 우선.</p>
+</div>
+</blockquote>
+<hr/>
+<h3 id="q419--최소-관리-원칙--조직-전체-정책">Q419 — 최소 관리 원칙 + 조직 전체 정책<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q419--최소-관리-원칙--조직-전체-정책" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>조직 전체 계정에 적용</td><td>SCP (Service Control Policy)</td></tr><tr><td>루트 포함 모든 IAM 차단</td><td>SCP</td></tr><tr><td>최소 권한 원칙 조직 레벨</td><td>SCP</td></tr></tbody></table></div>
+<p><strong>해답 로직:</strong> “조직(Organization) + 전체 계정 + 정책 강제” = SCP. 개별 계정 IAM으로는 불충분.</p>
+<hr/>
+<h3 id="q445--이전-기간-데이터-접근--업데이트--s3-이동">Q445 — 이전 기간 데이터 접근 + 업데이트 + S3 이동<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q445--이전-기간-데이터-접근--업데이트--s3-이동" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>온프레미스 → AWS 데이터 이동</td><td>DataSync</td></tr><tr><td>이전 기간 데이터 접근 유지</td><td>DataSync로 S3 복사 후 로컬 유지</td></tr><tr><td>정기적 동기화</td><td>DataSync 예약 실행</td></tr></tbody></table></div>
+<hr/>
+<h3 id="q490--최소한의-코딩--지속적-백업--rcu-영향-없음">Q490 — 최소한의 코딩 + 지속적 백업 + RCU 영향 없음<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q490--최소한의-코딩--지속적-백업--rcu-영향-없음" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>최소 코딩, 백업 자동화</td><td>AWS Backup</td></tr><tr><td>DynamoDB 백업</td><td>AWS Backup (온디맨드/예약)</td></tr><tr><td>RCU/WCU 영향 없음</td><td>AWS Backup (백그라운드 처리)</td></tr></tbody></table></div>
+<hr/>
+<h3 id="q519--데이터-신속-수집--분석--카탈로그">Q519 — 데이터 신속 수집 + 분석 + 카탈로그<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q519--데이터-신속-수집--분석--카탈로그" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>데이터 카탈로그, 메타데이터 관리</td><td>AWS Glue Data Catalog</td></tr><tr><td>ETL 변환</td><td>AWS Glue</td></tr><tr><td>S3 데이터 SQL 분석</td><td>Athena + Glue Catalog</td></tr></tbody></table></div>
+<hr/>
+<h3 id="q594--실행로드에-오랜-시간--lambda-콜드-스타트">Q594 — 실행/로드에 오랜 시간 + Lambda 콜드 스타트<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q594--실행로드에-오랜-시간--lambda-콜드-스타트" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>콜드 스타트 제거</td><td>Provisioned Concurrency</td></tr><tr><td>초기화 시간 오래 걸림</td><td>Provisioned Concurrency</td></tr><tr><td>예열된 Lambda 유지</td><td>Provisioned Concurrency (웜 풀)</td></tr></tbody></table></div>
+<p><strong>Reserved vs Provisioned:</strong></p>
+<ul>
+<li>Reserved: 최대 동시 실행 수 제한 (콜드 스타트 해결 안됨)</li>
+<li>Provisioned: 미리 초기화 상태 유지 (콜드 스타트 없음)</li>
+</ul>
+<hr/>
+<h3 id="q626--데이터-무결성-자동-검증--전송">Q626 — 데이터 무결성 자동 검증 + 전송<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q626--데이터-무결성-자동-검증--전송" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>데이터 무결성 검증</td><td>DataSync (자동 체크섬 검증)</td></tr><tr><td>온프레미스 → AWS 전송</td><td>DataSync</td></tr><tr><td>전송 중 검증</td><td>DataSync</td></tr></tbody></table></div>
+<p><strong>DataSync 핵심 특징:</strong> 전송 시 자동으로 체크섬 검증. 데이터 손상 자동 감지.</p>
+<hr/>
+<h2 id="3-진짜-모름">3. 진짜 모름<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-진짜-모름" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>집중 암기 필요 </p></div>
+                  
+                </div>
+</blockquote>
+<h3 id="q101--object-lock-모드-선택-100년-보존">Q101 — Object Lock 모드 선택 (100년 보존)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q101--object-lock-모드-선택-100년-보존" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>Governance</th><th>Compliance</th></tr></thead><tbody><tr><td>관리자도 삭제 가능</td><td>✅</td><td>❌</td></tr><tr><td>루트도 삭제 불가</td><td>❌</td><td>✅</td></tr><tr><td>보존 기간 변경 가능</td><td>특권 사용자 가능</td><td>❌ 절대 불가</td></tr><tr><td>규정 준수 (금융/의료)</td><td>덜 엄격</td><td>엄격</td></tr></tbody></table></div>
+<p><strong>키워드 매핑:</strong></p>
+<ul>
+<li>“변경/삭제 절대 불가”, “규정 준수 필수” → <strong>Compliance</strong></li>
+<li>“내부 정책, 실수 방지, 관리자 예외 허용” → <strong>Governance</strong></li>
+</ul>
+<blockquote class="callout danger" data-callout="danger">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>함정 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>100년 보존 요구 + “어떤 사용자도 수정 불가” → <strong>Compliance 모드</strong>
+100년이어도 “관리자는 변경 가능” → Governance</p>
+</div>
+</blockquote>
+<hr/>
+<h3 id="q260--q334--active-directory-연동">Q260 &amp; Q334 — Active Directory 연동<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q260--q334--active-directory-연동" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>시나리오</th><th>정답 서비스</th></tr></thead><tbody><tr><td>온프레미스 AD 그대로 유지 + AWS 연동</td><td>AD Connector</td></tr><tr><td>완전 관리형 AD, 클라우드 네이티브</td><td>AWS Managed Microsoft AD</td></tr><tr><td>소규모, 간단한 AD 기능</td><td>Simple AD</td></tr><tr><td>MFA + AD 통합</td><td>AD Connector + MFA</td></tr></tbody></table></div>
+<p><strong>키워드 매핑:</strong></p>
+<ul>
+<li>“기존 AD 유지”, “동기화 없이 프록시” → <strong>AD Connector</strong></li>
+<li>“AWS에서 완전 관리”, “트러스트 관계” → <strong>Managed Microsoft AD</strong></li>
+<li>“300명 이하 소규모” → <strong>Simple AD</strong></li>
+</ul>
+<hr/>
+<h3 id="q414--datasync-vs-file-gateway-구분">Q414 — DataSync vs File Gateway 구분<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q414--datasync-vs-file-gateway-구분" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th></th><th>DataSync</th><th>File Gateway</th></tr></thead><tbody><tr><td>목적</td><td>데이터 이동/마이그레이션</td><td>지속적 온프레미스 파일 접근</td></tr><tr><td>실행 방식</td><td>일회성 or 예약 실행</td><td>상시 실행</td></tr><tr><td>프로토콜</td><td>에이전트 기반</td><td>NFS / SMB</td></tr><tr><td>적합 케이스</td><td>마이그레이션, 배치 동기화</td><td>온프레미스 앱이 S3를 파일처럼 사용</td></tr></tbody></table></div>
+<p><strong>키워드 매핑:</strong></p>
+<ul>
+<li>“거의 실시간”, “지속적”, “온프레미스 앱이 S3 접근” → <strong>File Gateway</strong></li>
+<li>“마이그레이션”, “일정 주기 동기화”, “배치” → <strong>DataSync</strong></li>
+</ul>
+<hr/>
+<h3 id="q523--여러-dynamodb-테이블-조회-기본-성능-영향-없이">Q523 — 여러 DynamoDB 테이블 조회, 기본 성능 영향 없이<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q523--여러-dynamodb-테이블-조회-기본-성능-영향-없이" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>여러 데이터 소스 SQL 조회</td><td>Athena Federated Query</td></tr><tr><td>DynamoDB 기본 성능 영향 없음</td><td>Federated Query (Lambda 커넥터)</td></tr><tr><td>운영 효율적</td><td>Federated Query (서버리스)</td></tr></tbody></table></div>
+<p><strong>해답 로직:</strong></p>
+<pre><code>Athena Federated Query
+= Lambda 커넥터로 DynamoDB/RDS/Redis 등 여러 소스 SQL 조회
+= 원본 DB에 직접 부하 없이 분리된 Lambda로 처리
+</code></pre>
+<hr/>
+<h3 id="q547--대용량-스트리밍--s3-최소-운영-오버헤드">Q547 — 대용량 스트리밍 → S3, 최소 운영 오버헤드<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q547--대용량-스트리밍--s3-최소-운영-오버헤드" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>스트리밍 데이터 수집</td><td>Kinesis</td></tr><tr><td>S3로 직접 전달</td><td>Kinesis Data <strong>Firehose</strong></td></tr><tr><td>최소 운영 오버헤드</td><td>Firehose (완전 관리형)</td></tr><tr><td>재처리/Replay 필요</td><td>Kinesis Data Streams</td></tr></tbody></table></div>
+<p><strong>키워드 매핑:</strong></p>
+<ul>
+<li>“스트리밍 + S3 저장 + 최소 오버헤드” → <strong>Firehose</strong></li>
+<li>“스트리밍 + 재처리 + 여러 소비자” → <strong>Data Streams</strong></li>
+</ul>
+<hr/>
+<h3 id="q550--ecs-실행-역할-vs-태스크-역할">Q550 — ECS 실행 역할 vs 태스크 역할<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q550--ecs-실행-역할-vs-태스크-역할" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>역할</th><th>목적</th><th>예시</th></tr></thead><tbody><tr><td>ECS 실행 역할 (Execution Role)</td><td>ECS 에이전트가 AWS 접근</td><td>ECR 이미지 pull, CloudWatch 로그 쓰기</td></tr><tr><td>ECS 태스크 역할 (Task Role)</td><td>컨테이너가 AWS 접근</td><td>컨테이너가 S3, DynamoDB 접근</td></tr></tbody></table></div>
+<p><strong>키워드 매핑:</strong></p>
+<ul>
+<li>“ECR에서 이미지 가져오기”, “로그 전송” → <strong>실행 역할</strong></li>
+<li>“컨테이너가 S3/DynamoDB 접근” → <strong>태스크 역할</strong></li>
+</ul>
+<hr/>
+<h3 id="q556--ec2가-dynamodb-접근-자격증명-노출-금지">Q556 — EC2가 DynamoDB 접근, 자격증명 노출 금지<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q556--ec2가-dynamodb-접근-자격증명-노출-금지" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>API 자격증명 노출 금지</td><td>IAM Role (액세스 키 사용 금지)</td></tr><tr><td>저장 + 검색 (읽기/쓰기)</td><td>읽기 + 쓰기 권한 모두 포함</td></tr><tr><td>EC2 인스턴스 프로필</td><td>IAM Role → 인스턴스 프로필 연결</td></tr></tbody></table></div>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>A vs B 함정 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>A: 읽기 권한만 (Read Only)
+B: 읽기 + 쓰기 권한
+지문에 “저장하고 검색” = 읽기+쓰기 → <strong>B 선택</strong></p>
+</div>
+</blockquote>
+<hr/>
+<h3 id="q698--msk-managed-streaming-for-kafka-보안">Q698 — MSK (Managed Streaming for Kafka) 보안<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#q698--msk-managed-streaming-for-kafka-보안" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 키워드</th><th>정답</th></tr></thead><tbody><tr><td>클라이언트 인증서 기반 인증</td><td>mTLS</td></tr><tr><td>사용자명/비밀번호 인증</td><td>SASL/SCRAM</td></tr><tr><td>브로커 간 암호화</td><td>TLS</td></tr><tr><td>저장 데이터 암호화</td><td>KMS</td></tr></tbody></table></div>
+<p><strong>MSK 인증 방식:</strong></p>
+<ul>
+<li>mTLS: 클라이언트 인증서 ↔ 서버 인증서 상호 검증</li>
+<li>SASL/SCRAM: ID/PW 기반, Secrets Manager 통합</li>
+<li>IAM: IAM 정책 기반 (MSK Serverless 포함)</li>
+</ul>
+<hr/>
+<h2 id="4-핵심-비교표-모음">4. 핵심 비교표 모음<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-핵심-비교표-모음" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="s3-스토리지-클래스-최소-보관-기간">S3 스토리지 클래스 최소 보관 기간<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#s3-스토리지-클래스-최소-보관-기간" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>클래스</th><th>최소 보관</th><th>최소 크기</th></tr></thead><tbody><tr><td>Standard</td><td>없음</td><td>없음</td></tr><tr><td>Intelligent-Tiering</td><td>없음</td><td>128KB 미만은 FA 고정</td></tr><tr><td>Standard-IA</td><td>30일</td><td>128KB</td></tr><tr><td>One Zone-IA</td><td>30일</td><td>128KB</td></tr><tr><td>Glacier Instant</td><td>90일</td><td>128KB</td></tr><tr><td>Glacier Flexible</td><td>90일</td><td>40KB</td></tr><tr><td>Glacier Deep Archive</td><td>180일</td><td>40KB</td></tr></tbody></table></div>
+<h3 id="dr-전략-4종">DR 전략 4종<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#dr-전략-4종" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>전략</th><th>RTO</th><th>RPO</th><th>비용</th><th>특징</th></tr></thead><tbody><tr><td>Backup &amp; Restore</td><td>수시간</td><td>수시간</td><td>★</td><td>S3 백업 후 복원</td></tr><tr><td>Pilot Light</td><td>수십분</td><td>분</td><td>★★</td><td>핵심만 최소 실행</td></tr><tr><td>Warm Standby</td><td>수분</td><td>초~분</td><td>★★★</td><td>축소 스케일 상시 운영</td></tr><tr><td>Active-Active</td><td>~0</td><td>~0</td><td>★★★★</td><td>완전 이중화</td></tr></tbody></table></div>
+<h3 id="elb-종류">ELB 종류<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#elb-종류" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th></th><th>ALB</th><th>NLB</th><th>GWLB</th></tr></thead><tbody><tr><td>레이어</td><td>7 (HTTP)</td><td>4 (TCP/UDP)</td><td>3 (IP)</td></tr><tr><td>정적 IP</td><td>❌</td><td>✅</td><td>-</td></tr><tr><td>경로 기반 라우팅</td><td>✅</td><td>❌</td><td>-</td></tr><tr><td>WebSocket</td><td>✅</td><td>✅</td><td>-</td></tr><tr><td>용도</td><td>웹앱</td><td>게임/금융/TCP</td><td>방화벽 어플라이언스</td></tr></tbody></table></div>
+<h3 id="route-53-라우팅-정책">Route 53 라우팅 정책<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#route-53-라우팅-정책" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>정책</th><th>용도</th><th>키워드</th></tr></thead><tbody><tr><td>Simple</td><td>단순 레코드</td><td>-</td></tr><tr><td>Weighted</td><td>A/B 테스트</td><td>비율, 카나리</td></tr><tr><td>Latency</td><td>최저 지연 리전</td><td>가장 빠른 리전</td></tr><tr><td>Failover</td><td>Active-Passive</td><td>장애 조치, 자동 전환</td></tr><tr><td>Geolocation</td><td>국가/지역별</td><td>특정 국가 트래픽</td></tr><tr><td>Multivalue</td><td>복수 IP</td><td>단순 LB</td></tr></tbody></table></div>
+<h3 id="sqs-핵심-파라미터">SQS 핵심 파라미터<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#sqs-핵심-파라미터" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>파라미터</th><th>기본</th><th>최대</th><th>용도</th></tr></thead><tbody><tr><td>Visibility Timeout</td><td>30초</td><td>12시간</td><td>처리 중 숨김 (Lambda 타임아웃보다 길게)</td></tr><tr><td>Message Retention</td><td>4일</td><td>14일</td><td>보존 기간</td></tr><tr><td>Delivery Delay</td><td>0</td><td>15분</td><td>전송 지연</td></tr><tr><td>Max Receive Count</td><td>-</td><td>-</td><td>DLQ 이동 기준</td></tr></tbody></table></div>
+<hr/>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>시험 당일 루틴 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ol>
+<li>이 노트 키워드 매핑표 10분 복습</li>
+<li>hard65 오답 번호만 재확인</li>
+<li>DR 전략 4종, AD 서비스 3종 암기 확인</li>
+</ol>
+</div>
+</blockquote></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>그래프 뷰</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-401" aria-expanded="true"><h3>목차</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#-saa-c03-오답-키워드-해설" data-for="-saa-c03-오답-키워드-해설">🎯 SAA-C03 오답 키워드 해설</a></li><li class="depth-1"><a href="#-목차" data-for="-목차">📑 목차</a></li><li class="depth-1"><a href="#1-실수--키워드-놓침" data-for="1-실수--키워드-놓침">1. 실수 / 키워드 놓침</a></li><li class="depth-2"><a href="#q75--트랜잭션-삭제--restful-api" data-for="q75--트랜잭션-삭제--restful-api">Q75 — 트랜잭션 삭제 + RESTful API</a></li><li class="depth-2"><a href="#q176--트래픽이-aws-네트워크를-벗어나지-않도록" data-for="q176--트래픽이-aws-네트워크를-벗어나지-않도록">Q176 — 트래픽이 AWS 네트워크를 벗어나지 않도록</a></li><li class="depth-2"><a href="#q213--sql-주입--스크립팅-공격-차단" data-for="q213--sql-주입--스크립팅-공격-차단">Q213 — SQL 주입 / 스크립팅 공격 차단</a></li><li class="depth-2"><a href="#q310--구매-후-파일-액세스-url-제공" data-for="q310--구매-후-파일-액세스-url-제공">Q310 — 구매 후 파일 액세스 URL 제공</a></li><li class="depth-2"><a href="#q374--여러-vpc-연결-3개-이상" data-for="q374--여러-vpc-연결-3개-이상">Q374 — 여러 VPC 연결 (3개 이상)</a></li><li class="depth-2"><a href="#q401--단일-실패-지점-방지" data-for="q401--단일-실패-지점-방지">Q401 — 단일 실패 지점 방지</a></li><li class="depth-2"><a href="#q474--모든-리전의-모든-vpc와-통신" data-for="q474--모든-리전의-모든-vpc와-통신">Q474 — 모든 리전의 모든 VPC와 통신</a></li><li class="depth-2"><a href="#q479--구성-검증-후-배포" data-for="q479--구성-검증-후-배포">Q479 — 구성 검증 후 배포</a></li><li class="depth-2"><a href="#q663--데이터베이스-요청-캐싱" data-for="q663--데이터베이스-요청-캐싱">Q663 — 데이터베이스 요청 캐싱</a></li><li class="depth-1"><a href="#2-응용-부족" data-for="2-응용-부족">2. 응용 부족</a></li><li class="depth-2"><a href="#q52--다양한-크기-출력-파일--고가용성--최소-오버헤드" data-for="q52--다양한-크기-출력-파일--고가용성--최소-오버헤드">Q52 — 다양한 크기 출력 파일 + 고가용성 + 최소 오버헤드</a></li><li class="depth-2"><a href="#q128--상태-비저장--중단-허용--비용-최소화" data-for="q128--상태-비저장--중단-허용--비용-최소화">Q128 — 상태 비저장 + 중단 허용 + 비용 최소화</a></li><li class="depth-2"><a href="#q141--가능한-빨리-전-세계-사용자에게-콘텐츠-제공" data-for="q141--가능한-빨리-전-세계-사용자에게-콘텐츠-제공">Q141 — 가능한 빨리 전 세계 사용자에게 콘텐츠 제공</a></li><li class="depth-2"><a href="#q200--cognito--api-gateway-접근-제어" data-for="q200--cognito--api-gateway-접근-제어">Q200 — Cognito + API Gateway 접근 제어</a></li><li class="depth-2"><a href="#q217--기본-인프라-정상-시-부하-처리-불필요--활성-수동-장애-조치" data-for="q217--기본-인프라-정상-시-부하-처리-불필요--활성-수동-장애-조치">Q217 — 기본 인프라 정상 시 부하 처리 불필요 + 활성-수동 장애 조치</a></li><li class="depth-2"><a href="#q243--파일-기반-애플리케이션--최소-대기-시간" data-for="q243--파일-기반-애플리케이션--최소-대기-시간">Q243 — 파일 기반 애플리케이션 + 최소 대기 시간</a></li><li class="depth-2"><a href="#q419--최소-관리-원칙--조직-전체-정책" data-for="q419--최소-관리-원칙--조직-전체-정책">Q419 — 최소 관리 원칙 + 조직 전체 정책</a></li><li class="depth-2"><a href="#q445--이전-기간-데이터-접근--업데이트--s3-이동" data-for="q445--이전-기간-데이터-접근--업데이트--s3-이동">Q445 — 이전 기간 데이터 접근 + 업데이트 + S3 이동</a></li><li class="depth-2"><a href="#q490--최소한의-코딩--지속적-백업--rcu-영향-없음" data-for="q490--최소한의-코딩--지속적-백업--rcu-영향-없음">Q490 — 최소한의 코딩 + 지속적 백업 + RCU 영향 없음</a></li><li class="depth-2"><a href="#q519--데이터-신속-수집--분석--카탈로그" data-for="q519--데이터-신속-수집--분석--카탈로그">Q519 — 데이터 신속 수집 + 분석 + 카탈로그</a></li><li class="depth-2"><a href="#q594--실행로드에-오랜-시간--lambda-콜드-스타트" data-for="q594--실행로드에-오랜-시간--lambda-콜드-스타트">Q594 — 실행/로드에 오랜 시간 + Lambda 콜드 스타트</a></li><li class="depth-2"><a href="#q626--데이터-무결성-자동-검증--전송" data-for="q626--데이터-무결성-자동-검증--전송">Q626 — 데이터 무결성 자동 검증 + 전송</a></li><li class="depth-1"><a href="#3-진짜-모름" data-for="3-진짜-모름">3. 진짜 모름</a></li><li class="depth-2"><a href="#q101--object-lock-모드-선택-100년-보존" data-for="q101--object-lock-모드-선택-100년-보존">Q101 — Object Lock 모드 선택 (100년 보존)</a></li><li class="depth-2"><a href="#q260--q334--active-directory-연동" data-for="q260--q334--active-directory-연동">Q260 &amp; Q334 — Active Directory 연동</a></li><li class="depth-2"><a href="#q414--datasync-vs-file-gateway-구분" data-for="q414--datasync-vs-file-gateway-구분">Q414 — DataSync vs File Gateway 구분</a></li><li class="depth-2"><a href="#q523--여러-dynamodb-테이블-조회-기본-성능-영향-없이" data-for="q523--여러-dynamodb-테이블-조회-기본-성능-영향-없이">Q523 — 여러 DynamoDB 테이블 조회, 기본 성능 영향 없이</a></li><li class="depth-2"><a href="#q547--대용량-스트리밍--s3-최소-운영-오버헤드" data-for="q547--대용량-스트리밍--s3-최소-운영-오버헤드">Q547 — 대용량 스트리밍 → S3, 최소 운영 오버헤드</a></li><li class="depth-2"><a href="#q550--ecs-실행-역할-vs-태스크-역할" data-for="q550--ecs-실행-역할-vs-태스크-역할">Q550 — ECS 실행 역할 vs 태스크 역할</a></li><li class="depth-2"><a href="#q556--ec2가-dynamodb-접근-자격증명-노출-금지" data-for="q556--ec2가-dynamodb-접근-자격증명-노출-금지">Q556 — EC2가 DynamoDB 접근, 자격증명 노출 금지</a></li><li class="depth-2"><a href="#q698--msk-managed-streaming-for-kafka-보안" data-for="q698--msk-managed-streaming-for-kafka-보안">Q698 — MSK (Managed Streaming for Kafka) 보안</a></li><li class="depth-1"><a href="#4-핵심-비교표-모음" data-for="4-핵심-비교표-모음">4. 핵심 비교표 모음</a></li><li class="depth-2"><a href="#s3-스토리지-클래스-최소-보관-기간" data-for="s3-스토리지-클래스-최소-보관-기간">S3 스토리지 클래스 최소 보관 기간</a></li><li class="depth-2"><a href="#dr-전략-4종" data-for="dr-전략-4종">DR 전략 4종</a></li><li class="depth-2"><a href="#elb-종류" data-for="elb-종류">ELB 종류</a></li><li class="depth-2"><a href="#route-53-라우팅-정책" data-for="route-53-라우팅-정책">Route 53 라우팅 정책</a></li><li class="depth-2"><a href="#sqs-핵심-파라미터" data-for="sqs-핵심-파라미터">SQS 핵심 파라미터</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Created with <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="../postscript.js" type="module"></script></html>

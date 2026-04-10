@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr"><head><title>VPC 네트워크 기초 - 클라우드 엔지니어를 위한 CS 지식</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Quartz 4"/><meta property="og:title" content="VPC 네트워크 기초 - 클라우드 엔지니어를 위한 CS 지식"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="VPC 네트워크 기초 - 클라우드 엔지니어를 위한 CS 지식"/><meta name="twitter:description" content="🎯 VPC 네트워크 기초 - 클라우드 엔지니어를 위한 CS 지식 📑 목차 OSI 7계층과 TCP/IP IP 주소 체계 CIDR과 서브넷 VPC 핵심 컴포넌트 라우팅 심화 Security Group vs NACL NAT와 IP 변환 DNS와 VPC VPC 확장 패킷 흐름 완전 분석 트러블슈팅 체크리스트 1."/><meta property="og:description" content="🎯 VPC 네트워크 기초 - 클라우드 엔지니어를 위한 CS 지식 📑 목차 OSI 7계층과 TCP/IP IP 주소 체계 CIDR과 서브넷 VPC 핵심 컴포넌트 라우팅 심화 Security Group vs NACL NAT와 IP 변환 DNS와 VPC VPC 확장 패킷 흐름 완전 분석 트러블슈팅 체크리스트 1."/><meta property="og:image:alt" content="🎯 VPC 네트워크 기초 - 클라우드 엔지니어를 위한 CS 지식 📑 목차 OSI 7계층과 TCP/IP IP 주소 체계 CIDR과 서브넷 VPC 핵심 컴포넌트 라우팅 심화 Security Group vs NACL NAT와 IP 변환 DNS와 VPC VPC 확장 패킷 흐름 완전 분석 트러블슈팅 체크리스트 1."/><meta property="twitter:domain" content="epicodix.github.io/Quartz"/><meta property="og:url" content="https://epicodix.github.io/Quartz/1_가이드/VPC-네트워크-기초-CS지식"/><meta property="twitter:url" content="https://epicodix.github.io/Quartz/1_가이드/VPC-네트워크-기초-CS지식"/><link rel="icon" href="../static/icon.png"/><meta name="description" content="🎯 VPC 네트워크 기초 - 클라우드 엔지니어를 위한 CS 지식 📑 목차 OSI 7계층과 TCP/IP IP 주소 체계 CIDR과 서브넷 VPC 핵심 컴포넌트 라우팅 심화 Security Group vs NACL NAT와 IP 변환 DNS와 VPC VPC 확장 패킷 흐름 완전 분석 트러블슈팅 체크리스트 1."/><meta name="generator" content="Quartz"/><link href="../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL1VzZXJzL2ExMjM0L2VwaWNvZGl4L215LXF1YXJ0ei1zaXRlL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><script src="../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://epicodix.github.io/Quartz/index.xml"/><meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/><meta property="og:image" content="https://epicodix.github.io/Quartz/1_가이드/VPC-네트워크-기초-CS지식-og-image.webp"/><meta property="og:image:url" content="https://epicodix.github.io/Quartz/1_가이드/VPC-네트워크-기초-CS지식-og-image.webp"/><meta name="twitter:image" content="https://epicodix.github.io/Quartz/1_가이드/VPC-네트워크-기초-CS지식-og-image.webp"/><meta property="og:image:type" content="image/.webp"/></head><body data-slug="1_가이드/VPC-네트워크-기초-CS지식"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="..">Quartz 4</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>검색</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="검색어를 입력하세요" placeholder="검색어를 입력하세요"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="다크 모드"><title>다크 모드</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="라이트 모드"><title>라이트 모드</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="리더 모드"><title>리더 모드</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="collapse" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>{let priorityFolders=[\&quot;\\u{1F4D6} \\uAC00\\uC774\\uB4DC\&quot;,\&quot;\\u{1F52C} \\uAE30\\uC220 \\uBD84\\uC11D\&quot;,\&quot;\\u2699\\uFE0F \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;\\u{1F4DA} \\uAD50\\uC721\&quot;,\&quot;\\u{1F4BC} \\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624\&quot;];if(a.isFolder&amp;&amp;b.isFolder){let aPriority=priorityFolders.indexOf(a.displayName),bPriority=priorityFolders.indexOf(b.displayName);if(aPriority!==-1&amp;&amp;bPriority!==-1)return aPriority-bPriority;if(aPriority!==-1)return-1;if(bPriority!==-1)return 1}return!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,\&quot;ko-KR\&quot;,{numeric:!0,sensitivity:\&quot;base\&quot;}):a.isFolder?-1:1}&quot;,&quot;filterFn&quot;:&quot;node=>{if([\&quot;99_\\uC784\\uC2DC\&quot;,\&quot;tags\&quot;,\&quot;.obsidian\&quot;].includes(node.slugSegment))return!1;if(!node.isFolder&amp;&amp;node.data){let hiddenFiles=[\&quot;GUI_\\uC790\\uB3D9\\uD654_\\uB3C4\\uC804\\uAE30\&quot;,\&quot;Gemini_CLI_\\uD65C\\uC6A9_\\uAC00\\uC774\\uB4DC\&quot;,\&quot;Ollama_Troubleshooting_Guide\&quot;,\&quot;gemini_cli_guide\&quot;,\&quot;gemini_cli_introduction\&quot;,\&quot;gemini_context_awareness_guide\&quot;,\&quot;gemini_file_management_guide\&quot;,\&quot;get_claude_news.py\&quot;,\&quot;global_news_20250712\&quot;,\&quot;kubernetes_cheatsheet\&quot;,\&quot;kubernetes_storage_hands_on\&quot;,\&quot;naver_gmail_integration_guide\&quot;,\&quot;nodejs_installation_guide\&quot;,\&quot;\\uB0B4_\\uCEF4\\uD4E8\\uD130\\uB97C_AI_\\uC11C\\uBC84\\uB85C_\\uB9CC\\uB4E4\\uAE30_Ollama_\\uC124\\uCE58_\\uBC0F_\\uBB38\\uC81C\\uD574\\uACB0_\\uAC00\\uC774\\uB4DC\&quot;,\&quot;\\uC2DC\\uB9AC\\uC640_Gemini_\\uC5F0\\uACC4\\uC131_\\uAC15\\uD654_\\uBC29\\uC548\&quot;,\&quot;2025-08-13_\\uD559\\uC2B5_\\uD3EC\\uC778\\uD2B8\&quot;,\&quot;07_02_Advanced_Pod_Concepts\&quot;],fileTitle=node.data.title||node.displayName.replace(/\\.md$/,\&quot;\&quot;);return!hiddenFiles.includes(fileTitle)}return!0}&quot;,&quot;mapFn&quot;:&quot;node=>{let folderDisplayNames={\&quot;1_\\uAC00\\uC774\\uB4DC\&quot;:\&quot;\\u{1F4D6} \\uAC00\\uC774\\uB4DC\&quot;,\&quot;2_\\uAE30\\uC220_\\uBD84\\uC11D\&quot;:\&quot;\\u{1F52C} \\uAE30\\uC220 \\uBD84\\uC11D\&quot;,\&quot;3_\\uC544\\uC774\\uB514\\uC5B4_\\uB274\\uC2A4\&quot;:\&quot;\\u{1F4A1} \\uC544\\uC774\\uB514\\uC5B4 &amp; \\uB274\\uC2A4\&quot;,K8s_Deep_Dive:\&quot;\\u2699\\uFE0F \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;01_\\uB124\\uD2B8\\uC6CC\\uD06C \\uAE30\\uCD08\&quot;:\&quot;\\u{1F310} \\uB124\\uD2B8\\uC6CC\\uD06C \\uAE30\\uCD08\&quot;,\&quot;02_k8s\\uC2E4\\uC2B5\&quot;:\&quot;\\u{1F6E0}\\uFE0F \\uC2E4\\uC2B5\&quot;,\&quot;03_\\uD504\\uB85C\\uBA54\\uD14C\\uC6B0\\uC2A4\&quot;:\&quot;\\u{1F4CA} \\uD504\\uB85C\\uBA54\\uD14C\\uC6B0\\uC2A4\&quot;,\&quot;04_\\uADF8\\uB77C\\uD30C\\uB098\&quot;:\&quot;\\u{1F4C8} \\uADF8\\uB77C\\uD30C\\uB098\&quot;,\\uAD50\\uC721:\&quot;\\u{1F4DA} \\uAD50\\uC721\&quot;,\\uAD6C\\uB984\\uB525\\uB2E4\\uC774\\uBE0C:\&quot;\\u2601\\uFE0F \\uAD6C\\uB984\\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;\\uBD84\\uC0B0\\uC2DC\\uC2A4\\uD15C_Distributed Systems\&quot;:\&quot;\\u{1F517} \\uBD84\\uC0B0\\uC2DC\\uC2A4\\uD15C\&quot;,GO:\&quot;\\u{1F439} Go \\uC5B8\\uC5B4\&quot;,\&quot;\\uB124\\uC774\\uBC84-\\uAC80\\uC0C9\\uAD11\\uACE0-\\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158-\\uD504\\uB85C\\uC81D\\uD2B8\&quot;:\&quot;\\u{1F680} \\uB124\\uC774\\uBC84 \\uD504\\uB85C\\uC81D\\uD2B8\&quot;,\&quot;01-\\uD504\\uB85C\\uC81D\\uD2B8-\\uBC30\\uACBD\&quot;:\&quot;\\u{1F4CB} \\uD504\\uB85C\\uC81D\\uD2B8 \\uBC30\\uACBD\&quot;,\&quot;02-\\uD604\\uC7AC\\uC0C1\\uD0DC-\\uBD84\\uC11D\&quot;:\&quot;\\u{1F50D} \\uD604\\uC7AC\\uC0C1\\uD0DC \\uBD84\\uC11D\&quot;,\&quot;03-\\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158-\\uACC4\\uD68D\&quot;:\&quot;\\u{1F4DD} \\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158 \\uACC4\\uD68D\&quot;,\&quot;05-\\uC6B4\\uC601-\\uCD5C\\uC801\\uD654\&quot;:\&quot;\\u26A1 \\uC6B4\\uC601 \\uCD5C\\uC801\\uD654\&quot;,CKA:\&quot;\\u{1F3AF} CKA \\uC790\\uACA9\\uC99D\&quot;,GCP:\&quot;\\u2601\\uFE0F Google Cloud\&quot;,\&quot;moc-k8s\&quot;:\&quot;\\u{1F4DA} \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB178\\uD2B8\&quot;,Vagrant:\&quot;\\u{1F4E6} Vagrant\&quot;,\\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624:\&quot;\\u{1F4BC} \\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624\&quot;,\\uAC00\\uC0C1\\uD654:\&quot;\\u{1F4BB} \\uAC00\\uC0C1\\uD654\&quot;,\\uAC1C\\uBC1C\\uD658\\uACBD:\&quot;\\u{1F6E0}\\uFE0F \\uAC1C\\uBC1C\\uD658\\uACBD\&quot;,\\uAE30\\uD0C0:\&quot;\\u{1F4CE} \\uAE30\\uD0C0\&quot;,AI\\uB3C4\\uAD6C:\&quot;\\u{1F916} AI \\uB3C4\\uAD6C\&quot;,\\uBAA8\\uB2C8\\uD130\\uB9C1:\&quot;\\u{1F4CA} \\uBAA8\\uB2C8\\uD130\\uB9C1\&quot;};if(node.isFolder&amp;&amp;folderDisplayNames[node.displayName]&amp;&amp;(node.displayName=folderDisplayNames[node.displayName]),!node.isFolder&amp;&amp;node.data){let displayName=node.data.title||node.displayName;displayName=displayName.replace(/^(\\d{2}_|\\d{2}-\\d{2}-)/g,\&quot;\&quot;),displayName.length>50&amp;&amp;(displayName=displayName.substring(0,47)+\&quot;...\&quot;),displayName=displayName.replace(/^kubernetes_/,\&quot;K8s \&quot;).replace(/^쿠버네티스_/,\&quot;K8s \&quot;).replace(/_완벽_가이드$/,\&quot; \\uAC00\\uC774\\uB4DC\&quot;).replace(/_실습_가이드$/,\&quot; \\uC2E4\\uC2B5\&quot;).replace(/_핵심_정리$/,\&quot; \\uC815\\uB9AC\&quot;).replace(/_기초_개념$/,\&quot; \\uAE30\\uCD08\&quot;).replace(/완전_가이드$/,\&quot;\\uAC00\\uC774\\uB4DC\&quot;).replace(/완벽_정리$/,\&quot;\\uC815\\uB9AC\&quot;),node.displayName=displayName}return node}&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-48"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>탐색기</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-48" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../1_가이드/">1_가이드</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>VPC 네트워크 기초   클라우드 엔지니어를 위한 CS 지식</a></div></nav><h1 class="article-title">VPC 네트워크 기초 - 클라우드 엔지니어를 위한 CS 지식</h1><p show-comma="true" class="content-meta"><time datetime="2026-01-24T15:00:00.000Z">2026년 1월 25일</time><span>18 min read</span></p><ul class="tags"><li><a href="../tags/network" class="internal tag-link">network</a></li><li><a href="../tags/vpc" class="internal tag-link">vpc</a></li><li><a href="../tags/aws" class="internal tag-link">aws</a></li><li><a href="../tags/cs-fundamentals" class="internal tag-link">cs-fundamentals</a></li><li><a href="../tags/infrastructure" class="internal tag-link">infrastructure</a></li></ul></div></div><article class="popover-hint"><h1 id="-vpc-네트워크-기초---클라우드-엔지니어를-위한-cs-지식">🎯 VPC 네트워크 기초 - 클라우드 엔지니어를 위한 CS 지식<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-vpc-네트워크-기초---클라우드-엔지니어를-위한-cs-지식" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<h2 id="-목차">📑 목차<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-목차" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><a href="#1-osi-7%EA%B3%84%EC%B8%B5%EA%B3%BC-tcpip" class="internal alias">OSI 7계층과 TCP/IP</a></li>
+<li><a href="#2-ip-%EC%A3%BC%EC%86%8C-%EC%B2%B4%EA%B3%84" class="internal alias">IP 주소 체계</a></li>
+<li><a href="#3-cidr%EA%B3%BC-%EC%84%9C%EB%B8%8C%EB%84%B7" class="internal alias">CIDR과 서브넷</a></li>
+<li><a href="#4-vpc-%ED%95%B5%EC%8B%AC-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8" class="internal alias">VPC 핵심 컴포넌트</a></li>
+<li><a href="#5-%EB%9D%BC%EC%9A%B0%ED%8C%85-%EC%8B%AC%ED%99%94" class="internal alias">라우팅 심화</a></li>
+<li><a href="#6-security-group-vs-nacl" class="internal alias">Security Group vs NACL</a></li>
+<li><a href="#7-nat%EC%99%80-ip-%EB%B3%80%ED%99%98" class="internal alias">NAT와 IP 변환</a></li>
+<li><a href="#8-dns%EC%99%80-vpc" class="internal alias">DNS와 VPC</a></li>
+<li><a href="#9-vpc-%ED%99%95%EC%9E%A5-peering-tgw-endpoints" class="internal alias">VPC 확장</a></li>
+<li><a href="#10-%ED%8C%A8%ED%82%B7-%ED%9D%90%EB%A6%84-%EC%99%84%EC%A0%84-%EB%B6%84%EC%84%9D" class="internal alias">패킷 흐름 완전 분석</a></li>
+<li><a href="#11-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85-%EC%B2%B4%ED%81%AC%EB%A6%AC%EC%8A%A4%ED%8A%B8" class="internal alias">트러블슈팅 체크리스트</a></li>
+</ul>
+<hr/>
+<h2 id="1-osi-7계층과-tcpip">1. OSI 7계층과 TCP/IP<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-osi-7계층과-tcpip" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>왜 알아야 하나? </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>AWS 리소스가 어느 계층에서 동작하는지 알아야 트러블슈팅이 가능.
+“ALB vs NLB 차이” = “7계층 vs 4계층 차이”</p>
+</div>
+</blockquote>
+<h3 id="-osi-7계층-vs-tcpip-4계층">📊 OSI 7계층 vs TCP/IP 4계층<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-osi-7계층-vs-tcpip-4계층" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>OSI 7계층              TCP/IP 4계층         AWS 리소스
+─────────────────────────────────────────────────────────
+7. Application  ┐
+6. Presentation ├─→  Application         ALB, API Gateway, WAF
+5. Session      ┘
+
+4. Transport    ───→  Transport           NLB, Security Group (L4)
+
+3. Network      ───→  Internet            VPC, Subnet, Route Table,
+                                          IGW, NAT, NACL
+
+2. Data Link    ┐
+1. Physical     ┴─→  Network Access       ENI, VPC 내부 통신
+</code></pre>
+<h3 id="-각-계층에서-보는-것">💡 각 계층에서 보는 것<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-각-계층에서-보는-것" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>계층</th><th>데이터 단위</th><th>식별자</th><th>장비/리소스</th></tr></thead><tbody><tr><td>L7 Application</td><td>Data</td><td>URL, Header</td><td>ALB, WAF</td></tr><tr><td>L4 Transport</td><td>Segment</td><td>Port</td><td>NLB, SG</td></tr><tr><td>L3 Network</td><td>Packet</td><td>IP 주소</td><td>Router, RT, NACL</td></tr><tr><td>L2 Data Link</td><td>Frame</td><td>MAC 주소</td><td>Switch, ENI</td></tr></tbody></table></div>
+<h3 id="-aws-로드밸런서-차이">💡 AWS 로드밸런서 차이<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-aws-로드밸런서-차이" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>ALB (L7):
+  - HTTP/HTTPS 이해
+  - URL 경로 기반 라우팅 (/api → 서버A, /web → 서버B)
+  - Host 헤더 기반 라우팅 (a.com → 서버A, b.com → 서버B)
+  - 느리지만 똑똑함
+
+NLB (L4):
+  - TCP/UDP 포트만 봄
+  - 패킷을 그대로 전달 (수정 없음)
+  - 빠름, 고성능, 고정 IP 가능
+  - WebSocket, gRPC에 적합
+</code></pre>
+<hr/>
+<h2 id="2-ip-주소-체계">2. IP 주소 체계<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-ip-주소-체계" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-ipv4-구조">📊 IPv4 구조<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-ipv4-구조" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>10.0.1.5 = 32비트 주소
+
+10      .  0       .  1       .  5
+00001010   00000000   00000001   00000101
+└──────┘   └──────┘   └──────┘   └──────┘
+ 옥텟1      옥텟2      옥텟3      옥텟4
+ (0-255)   (0-255)   (0-255)   (0-255)
+</code></pre>
+<h3 id="-public-vs-private-ip">📊 Public vs Private IP<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-public-vs-private-ip" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>구분</th><th>특징</th><th>대역</th></tr></thead><tbody><tr><td><strong>Public IP</strong></td><td>인터넷에서 유일, 라우팅 가능</td><td>ISP가 할당</td></tr><tr><td><strong>Private IP</strong></td><td>내부에서만 유효, 인터넷 직접 불가</td><td>RFC 1918</td></tr></tbody></table></div>
+<p><strong>Private IP 대역 (암기!):</strong></p>
+<pre><code>Class A: 10.0.0.0/8      → 10.0.0.0 ~ 10.255.255.255    (가장 큼)
+Class B: 172.16.0.0/12   → 172.16.0.0 ~ 172.31.255.255  (중간)
+Class C: 192.168.0.0/16  → 192.168.0.0 ~ 192.168.255.255 (가정용)
+</code></pre>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>AWS VPC는 Private 대역만 사용 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>VPC CIDR로 <code>10.0.0.0/16</code>, <code>172.16.0.0/16</code> 등을 설정
+Public IP는 IGW + Elastic IP로 매핑해서 사용</p>
+</div>
+</blockquote>
+<h3 id="-특수-ip-주소">📊 특수 IP 주소<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-특수-ip-주소" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>IP</th><th>용도</th></tr></thead><tbody><tr><td>0.0.0.0/0</td><td>모든 IP (라우팅에서 “기본 경로”)</td></tr><tr><td>127.0.0.1</td><td>Localhost (자기 자신)</td></tr><tr><td>169.254.x.x</td><td>Link-local (DHCP 실패 시 자동 할당)</td></tr><tr><td>255.255.255.255</td><td>브로드캐스트</td></tr></tbody></table></div>
+<hr/>
+<h2 id="3-cidr과-서브넷">3. CIDR과 서브넷<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-cidr과-서브넷" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-cidr-표기법">📊 CIDR 표기법<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-cidr-표기법" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>10.0.0.0/16
+└──┬───┘ └┬┘
+   │      └── Prefix: 네트워크 비트 수
+   └── Network Address
+</code></pre>
+<p><strong>핵심 공식:</strong></p>
+<pre><code>사용 가능 IP = 2^(32 - prefix) - 2
+
+/8  = 2^24 = 16,777,216개
+/16 = 2^16 = 65,536개
+/24 = 2^8  = 256개
+/28 = 2^4  = 16개
+/32 = 2^0  = 1개 (단일 IP 지정)
+</code></pre>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>AWS는 서브넷당 5개 IP 예약 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>.0 = 네트워크 주소
+.1 = VPC 라우터
+.2 = AWS DNS
+.3 = AWS 예약
+.255 = 브로드캐스트
+→ /24 서브넷 실제 사용 가능: 251개</p>
+</div>
+</blockquote>
+<h3 id="-서브넷-설계-전략">📊 서브넷 설계 전략<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-서브넷-설계-전략" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>VPC: 10.0.0.0/16 (65,536개)
+│
+├── Public Subnets (작게)
+│   ├── 10.0.1.0/24 (AZ-a) → Bastion, NAT, ALB
+│   └── 10.0.2.0/24 (AZ-c) → ALB
+│
+├── Private Subnets - App (중간)
+│   ├── 10.0.10.0/24 (AZ-a) → App 서버
+│   └── 10.0.20.0/24 (AZ-c) → App 서버
+│
+├── Private Subnets - DB (작게)
+│   ├── 10.0.100.0/24 (AZ-a) → RDS, ElastiCache
+│   └── 10.0.110.0/24 (AZ-c) → RDS Standby
+│
+└── 여유 공간
+    └── 10.0.200.0/24 ~ → 미래 확장용
+</code></pre>
+<p><strong>설계 원칙:</strong></p>
+<pre><code>1. Public은 최소한으로 (노출 영역 최소화)
+2. Private 계층 분리 (App ↔ DB 분리)
+3. AZ당 동일 구조 (Multi-AZ 고가용성)
+4. CIDR 겹침 금지 (VPC Peering 대비)
+5. 여유 공간 확보 (미래 확장)
+</code></pre>
+<h3 id="-cidr-빠른-계산">📊 CIDR 빠른 계산<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-cidr-빠른-계산" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>CIDR</th><th>1옥텟</th><th>2옥텟</th><th>3옥텟</th><th>4옥텟</th><th>IP 수</th></tr></thead><tbody><tr><td>/8</td><td>고정</td><td>변경</td><td>변경</td><td>변경</td><td>16M</td></tr><tr><td>/16</td><td>고정</td><td>고정</td><td>변경</td><td>변경</td><td>65K</td></tr><tr><td>/24</td><td>고정</td><td>고정</td><td>고정</td><td>변경</td><td>256</td></tr><tr><td>/28</td><td>고정</td><td>고정</td><td>고정</td><td>일부</td><td>16</td></tr><tr><td>/32</td><td>고정</td><td>고정</td><td>고정</td><td>고정</td><td>1</td></tr></tbody></table></div>
+<hr/>
+<h2 id="4-vpc-핵심-컴포넌트">4. VPC 핵심 컴포넌트<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-vpc-핵심-컴포넌트" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-vpc-구성요소-맵">📊 VPC 구성요소 맵<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-vpc-구성요소-맵" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│  AWS Cloud                                                   │
+│  ┌────────────────────────────────────────────────────────┐ │
+│  │  VPC (10.0.0.0/16)                                     │ │
+│  │                                                         │ │
+│  │   ┌─────────┐         ┌─────────────┐                  │ │
+│  │   │   IGW   │◄───────►│  Internet   │                  │ │
+│  │   └────┬────┘         └─────────────┘                  │ │
+│  │        │                                                │ │
+│  │   ┌────┴─────────────────────────────────────────┐     │ │
+│  │   │  Public Subnet (10.0.1.0/24)                 │     │ │
+│  │   │   ┌─────────┐    ┌─────────┐                 │     │ │
+│  │   │   │ Bastion │    │   NAT   │                 │     │ │
+│  │   │   │   EC2   │    │ Gateway │                 │     │ │
+│  │   │   └─────────┘    └────┬────┘                 │     │ │
+│  │   └───────────────────────┼──────────────────────┘     │ │
+│  │                           │                             │ │
+│  │   ┌───────────────────────┼──────────────────────┐     │ │
+│  │   │  Private Subnet (10.0.10.0/24)               │     │ │
+│  │   │   ┌─────────┐    ┌─────────┐    ┌─────────┐  │     │ │
+│  │   │   │   App   │    │   App   │    │   RDS   │  │     │ │
+│  │   │   │   EC2   │    │   EC2   │    │         │  │     │ │
+│  │   │   └─────────┘    └─────────┘    └─────────┘  │     │ │
+│  │   └──────────────────────────────────────────────┘     │ │
+│  └────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="-컴포넌트-상세">💡 컴포넌트 상세<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-컴포넌트-상세" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<h4 id="internet-gateway-igw">Internet Gateway (IGW)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#internet-gateway-igw" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<pre><code>역할: VPC ↔ 인터넷 관문
+특징:
+  - VPC당 1개
+  - 수평 확장 (AWS 관리, 대역폭 제한 없음)
+  - 양방향 (Inbound + Outbound)
+  - 무료
+</code></pre>
+<h4 id="nat-gateway">NAT Gateway<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#nat-gateway" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<pre><code>역할: Private → 인터넷 (단방향)
+특징:
+  - 반드시 Public Subnet에 위치
+  - Elastic IP 필요
+  - 단방향 (Outbound만)
+  - 유료! ($0.045/h + 데이터 처리)
+
+왜 필요?
+  - Private EC2가 apt update, pip install 등 하려면 필요
+  - 외부 API 호출 시 필요
+</code></pre>
+<h4 id="eni-elastic-network-interface">ENI (Elastic Network Interface)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#eni-elastic-network-interface" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<pre><code>역할: 가상 네트워크 카드
+특징:
+  - EC2 인스턴스에 붙는 네트워크 인터페이스
+  - Private IP, Public IP, MAC 주소 보유
+  - Security Group은 ENI에 적용됨
+  - 인스턴스 간 이동 가능 (페일오버)
+</code></pre>
+<h4 id="elastic-ip-eip">Elastic IP (EIP)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#elastic-ip-eip" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<pre><code>역할: 고정 Public IP
+특징:
+  - 인스턴스 재시작해도 IP 유지
+  - 미사용 시 과금 ($0.005/h)
+  - 빠른 장애조치 (다른 인스턴스로 재할당)
+</code></pre>
+<hr/>
+<h2 id="5-라우팅-심화">5. 라우팅 심화<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-라우팅-심화" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-route-table-구조">📊 Route Table 구조<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-route-table-구조" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>┌────────────────────┬─────────────────┬──────────────┐
+│ Destination       │ Target          │ Status       │
+├────────────────────┼─────────────────┼──────────────┤
+│ 10.0.0.0/16       │ local           │ Active       │ ← VPC 내부
+│ 0.0.0.0/0         │ igw-xxxxx       │ Active       │ ← 인터넷
+│ 172.31.0.0/16     │ pcx-xxxxx       │ Active       │ ← Peering
+│ pl-xxxxxxxx       │ vpce-xxxxx      │ Active       │ ← S3 Endpoint
+└────────────────────┴─────────────────┴──────────────┘
+</code></pre>
+<h3 id="-라우팅-우선순위-longest-prefix-match">💡 라우팅 우선순위 (Longest Prefix Match)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-라우팅-우선순위-longest-prefix-match" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>목적지 IP: 10.0.1.50
+
+라우팅 테이블:
+  10.0.0.0/16 → local
+  10.0.1.0/24 → nat-gw (실제로는 이상한 예시지만)
+  0.0.0.0/0   → igw
+
+매칭 결과:
+  - /24가 /16보다 더 구체적 (prefix가 김)
+  - /24 라우트로 전달
+
+규칙: Prefix가 길수록 우선순위 높음
+     /32 > /24 > /16 > /8 > /0
+</code></pre>
+<h3 id="-main-route-table-vs-custom-route-table">💡 Main Route Table vs Custom Route Table<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-main-route-table-vs-custom-route-table" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>Main RT:
+  - VPC 생성 시 자동 생성
+  - 명시적 연결 없는 서브넷은 자동으로 Main RT 사용
+  - 기본: local 라우트만 있음
+
+Custom RT:
+  - 직접 생성
+  - 서브넷에 명시적 연결 필요
+  - Public RT: IGW 라우트 추가
+  - Private RT: NAT GW 라우트 추가
+</code></pre>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>흔한 실수 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>서브넷을 만들고 RT Association을 안 하면 Main RT 사용
+→ Main RT에 IGW 없으면 “Public Subnet인데 인터넷 안 됨” 현상</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="6-security-group-vs-nacl">6. Security Group vs NACL<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#6-security-group-vs-nacl" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-비교표">📊 비교표<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-비교표" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>특성</th><th>Security Group</th><th>NACL</th></tr></thead><tbody><tr><td><strong>적용 대상</strong></td><td>ENI (인스턴스)</td><td>Subnet 전체</td></tr><tr><td><strong>상태</strong></td><td>Stateful</td><td>Stateless</td></tr><tr><td><strong>규칙 유형</strong></td><td>허용만</td><td>허용 + 거부</td></tr><tr><td><strong>규칙 평가</strong></td><td>모든 규칙 종합</td><td>번호 순 (낮은 번호 우선)</td></tr><tr><td><strong>기본 정책</strong></td><td>Inbound 거부</td><td>모두 허용</td></tr><tr><td><strong>적용 시점</strong></td><td>인스턴스 진입 시</td><td>서브넷 경계</td></tr></tbody></table></div>
+<h3 id="-stateful-vs-stateless">💡 Stateful vs Stateless<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-stateful-vs-stateless" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>┌─────────────────────────────────────────────────────────┐
+│  Stateful (Security Group)                              │
+│                                                         │
+│  Client ──HTTP 요청──► EC2                              │
+│         ◄──HTTP 응답──                                  │
+│                                                         │
+│  Inbound 80 허용하면 → 응답 자동 허용                    │
+│  &quot;연결 상태를 기억함&quot;                                    │
+└─────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────┐
+│  Stateless (NACL)                                       │
+│                                                         │
+│  Client ──HTTP 요청──► EC2                              │
+│         ◄──HTTP 응답──  ← 이것도 별도 규칙 필요!         │
+│                                                         │
+│  Inbound 80 허용 + Outbound 1024-65535 허용 필요        │
+│  &quot;각 패킷을 독립적으로 판단&quot;                             │
+└─────────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="-ephemeral-port-임시-포트">💡 Ephemeral Port (임시 포트)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-ephemeral-port-임시-포트" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>왜 1024-65535를 열어야 하나?
+
+클라이언트가 서버에 요청할 때:
+  Source:      클라이언트IP:54321 (랜덤 고포트)
+  Destination: 서버IP:80
+
+서버가 응답할 때:
+  Source:      서버IP:80
+  Destination: 클라이언트IP:54321 ← 원래 포트로 돌려줌
+
+NACL에서 Outbound 54321 포트가 막혀있으면?
+  → 응답 못 보냄!
+
+해결: Outbound 1024-65535 허용 (임시 포트 범위)
+</code></pre>
+<h3 id="-nacl-규칙-예시">📊 NACL 규칙 예시<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-nacl-규칙-예시" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>Inbound:
+┌──────┬──────────┬────────────┬───────┬──────────┬────────┐
+│ Rule │ Type     │ Source     │ Port  │ Protocol │ Action │
+├──────┼──────────┼────────────┼───────┼──────────┼────────┤
+│ 100  │ HTTP     │ 0.0.0.0/0 │ 80    │ TCP      │ ALLOW  │
+│ 110  │ HTTPS    │ 0.0.0.0/0 │ 443   │ TCP      │ ALLOW  │
+│ 120  │ SSH      │ 10.0.0.0/8│ 22    │ TCP      │ ALLOW  │
+│ *    │ All      │ 0.0.0.0/0 │ All   │ All      │ DENY   │ ← 기본
+└──────┴──────────┴────────────┴───────┴──────────┴────────┘
+
+Outbound:
+┌──────┬──────────┬────────────┬───────────┬──────────┬────────┐
+│ Rule │ Type     │ Dest       │ Port      │ Protocol │ Action │
+├──────┼──────────┼────────────┼───────────┼──────────┼────────┤
+│ 100  │ Custom   │ 0.0.0.0/0 │ 1024-65535│ TCP      │ ALLOW  │ ← 응답용
+│ 110  │ HTTP     │ 0.0.0.0/0 │ 80        │ TCP      │ ALLOW  │
+│ 120  │ HTTPS    │ 0.0.0.0/0 │ 443       │ TCP      │ ALLOW  │
+│ *    │ All      │ 0.0.0.0/0 │ All       │ All      │ DENY   │
+└──────┴──────────┴────────────┴───────────┴──────────┴────────┘
+</code></pre>
+<h3 id="-sg-체인-설계-best-practice">💡 SG 체인 설계 (Best Practice)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-sg-체인-설계-best-practice" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>인터넷
+   │
+   ▼
+┌──────────────────┐
+│ web-sg           │  Inbound: 0.0.0.0/0:80,443
+│ (ALB)            │
+└────────┬─────────┘
+         │
+         ▼
+┌──────────────────┐
+│ app-sg           │  Inbound: web-sg:3000
+│ (App Server)     │           bastion-sg:22
+└────────┬─────────┘
+         │
+         ▼
+┌──────────────────┐
+│ db-sg            │  Inbound: app-sg:5432
+│ (RDS)            │
+└──────────────────┘
+
+┌──────────────────┐
+│ bastion-sg       │  Inbound: MyIP:22
+│ (Bastion Host)   │
+└──────────────────┘
+</code></pre>
+<p><strong>핵심: CIDR 대신 SG를 참조하면 유지보수가 쉬움</strong></p>
+<hr/>
+<h2 id="7-nat와-ip-변환">7. NAT와 IP 변환<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#7-nat와-ip-변환" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-nat-유형">📊 NAT 유형<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-nat-유형" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>유형</th><th>설명</th><th>AWS</th></tr></thead><tbody><tr><td><strong>SNAT</strong> (Source NAT)</td><td>출발지 IP 변환</td><td>NAT Gateway</td></tr><tr><td><strong>DNAT</strong> (Dest NAT)</td><td>목적지 IP 변환</td><td>ALB, NLB</td></tr><tr><td><strong>PAT</strong> (Port NAT)</td><td>IP + Port 변환</td><td>NAT Gateway (실제로는 PAT)</td></tr></tbody></table></div>
+<h3 id="-nat-gateway-동작-원리">💡 NAT Gateway 동작 원리<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-nat-gateway-동작-원리" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>Private EC2 (10.0.10.5) → curl google.com
+
+1. EC2가 패킷 생성
+   Source: 10.0.10.5:54321
+   Dest:   142.250.x.x:443 (Google)
+
+2. Private RT → NAT Gateway로 전달
+   (0.0.0.0/0 → nat-gw)
+
+3. NAT Gateway가 Source IP 변환 (SNAT)
+   Source: 52.78.x.x:32145 (NAT의 EIP)
+   Dest:   142.250.x.x:443
+
+4. IGW 통해 인터넷으로
+
+5. Google 응답
+   Source: 142.250.x.x:443
+   Dest:   52.78.x.x:32145
+
+6. NAT Gateway가 역변환
+   Dest: 10.0.10.5:54321
+
+7. EC2 수신 완료
+
+핵심: NAT는 변환 테이블을 유지하여 응답을 올바른 인스턴스로 전달
+</code></pre>
+<h3 id="-nat-gateway-vs-nat-instance">💡 NAT Gateway vs NAT Instance<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-nat-gateway-vs-nat-instance" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th></th><th>NAT Gateway</th><th>NAT Instance</th></tr></thead><tbody><tr><td>관리</td><td>AWS 관리형</td><td>직접 관리</td></tr><tr><td>가용성</td><td>AZ 내 고가용성</td><td>직접 HA 구성</td></tr><tr><td>대역폭</td><td>최대 100 Gbps</td><td>인스턴스 타입 의존</td></tr><tr><td>비용</td><td>$0.045/h + 데이터</td><td>인스턴스 비용만</td></tr><tr><td>보안그룹</td><td>적용 불가</td><td>적용 가능</td></tr><tr><td>용도</td><td>프로덕션</td><td>테스트/비용절감</td></tr></tbody></table></div>
+<hr/>
+<h2 id="8-dns와-vpc">8. DNS와 VPC<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#8-dns와-vpc" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-dns-기초">📊 DNS 기초<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-dns-기초" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>Domain: api.example.com
+
+조회 과정:
+1. Local DNS Cache 확인
+2. /etc/hosts 확인
+3. DNS Resolver에 질의
+4. Root DNS → .com DNS → example.com DNS
+5. A Record 반환: 13.124.xxx.xxx
+</code></pre>
+<h3 id="-vpc-dns-설정">💡 VPC DNS 설정<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-vpc-dns-설정" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="hcl" data-theme="github-light github-dark"><code data-language="hcl" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">resource</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;aws_vpc&quot;</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;main&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  cidr_block</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">           =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;10.0.0.0/16&quot;</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  enable_dns_support</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">   =</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> true</span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">   # VPC 내 DNS 해석 활성화</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  enable_dns_hostnames</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> true</span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">   # EC2에 DNS 호스트명 부여</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>설정</th><th>효과</th></tr></thead><tbody><tr><td>enable_dns_support</td><td>VPC 내부 DNS 서버 활성화 (10.0.0.2)</td></tr><tr><td>enable_dns_hostnames</td><td>EC2에 public DNS 이름 부여</td></tr></tbody></table></div>
+<h3 id="-route53-private-hosted-zone">💡 Route53 Private Hosted Zone<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-route53-private-hosted-zone" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>VPC 내부에서만 작동하는 DNS
+
+예시:
+  db.internal.mycompany.com → 10.0.10.50 (RDS)
+  cache.internal.mycompany.com → 10.0.10.100 (Redis)
+
+장점:
+  - 내부 리소스에 의미있는 이름 부여
+  - IP 변경 시 DNS만 수정 (앱 수정 불필요)
+  - 외부 노출 없음
+</code></pre>
+<hr/>
+<h2 id="9-vpc-확장-peering-tgw-endpoints">9. VPC 확장 (Peering, TGW, Endpoints)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#9-vpc-확장-peering-tgw-endpoints" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-vpc-peering">📊 VPC Peering<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-vpc-peering" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>VPC A (10.0.0.0/16) ←──Peering──→ VPC B (172.16.0.0/16)
+
+특징:
+  - 1:1 연결 (직접 연결된 VPC만 통신)
+  - 전이 불가 (A↔B, B↔C 연결해도 A↔C 불가)
+  - 리전 간 가능 (Inter-Region)
+  - CIDR 겹치면 불가
+
+설정 필요:
+  1. Peering 연결 생성
+  2. 상대방 수락
+  3. 양쪽 RT에 상대 CIDR → pcx-xxx 라우트 추가
+  4. 양쪽 SG에서 상대 CIDR 허용
+</code></pre>
+<h3 id="-transit-gateway-tgw">📊 Transit Gateway (TGW)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-transit-gateway-tgw" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>Hub-Spoke 모델
+
+         ┌─── VPC A
+         │
+TGW ─────┼─── VPC B
+         │
+         ├─── VPC C
+         │
+         └─── On-premises (VPN/DX)
+
+장점:
+  - 중앙 집중 라우팅
+  - VPC 추가 시 TGW에만 연결
+  - 전이적 라우팅 가능 (A→TGW→C)
+
+비용: $0.05/h + 데이터 처리
+</code></pre>
+<h3 id="-vpc-endpoint">📊 VPC Endpoint<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-vpc-endpoint" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>AWS 서비스에 프라이빗 연결 (인터넷 안 거침)
+
+종류:
+1. Gateway Endpoint (무료)
+   - S3, DynamoDB
+   - Route Table에 추가됨
+
+2. Interface Endpoint (유료)
+   - 그 외 AWS 서비스 (SQS, SNS, ECR 등)
+   - ENI로 생성됨 (Private IP 부여)
+   - PrivateLink 기반
+</code></pre>
+<p><strong>예시: S3 Gateway Endpoint</strong></p>
+<pre><code>Without Endpoint:
+  EC2 → NAT GW → IGW → S3 (인터넷 경유, 비용 발생)
+
+With Endpoint:
+  EC2 → S3 Endpoint → S3 (AWS 백본, 무료, 빠름)
+</code></pre>
+<hr/>
+<h2 id="10-패킷-흐름-완전-분석">10. 패킷 흐름 완전 분석<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#10-패킷-흐름-완전-분석" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-시나리오-인터넷--alb--ec2--rds">📊 시나리오: 인터넷 → ALB → EC2 → RDS<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-시나리오-인터넷--alb--ec2--rds" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>1. DNS 조회
+   Client → DNS: api.example.com?
+   DNS → Client: 52.78.xxx.xxx (ALB IP)
+
+2. Client → ALB
+   ┌────────────────────────────────────────┐
+   │ Packet                                 │
+   │ Src: 203.0.113.50:54321 (Client)       │
+   │ Dst: 52.78.xxx.xxx:443 (ALB)           │
+   └────────────────────────────────────────┘
+
+   경로: Internet → IGW → ALB (Public Subnet)
+   체크: NACL Inbound → web-sg Inbound (443)
+
+3. ALB → EC2 (Target)
+   ┌────────────────────────────────────────┐
+   │ Packet                                 │
+   │ Src: 10.0.1.50:xxxxx (ALB Private IP)  │
+   │ Dst: 10.0.10.5:3000 (EC2)              │
+   └────────────────────────────────────────┘
+
+   경로: ALB → (local route) → EC2 (Private Subnet)
+   체크: app-sg Inbound (web-sg:3000)
+
+4. EC2 → RDS
+   ┌────────────────────────────────────────┐
+   │ Packet                                 │
+   │ Src: 10.0.10.5:54321 (EC2)             │
+   │ Dst: 10.0.100.50:5432 (RDS)            │
+   └────────────────────────────────────────┘
+
+   경로: EC2 → (local route) → RDS
+   체크: db-sg Inbound (app-sg:5432)
+
+5. 응답은 역순 (SG가 Stateful이라 자동 허용)
+</code></pre>
+<h3 id="-시나리오-private-ec2--외부-api">📊 시나리오: Private EC2 → 외부 API<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-시나리오-private-ec2--외부-api" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>1. EC2 → curl api.external.com
+   ┌────────────────────────────────────────┐
+   │ Src: 10.0.10.5:54321                   │
+   │ Dst: 52.85.xxx.xxx:443                 │
+   └────────────────────────────────────────┘
+
+2. Private RT → NAT Gateway
+   (0.0.0.0/0 → nat-gw)
+
+3. NAT Gateway → IGW → Internet
+   ┌────────────────────────────────────────┐
+   │ Src: 52.78.xxx.xxx:32145 (NAT EIP)     │ ← SNAT!
+   │ Dst: 52.85.xxx.xxx:443                 │
+   └────────────────────────────────────────┘
+
+4. 외부 서버 응답
+   ┌────────────────────────────────────────┐
+   │ Src: 52.85.xxx.xxx:443                 │
+   │ Dst: 52.78.xxx.xxx:32145               │
+   └────────────────────────────────────────┘
+
+5. NAT → EC2 (역변환)
+   ┌────────────────────────────────────────┐
+   │ Src: 52.85.xxx.xxx:443                 │
+   │ Dst: 10.0.10.5:54321                   │ ← 역SNAT
+   └────────────────────────────────────────┘
+</code></pre>
+<hr/>
+<h2 id="11-트러블슈팅-체크리스트">11. 트러블슈팅 체크리스트<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#11-트러블슈팅-체크리스트" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-인스턴스가-인터넷-안-됨">🔍 “인스턴스가 인터넷 안 됨”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-인스턴스가-인터넷-안-됨" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>□ 1. 인스턴스 위치 확인
+     - Public Subnet? → IGW 라우트 있는지
+     - Private Subnet? → NAT GW 있는지
+
+□ 2. Route Table 확인
+     - 0.0.0.0/0 라우트 존재?
+     - RT가 서브넷에 연결됐는지?
+
+□ 3. Public IP 확인 (Public Subnet인 경우)
+     - Public IP 할당됐는지?
+     - Elastic IP 연결됐는지?
+
+□ 4. Security Group Outbound
+     - 0.0.0.0/0 허용?
+
+□ 5. NACL
+     - Outbound 허용?
+     - Inbound 응답 포트(1024-65535) 허용?
+
+□ 6. NAT Gateway 상태 (Private인 경우)
+     - Status: Available?
+     - Public Subnet에 있는지?
+     - EIP 할당됐는지?
+</code></pre>
+<h3 id="-alb-health-check-실패">🔍 “ALB Health Check 실패”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-alb-health-check-실패" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>□ 1. Target Group Health Check 설정
+     - Path가 실제 존재? (200 반환?)
+     - Port 맞는지?
+
+□ 2. Security Group
+     - ALB SG → Target SG 허용?
+     - Health Check Port 열려있는지?
+
+□ 3. 앱 상태
+     - 앱이 실행 중인지?
+     - Health endpoint 응답하는지?
+
+□ 4. 서브넷
+     - ALB가 타겟과 통신 가능한 서브넷에 있는지?
+</code></pre>
+<h3 id="-rds-연결-안-됨">🔍 “RDS 연결 안 됨”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-rds-연결-안-됨" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>□ 1. Security Group
+     - RDS SG에 App SG 허용?
+     - Port 5432 (PostgreSQL) / 3306 (MySQL)?
+
+□ 2. 서브넷
+     - RDS와 App이 같은 VPC?
+     - Private Subnet에서 접근 시도?
+
+□ 3. 연결 경로
+     - 로컬 PC에서 직접 연결 시도?
+       → Bastion 통해야 함
+     - VPN/Direct Connect 없으면 불가
+
+□ 4. RDS 상태
+     - Status: Available?
+     - Endpoint 주소 정확?
+</code></pre>
+<h3 id="-vpc-flow-logs-활용">🔍 VPC Flow Logs 활용<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-vpc-flow-logs-활용" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="bash" data-theme="github-light github-dark"><code data-language="bash" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># Flow Log 형식</span></span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># version account-id interface-id srcaddr dstaddr srcport dstport protocol packets bytes start end action log-status</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 예시 (REJECT)</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">2</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 123456789012</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> eni-abc123</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 10.0.1.5</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 10.0.10.50</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 54321</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 5432</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 6</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 1</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 40</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 1620000000</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 1620000060</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> REJECT</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> OK</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">해석:</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">  -</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> 10.0.1.5:54321</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> →</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> 10.0.10.50:5432</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">  -</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> Protocol</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 6</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> TCP</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">  -</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> Action:</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> REJECT</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> ←</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> 문제!</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">  -</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> Security</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> Group</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> 또는</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> NACL에서</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> 막힘</span></span></code></pre></figure>
+<hr/>
+<h2 id="-핵심-요약">📋 핵심 요약<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-핵심-요약" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<pre><code>VPC = 가상 네트워크 (Private IP 대역)
+Subnet = VPC 쪼갬 (Public/Private)
+Route Table = 패킷 길 안내
+IGW = 인터넷 관문 (양방향)
+NAT = Private→인터넷 (단방향, 유료)
+SG = 인스턴스 방화벽 (Stateful)
+NACL = 서브넷 방화벽 (Stateless)
+Peering = VPC 간 직접 연결
+Endpoint = AWS 서비스 프라이빗 연결
+</code></pre>
+<hr/>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>문서 정보 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li>작성일: 2026-01-25</li>
+<li>관련 문서: <a href="../1_가이드/Terraform-AWS-VPC-구축-가이드" class="internal alias" data-slug="1_가이드/Terraform-AWS-VPC-구축-가이드">Terraform-AWS-VPC-구축-가이드</a></li>
+</ul>
+</div>
+</blockquote></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>그래프 뷰</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-14" aria-expanded="true"><h3>목차</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#-vpc-네트워크-기초---클라우드-엔지니어를-위한-cs-지식" data-for="-vpc-네트워크-기초---클라우드-엔지니어를-위한-cs-지식">🎯 VPC 네트워크 기초 - 클라우드 엔지니어를 위한 CS 지식</a></li><li class="depth-1"><a href="#-목차" data-for="-목차">📑 목차</a></li><li class="depth-1"><a href="#1-osi-7계층과-tcpip" data-for="1-osi-7계층과-tcpip">1. OSI 7계층과 TCP/IP</a></li><li class="depth-2"><a href="#-osi-7계층-vs-tcpip-4계층" data-for="-osi-7계층-vs-tcpip-4계층">📊 OSI 7계층 vs TCP/IP 4계층</a></li><li class="depth-2"><a href="#-각-계층에서-보는-것" data-for="-각-계층에서-보는-것">💡 각 계층에서 보는 것</a></li><li class="depth-2"><a href="#-aws-로드밸런서-차이" data-for="-aws-로드밸런서-차이">💡 AWS 로드밸런서 차이</a></li><li class="depth-1"><a href="#2-ip-주소-체계" data-for="2-ip-주소-체계">2. IP 주소 체계</a></li><li class="depth-2"><a href="#-ipv4-구조" data-for="-ipv4-구조">📊 IPv4 구조</a></li><li class="depth-2"><a href="#-public-vs-private-ip" data-for="-public-vs-private-ip">📊 Public vs Private IP</a></li><li class="depth-2"><a href="#-특수-ip-주소" data-for="-특수-ip-주소">📊 특수 IP 주소</a></li><li class="depth-1"><a href="#3-cidr과-서브넷" data-for="3-cidr과-서브넷">3. CIDR과 서브넷</a></li><li class="depth-2"><a href="#-cidr-표기법" data-for="-cidr-표기법">📊 CIDR 표기법</a></li><li class="depth-2"><a href="#-서브넷-설계-전략" data-for="-서브넷-설계-전략">📊 서브넷 설계 전략</a></li><li class="depth-2"><a href="#-cidr-빠른-계산" data-for="-cidr-빠른-계산">📊 CIDR 빠른 계산</a></li><li class="depth-1"><a href="#4-vpc-핵심-컴포넌트" data-for="4-vpc-핵심-컴포넌트">4. VPC 핵심 컴포넌트</a></li><li class="depth-2"><a href="#-vpc-구성요소-맵" data-for="-vpc-구성요소-맵">📊 VPC 구성요소 맵</a></li><li class="depth-2"><a href="#-컴포넌트-상세" data-for="-컴포넌트-상세">💡 컴포넌트 상세</a></li><li class="depth-1"><a href="#5-라우팅-심화" data-for="5-라우팅-심화">5. 라우팅 심화</a></li><li class="depth-2"><a href="#-route-table-구조" data-for="-route-table-구조">📊 Route Table 구조</a></li><li class="depth-2"><a href="#-라우팅-우선순위-longest-prefix-match" data-for="-라우팅-우선순위-longest-prefix-match">💡 라우팅 우선순위 (Longest Prefix Match)</a></li><li class="depth-2"><a href="#-main-route-table-vs-custom-route-table" data-for="-main-route-table-vs-custom-route-table">💡 Main Route Table vs Custom Route Table</a></li><li class="depth-1"><a href="#6-security-group-vs-nacl" data-for="6-security-group-vs-nacl">6. Security Group vs NACL</a></li><li class="depth-2"><a href="#-비교표" data-for="-비교표">📊 비교표</a></li><li class="depth-2"><a href="#-stateful-vs-stateless" data-for="-stateful-vs-stateless">💡 Stateful vs Stateless</a></li><li class="depth-2"><a href="#-ephemeral-port-임시-포트" data-for="-ephemeral-port-임시-포트">💡 Ephemeral Port (임시 포트)</a></li><li class="depth-2"><a href="#-nacl-규칙-예시" data-for="-nacl-규칙-예시">📊 NACL 규칙 예시</a></li><li class="depth-2"><a href="#-sg-체인-설계-best-practice" data-for="-sg-체인-설계-best-practice">💡 SG 체인 설계 (Best Practice)</a></li><li class="depth-1"><a href="#7-nat와-ip-변환" data-for="7-nat와-ip-변환">7. NAT와 IP 변환</a></li><li class="depth-2"><a href="#-nat-유형" data-for="-nat-유형">📊 NAT 유형</a></li><li class="depth-2"><a href="#-nat-gateway-동작-원리" data-for="-nat-gateway-동작-원리">💡 NAT Gateway 동작 원리</a></li><li class="depth-2"><a href="#-nat-gateway-vs-nat-instance" data-for="-nat-gateway-vs-nat-instance">💡 NAT Gateway vs NAT Instance</a></li><li class="depth-1"><a href="#8-dns와-vpc" data-for="8-dns와-vpc">8. DNS와 VPC</a></li><li class="depth-2"><a href="#-dns-기초" data-for="-dns-기초">📊 DNS 기초</a></li><li class="depth-2"><a href="#-vpc-dns-설정" data-for="-vpc-dns-설정">💡 VPC DNS 설정</a></li><li class="depth-2"><a href="#-route53-private-hosted-zone" data-for="-route53-private-hosted-zone">💡 Route53 Private Hosted Zone</a></li><li class="depth-1"><a href="#9-vpc-확장-peering-tgw-endpoints" data-for="9-vpc-확장-peering-tgw-endpoints">9. VPC 확장 (Peering, TGW, Endpoints)</a></li><li class="depth-2"><a href="#-vpc-peering" data-for="-vpc-peering">📊 VPC Peering</a></li><li class="depth-2"><a href="#-transit-gateway-tgw" data-for="-transit-gateway-tgw">📊 Transit Gateway (TGW)</a></li><li class="depth-2"><a href="#-vpc-endpoint" data-for="-vpc-endpoint">📊 VPC Endpoint</a></li><li class="depth-1"><a href="#10-패킷-흐름-완전-분석" data-for="10-패킷-흐름-완전-분석">10. 패킷 흐름 완전 분석</a></li><li class="depth-2"><a href="#-시나리오-인터넷--alb--ec2--rds" data-for="-시나리오-인터넷--alb--ec2--rds">📊 시나리오: 인터넷 → ALB → EC2 → RDS</a></li><li class="depth-2"><a href="#-시나리오-private-ec2--외부-api" data-for="-시나리오-private-ec2--외부-api">📊 시나리오: Private EC2 → 외부 API</a></li><li class="depth-1"><a href="#11-트러블슈팅-체크리스트" data-for="11-트러블슈팅-체크리스트">11. 트러블슈팅 체크리스트</a></li><li class="depth-2"><a href="#-인스턴스가-인터넷-안-됨" data-for="-인스턴스가-인터넷-안-됨">🔍 “인스턴스가 인터넷 안 됨”</a></li><li class="depth-2"><a href="#-alb-health-check-실패" data-for="-alb-health-check-실패">🔍 “ALB Health Check 실패”</a></li><li class="depth-2"><a href="#-rds-연결-안-됨" data-for="-rds-연결-안-됨">🔍 “RDS 연결 안 됨”</a></li><li class="depth-2"><a href="#-vpc-flow-logs-활용" data-for="-vpc-flow-logs-활용">🔍 VPC Flow Logs 활용</a></li><li class="depth-1"><a href="#-핵심-요약" data-for="-핵심-요약">📋 핵심 요약</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Created with <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="../postscript.js" type="module"></script></html>

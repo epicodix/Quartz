@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr"><head><title>SAA-C03 응용력 강화 - 결정 로직 (2026-03-12 47오답 기반)</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Quartz 4"/><meta property="og:title" content="SAA-C03 응용력 강화 - 결정 로직 (2026-03-12 47오답 기반)"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="SAA-C03 응용력 강화 - 결정 로직 (2026-03-12 47오답 기반)"/><meta name="twitter:description" content="🎯 SAA-C03 응용력 강화 — 결정 로직 핵심 문제 키워드 암기는 됨. 패턴이 조금만 바뀌면 같은 답을 못 찾음. 이 노트는 왜(Why) 그 서비스인지 로직을 다룬다. 키워드가 아니라 조건의 조합으로 판단하는 훈련."/><meta property="og:description" content="🎯 SAA-C03 응용력 강화 — 결정 로직 핵심 문제 키워드 암기는 됨. 패턴이 조금만 바뀌면 같은 답을 못 찾음. 이 노트는 왜(Why) 그 서비스인지 로직을 다룬다. 키워드가 아니라 조건의 조합으로 판단하는 훈련."/><meta property="og:image:alt" content="🎯 SAA-C03 응용력 강화 — 결정 로직 핵심 문제 키워드 암기는 됨. 패턴이 조금만 바뀌면 같은 답을 못 찾음. 이 노트는 왜(Why) 그 서비스인지 로직을 다룬다. 키워드가 아니라 조건의 조합으로 판단하는 훈련."/><meta property="twitter:domain" content="epicodix.github.io/Quartz"/><meta property="og:url" content="https://epicodix.github.io/Quartz/교육/SAA-C03_응용력_결정로직"/><meta property="twitter:url" content="https://epicodix.github.io/Quartz/교육/SAA-C03_응용력_결정로직"/><link rel="icon" href="../static/icon.png"/><meta name="description" content="🎯 SAA-C03 응용력 강화 — 결정 로직 핵심 문제 키워드 암기는 됨. 패턴이 조금만 바뀌면 같은 답을 못 찾음. 이 노트는 왜(Why) 그 서비스인지 로직을 다룬다. 키워드가 아니라 조건의 조합으로 판단하는 훈련."/><meta name="generator" content="Quartz"/><link href="../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL1VzZXJzL2ExMjM0L2VwaWNvZGl4L215LXF1YXJ0ei1zaXRlL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><script src="../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://epicodix.github.io/Quartz/index.xml"/><meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/><meta property="og:image" content="https://epicodix.github.io/Quartz/교육/SAA-C03_응용력_결정로직-og-image.webp"/><meta property="og:image:url" content="https://epicodix.github.io/Quartz/교육/SAA-C03_응용력_결정로직-og-image.webp"/><meta name="twitter:image" content="https://epicodix.github.io/Quartz/교육/SAA-C03_응용력_결정로직-og-image.webp"/><meta property="og:image:type" content="image/.webp"/></head><body data-slug="교육/SAA-C03_응용력_결정로직"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="..">Quartz 4</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>검색</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="검색어를 입력하세요" placeholder="검색어를 입력하세요"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="다크 모드"><title>다크 모드</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="라이트 모드"><title>라이트 모드</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="리더 모드"><title>리더 모드</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="collapse" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>{let priorityFolders=[\&quot;\\u{1F4D6} \\uAC00\\uC774\\uB4DC\&quot;,\&quot;\\u{1F52C} \\uAE30\\uC220 \\uBD84\\uC11D\&quot;,\&quot;\\u2699\\uFE0F \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;\\u{1F4DA} \\uAD50\\uC721\&quot;,\&quot;\\u{1F4BC} \\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624\&quot;];if(a.isFolder&amp;&amp;b.isFolder){let aPriority=priorityFolders.indexOf(a.displayName),bPriority=priorityFolders.indexOf(b.displayName);if(aPriority!==-1&amp;&amp;bPriority!==-1)return aPriority-bPriority;if(aPriority!==-1)return-1;if(bPriority!==-1)return 1}return!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,\&quot;ko-KR\&quot;,{numeric:!0,sensitivity:\&quot;base\&quot;}):a.isFolder?-1:1}&quot;,&quot;filterFn&quot;:&quot;node=>{if([\&quot;99_\\uC784\\uC2DC\&quot;,\&quot;tags\&quot;,\&quot;.obsidian\&quot;].includes(node.slugSegment))return!1;if(!node.isFolder&amp;&amp;node.data){let hiddenFiles=[\&quot;GUI_\\uC790\\uB3D9\\uD654_\\uB3C4\\uC804\\uAE30\&quot;,\&quot;Gemini_CLI_\\uD65C\\uC6A9_\\uAC00\\uC774\\uB4DC\&quot;,\&quot;Ollama_Troubleshooting_Guide\&quot;,\&quot;gemini_cli_guide\&quot;,\&quot;gemini_cli_introduction\&quot;,\&quot;gemini_context_awareness_guide\&quot;,\&quot;gemini_file_management_guide\&quot;,\&quot;get_claude_news.py\&quot;,\&quot;global_news_20250712\&quot;,\&quot;kubernetes_cheatsheet\&quot;,\&quot;kubernetes_storage_hands_on\&quot;,\&quot;naver_gmail_integration_guide\&quot;,\&quot;nodejs_installation_guide\&quot;,\&quot;\\uB0B4_\\uCEF4\\uD4E8\\uD130\\uB97C_AI_\\uC11C\\uBC84\\uB85C_\\uB9CC\\uB4E4\\uAE30_Ollama_\\uC124\\uCE58_\\uBC0F_\\uBB38\\uC81C\\uD574\\uACB0_\\uAC00\\uC774\\uB4DC\&quot;,\&quot;\\uC2DC\\uB9AC\\uC640_Gemini_\\uC5F0\\uACC4\\uC131_\\uAC15\\uD654_\\uBC29\\uC548\&quot;,\&quot;2025-08-13_\\uD559\\uC2B5_\\uD3EC\\uC778\\uD2B8\&quot;,\&quot;07_02_Advanced_Pod_Concepts\&quot;],fileTitle=node.data.title||node.displayName.replace(/\\.md$/,\&quot;\&quot;);return!hiddenFiles.includes(fileTitle)}return!0}&quot;,&quot;mapFn&quot;:&quot;node=>{let folderDisplayNames={\&quot;1_\\uAC00\\uC774\\uB4DC\&quot;:\&quot;\\u{1F4D6} \\uAC00\\uC774\\uB4DC\&quot;,\&quot;2_\\uAE30\\uC220_\\uBD84\\uC11D\&quot;:\&quot;\\u{1F52C} \\uAE30\\uC220 \\uBD84\\uC11D\&quot;,\&quot;3_\\uC544\\uC774\\uB514\\uC5B4_\\uB274\\uC2A4\&quot;:\&quot;\\u{1F4A1} \\uC544\\uC774\\uB514\\uC5B4 &amp; \\uB274\\uC2A4\&quot;,K8s_Deep_Dive:\&quot;\\u2699\\uFE0F \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;01_\\uB124\\uD2B8\\uC6CC\\uD06C \\uAE30\\uCD08\&quot;:\&quot;\\u{1F310} \\uB124\\uD2B8\\uC6CC\\uD06C \\uAE30\\uCD08\&quot;,\&quot;02_k8s\\uC2E4\\uC2B5\&quot;:\&quot;\\u{1F6E0}\\uFE0F \\uC2E4\\uC2B5\&quot;,\&quot;03_\\uD504\\uB85C\\uBA54\\uD14C\\uC6B0\\uC2A4\&quot;:\&quot;\\u{1F4CA} \\uD504\\uB85C\\uBA54\\uD14C\\uC6B0\\uC2A4\&quot;,\&quot;04_\\uADF8\\uB77C\\uD30C\\uB098\&quot;:\&quot;\\u{1F4C8} \\uADF8\\uB77C\\uD30C\\uB098\&quot;,\\uAD50\\uC721:\&quot;\\u{1F4DA} \\uAD50\\uC721\&quot;,\\uAD6C\\uB984\\uB525\\uB2E4\\uC774\\uBE0C:\&quot;\\u2601\\uFE0F \\uAD6C\\uB984\\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;\\uBD84\\uC0B0\\uC2DC\\uC2A4\\uD15C_Distributed Systems\&quot;:\&quot;\\u{1F517} \\uBD84\\uC0B0\\uC2DC\\uC2A4\\uD15C\&quot;,GO:\&quot;\\u{1F439} Go \\uC5B8\\uC5B4\&quot;,\&quot;\\uB124\\uC774\\uBC84-\\uAC80\\uC0C9\\uAD11\\uACE0-\\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158-\\uD504\\uB85C\\uC81D\\uD2B8\&quot;:\&quot;\\u{1F680} \\uB124\\uC774\\uBC84 \\uD504\\uB85C\\uC81D\\uD2B8\&quot;,\&quot;01-\\uD504\\uB85C\\uC81D\\uD2B8-\\uBC30\\uACBD\&quot;:\&quot;\\u{1F4CB} \\uD504\\uB85C\\uC81D\\uD2B8 \\uBC30\\uACBD\&quot;,\&quot;02-\\uD604\\uC7AC\\uC0C1\\uD0DC-\\uBD84\\uC11D\&quot;:\&quot;\\u{1F50D} \\uD604\\uC7AC\\uC0C1\\uD0DC \\uBD84\\uC11D\&quot;,\&quot;03-\\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158-\\uACC4\\uD68D\&quot;:\&quot;\\u{1F4DD} \\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158 \\uACC4\\uD68D\&quot;,\&quot;05-\\uC6B4\\uC601-\\uCD5C\\uC801\\uD654\&quot;:\&quot;\\u26A1 \\uC6B4\\uC601 \\uCD5C\\uC801\\uD654\&quot;,CKA:\&quot;\\u{1F3AF} CKA \\uC790\\uACA9\\uC99D\&quot;,GCP:\&quot;\\u2601\\uFE0F Google Cloud\&quot;,\&quot;moc-k8s\&quot;:\&quot;\\u{1F4DA} \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB178\\uD2B8\&quot;,Vagrant:\&quot;\\u{1F4E6} Vagrant\&quot;,\\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624:\&quot;\\u{1F4BC} \\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624\&quot;,\\uAC00\\uC0C1\\uD654:\&quot;\\u{1F4BB} \\uAC00\\uC0C1\\uD654\&quot;,\\uAC1C\\uBC1C\\uD658\\uACBD:\&quot;\\u{1F6E0}\\uFE0F \\uAC1C\\uBC1C\\uD658\\uACBD\&quot;,\\uAE30\\uD0C0:\&quot;\\u{1F4CE} \\uAE30\\uD0C0\&quot;,AI\\uB3C4\\uAD6C:\&quot;\\u{1F916} AI \\uB3C4\\uAD6C\&quot;,\\uBAA8\\uB2C8\\uD130\\uB9C1:\&quot;\\u{1F4CA} \\uBAA8\\uB2C8\\uD130\\uB9C1\&quot;};if(node.isFolder&amp;&amp;folderDisplayNames[node.displayName]&amp;&amp;(node.displayName=folderDisplayNames[node.displayName]),!node.isFolder&amp;&amp;node.data){let displayName=node.data.title||node.displayName;displayName=displayName.replace(/^(\\d{2}_|\\d{2}-\\d{2}-)/g,\&quot;\&quot;),displayName.length>50&amp;&amp;(displayName=displayName.substring(0,47)+\&quot;...\&quot;),displayName=displayName.replace(/^kubernetes_/,\&quot;K8s \&quot;).replace(/^쿠버네티스_/,\&quot;K8s \&quot;).replace(/_완벽_가이드$/,\&quot; \\uAC00\\uC774\\uB4DC\&quot;).replace(/_실습_가이드$/,\&quot; \\uC2E4\\uC2B5\&quot;).replace(/_핵심_정리$/,\&quot; \\uC815\\uB9AC\&quot;).replace(/_기초_개념$/,\&quot; \\uAE30\\uCD08\&quot;).replace(/완전_가이드$/,\&quot;\\uAC00\\uC774\\uB4DC\&quot;).replace(/완벽_정리$/,\&quot;\\uC815\\uB9AC\&quot;),node.displayName=displayName}return node}&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-932"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>탐색기</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-932" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../교육/">교육</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>SAA C03 응용력 강화   결정 로직 (2026 03 12 47오답 기반)</a></div></nav><h1 class="article-title">SAA-C03 응용력 강화 - 결정 로직 (2026-03-12 47오답 기반)</h1><p show-comma="true" class="content-meta"><time datetime="2026-03-11T15:00:00.000Z">2026년 3월 12일</time><span>29 min read</span></p><ul class="tags"><li><a href="../tags/SAA-C03" class="internal tag-link">SAA-C03</a></li><li><a href="../tags/AWS" class="internal tag-link">AWS</a></li><li><a href="../tags/자격증" class="internal tag-link">자격증</a></li><li><a href="../tags/오답분석" class="internal tag-link">오답분석</a></li><li><a href="../tags/결정로직" class="internal tag-link">결정로직</a></li></ul></div></div><article class="popover-hint"><h1 id="-saa-c03-응용력-강화--결정-로직">🎯 SAA-C03 응용력 강화 — 결정 로직<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-saa-c03-응용력-강화--결정-로직" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<blockquote class="callout danger" data-callout="danger">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>핵심 문제 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>키워드 암기는 됨. 패턴이 조금만 바뀌면 같은 답을 못 찾음.
+이 노트는 <strong>왜(Why) 그 서비스인지 로직</strong>을 다룬다.
+키워드가 아니라 <strong>조건의 조합</strong>으로 판단하는 훈련.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="-목차">📑 목차<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-목차" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><a href="#1-sqs-%EB%94%94%EC%BB%A4%ED%94%8C%EB%A7%81%EA%B3%BC-%EC%84%B8%EC%85%98-%EA%B4%80%EB%A6%AC" class="internal alias">SQS 디커플링 / 세션 관리</a></li>
+<li><a href="#2-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EC%84%A0%ED%83%9D-%EB%A1%9C%EC%A7%81" class="internal alias">데이터베이스 선택 로직</a></li>
+<li><a href="#3-%EC%8A%A4%ED%86%A0%EB%A6%AC%EC%A7%80-%EC%84%9C%EB%B9%84%EC%8A%A4-%EA%B5%AC%EB%B6%84" class="internal alias">스토리지 서비스 구분</a></li>
+<li><a href="#4-%EB%B3%B4%EC%95%88%EA%B3%BC-%EA%B1%B0%EB%B2%84%EB%84%8C%EC%8A%A4" class="internal alias">보안 / 거버넌스</a></li>
+<li><a href="#5-%EB%A7%88%EC%9D%B4%EA%B7%B8%EB%A0%88%EC%9D%B4%EC%85%98%EA%B3%BC-%ED%86%B5%ED%95%A9" class="internal alias">마이그레이션 / 통합</a></li>
+<li><a href="#6-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9" class="internal alias">네트워킹</a></li>
+</ul>
+<hr/>
+<h2 id="1-sqs-디커플링과-세션-관리">1. SQS 디커플링과 세션 관리<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-sqs-디커플링과-세션-관리" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>핵심 판단 원칙 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>“계층 간 연결이 직접 연결(tight coupling)“이면 → <strong>SQS로 끊어라</strong>
+“EC2가 죽어도 사용자 세션이 살아야 하면” → <strong>ElastiCache Redis로 외부화</strong></p>
+</div>
+</blockquote>
+<h3 id="1-1-sqs-디커플링--변형-패턴-3가지">1-1. SQS 디커플링 — 변형 패턴 3가지<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-1-sqs-디커플링--변형-패턴-3가지" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>같은 정답(SQS)이 이렇게 다르게 나온다:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 표현</th><th>실제 의미</th><th>정답</th></tr></thead><tbody><tr><td>”한 계층이 오버로드되면 트랜잭션이 삭제됨”</td><td>계층 간 버퍼 없음</td><td>SQS</td></tr><tr><td>”컴퓨팅 노드 조정하는 기본 서버”</td><td>중앙 조율자 제거 → 큐 기반</td><td>SQS + Auto Scaling</td></tr><tr><td>”EC2에서 폴링 → 비용 절감”</td><td>EC2 폴링 제거</td><td>Lambda + SQS 트리거</td></tr><tr><td>”애플리케이션 가동 중지 → 처음부터 재시작”</td><td>작업 단위를 큐에 저장</td><td>SQS + 독립 Lambda 함수</td></tr><tr><td></td><td></td><td></td></tr></tbody></table></div>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>반복 실수 (Q43, Q69, Q79, Q51) </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li>Q43: RESTful API 계층 간 오버로드 → <strong>SQS</strong>로 버퍼링</li>
+<li>Q69: 컴퓨팅 노드 조율하는 기본 서버 → <strong>SQS</strong> + Worker Auto Scaling</li>
+<li>Q79: EC2로 SQS 폴링 → <strong>Lambda</strong>가 SQS 트리거로 대체 (비용 절감)</li>
+<li>Q51: 모놀리스 → 중단 시 처음부터 재시작 → <strong>SQS</strong>로 작업 단위 분리</li>
+</ul>
+</div>
+</blockquote>
+<h3 id="1-2-sqs--s3-대용량-메시지-q1">1-2. SQS + S3 대용량 메시지 (Q1)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-2-sqs--s3-대용량-메시지-q1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>SQS 최대 메시지 크기 = 256KB
+
+256KB 초과 → S3에 저장 + SQS에 S3 URL만 전달
+Java SDK = Amazon SQS Extended Client Library (코드 변경 최소화)
+</code></pre>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>함정 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>“코드 변경 최소화” = Extended Client Library 사용. S3 따로 업로드 + SQS 별도 연동(D)은 코드 변경 많음.</p>
+</div>
+</blockquote>
+<h3 id="1-3-세션-관리-외부화-q3-q31">1-3. 세션 관리 외부화 (Q3, Q31)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-3-세션-관리-외부화-q3-q31" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>증상: EC2 Auto Scaling + sticky session + 세션 손실
+원인: 세션 데이터가 EC2 안에 있음 → EC2 죽으면 세션 소멸
+
+해결: ElastiCache Redis에 세션 저장 (외부화)
+     → EC2가 어느 노드든 같은 세션 데이터 접근 가능
+</code></pre>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>판단 기준 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li>“세션 데이터 손실 방지” + Auto Scaling = <strong>ElastiCache Redis</strong></li>
+<li>sticky session(고정 세션)은 임시방편일 뿐, 근본 해결 아님</li>
+</ul>
+</div>
+</blockquote>
+<h3 id="1-4-이미지-업로드--비동기-처리-q80">1-4. 이미지 업로드 + 비동기 처리 (Q80)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-4-이미지-업로드--비동기-처리-q80" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>문제: EC2가 업로드받고 직접 리사이징 → 느림
+해결:
+  1. S3 Presigned URL → 클라이언트가 S3에 직접 업로드 (EC2 바이패스)
+  2. S3 이벤트 → SQS → Lambda가 리사이징
+</code></pre>
+<hr/>
+<h2 id="2-데이터베이스-선택-로직">2. 데이터베이스 선택 로직<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-데이터베이스-선택-로직" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>핵심 판단 원칙 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Aurora = RDS의 HA/성능 강화판. 읽기 오프로드 + 빠른 장애조치가 필요하면 Aurora.
+DynamoDB = 스키마 없음, 무한 확장. 30일 이상 데이터 자동 삭제 = TTL.</p>
+</div>
+</blockquote>
+<h3 id="2-1-rds-vs-aurora-선택-기준">2-1. RDS vs Aurora 선택 기준<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-1-rds-vs-aurora-선택-기준" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>조건</th><th>선택</th></tr></thead><tbody><tr><td>고가용성 + <strong>40초 이내</strong> 장애조치</td><td>Aurora (일반 RDS Multi-AZ는 60~120초)</td></tr><tr><td>읽기 오프로드 + 비용 최소화</td><td>Aurora (Read Replica 최대 15개)</td></tr><tr><td>읽기 급증 + 자동 확장</td><td>Aurora Auto Scaling (Read Replica 수 자동 조절)</td></tr><tr><td>여러 개발 환경 + 비용 효율</td><td>Aurora Serverless v2 (사용 안 할 때 0에 가깝게 축소)</td></tr><tr><td>DB 연결 수 폭증 (Lambda 등)</td><td>RDS Proxy (연결 풀링)</td></tr><tr><td>Oracle 기능 유지 + 읽기 오프로드</td><td>RDS for Oracle + Read Replica</td></tr></tbody></table></div>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>반복 실수 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li>Q26: “40초 이내 장애조치 + 읽기 오프로드” → <strong>Aurora</strong> (RDS Multi-AZ가 아님)</li>
+<li>Q88: “읽기 요청 많음 + MySQL + 자동 확장” → <strong>Aurora Auto Scaling</strong></li>
+<li>Q92: “인프라 추가 없이 더 큰 워크로드” → <strong>RDS Proxy</strong> (연결 관리로 부하 감소)</li>
+<li>Q98: “개발 환경 여러 개 + 8시간 중 절반만 사용” → <strong>Aurora Serverless</strong> (사용량 기반 과금)</li>
+</ul>
+</div>
+</blockquote>
+<h3 id="2-2-rds-point-in-time-recovery-q8">2-2. RDS Point-in-Time Recovery (Q8)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-2-rds-point-in-time-recovery-q8" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: 지난 30일 중 5분 전 상태로 복원
+조건: RDS 자동 백업 활성화 + 백업 보존 기간 = 35일(최대)
+
+PITR = 자동 백업 + 트랜잭션 로그 조합
+→ 1초 단위 복원 가능 (보존 기간 내)
+</code></pre>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>함정 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>스냅샷만으로는 5분 전 복원 불가. 스냅샷은 특정 시점 전체 백업.</p>
+</div>
+</blockquote>
+<h3 id="2-3-dynamodb-선택-기준">2-3. DynamoDB 선택 기준<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-3-dynamodb-선택-기준" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>조건</th><th>선택</th></tr></thead><tbody><tr><td>데이터 자동 만료 (30일 이후 삭제)</td><td><strong>TTL</strong> 속성 설정 (비용 0, 개발 노력 최소)</td></tr><tr><td>아침 미사용 + 저녁 예측 불가 급증</td><td><strong>On-demand</strong> 모드 (프로비저닝 불필요)</td></tr><tr><td>읽기 급증 + 캐싱 필요</td><td><strong>DAX</strong> (DynamoDB Accelerator)</td></tr><tr><td>스키마 빠르게 발전시킴</td><td>DynamoDB (NoSQL = 스키마 유연)</td></tr></tbody></table></div>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>반복 실수 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li>Q61: “지난 30일만 필요, 크기 계속 증가” → <strong>TTL</strong> (Lambda로 삭제하는 건 개발 노력 과다)</li>
+<li>Q82: “아침 미사용, 저녁 급증, 빠르게 발생” → <strong>On-demand</strong> 모드</li>
+</ul>
+</div>
+</blockquote>
+<hr/>
+<h2 id="3-스토리지-서비스-구분">3. 스토리지 서비스 구분<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-스토리지-서비스-구분" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>FSx 4종 구분이 핵심. 헷갈리면 무조건 틀린다. </p></div>
+                  
+                </div>
+</blockquote>
+<h3 id="3-1-fsx-4종-완전-구분">3-1. FSx 4종 완전 구분<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-1-fsx-4종-완전-구분" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>FSx 종류</th><th>프로토콜</th><th>사용 시기</th></tr></thead><tbody><tr><td><strong>FSx for Windows</strong></td><td>SMB</td><td>Windows 앱 + SQL Server + AD 인증</td></tr><tr><td><strong>FSx for Lustre</strong></td><td>POSIX</td><td>HPC + ML + 고성능 단일 프로토콜</td></tr><tr><td><strong>FSx for NetApp ONTAP</strong></td><td>NFS + SMB (멀티프로토콜)</td><td>온프레미스 NetApp 마이그레이션, 멀티프로토콜 필요</td></tr><tr><td><strong>FSx for OpenZFS</strong></td><td>NFS</td><td>ZFS 기반 Linux 워크로드</td></tr></tbody></table></div>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>반복 실수 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li>Q18: Windows 앱 + SQL Server + 파일 공유 → <strong>FSx for Windows File Server</strong></li>
+<li>Q53: HPC + NFS + SMB 멀티프로토콜 → <strong>FSx for NetApp ONTAP</strong> (Lustre가 아님. Lustre는 단일 프로토콜)</li>
+</ul>
+</div>
+</blockquote>
+<h3 id="3-2-storage-gateway-3종-구분">3-2. Storage Gateway 3종 구분<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-2-storage-gateway-3종-구분" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>게이트웨이</th><th>프로토콜</th><th>저장 위치</th><th>사용 시기</th></tr></thead><tbody><tr><td><strong>File Gateway</strong></td><td>NFS, SMB</td><td>S3</td><td>온프레미스 → S3 백업/아카이브</td></tr><tr><td><strong>Volume Gateway</strong></td><td>iSCSI</td><td>S3 (EBS 스냅샷)</td><td>블록 스토리지 백업</td></tr><tr><td><strong>Tape Gateway</strong></td><td>iSCSI VTL</td><td>S3 Glacier</td><td>물리 테이프 대체</td></tr></tbody></table></div>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Q4 실수 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>“온프레미스 NFS 서버 → S3 정기 백업, 비용 효율” → <strong>Storage Gateway File Gateway</strong>
+(DataSync는 대량 1회성/주기적 전송, File Gateway는 지속적 연동)</p>
+</div>
+</blockquote>
+<h3 id="3-3-datasync-vs-storage-gateway">3-3. DataSync vs Storage Gateway<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-3-datasync-vs-storage-gateway" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>DataSync = 데이터 이동 (마이그레이션/동기화), 대역폭 제한 가능
+Storage Gateway = 온프레미스 ↔ AWS 지속적 연동 (백업, 티어링)
+
+판단:
+- &quot;마이그레이션&quot;, &quot;n일 이내 전송&quot;, &quot;대역폭 제어&quot; → DataSync
+- &quot;지속적 백업&quot;, &quot;NFS 서버를 S3처럼&quot; → File Gateway
+- &quot;리전 간 파일 시스템 동기화&quot; → DataSync
+</code></pre>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>반복 실수 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li>Q39: FSx로 30TB 마이그레이션 + 대역폭 제어 → <strong>DataSync</strong></li>
+<li>Q56: 리전 간 NFS 동기화 → <strong>DataSync</strong></li>
+</ul>
+</div>
+</blockquote>
+<h3 id="3-4-efs와-s3-lifecycle-q13">3-4. EFS와 S3 lifecycle (Q13)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-4-efs와-s3-lifecycle-q13" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: POSIX + 공유 + EC2 여러 대 + 30일 이후 드물게 접근
+→ EFS + EFS Lifecycle Management (EFS-IA로 자동 이동)
+
+POSIX 호환 = EFS (NFS). EBS는 단일 EC2에만 붙음.
+</code></pre>
+<h3 id="3-5-s3-버전관리--lifecycle-함정-q74">3-5. S3 버전관리 + lifecycle 함정 (Q74)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-5-s3-버전관리--lifecycle-함정-q74" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>S3 버전관리 활성화 시:
+- 삭제 = 실제 삭제 아님, &quot;삭제 마커&quot; 생성
+- lifecycle 규칙이 현재 버전만 타겟하면 삭제 마커는 남음
+- 4년 이후에도 오브젝트 수 증가 이유 = 삭제 마커 누적
+
+해결: lifecycle 규칙에 &quot;만료된 오브젝트 삭제 마커 제거&quot; 추가
+</code></pre>
+<h3 id="3-6-s3-transfer-acceleration-vs-datasync-q36">3-6. S3 Transfer Acceleration vs DataSync (Q36)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-6-s3-transfer-acceleration-vs-datasync-q36" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>Transfer Acceleration = CloudFront 엣지 → S3로 글로벌 업로드 가속
+                       = 인터넷 연결 있음 + 빠르게 + 운영 복잡성 최소
+
+DataSync = 에이전트 설치 필요, 온프레미스 데이터 이동에 적합
+</code></pre>
+<hr/>
+<h2 id="4-보안과-거버넌스">4. 보안과 거버넌스<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-보안과-거버넌스" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>핵심 구분 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>AWS Config = 리소스 상태/변경 감지 + 규정 준수 자동화
+CloudTrail = API 호출 이력 (누가 뭘 했나)
+둘 다 필요한 경우도 있음</p>
+</div>
+</blockquote>
+<h3 id="4-1-aws-config-vs-cloudtrail">4-1. AWS Config vs CloudTrail<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-1-aws-config-vs-cloudtrail" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>질문</th><th>서비스</th></tr></thead><tbody><tr><td>”보안 그룹 규칙이 위반인지 자동 탐지”</td><td><strong>Config</strong> (관리형 규칙: restricted-ssh)</td></tr><tr><td>“EC2/SG 변경 사항 추적/감사”</td><td><strong>Config</strong> (변경 이력) + <strong>CloudTrail</strong> (API 이력)</td></tr><tr><td>“누가 SG를 변경했나”</td><td><strong>CloudTrail</strong></td></tr><tr><td>”SG가 규정 위반이면 SNS 알림”</td><td><strong>Config Rule</strong> + SNS</td></tr></tbody></table></div>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>반복 실수 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li>Q67: “SG에 SSH 0.0.0.0/0 포함 시 자동 탐지+알림” → <strong>AWS Config Rule</strong> (restricted-ssh 관리형 규칙)</li>
+<li>Q86: “EC2 과도한 프로비저닝 + SG 변경 추적 감사” → <strong>Config + CloudTrail</strong></li>
+</ul>
+</div>
+</blockquote>
+<h3 id="4-2-iam-role-vs-자격증명-하드코딩-q71-q99">4-2. IAM Role vs 자격증명 하드코딩 (Q71, Q99)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-2-iam-role-vs-자격증명-하드코딩-q71-q99" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>CloudFormation + EC2 + DynamoDB 접근 + 자격증명 노출 없이
+→ EC2 Instance Profile (IAM Role 연결)
+→ CloudFormation에서 IAM Role ARN 참조만 하면 됨
+
+RDS 자격증명 하드코딩 → Secrets Manager
+→ 코드에서 Secrets Manager API 호출로 교체
+→ 자동 로테이션도 가능
+</code></pre>
+<h3 id="4-3-ebs-암호화-강제-q21">4-3. EBS 암호화 강제 (Q21)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-3-ebs-암호화-강제-q21" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: ap-southeast-2의 모든 새 EC2 EBS 볼륨 암호화 강제
+방법 (2가지 조합):
+  1. AWS Config Rule로 비암호화 볼륨 탐지 + Lambda 자동 수정
+  2. EC2 콘솔/CLI에서 &quot;EBS 기본 암호화&quot; 설정 활성화 (리전 단위)
+     → 이후 생성되는 모든 EBS 자동 암호화
+</code></pre>
+<h3 id="4-4-organizations--s3-접근-제한-q75">4-4. Organizations + S3 접근 제한 (Q75)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-4-organizations--s3-접근-제한-q75" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>&quot;S3 버킷을 Organizations 내 계정만 접근&quot;
+→ S3 버킷 정책에 조건 추가:
+   Condition: { &quot;StringEquals&quot;: { &quot;aws:PrincipalOrgID&quot;: &quot;o-xxxx&quot; } }
+</code></pre>
+<hr/>
+<h2 id="5-마이그레이션과-통합">5. 마이그레이션과 통합<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-마이그레이션과-통합" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="5-1-실시간-데이터-수집--s3-q5">5-1. 실시간 데이터 수집 → S3 (Q5)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-1-실시간-데이터-수집--s3-q5" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: 1분마다 결제 데이터 → 실시간 분석 → S3 저장
+→ Kinesis Data Firehose (완전 관리형, S3/Redshift/OpenSearch 직접 전달)
+
+Kinesis Data Streams = 직접 개발 필요 (소비자 코드 작성)
+Firehose = 코드 없음, 최소 오버헤드
+</code></pre>
+<h3 id="5-2-kubernetes--mongodb--aws-q37">5-2. Kubernetes + MongoDB → AWS (Q37)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-2-kubernetes--mongodb--aws-q37" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: 온프레미스 Kubernetes + MongoDB → AWS, 코드/배포 변경 없음
+→ Amazon EKS (Kubernetes 그대로) + Amazon DocumentDB (MongoDB 호환)
+</code></pre>
+<h3 id="5-3-aws-transfer-family-q66">5-3. AWS Transfer Family (Q66)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-3-aws-transfer-family-q66" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: SFTP로 파일 수신 + 고가용성 + 최소 운영
+→ AWS Transfer Family for SFTP
+→ 완전 관리형, S3/EFS에 직접 저장, 서버 관리 불필요
+</code></pre>
+<h3 id="5-4-glue-etl-q100">5-4. Glue ETL (Q100)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-4-glue-etl-q100" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: CSV → Redshift/S3 분석, COTS 앱은 CSV 처리 불가
+→ AWS Glue (서버리스 ETL)
+→ CSV를 Parquet/ORC 등으로 변환 → Redshift Spectrum이나 S3에 저장
+</code></pre>
+<hr/>
+<h2 id="6-네트워킹">6. 네트워킹<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#6-네트워킹" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="6-1-alb--private-subnet-ec2-q14">6-1. ALB + Private Subnet EC2 (Q14)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#6-1-alb--private-subnet-ec2-q14" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>인터넷 트래픽이 EC2에 도달 안 함
+원인: ALB는 퍼블릭 서브넷에 있어야 함
+     (ALB 자체는 퍼블릭 서브넷, EC2는 프라이빗 서브넷 가능)
+
+해결: ALB를 퍼블릭 서브넷에 배치
+     EC2는 프라이빗 서브넷 유지 가능
+</code></pre>
+<h3 id="6-2-vpc-endpoint-q63">6-2. VPC Endpoint (Q63)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#6-2-vpc-endpoint-q63" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: EC2 → S3 접근, 인터넷 경유 금지
+→ VPC Gateway Endpoint for S3 (무료, 라우팅 테이블만 추가)
+
+Gateway Endpoint = S3, DynamoDB만 지원 (무료)
+Interface Endpoint = 나머지 AWS 서비스 (비용 발생)
+</code></pre>
+<h3 id="6-3-다중-리전-트래픽-라우팅">6-3. 다중 리전 트래픽 라우팅<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#6-3-다중-리전-트래픽-라우팅" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>요구</th><th>서비스</th></tr></thead><tbody><tr><td>다중 리전 Lambda + API GW 장애조치</td><td><strong>Route 53</strong> (Failover Routing)</td></tr><tr><td>다중 리전 NLB로 트래픽 라우팅 + 성능 개선</td><td><strong>Route 53 + Global Accelerator</strong></td></tr><tr><td>글로벌 사용자 + 고정 Anycast IP</td><td><strong>Global Accelerator</strong></td></tr></tbody></table></div>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>반복 실수 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li>Q34: 다중 리전 Lambda/API GW 장애조치 → <strong>Route 53 Failover Routing</strong></li>
+<li>Q58: 미국+유럽 NLB 2개 → 전체 라우팅 → <strong>Route 53 + Global Accelerator</strong></li>
+</ul>
+</div>
+</blockquote>
+<h3 id="6-4-direct-connect-비용-q50">6-4. Direct Connect 비용 (Q50)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#6-4-direct-connect-비용-q50" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: 데이터웨어하우스 쿼리 결과(50MB) 반환 + 최저 egress 비용
+→ Direct Connect로 결과 반환 (인터넷 egress보다 저렴)
+
+CloudFront = 웹 콘텐츠 캐싱/배포용. 쿼리 결과 반환에는 부적합.
+</code></pre>
+<hr/>
+<h2 id="7-route-53-라우팅-정책">7. Route 53 라우팅 정책<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#7-route-53-라우팅-정책" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote class="callout danger" data-callout="danger">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>2회 연속 오답 주의 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>라우팅 정책 이름이 헷갈려서 계속 틀림. 이름 + 사용 시기 세트로 암기.</p>
+</div>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>정책</th><th>사용 시기</th><th>핵심</th></tr></thead><tbody><tr><td><strong>Simple</strong></td><td>단순 단일 레코드</td><td>헬스체크 없음</td></tr><tr><td><strong>Weighted</strong></td><td>A/B 테스트, 트래픽 분산 비율 지정</td><td>% 기반</td></tr><tr><td><strong>Latency</strong></td><td>가장 빠른 리전으로</td><td>사용자 → 가장 낮은 레이턴시 리전</td></tr><tr><td><strong>Failover</strong></td><td>Active-Passive 장애조치</td><td>헬스체크 실패 시 secondary로</td></tr><tr><td><strong>Geolocation</strong></td><td>국가/대륙별 다른 콘텐츠</td><td>위치 기반</td></tr><tr><td><strong>Geoproximity</strong></td><td>지리적 거리 + bias 조절</td><td>Traffic Flow 필요</td></tr><tr><td><strong>Multivalue Answer</strong></td><td><strong>여러 IP 모두 반환</strong> + 헬스체크</td><td>ELB 아님, 단순 다중 IP</td></tr><tr><td><strong>IP-based</strong></td><td>CIDR 기반 라우팅</td><td>ISP별 다른 엔드포인트</td></tr></tbody></table></div>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>반복 실수 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li>Q9: “모든 정상 EC2 IP 반환” → <strong>Multivalue Answer</strong> (Simple은 헬스체크 없음, Weighted는 비율 분산)</li>
+<li>Q65: 온프레미스(us-west-1 근처) + AWS(eu-central-1) + 로딩 시간 최소 → <strong>Latency-based</strong></li>
+</ul>
+</div>
+</blockquote>
+<pre><code>Multivalue ≠ ELB
+Multivalue = DNS 수준에서 여러 IP 반환 (각각 헬스체크 가능)
+ELB = 트래픽 로드밸런싱 (다른 레이어)
+</code></pre>
+<hr/>
+<h2 id="8-스토리지-계층-선택-로직">8. 스토리지 계층 선택 로직<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#8-스토리지-계층-선택-로직" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="8-1-스토리지-3종-조합-q3">8-1. 스토리지 3종 조합 (Q3)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#8-1-스토리지-3종-조합-q3" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: 최대 I/O 성능 10TB + 내구성 300TB + 아카이브 900TB
+→ Instance Store (최대 I/O, 임시) + S3 Standard (내구성) + S3 Glacier (아카이브)
+
+Instance Store = EC2에 물리적으로 붙은 NVMe, 최고 I/O, EC2 종료 시 소멸
+EBS = 영구 블록, Instance Store보다 I/O 낮음
+</code></pre>
+<h3 id="8-2-s3-스토리지-클래스-선택">8-2. S3 스토리지 클래스 선택<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#8-2-s3-스토리지-클래스-선택" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>클래스</th><th>사용 시기</th></tr></thead><tbody><tr><td><strong>Standard</strong></td><td>자주 접근</td></tr><tr><td><strong>Standard-IA</strong></td><td>드물게 접근 + 패턴 예측 가능</td></tr><tr><td><strong>Intelligent-Tiering</strong></td><td>접근 패턴 <strong>불규칙/예측 불가</strong> → 자동 계층 이동</td></tr><tr><td><strong>One Zone-IA</strong></td><td>드물게 + 단일 AZ 허용 (재현 가능한 데이터)</td></tr><tr><td><strong>Glacier Instant</strong></td><td>즉시 복구 필요 아카이브</td></tr><tr><td><strong>Glacier Flexible</strong></td><td>수분~수시간 복구 허용</td></tr><tr><td><strong>Glacier Deep Archive</strong></td><td>가장 저렴, 12시간 복구</td></tr></tbody></table></div>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Q52: &quot;30일 후 접근 패턴 불규칙&quot; → <strong>S3 Intelligent-Tiering</strong> (Standard-IA가 아님)</p></div>
+                  
+                </div>
+</blockquote>
+<h3 id="8-3-s3-object-lock-q27">8-3. S3 Object Lock (Q27)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#8-3-s3-object-lock-q27" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: 5년 동안 덮어쓰기/삭제 불가 + 암호화 + 키 자동 교체
+→ S3 Object Lock (Compliance 모드) + SSE-KMS (자동 키 교체)
+
+Object Lock 모드:
+- Governance: 특정 권한 있는 사용자는 삭제 가능
+- Compliance: 루트 계정 포함 누구도 삭제 불가 (규정 준수용)
+
+&quot;절대 삭제 불가&quot; = Compliance 모드
+</code></pre>
+<h3 id="8-4-s3-암호화-키-관리-q29">8-4. S3 암호화 키 관리 (Q29)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#8-4-s3-암호화-키-관리-q29" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>SSE-S3  = AWS가 키 완전 관리 (사용자 통제 없음)
+SSE-KMS = 고객이 KMS에서 키 관리 (교체, 감사 가능) ← 규정 준수 팀이 관리
+SSE-C   = 고객이 키 직접 제공 (AWS에 키 저장 안 함)
+
+&quot;규정 준수 팀이 키 관리&quot; = SSE-KMS (고객 관리형 키)
+</code></pre>
+<h3 id="8-5-volume-gateway-온프레미스-백업--로컬-액세스-q55">8-5. Volume Gateway (온프레미스 백업 + 로컬 액세스) (Q55)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#8-5-volume-gateway-온프레미스-백업--로컬-액세스-q55" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: 온프레미스 백업 솔루션 교체 + AWS 백업 + 로컬 액세스 유지 + 자동 전송
+→ Storage Gateway Volume Gateway (Cached 모드)
+
+Cached 모드: 자주 쓰는 데이터는 로컬 캐시, 전체는 S3
+Stored 모드: 전체 로컬 저장 + S3 백업 (완전한 로컬 액세스)
+
+&quot;로컬 액세스 유지 + AWS 백업&quot; = Volume Gateway
+File Gateway는 파일 공유 (NFS/SMB), 블록 스토리지 아님
+</code></pre>
+<h3 id="8-6-s3-lifecycle-로그-보관-q54">8-6. S3 Lifecycle 로그 보관 (Q54)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#8-6-s3-lifecycle-로그-보관-q54" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: 30일 높은 가용성 분석 + 60일 백업 + 90일 후 삭제
+→ S3 Standard (0~30일) → S3 Glacier (30~90일) → 만료 삭제
+
+Glacier Instant Retrieval이 아닌 Glacier Flexible = 백업 목적으로 충분
+</code></pre>
+<hr/>
+<h2 id="9-백업과-복구">9. 백업과 복구<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#9-백업과-복구" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="9-1-aws-backup-q57-q59">9-1. AWS Backup (Q57, Q59)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#9-1-aws-backup-q57-q59" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>AWS Backup = 중앙화된 백업 관리 서비스
+지원: RDS, DynamoDB, EFS, EBS, EC2, Storage Gateway
+
+&quot;RDS 일일 백업 2년 이상 유지&quot; → AWS Backup (보존 기간 제한 없음)
+&quot;DynamoDB 월별 백업 7년 유지&quot; → AWS Backup
+
+RDS 자동 백업 = 최대 35일만 보존 → 장기 보관 불가
+→ 장기 보관이 필요하면 무조건 AWS Backup
+</code></pre>
+<h3 id="9-2-rds-삭제-보호--안정성-q34">9-2. RDS 삭제 보호 + 안정성 (Q34)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#9-2-rds-삭제-보호--안정성-q34" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: 직원이 DB 삭제 → 24시간 다운타임 방지
+→ RDS 삭제 보호(Deletion Protection) 활성화
+   + EC2 Multi-AZ Auto Scaling (단일 AZ 제거)
+
+&quot;실수로 삭제 방지&quot; = Deletion Protection
+&quot;EC2 단일 AZ&quot; = 가용성 위험 → 여러 AZ + ASG
+</code></pre>
+<h3 id="9-3-on-demand-capacity-reservation-q56">9-3. On-Demand Capacity Reservation (Q56)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#9-3-on-demand-capacity-reservation-q56" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: 특정 리전, 특정 3개 AZ, 1주일간 EC2 용량 보장
+→ On-Demand Capacity Reservation
+
+Reserved Instance = 할인 목적, 용량 보장 아님
+Capacity Reservation = 특정 AZ에 용량 예약 (할인 없음, 즉시 사용 가능)
+</code></pre>
+<hr/>
+<h2 id="10-네트워킹-추가-패턴">10. 네트워킹 추가 패턴<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#10-네트워킹-추가-패턴" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="10-1-nat-instance-vs-nat-gateway-q14-2">10-1. NAT Instance vs NAT Gateway (Q14-2)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#10-1-nat-instance-vs-nat-gateway-q14-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>NAT Instance = EC2 기반, 수동 확장, 단일 장애점
+NAT Gateway  = 완전 관리형, 자동 확장, 고가용성
+
+&quot;NAT 인스턴스가 트래픽 감당 못함 + HA + 자동 확장&quot; = NAT Gateway
+</code></pre>
+<h3 id="10-2-vpc-interface-endpoint-for-sqs-q17">10-2. VPC Interface Endpoint for SQS (Q17)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#10-2-vpc-interface-endpoint-for-sqs-q17" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: 프라이빗 서브넷 EC2 → SQS, 보안 연결
+→ VPC Interface Endpoint for SQS
+
+SQS는 S3/DynamoDB가 아님 → Gateway Endpoint 불가
+SQS = Interface Endpoint (PrivateLink 사용, 비용 발생)
+
+Gateway Endpoint: S3, DynamoDB만 (무료)
+Interface Endpoint: 나머지 AWS 서비스 (비용)
+</code></pre>
+<h3 id="10-3-direct-connect--vpn-하이브리드-q64">10-3. Direct Connect + VPN 하이브리드 (Q64)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#10-3-direct-connect--vpn-하이브리드-q64" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: 일관된 짧은 지연시간 + HA + 비용 최소 + 기본 연결 실패 시 느려도 됨
+→ Direct Connect (기본, 저지연) + VPN (백업, 저렴)
+
+Direct Connect + Direct Connect 이중화 = 비용 높음
+Direct Connect + VPN 백업 = 비용 최소 + HA
+&quot;느려도 됨&quot; = VPN 백업 허용 신호
+</code></pre>
+<h3 id="10-4-vpc-peering-교차-계정-q53">10-4. VPC Peering 교차 계정 (Q53)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#10-4-vpc-peering-교차-계정-q53" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: 별도 AWS 계정의 VPC-A EC2 → VPC-B EC2 파일 접근
+    단일 장애점 없음 + 대역폭 문제 없음
+→ VPC Peering
+
+VPC Peering = 두 VPC 직접 연결, 단일 장애점 없음, 대역폭 제한 없음
+Transit Gateway = 여러 VPC 허브 연결 (비용 더 높음, 2개면 과잉)
+PrivateLink = 서비스 노출용, 파일 접근에는 부적합
+</code></pre>
+<h3 id="10-5-api-gateway--커스텀-도메인-q63-2">10-5. API Gateway + 커스텀 도메인 (Q63-2)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#10-5-api-gateway--커스텀-도메인-q63-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: Route 53 도메인 + API Gateway + HTTPS
+→ ACM(AWS Certificate Manager)에서 인증서 발급
+   + API Gateway에 커스텀 도메인 이름 설정
+   + Route 53 → API Gateway 엔드포인트로 ALIAS 레코드
+
+API Gateway URL 기본값 = execute-api.amazonaws.com → 커스텀 도메인으로 교체
+</code></pre>
+<h3 id="10-6-aurora-serverless-평일만-사용-q61">10-6. Aurora Serverless (평일만 사용) (Q61)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#10-6-aurora-serverless-평일만-사용-q61" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: RDS PostgreSQL + 평일 업무 시간만 트래픽 + 비용 최적화
+→ Aurora Serverless v2
+
+Aurora Serverless = 트래픽 없을 때 0 ACU까지 축소 (사실상 비용 0)
+일반 RDS = 인스턴스 항상 실행 → 비용 발생
+RDS 중지 = 최대 7일만 자동 중지 가능
+</code></pre>
+<hr/>
+<h2 id="11-보안-추가-패턴">11. 보안 추가 패턴<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#11-보안-추가-패턴" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="11-1-kms-암호화-ami-교차-계정-공유-q10">11-1. KMS 암호화 AMI 교차 계정 공유 (Q10)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#11-1-kms-암호화-ami-교차-계정-공유-q10" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: KMS 암호화 EBS 스냅샷 포함 AMI → 다른 AWS 계정 공유
+→ 1. KMS 키 정책에 대상 계정 추가 (키 사용 권한 부여)
+   2. AMI 공유 설정에 대상 계정 추가
+
+KMS 키는 계정 간 자동 공유 안 됨 → 키 정책 명시적 추가 필수
+AMI만 공유해도 키 없으면 스냅샷 복호화 불가
+</code></pre>
+<h3 id="11-2-secrets-manager-자동-로테이션-q43">11-2. Secrets Manager 자동 로테이션 (Q43)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#11-2-secrets-manager-자동-로테이션-q43" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: Aurora 자격증명 암호화 + 14일마다 자동 교체
+→ AWS Secrets Manager
+
+Secrets Manager = 자동 로테이션 지원 (Lambda 함수로 교체 실행)
+Systems Manager Parameter Store = 암호화는 되지만 자동 로테이션 없음
+
+&quot;자동 교체(rotation)&quot; = Secrets Manager 즉시 선택
+</code></pre>
+<h3 id="11-3-리소스-자동-태깅-q49">11-3. 리소스 자동 태깅 (Q49)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#11-3-리소스-자동-태깅-q49" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>요구: Organizations 특정 계정의 모든 리소스 생성 시 비용센터 ID 태깅
+→ EventBridge (리소스 생성 이벤트 감지) + Lambda (RDS에서 비용센터 조회 후 태그)
+
+Tag Policy (SCP) = 태그 강제하지만 값을 동적으로 조회 불가
+AWS Config = 탐지는 하지만 자동 태깅 아님
+</code></pre>
+<hr/>
+<h2 id="12-변형-패턴-빠른-판단표">12. 변형 패턴 빠른 판단표<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#12-변형-패턴-빠른-판단표" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>이 표가 응용력의 핵심. &quot;같은 답인데 다르게 표현&quot;을 정리. </p></div>
+                  
+                </div>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>지문 표현</th><th>실제 의도</th><th>정답</th></tr></thead><tbody><tr><td>계층 간 트랜잭션 삭제 / 오버로드</td><td>버퍼 없는 tight coupling</td><td>SQS</td></tr><tr><td>EC2에서 스크립트로 폴링 + 비용 절감</td><td>EC2 대신 서버리스 트리거</td><td>Lambda + SQS</td></tr><tr><td>세션 손실 방지 + Auto Scaling</td><td>세션 외부화</td><td>ElastiCache Redis</td></tr><tr><td>256KB 초과 메시지 + SQS + 코드 최소 변경</td><td>대용량 메시지 우회</td><td>SQS Extended Client + S3</td></tr><tr><td>40초 이내 장애조치</td><td>Aurora만 가능</td><td>Aurora Multi-AZ</td></tr><tr><td>읽기 많음 + 자동 확장</td><td>읽기 복제본 오토스케일링</td><td>Aurora Auto Scaling</td></tr><tr><td>인프라 추가 없이 DB 부하 감소</td><td>연결 수 감소</td><td>RDS Proxy</td></tr><tr><td>아침 미사용 저녁 급증 예측 불가</td><td>사용량 기반 과금</td><td>DynamoDB On-demand</td></tr><tr><td>30일 이후 데이터 자동 삭제</td><td>만료 속성</td><td>DynamoDB TTL</td></tr><tr><td>POSIX + 공유 + 자주/드물게</td><td>NFS 공유 + 계층화</td><td>EFS + Lifecycle (EFS-IA)</td></tr><tr><td>NFS + SMB 멀티프로토콜</td><td>두 프로토콜 동시 지원</td><td>FSx for NetApp ONTAP</td></tr><tr><td>Windows + SQL Server + 파일 공유</td><td>Windows 전용 FSx</td><td>FSx for Windows</td></tr><tr><td>대역폭 제한 + n일 이내 마이그레이션</td><td>이동 도구</td><td>DataSync</td></tr><tr><td>리전 간 NFS 파일 시스템 동기화</td><td>복제 도구</td><td>DataSync</td></tr><tr><td>온프레미스 NFS → S3 지속 백업</td><td>게이트웨이 연동</td><td>File Gateway</td></tr><tr><td>SFTP + HA + 최소 운영</td><td>완전 관리형 SFTP</td><td>AWS Transfer Family</td></tr><tr><td>글로벌 → S3 빠르게 + 복잡성 최소</td><td>엣지 가속 업로드</td><td>S3 Transfer Acceleration</td></tr><tr><td>SG SSH 0.0.0.0/0 탐지 + 알림</td><td>규정 준수 자동화</td><td>AWS Config (restricted-ssh)</td></tr><tr><td>자격증명 하드코딩 제거</td><td>시크릿 관리</td><td>Secrets Manager</td></tr><tr><td>CloudFormation + DB 접근 + 노출 없이</td><td>역할 기반 접근</td><td>IAM Instance Profile</td></tr><tr><td>Organizations 계정만 S3 접근</td><td>조직 단위 조건</td><td>aws:PrincipalOrgID 버킷 정책</td></tr><tr><td>1분마다 데이터 → 실시간 → S3</td><td>관리형 스트리밍 수집</td><td>Kinesis Data Firehose</td></tr><tr><td>CSV → Redshift + 형식 변환 + 최소 오버헤드</td><td>서버리스 ETL</td><td>AWS Glue</td></tr><tr><td>인터넷 없이 EC2 → S3</td><td>프라이빗 AWS 접근</td><td>VPC Gateway Endpoint</td></tr><tr><td>다중 리전 API 장애조치</td><td>DNS 기반 라우팅</td><td>Route 53 Failover</td></tr><tr><td>다중 리전 NLB + 성능 + 고가용성</td><td>Anycast + DNS</td><td>Global Accelerator</td></tr><tr><td>모든 정상 EC2 IP 반환 (헬스체크 포함)</td><td>DNS 다중 응답</td><td>Route 53 Multivalue Answer</td></tr><tr><td>사용자 위치 기준 가장 빠른 리전</td><td>레이턴시 기반</td><td>Route 53 Latency-based</td></tr><tr><td>DNS 서버 → AWS 마이그레이션 + 최소 운영</td><td>관리형 DNS</td><td>Route 53 (완전 관리형)</td></tr><tr><td>최대 I/O 스토리지 (임시 허용)</td><td>물리 NVMe</td><td>Instance Store</td></tr><tr><td>30일 후 액세스 패턴 불규칙</td><td>자동 계층 이동</td><td>S3 Intelligent-Tiering</td></tr><tr><td>n년간 삭제/덮어쓰기 절대 불가</td><td>불변 스토리지</td><td>S3 Object Lock Compliance</td></tr><tr><td>규정 준수 팀이 암호화 키 관리</td><td>고객 관리 키</td><td>SSE-KMS</td></tr><tr><td>온프레미스 백업 + 로컬 액세스 유지</td><td>블록 백업 게이트웨이</td><td>Volume Gateway</td></tr><tr><td>RDS/DynamoDB 장기 백업 (35일 초과)</td><td>중앙 백업 관리</td><td>AWS Backup</td></tr><tr><td>특정 AZ 용량 n일 보장</td><td>용량 예약</td><td>On-Demand Capacity Reservation</td></tr><tr><td>NAT 인스턴스 한계 + HA + 자동 확장</td><td>관리형 NAT</td><td>NAT Gateway</td></tr><tr><td>프라이빗 서브넷 EC2 → SQS 보안 연결</td><td>프라이빗 서비스 접근</td><td>VPC Interface Endpoint</td></tr><tr><td>Direct Connect 기본 + 실패 시 느려도 됨</td><td>하이브리드 HA 최저 비용</td><td>Direct Connect + VPN 백업</td></tr><tr><td>교차 계정 VPC 연결 (단일 장애점 없음)</td><td>VPC 직접 연결</td><td>VPC Peering</td></tr><tr><td>Aurora + 자격증명 n일마다 자동 교체</td><td>시크릿 로테이션</td><td>Secrets Manager (자동 로테이션)</td></tr><tr><td>평일만 트래픽 + DB 비용 최적화</td><td>트래픽 없을 때 0</td><td>Aurora Serverless v2</td></tr><tr><td>리소스 생성 시 동적 값으로 자동 태깅</td><td>이벤트 기반 자동화</td><td>EventBridge + Lambda</td></tr><tr><td>KMS 암호화 AMI + 교차 계정 공유</td><td>키 정책 공유</td><td>KMS 키 정책 + AMI 공유 설정</td></tr></tbody></table></div></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>그래프 뷰</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-402" aria-expanded="true"><h3>목차</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#-saa-c03-응용력-강화--결정-로직" data-for="-saa-c03-응용력-강화--결정-로직">🎯 SAA-C03 응용력 강화 — 결정 로직</a></li><li class="depth-1"><a href="#-목차" data-for="-목차">📑 목차</a></li><li class="depth-1"><a href="#1-sqs-디커플링과-세션-관리" data-for="1-sqs-디커플링과-세션-관리">1. SQS 디커플링과 세션 관리</a></li><li class="depth-2"><a href="#1-1-sqs-디커플링--변형-패턴-3가지" data-for="1-1-sqs-디커플링--변형-패턴-3가지">1-1. SQS 디커플링 — 변형 패턴 3가지</a></li><li class="depth-2"><a href="#1-2-sqs--s3-대용량-메시지-q1" data-for="1-2-sqs--s3-대용량-메시지-q1">1-2. SQS + S3 대용량 메시지 (Q1)</a></li><li class="depth-2"><a href="#1-3-세션-관리-외부화-q3-q31" data-for="1-3-세션-관리-외부화-q3-q31">1-3. 세션 관리 외부화 (Q3, Q31)</a></li><li class="depth-2"><a href="#1-4-이미지-업로드--비동기-처리-q80" data-for="1-4-이미지-업로드--비동기-처리-q80">1-4. 이미지 업로드 + 비동기 처리 (Q80)</a></li><li class="depth-1"><a href="#2-데이터베이스-선택-로직" data-for="2-데이터베이스-선택-로직">2. 데이터베이스 선택 로직</a></li><li class="depth-2"><a href="#2-1-rds-vs-aurora-선택-기준" data-for="2-1-rds-vs-aurora-선택-기준">2-1. RDS vs Aurora 선택 기준</a></li><li class="depth-2"><a href="#2-2-rds-point-in-time-recovery-q8" data-for="2-2-rds-point-in-time-recovery-q8">2-2. RDS Point-in-Time Recovery (Q8)</a></li><li class="depth-2"><a href="#2-3-dynamodb-선택-기준" data-for="2-3-dynamodb-선택-기준">2-3. DynamoDB 선택 기준</a></li><li class="depth-1"><a href="#3-스토리지-서비스-구분" data-for="3-스토리지-서비스-구분">3. 스토리지 서비스 구분</a></li><li class="depth-2"><a href="#3-1-fsx-4종-완전-구분" data-for="3-1-fsx-4종-완전-구분">3-1. FSx 4종 완전 구분</a></li><li class="depth-2"><a href="#3-2-storage-gateway-3종-구분" data-for="3-2-storage-gateway-3종-구분">3-2. Storage Gateway 3종 구분</a></li><li class="depth-2"><a href="#3-3-datasync-vs-storage-gateway" data-for="3-3-datasync-vs-storage-gateway">3-3. DataSync vs Storage Gateway</a></li><li class="depth-2"><a href="#3-4-efs와-s3-lifecycle-q13" data-for="3-4-efs와-s3-lifecycle-q13">3-4. EFS와 S3 lifecycle (Q13)</a></li><li class="depth-2"><a href="#3-5-s3-버전관리--lifecycle-함정-q74" data-for="3-5-s3-버전관리--lifecycle-함정-q74">3-5. S3 버전관리 + lifecycle 함정 (Q74)</a></li><li class="depth-2"><a href="#3-6-s3-transfer-acceleration-vs-datasync-q36" data-for="3-6-s3-transfer-acceleration-vs-datasync-q36">3-6. S3 Transfer Acceleration vs DataSync (Q36)</a></li><li class="depth-1"><a href="#4-보안과-거버넌스" data-for="4-보안과-거버넌스">4. 보안과 거버넌스</a></li><li class="depth-2"><a href="#4-1-aws-config-vs-cloudtrail" data-for="4-1-aws-config-vs-cloudtrail">4-1. AWS Config vs CloudTrail</a></li><li class="depth-2"><a href="#4-2-iam-role-vs-자격증명-하드코딩-q71-q99" data-for="4-2-iam-role-vs-자격증명-하드코딩-q71-q99">4-2. IAM Role vs 자격증명 하드코딩 (Q71, Q99)</a></li><li class="depth-2"><a href="#4-3-ebs-암호화-강제-q21" data-for="4-3-ebs-암호화-강제-q21">4-3. EBS 암호화 강제 (Q21)</a></li><li class="depth-2"><a href="#4-4-organizations--s3-접근-제한-q75" data-for="4-4-organizations--s3-접근-제한-q75">4-4. Organizations + S3 접근 제한 (Q75)</a></li><li class="depth-1"><a href="#5-마이그레이션과-통합" data-for="5-마이그레이션과-통합">5. 마이그레이션과 통합</a></li><li class="depth-2"><a href="#5-1-실시간-데이터-수집--s3-q5" data-for="5-1-실시간-데이터-수집--s3-q5">5-1. 실시간 데이터 수집 → S3 (Q5)</a></li><li class="depth-2"><a href="#5-2-kubernetes--mongodb--aws-q37" data-for="5-2-kubernetes--mongodb--aws-q37">5-2. Kubernetes + MongoDB → AWS (Q37)</a></li><li class="depth-2"><a href="#5-3-aws-transfer-family-q66" data-for="5-3-aws-transfer-family-q66">5-3. AWS Transfer Family (Q66)</a></li><li class="depth-2"><a href="#5-4-glue-etl-q100" data-for="5-4-glue-etl-q100">5-4. Glue ETL (Q100)</a></li><li class="depth-1"><a href="#6-네트워킹" data-for="6-네트워킹">6. 네트워킹</a></li><li class="depth-2"><a href="#6-1-alb--private-subnet-ec2-q14" data-for="6-1-alb--private-subnet-ec2-q14">6-1. ALB + Private Subnet EC2 (Q14)</a></li><li class="depth-2"><a href="#6-2-vpc-endpoint-q63" data-for="6-2-vpc-endpoint-q63">6-2. VPC Endpoint (Q63)</a></li><li class="depth-2"><a href="#6-3-다중-리전-트래픽-라우팅" data-for="6-3-다중-리전-트래픽-라우팅">6-3. 다중 리전 트래픽 라우팅</a></li><li class="depth-2"><a href="#6-4-direct-connect-비용-q50" data-for="6-4-direct-connect-비용-q50">6-4. Direct Connect 비용 (Q50)</a></li><li class="depth-1"><a href="#7-route-53-라우팅-정책" data-for="7-route-53-라우팅-정책">7. Route 53 라우팅 정책</a></li><li class="depth-1"><a href="#8-스토리지-계층-선택-로직" data-for="8-스토리지-계층-선택-로직">8. 스토리지 계층 선택 로직</a></li><li class="depth-2"><a href="#8-1-스토리지-3종-조합-q3" data-for="8-1-스토리지-3종-조합-q3">8-1. 스토리지 3종 조합 (Q3)</a></li><li class="depth-2"><a href="#8-2-s3-스토리지-클래스-선택" data-for="8-2-s3-스토리지-클래스-선택">8-2. S3 스토리지 클래스 선택</a></li><li class="depth-2"><a href="#8-3-s3-object-lock-q27" data-for="8-3-s3-object-lock-q27">8-3. S3 Object Lock (Q27)</a></li><li class="depth-2"><a href="#8-4-s3-암호화-키-관리-q29" data-for="8-4-s3-암호화-키-관리-q29">8-4. S3 암호화 키 관리 (Q29)</a></li><li class="depth-2"><a href="#8-5-volume-gateway-온프레미스-백업--로컬-액세스-q55" data-for="8-5-volume-gateway-온프레미스-백업--로컬-액세스-q55">8-5. Volume Gateway (온프레미스 백업 + 로컬 액세스) (Q55)</a></li><li class="depth-2"><a href="#8-6-s3-lifecycle-로그-보관-q54" data-for="8-6-s3-lifecycle-로그-보관-q54">8-6. S3 Lifecycle 로그 보관 (Q54)</a></li><li class="depth-1"><a href="#9-백업과-복구" data-for="9-백업과-복구">9. 백업과 복구</a></li><li class="depth-2"><a href="#9-1-aws-backup-q57-q59" data-for="9-1-aws-backup-q57-q59">9-1. AWS Backup (Q57, Q59)</a></li><li class="depth-2"><a href="#9-2-rds-삭제-보호--안정성-q34" data-for="9-2-rds-삭제-보호--안정성-q34">9-2. RDS 삭제 보호 + 안정성 (Q34)</a></li><li class="depth-2"><a href="#9-3-on-demand-capacity-reservation-q56" data-for="9-3-on-demand-capacity-reservation-q56">9-3. On-Demand Capacity Reservation (Q56)</a></li><li class="depth-1"><a href="#10-네트워킹-추가-패턴" data-for="10-네트워킹-추가-패턴">10. 네트워킹 추가 패턴</a></li><li class="depth-2"><a href="#10-1-nat-instance-vs-nat-gateway-q14-2" data-for="10-1-nat-instance-vs-nat-gateway-q14-2">10-1. NAT Instance vs NAT Gateway (Q14-2)</a></li><li class="depth-2"><a href="#10-2-vpc-interface-endpoint-for-sqs-q17" data-for="10-2-vpc-interface-endpoint-for-sqs-q17">10-2. VPC Interface Endpoint for SQS (Q17)</a></li><li class="depth-2"><a href="#10-3-direct-connect--vpn-하이브리드-q64" data-for="10-3-direct-connect--vpn-하이브리드-q64">10-3. Direct Connect + VPN 하이브리드 (Q64)</a></li><li class="depth-2"><a href="#10-4-vpc-peering-교차-계정-q53" data-for="10-4-vpc-peering-교차-계정-q53">10-4. VPC Peering 교차 계정 (Q53)</a></li><li class="depth-2"><a href="#10-5-api-gateway--커스텀-도메인-q63-2" data-for="10-5-api-gateway--커스텀-도메인-q63-2">10-5. API Gateway + 커스텀 도메인 (Q63-2)</a></li><li class="depth-2"><a href="#10-6-aurora-serverless-평일만-사용-q61" data-for="10-6-aurora-serverless-평일만-사용-q61">10-6. Aurora Serverless (평일만 사용) (Q61)</a></li><li class="depth-1"><a href="#11-보안-추가-패턴" data-for="11-보안-추가-패턴">11. 보안 추가 패턴</a></li><li class="depth-2"><a href="#11-1-kms-암호화-ami-교차-계정-공유-q10" data-for="11-1-kms-암호화-ami-교차-계정-공유-q10">11-1. KMS 암호화 AMI 교차 계정 공유 (Q10)</a></li><li class="depth-2"><a href="#11-2-secrets-manager-자동-로테이션-q43" data-for="11-2-secrets-manager-자동-로테이션-q43">11-2. Secrets Manager 자동 로테이션 (Q43)</a></li><li class="depth-2"><a href="#11-3-리소스-자동-태깅-q49" data-for="11-3-리소스-자동-태깅-q49">11-3. 리소스 자동 태깅 (Q49)</a></li><li class="depth-1"><a href="#12-변형-패턴-빠른-판단표" data-for="12-변형-패턴-빠른-판단표">12. 변형 패턴 빠른 판단표</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Created with <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="../postscript.js" type="module"></script></html>

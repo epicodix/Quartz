@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr"><head><title>ALB + 3-Tier 아키텍처 구축 가이드</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Quartz 4"/><meta property="og:title" content="ALB + 3-Tier 아키텍처 구축 가이드"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="ALB + 3-Tier 아키텍처 구축 가이드"/><meta name="twitter:description" content="🎯 ALB + 3-Tier 아키텍처 구축 가이드 📑 목차 Resource Map 아키텍처 설명 ALB 핵심 개념 NAT Gateway 구현 상세 검증 및 트러블슈팅 비용 관리 핵심 정리 1."/><meta property="og:description" content="🎯 ALB + 3-Tier 아키텍처 구축 가이드 📑 목차 Resource Map 아키텍처 설명 ALB 핵심 개념 NAT Gateway 구현 상세 검증 및 트러블슈팅 비용 관리 핵심 정리 1."/><meta property="og:image:alt" content="🎯 ALB + 3-Tier 아키텍처 구축 가이드 📑 목차 Resource Map 아키텍처 설명 ALB 핵심 개념 NAT Gateway 구현 상세 검증 및 트러블슈팅 비용 관리 핵심 정리 1."/><meta property="twitter:domain" content="epicodix.github.io/Quartz"/><meta property="og:url" content="https://epicodix.github.io/Quartz/Terraform/01_AWS/ALB-3Tier-아키텍처-가이드"/><meta property="twitter:url" content="https://epicodix.github.io/Quartz/Terraform/01_AWS/ALB-3Tier-아키텍처-가이드"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="🎯 ALB + 3-Tier 아키텍처 구축 가이드 📑 목차 Resource Map 아키텍처 설명 ALB 핵심 개념 NAT Gateway 구현 상세 검증 및 트러블슈팅 비용 관리 핵심 정리 1."/><meta name="generator" content="Quartz"/><link href="../../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL1VzZXJzL2ExMjM0L2VwaWNvZGl4L215LXF1YXJ0ei1zaXRlL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><script src="../../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://epicodix.github.io/Quartz/index.xml"/><meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/><meta property="og:image" content="https://epicodix.github.io/Quartz/Terraform/01_AWS/ALB-3Tier-아키텍처-가이드-og-image.webp"/><meta property="og:image:url" content="https://epicodix.github.io/Quartz/Terraform/01_AWS/ALB-3Tier-아키텍처-가이드-og-image.webp"/><meta name="twitter:image" content="https://epicodix.github.io/Quartz/Terraform/01_AWS/ALB-3Tier-아키텍처-가이드-og-image.webp"/><meta property="og:image:type" content="image/.webp"/></head><body data-slug="Terraform/01_AWS/ALB-3Tier-아키텍처-가이드"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../..">Quartz 4</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>검색</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="검색어를 입력하세요" placeholder="검색어를 입력하세요"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="다크 모드"><title>다크 모드</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="라이트 모드"><title>라이트 모드</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="리더 모드"><title>리더 모드</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="collapse" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>{let priorityFolders=[\&quot;\\u{1F4D6} \\uAC00\\uC774\\uB4DC\&quot;,\&quot;\\u{1F52C} \\uAE30\\uC220 \\uBD84\\uC11D\&quot;,\&quot;\\u2699\\uFE0F \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;\\u{1F4DA} \\uAD50\\uC721\&quot;,\&quot;\\u{1F4BC} \\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624\&quot;];if(a.isFolder&amp;&amp;b.isFolder){let aPriority=priorityFolders.indexOf(a.displayName),bPriority=priorityFolders.indexOf(b.displayName);if(aPriority!==-1&amp;&amp;bPriority!==-1)return aPriority-bPriority;if(aPriority!==-1)return-1;if(bPriority!==-1)return 1}return!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,\&quot;ko-KR\&quot;,{numeric:!0,sensitivity:\&quot;base\&quot;}):a.isFolder?-1:1}&quot;,&quot;filterFn&quot;:&quot;node=>{if([\&quot;99_\\uC784\\uC2DC\&quot;,\&quot;tags\&quot;,\&quot;.obsidian\&quot;].includes(node.slugSegment))return!1;if(!node.isFolder&amp;&amp;node.data){let hiddenFiles=[\&quot;GUI_\\uC790\\uB3D9\\uD654_\\uB3C4\\uC804\\uAE30\&quot;,\&quot;Gemini_CLI_\\uD65C\\uC6A9_\\uAC00\\uC774\\uB4DC\&quot;,\&quot;Ollama_Troubleshooting_Guide\&quot;,\&quot;gemini_cli_guide\&quot;,\&quot;gemini_cli_introduction\&quot;,\&quot;gemini_context_awareness_guide\&quot;,\&quot;gemini_file_management_guide\&quot;,\&quot;get_claude_news.py\&quot;,\&quot;global_news_20250712\&quot;,\&quot;kubernetes_cheatsheet\&quot;,\&quot;kubernetes_storage_hands_on\&quot;,\&quot;naver_gmail_integration_guide\&quot;,\&quot;nodejs_installation_guide\&quot;,\&quot;\\uB0B4_\\uCEF4\\uD4E8\\uD130\\uB97C_AI_\\uC11C\\uBC84\\uB85C_\\uB9CC\\uB4E4\\uAE30_Ollama_\\uC124\\uCE58_\\uBC0F_\\uBB38\\uC81C\\uD574\\uACB0_\\uAC00\\uC774\\uB4DC\&quot;,\&quot;\\uC2DC\\uB9AC\\uC640_Gemini_\\uC5F0\\uACC4\\uC131_\\uAC15\\uD654_\\uBC29\\uC548\&quot;,\&quot;2025-08-13_\\uD559\\uC2B5_\\uD3EC\\uC778\\uD2B8\&quot;,\&quot;07_02_Advanced_Pod_Concepts\&quot;],fileTitle=node.data.title||node.displayName.replace(/\\.md$/,\&quot;\&quot;);return!hiddenFiles.includes(fileTitle)}return!0}&quot;,&quot;mapFn&quot;:&quot;node=>{let folderDisplayNames={\&quot;1_\\uAC00\\uC774\\uB4DC\&quot;:\&quot;\\u{1F4D6} \\uAC00\\uC774\\uB4DC\&quot;,\&quot;2_\\uAE30\\uC220_\\uBD84\\uC11D\&quot;:\&quot;\\u{1F52C} \\uAE30\\uC220 \\uBD84\\uC11D\&quot;,\&quot;3_\\uC544\\uC774\\uB514\\uC5B4_\\uB274\\uC2A4\&quot;:\&quot;\\u{1F4A1} \\uC544\\uC774\\uB514\\uC5B4 &amp; \\uB274\\uC2A4\&quot;,K8s_Deep_Dive:\&quot;\\u2699\\uFE0F \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;01_\\uB124\\uD2B8\\uC6CC\\uD06C \\uAE30\\uCD08\&quot;:\&quot;\\u{1F310} \\uB124\\uD2B8\\uC6CC\\uD06C \\uAE30\\uCD08\&quot;,\&quot;02_k8s\\uC2E4\\uC2B5\&quot;:\&quot;\\u{1F6E0}\\uFE0F \\uC2E4\\uC2B5\&quot;,\&quot;03_\\uD504\\uB85C\\uBA54\\uD14C\\uC6B0\\uC2A4\&quot;:\&quot;\\u{1F4CA} \\uD504\\uB85C\\uBA54\\uD14C\\uC6B0\\uC2A4\&quot;,\&quot;04_\\uADF8\\uB77C\\uD30C\\uB098\&quot;:\&quot;\\u{1F4C8} \\uADF8\\uB77C\\uD30C\\uB098\&quot;,\\uAD50\\uC721:\&quot;\\u{1F4DA} \\uAD50\\uC721\&quot;,\\uAD6C\\uB984\\uB525\\uB2E4\\uC774\\uBE0C:\&quot;\\u2601\\uFE0F \\uAD6C\\uB984\\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;\\uBD84\\uC0B0\\uC2DC\\uC2A4\\uD15C_Distributed Systems\&quot;:\&quot;\\u{1F517} \\uBD84\\uC0B0\\uC2DC\\uC2A4\\uD15C\&quot;,GO:\&quot;\\u{1F439} Go \\uC5B8\\uC5B4\&quot;,\&quot;\\uB124\\uC774\\uBC84-\\uAC80\\uC0C9\\uAD11\\uACE0-\\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158-\\uD504\\uB85C\\uC81D\\uD2B8\&quot;:\&quot;\\u{1F680} \\uB124\\uC774\\uBC84 \\uD504\\uB85C\\uC81D\\uD2B8\&quot;,\&quot;01-\\uD504\\uB85C\\uC81D\\uD2B8-\\uBC30\\uACBD\&quot;:\&quot;\\u{1F4CB} \\uD504\\uB85C\\uC81D\\uD2B8 \\uBC30\\uACBD\&quot;,\&quot;02-\\uD604\\uC7AC\\uC0C1\\uD0DC-\\uBD84\\uC11D\&quot;:\&quot;\\u{1F50D} \\uD604\\uC7AC\\uC0C1\\uD0DC \\uBD84\\uC11D\&quot;,\&quot;03-\\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158-\\uACC4\\uD68D\&quot;:\&quot;\\u{1F4DD} \\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158 \\uACC4\\uD68D\&quot;,\&quot;05-\\uC6B4\\uC601-\\uCD5C\\uC801\\uD654\&quot;:\&quot;\\u26A1 \\uC6B4\\uC601 \\uCD5C\\uC801\\uD654\&quot;,CKA:\&quot;\\u{1F3AF} CKA \\uC790\\uACA9\\uC99D\&quot;,GCP:\&quot;\\u2601\\uFE0F Google Cloud\&quot;,\&quot;moc-k8s\&quot;:\&quot;\\u{1F4DA} \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB178\\uD2B8\&quot;,Vagrant:\&quot;\\u{1F4E6} Vagrant\&quot;,\\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624:\&quot;\\u{1F4BC} \\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624\&quot;,\\uAC00\\uC0C1\\uD654:\&quot;\\u{1F4BB} \\uAC00\\uC0C1\\uD654\&quot;,\\uAC1C\\uBC1C\\uD658\\uACBD:\&quot;\\u{1F6E0}\\uFE0F \\uAC1C\\uBC1C\\uD658\\uACBD\&quot;,\\uAE30\\uD0C0:\&quot;\\u{1F4CE} \\uAE30\\uD0C0\&quot;,AI\\uB3C4\\uAD6C:\&quot;\\u{1F916} AI \\uB3C4\\uAD6C\&quot;,\\uBAA8\\uB2C8\\uD130\\uB9C1:\&quot;\\u{1F4CA} \\uBAA8\\uB2C8\\uD130\\uB9C1\&quot;};if(node.isFolder&amp;&amp;folderDisplayNames[node.displayName]&amp;&amp;(node.displayName=folderDisplayNames[node.displayName]),!node.isFolder&amp;&amp;node.data){let displayName=node.data.title||node.displayName;displayName=displayName.replace(/^(\\d{2}_|\\d{2}-\\d{2}-)/g,\&quot;\&quot;),displayName.length>50&amp;&amp;(displayName=displayName.substring(0,47)+\&quot;...\&quot;),displayName=displayName.replace(/^kubernetes_/,\&quot;K8s \&quot;).replace(/^쿠버네티스_/,\&quot;K8s \&quot;).replace(/_완벽_가이드$/,\&quot; \\uAC00\\uC774\\uB4DC\&quot;).replace(/_실습_가이드$/,\&quot; \\uC2E4\\uC2B5\&quot;).replace(/_핵심_정리$/,\&quot; \\uC815\\uB9AC\&quot;).replace(/_기초_개념$/,\&quot; \\uAE30\\uCD08\&quot;).replace(/완전_가이드$/,\&quot;\\uAC00\\uC774\\uB4DC\&quot;).replace(/완벽_정리$/,\&quot;\\uC815\\uB9AC\&quot;),node.displayName=displayName}return node}&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-798"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>탐색기</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-798" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../Terraform/">Terraform</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../Terraform/01_AWS/">01_AWS</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>ALB + 3 Tier 아키텍처 구축 가이드</a></div></nav><h1 class="article-title">ALB + 3-Tier 아키텍처 구축 가이드</h1><p show-comma="true" class="content-meta"><time datetime="2026-01-26T15:00:00.000Z">2026년 1월 27일</time><span>16 min read</span></p><ul class="tags"><li><a href="../../tags/terraform" class="internal tag-link">terraform</a></li><li><a href="../../tags/aws" class="internal tag-link">aws</a></li><li><a href="../../tags/alb" class="internal tag-link">alb</a></li><li><a href="../../tags/3-tier" class="internal tag-link">3-tier</a></li><li><a href="../../tags/nat-gateway" class="internal tag-link">nat-gateway</a></li><li><a href="../../tags/devops" class="internal tag-link">devops</a></li><li><a href="../../tags/infrastructure" class="internal tag-link">infrastructure</a></li></ul></div></div><article class="popover-hint"><h1 id="-alb--3-tier-아키텍처-구축-가이드">🎯 ALB + 3-Tier 아키텍처 구축 가이드<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-alb--3-tier-아키텍처-구축-가이드" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<h2 id="-목차">📑 목차<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-목차" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><a href="#1-%EC%A0%84%EC%B2%B4-resource-map" class="internal alias">Resource Map</a></li>
+<li><a href="#2-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98-%EC%84%A4%EB%AA%85" class="internal alias">아키텍처 설명</a></li>
+<li><a href="#3-alb-%ED%95%B5%EC%8B%AC-%EA%B0%9C%EB%85%90" class="internal alias">ALB 핵심 개념</a></li>
+<li><a href="#4-nat-gateway-%ED%99%9C%EC%84%B1%ED%99%94" class="internal alias">NAT Gateway</a></li>
+<li><a href="#5-%EA%B5%AC%ED%98%84-%EC%83%81%EC%84%B8" class="internal alias">구현 상세</a></li>
+<li><a href="#6-%EA%B2%80%EC%A6%9D-%EB%B0%8F-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85" class="internal alias">검증 및 트러블슈팅</a></li>
+<li><a href="#7-%EB%B9%84%EC%9A%A9-%EA%B4%80%EB%A6%AC" class="internal alias">비용 관리</a></li>
+<li><a href="#-%ED%95%B5%EC%8B%AC-%EC%A0%95%EB%A6%AC" class="internal alias">핵심 정리</a></li>
+</ul>
+<hr/>
+<h2 id="1-전체-resource-map">1. 전체 Resource Map<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-전체-resource-map" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-인프라-전체-조감도-2026-01-27-실측">📋 인프라 전체 조감도 (2026-01-27 실측)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-인프라-전체-조감도-2026-01-27-실측" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────────┐
+│  AWS Account: 317250221510  │  Region: ap-northeast-2 (서울)               │
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐     │
+│  │  VPC: vpc-0478120058493042f  (10.0.0.0/16)                         │     │
+│  │  ┌───────────────────────────────────────┐                         │     │
+│  │  │        IGW: igw-0e396e1d3dc9e5ce7     │                         │     │
+│  │  └──────────────────┬────────────────────┘                         │     │
+│  │                     │                                               │     │
+│  │    ┌────────────────┼──── Public Subnets ────────────────┐         │     │
+│  │    │                │                                     │         │     │
+│  │    │  ┌─────────────┴──────────────────────────────────┐  │         │     │
+│  │    │  │  ALB: my-infra-alb                             │  │         │     │
+│  │    │  │  DNS: my-infra-alb-850810618.ap-northeast-2    │  │         │     │
+│  │    │  │       .elb.amazonaws.com                       │  │         │     │
+│  │    │  │  SG: web-sg (HTTP 80, HTTPS 443)               │  │         │     │
+│  │    │  │  Listener: HTTP:80 → TG:3000                   │  │         │     │
+│  │    │  └────────────────────────────────────────────────┘  │         │     │
+│  │    │                                                      │         │     │
+│  │    │  ┌──────────────────────┐ ┌───────────────────────┐  │         │     │
+│  │    │  │ Public Subnet 2a     │ │ Public Subnet 2c      │  │         │     │
+│  │    │  │ 10.0.1.0/24          │ │ 10.0.2.0/24           │  │         │     │
+│  │    │  │ subnet-0ff84de...    │ │ subnet-0138ca8...     │  │         │     │
+│  │    │  │                      │ │                       │  │         │     │
+│  │    │  │ ┌──────────────────┐ │ │                       │  │         │     │
+│  │    │  │ │ Bastion EC2      │ │ │                       │  │         │     │
+│  │    │  │ │ i-05da54ea...    │ │ │                       │  │         │     │
+│  │    │  │ │ t4g.micro        │ │ │                       │  │         │     │
+│  │    │  │ │ EIP: 43.201.     │ │ │                       │  │         │     │
+│  │    │  │ │   127.140        │ │ │                       │  │         │     │
+│  │    │  │ │ SG: bastion-sg   │ │ │                       │  │         │     │
+│  │    │  │ └──────────────────┘ │ │                       │  │         │     │
+│  │    │  │                      │ │                       │  │         │     │
+│  │    │  │ ┌──────────────────┐ │ │                       │  │         │     │
+│  │    │  │ │ NAT GW           │ │ │                       │  │         │     │
+│  │    │  │ │ nat-05f73970...  │ │ │                       │  │         │     │
+│  │    │  │ │ EIP: 52.79.     │ │ │                       │  │         │     │
+│  │    │  │ │   182.147        │ │ │                       │  │         │     │
+│  │    │  │ └──────────────────┘ │ │                       │  │         │     │
+│  │    │  └──────────────────────┘ └───────────────────────┘  │         │     │
+│  │    └──────────────────────────────────────────────────────┘         │     │
+│  │                     │                                               │     │
+│  │                     │  ALB → TG (port 3000)                        │     │
+│  │                     ▼                                               │     │
+│  │    ┌──────────────────────────────────────────────────────┐         │     │
+│  │    │               Private Subnets                        │         │     │
+│  │    │  ┌──────────────────────┐ ┌───────────────────────┐  │         │     │
+│  │    │  │ Private Subnet 2a    │ │ Private Subnet 2c     │  │         │     │
+│  │    │  │ 10.0.10.0/24         │ │ 10.0.20.0/24          │  │         │     │
+│  │    │  │ subnet-01f4a80...    │ │ subnet-01c133e...     │  │         │     │
+│  │    │  │                      │ │                       │  │         │     │
+│  │    │  │ ┌──────────────────┐ │ │                       │  │         │     │
+│  │    │  │ │ App EC2           │ │ │                       │  │         │     │
+│  │    │  │ │ i-0241c8ae...    │ │ │                       │  │         │     │
+│  │    │  │ │ t4g.micro        │ │ │                       │  │         │     │
+│  │    │  │ │ IP: 10.0.10.222  │ │ │                       │  │         │     │
+│  │    │  │ │ SG: app-sg       │ │ │                       │  │         │     │
+│  │    │  │ │ Port: 3000       │ │ │                       │  │         │     │
+│  │    │  │ └──────────────────┘ │ │                       │  │         │     │
+│  │    │  └──────────────────────┘ └───────────────────────┘  │         │     │
+│  │    └──────────────────────────────────────────────────────┘         │     │
+│  └─────────────────────────────────────────────────────────────────────┘     │
+└─────────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="-terraform-resource-전체-목록-28개--data-2개">📊 Terraform Resource 전체 목록 (28개 + data 2개)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-terraform-resource-전체-목록-28개--data-2개" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>모듈</th><th>리소스</th><th>ID / 값</th></tr></thead><tbody><tr><td><strong>module.vpc</strong></td><td><code>aws_vpc.main</code></td><td><code>vpc-0478120058493042f</code></td></tr><tr><td></td><td><code>aws_internet_gateway.main</code></td><td><code>igw-0e396e1d3dc9e5ce7</code></td></tr><tr><td></td><td><code>aws_subnet.public[0]</code> (2a)</td><td><code>subnet-0ff84debf6fe53415</code></td></tr><tr><td></td><td><code>aws_subnet.public[1]</code> (2c)</td><td><code>subnet-0138ca83fcd097139</code></td></tr><tr><td></td><td><code>aws_subnet.private[0]</code> (2a)</td><td><code>subnet-01f4a80425fc72638</code></td></tr><tr><td></td><td><code>aws_subnet.private[1]</code> (2c)</td><td><code>subnet-01c133eda1153ebf4</code></td></tr><tr><td></td><td><code>aws_eip.nat[0]</code></td><td><code>52.79.182.147</code></td></tr><tr><td></td><td><code>aws_nat_gateway.main[0]</code></td><td><code>nat-05f739703e915dd06</code></td></tr><tr><td></td><td><code>aws_route.private_nat[0]</code></td><td><code>0.0.0.0/0 → NAT GW</code></td></tr><tr><td></td><td><code>aws_route_table.public</code></td><td><code>rtb-018cb57a491d8d106</code></td></tr><tr><td></td><td><code>aws_route_table.private</code></td><td><code>rtb-01795530294738e00</code></td></tr><tr><td></td><td><code>aws_route_table_association.*</code> (x4)</td><td>Subnet ↔ RT 연결</td></tr><tr><td><strong>module.security</strong></td><td><code>aws_security_group.bastion</code></td><td><code>sg-0d1b005ffc71994d0</code></td></tr><tr><td></td><td><code>aws_security_group.web</code></td><td><code>sg-0142f8aab69939014</code></td></tr><tr><td></td><td><code>aws_security_group.app</code></td><td><code>sg-0c633ad0d959fa6db</code></td></tr><tr><td></td><td><code>aws_security_group.db</code></td><td><code>sg-0249082dc97ba0367</code></td></tr><tr><td><strong>module.ec2</strong></td><td><code>aws_key_pair.main</code></td><td><code>my-infra-key</code></td></tr><tr><td></td><td><code>aws_instance.bastion</code></td><td><code>i-05da54eaec43bb6a8</code></td></tr><tr><td></td><td><code>aws_eip.bastion</code></td><td><code>43.201.127.140</code></td></tr><tr><td></td><td><code>aws_eip_association.bastion</code></td><td>EIP ↔ Bastion 연결</td></tr><tr><td><strong>module.app</strong></td><td><code>aws_instance.app</code></td><td><code>i-0241c8aea037d1cc0</code></td></tr><tr><td><strong>module.alb</strong></td><td><code>aws_lb.main</code></td><td><code>my-infra-alb</code></td></tr><tr><td></td><td><code>aws_lb_target_group.app</code></td><td><code>my-infra-app-tg</code> (port 3000)</td></tr><tr><td></td><td><code>aws_lb_listener.http</code></td><td>HTTP:80 → TG forward</td></tr><tr><td></td><td><code>aws_lb_target_group_attachment.app</code></td><td>App EC2 → TG 등록</td></tr></tbody></table></div>
+<h3 id="-security-group-체이닝-상세">📋 Security Group 체이닝 상세<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-security-group-체이닝-상세" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>┌──────────────────────────────────────────────────────────────────────┐
+│  SG 체이닝 흐름 (실무형 계층 보안)                                   │
+│                                                                      │
+│  Internet                                                            │
+│     │                                                                │
+│     ▼                                                                │
+│  ┌─────────────────────────────────────────────┐                     │
+│  │  bastion-sg (sg-0d1b00...)                  │                     │
+│  │  IN:  SSH(22) ← 0.0.0.0/0                  │                     │
+│  │  OUT: ALL ← 0.0.0.0/0                      │                     │
+│  └──────────────────────┬──────────────────────┘                     │
+│                         │ SSH(22)                                    │
+│     ▼                   ▼                                            │
+│  ┌─────────────────────────────────────────────┐                     │
+│  │  web-sg (sg-0142f8...)  ← ALB가 사용        │                     │
+│  │  IN:  HTTP(80)  ← 0.0.0.0/0                │                     │
+│  │  IN:  HTTPS(443) ← 0.0.0.0/0               │                     │
+│  │  OUT: ALL ← 0.0.0.0/0                      │                     │
+│  └──────────────────────┬──────────────────────┘                     │
+│                         │ port 3000                                  │
+│                         ▼                                            │
+│  ┌─────────────────────────────────────────────┐                     │
+│  │  app-sg (sg-0c633a...)  ← App EC2가 사용    │                     │
+│  │  IN:  3000 ← web-sg (ALB에서만 접근 가능)   │                     │
+│  │  IN:  SSH(22) ← bastion-sg (관리용)         │                     │
+│  │  OUT: ALL ← 0.0.0.0/0                      │                     │
+│  └──────────────────────┬──────────────────────┘                     │
+│                         │ port 5432                                  │
+│                         ▼                                            │
+│  ┌─────────────────────────────────────────────┐                     │
+│  │  db-sg (sg-024908...)  ← (향후 RDS 사용)    │                     │
+│  │  IN:  PostgreSQL(5432) ← app-sg             │                     │
+│  │  OUT: ALL ← 0.0.0.0/0                      │                     │
+│  └─────────────────────────────────────────────┘                     │
+└──────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>SG 체이닝의 핵심 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>CIDR(<code>0.0.0.0/0</code>)이 아닌 <strong>SG ID를 참조</strong>해서 접근을 제한한다. <code>app-sg</code>는 <code>web-sg</code>를 가진 리소스(=ALB)에서만 3000번 포트 접근을 허용. 다른 곳에서는 불가능.</p>
+</div>
+</blockquote>
+<h3 id="-terraform-모듈-의존성-그래프">📋 Terraform 모듈 의존성 그래프<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-terraform-모듈-의존성-그래프" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>terraform.tfvars
+     │
+     ▼
+┌─ module.vpc ──────────────────────────────┐
+│  vpc_id, public_subnet_ids,               │
+│  private_subnet_ids, nat_gateway_id       │
+└─────┬──────────────┬─────────────────────┘
+      │              │
+      ▼              │
+┌─ module.security ──┤──────────────────────┐
+│  bastion_sg_id,    │  web_sg_id,          │
+│  app_sg_id,        │  db_sg_id            │
+└──┬──────────┬──────┤──────────────────────┘
+   │          │      │
+   ▼          │      │
+┌─ module.ec2 │      │──────────────────────┐
+│  key_name,  │      │  bastion EIP         │
+└──┬──────────┘      │──────────────────────┘
+   │                 │
+   ▼                 │
+┌─ module.app ───────┤──────────────────────┐
+│  instance_id,      │  private_ip          │
+└──┬─────────────────┘──────────────────────┘
+   │
+   ▼
+┌─ module.alb ──────────────────────────────┐
+│  alb_dns_name, target_group_arn           │
+└───────────────────────────────────────────┘
+</code></pre>
+<h3 id="-트래픽-흐름-상세">📋 트래픽 흐름 상세<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-트래픽-흐름-상세" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>[사용자 브라우저]
+       │
+       │ HTTP GET / (port 80)
+       ▼
+[ALB: my-infra-alb-850810618...]
+       │  SG: web-sg 허용 (HTTP 80 from 0.0.0.0/0)
+       │  Listener: HTTP:80
+       │  Rule: forward → Target Group (my-infra-app-tg)
+       │
+       │ forward (port 3000)
+       ▼
+[Target Group: my-infra-app-tg]
+       │  Protocol: HTTP
+       │  Port: 3000
+       │  Health Check: GET / → 200 OK
+       │
+       │ port 3000
+       ▼
+[App EC2: i-0241c8ae... / 10.0.10.222]
+       │  SG: app-sg 허용 (3000 from web-sg)
+       │  Python HTTP Server (systemd)
+       │  응답: &quot;&lt;h1>Hello from App Server&lt;/h1>&quot;
+       │
+       │ (응답 역경로)
+       ▼
+[사용자 브라우저]
+       &quot;Hello from App Server&quot; 표시
+</code></pre>
+<hr/>
+<h2 id="2-아키텍처-설명">2. 아키텍처 설명<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-아키텍처-설명" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-3-tier란">💡 3-Tier란?<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-3-tier란" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>Tier 1: Presentation  →  ALB (Public)     ← 사용자 접점
+Tier 2: Application   →  App EC2 (Private) ← 비즈니스 로직
+Tier 3: Database      →  RDS (Private)     ← 데이터 저장 (향후)
+</code></pre>
+<blockquote class="callout info" data-callout="info">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>왜 3-Tier인가 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li><strong>보안</strong>: App/DB를 Private Subnet에 격리 → 인터넷에서 직접 접근 불가</li>
+<li><strong>확장성</strong>: ALB 뒤에 EC2를 여러 대 배치 가능 (수평 확장)</li>
+<li><strong>관리</strong>: 각 계층을 독립적으로 업데이트/스케일링 가능</li>
+</ul>
+</div>
+</blockquote>
+<h3 id="-현재-구성-vs-실무-확장">📊 현재 구성 vs 실무 확장<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-현재-구성-vs-실무-확장" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>항목</th><th>현재 (학습)</th><th>실무 확장</th></tr></thead><tbody><tr><td>ALB</td><td>HTTP:80</td><td>HTTPS:443 + ACM 인증서</td></tr><tr><td>App</td><td>EC2 1대 (Python)</td><td>ECS/EKS + Auto Scaling</td></tr><tr><td>DB</td><td>없음</td><td>RDS PostgreSQL (Multi-AZ)</td></tr><tr><td>캐시</td><td>없음</td><td>ElastiCache Redis</td></tr><tr><td>DNS</td><td>ALB DNS 직접 사용</td><td>Route 53 + 도메인</td></tr><tr><td>CI/CD</td><td>수동 배포</td><td>CodePipeline / GitHub Actions</td></tr></tbody></table></div>
+<hr/>
+<h2 id="3-alb-핵심-개념">3. ALB 핵심 개념<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-alb-핵심-개념" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-alb-구성-요소-4가지">💡 ALB 구성 요소 4가지<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-alb-구성-요소-4가지" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>┌──────────────────────────────────────────────┐
+│  ALB (Application Load Balancer)              │
+│                                               │
+│  1. Load Balancer                             │
+│     └─ Public Subnets 2개 이상 (Multi-AZ)    │
+│     └─ Security Group (HTTP/HTTPS 허용)       │
+│                                               │
+│  2. Listener                                  │
+│     └─ &quot;어떤 포트/프로토콜을 수신할 것인가&quot;   │
+│     └─ HTTP:80 또는 HTTPS:443                 │
+│                                               │
+│  3. Target Group                              │
+│     └─ &quot;어디로 보낼 것인가&quot;                   │
+│     └─ EC2 인스턴스 목록 + Health Check       │
+│                                               │
+│  4. Target Group Attachment                   │
+│     └─ &quot;구체적으로 어떤 인스턴스를 등록&quot;      │
+│     └─ EC2 Instance ID + Port                 │
+└──────────────────────────────────────────────┘
+</code></pre>
+<h3 id="-alb-vs-nlb-vs-clb-비교">📊 ALB vs NLB vs CLB 비교<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-alb-vs-nlb-vs-clb-비교" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>항목</th><th>ALB</th><th>NLB</th><th>CLB (레거시)</th></tr></thead><tbody><tr><td>OSI 계층</td><td>L7 (HTTP)</td><td>L4 (TCP/UDP)</td><td>L4/L7</td></tr><tr><td>프로토콜</td><td>HTTP, HTTPS, gRPC</td><td>TCP, UDP, TLS</td><td>HTTP, TCP</td></tr><tr><td>URL 라우팅</td><td>/api/* → A, /web/* → B</td><td>불가</td><td>불가</td></tr><tr><td>WebSocket</td><td>지원</td><td>지원</td><td>미지원</td></tr><tr><td>고정 IP</td><td>불가 (DNS만)</td><td>가능 (EIP 부착)</td><td>불가</td></tr><tr><td>비용</td><td>~$0.0225/h</td><td>~$0.0225/h</td><td>~$0.025/h</td></tr><tr><td>용도</td><td><strong>웹 앱 (대부분)</strong></td><td>게임/IoT/고성능</td><td>사용하지 마세요</td></tr></tbody></table></div>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>ALB는 고정 IP가 없다 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>ALB의 IP는 AWS가 동적으로 관리한다. 접속은 반드시 <strong>DNS 이름</strong>으로 해야 한다.
+고정 IP가 필요하면 NLB를 사용하거나 Global Accelerator를 붙인다.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="4-nat-gateway-활성화">4. NAT Gateway 활성화<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-nat-gateway-활성화" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-왜-nat-gateway가-필요한가">💡 왜 NAT Gateway가 필요한가<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-왜-nat-gateway가-필요한가" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>Private Subnet의 App EC2가 인터넷에 접근하려면:
+
+[App EC2 (10.0.10.222)]
+     │ 아웃바운드 요청 (yum install, pip install 등)
+     ▼
+[Private Route Table]
+     │ 0.0.0.0/0 → NAT Gateway
+     ▼
+[NAT Gateway (Public Subnet)]
+     │ Source IP를 NAT EIP(52.79.182.147)로 변환
+     ▼
+[IGW → Internet]
+     │ 응답
+     ▼
+[NAT Gateway → App EC2]
+     응답 전달 (SNAT 역변환)
+</code></pre>
+<h3 id="-terraform-구현-기존-vpc-모듈">📋 Terraform 구현 (기존 vpc 모듈)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-terraform-구현-기존-vpc-모듈" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>NAT Gateway는 VPC 모듈에 <strong>conditional 로직</strong>으로 이미 구현되어 있었다:</p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="hcl" data-theme="github-light github-dark"><code data-language="hcl" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># terraform.tfvars 한 줄만 변경</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">enable_nat_gateway</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> true</span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">   # false → true</span></span></code></pre></figure>
+<p>이 변수 하나로 3개 리소스가 자동 생성:</p>
+<ol>
+<li><code>aws_eip.nat[0]</code> - NAT용 고정 IP</li>
+<li><code>aws_nat_gateway.main[0]</code> - NAT Gateway</li>
+<li><code>aws_route.private_nat[0]</code> - Private Route Table에 NAT 라우트</li>
+</ol>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>conditional 패턴의 가치 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="hcl" data-theme="github-light github-dark"><code data-language="hcl" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">resource</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;aws_nat_gateway&quot;</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;main&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  count</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> var</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">enable_nat_gateway </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">?</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 1</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> :</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 0</span></span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">  # ...</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></figure>
+<p><code>count = 0</code>이면 리소스가 생성되지 않는다. 비용이 드는 리소스를 변수로 on/off 제어하는 실무 필수 패턴.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="5-구현-상세">5. 구현 상세<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-구현-상세" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-신규-모듈-modulesapp">📋 신규 모듈: <code>modules/app/</code><a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-신규-모듈-modulesapp" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="hcl" data-theme="github-light github-dark"><code data-language="hcl" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># modules/app/main.tf (핵심 부분)</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">resource</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;aws_instance&quot;</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;app&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  ami</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">                    =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> data</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">aws_ami</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">amazon_linux</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">id</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  instance_type</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">          =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;t4g.micro&quot;</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  key_name</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">               =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> var</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">key_name          </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># Bastion과 동일 키</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  subnet_id</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">              =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> var</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">subnet_id          </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># Private Subnet</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  vpc_security_group_ids</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> [var</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">security_group_id] </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># app-sg</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  user_data</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> &lt;&lt;-USERDATA</span></span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    #!/bin/bash</span></span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    # Python3 내장 HTTP 서버 (패키지 설치 불필요)</span></span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    cat &lt;&lt;'EOF' > /home/ec2-user/index.html</span></span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    &lt;h1>Hello from App Server&lt;/h1></span></span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    &lt;p>Private Subnet | Port 3000&lt;/p></span></span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    EOF</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    # systemd 서비스로 등록 (재부팅 후에도 자동 시작)</span></span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    cat &lt;&lt;'EOF' > /etc/systemd/system/webapp.service</span></span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    [Unit]</span></span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    Description=Simple Web App</span></span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    After=network.target</span></span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    [Service]</span></span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    ExecStart=/usr/bin/python3 -m http.server 3000</span></span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    WorkingDirectory=/home/ec2-user</span></span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    User=ec2-user</span></span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    Restart=always</span></span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    [Install]</span></span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    WantedBy=multi-user.target</span></span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    EOF</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    systemctl daemon-reload</span></span>
+<span data-line><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">    systemctl enable --now webapp.service</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">  USERDATA</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></figure>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>user_data 포인트 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li>Python3는 AL2023에 기본 설치 → NAT Gateway 없어도 즉시 동작</li>
+<li>systemd 서비스 등록 → 재부팅 후에도 자동 시작</li>
+<li>실무에서는 Docker 컨테이너나 nginx를 사용</li>
+</ul>
+</div>
+</blockquote>
+<h3 id="-신규-모듈-modulesalb">📋 신규 모듈: <code>modules/alb/</code><a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-신규-모듈-modulesalb" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="hcl" data-theme="github-light github-dark"><code data-language="hcl" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># modules/alb/main.tf (핵심 부분)</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 1. ALB 본체 - Public Subnet 2개에 배치</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">resource</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;aws_lb&quot;</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;main&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  name</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">               =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">${</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">var</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">project_name</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">}</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">-alb&quot;</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  internal</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">           =</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> false</span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">            # 외부 노출 (internet-facing)</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  load_balancer_type</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;application&quot;</span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">    # ALB</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  security_groups</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> [var</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">security_group_id]  </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># web-sg</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  subnets</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">            =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> var</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">subnet_ids   </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># Public Subnet 2개</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 2. Target Group - 어디로 보낼지</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">resource</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;aws_lb_target_group&quot;</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;app&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  name</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">     =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">${</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">var</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">project_name</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">}</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">-app-tg&quot;</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  port</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">     =</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 3000</span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">              # App 서버 포트</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  protocol</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;HTTP&quot;</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  vpc_id</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">   =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> var</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">vpc_id</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">  health_check</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    path</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">     =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;/&quot;</span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">             # GET / 로 헬스체크</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    port</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">     =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;3000&quot;</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    matcher</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">  =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;200&quot;</span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">           # 200 응답이면 Healthy</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    interval</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 30</span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">              # 30초마다 체크</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  }</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 3. Listener - 어떤 포트를 수신할지</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">resource</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;aws_lb_listener&quot;</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;http&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  load_balancer_arn</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> aws_lb</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">main</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">arn</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  port</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">              =</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 80</span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">               # HTTP:80 수신</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  protocol</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">          =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;HTTP&quot;</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">  default_action</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    type</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">             =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;forward&quot;</span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">       # Target Group으로 전달</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    target_group_arn</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> aws_lb_target_group</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">app</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">arn</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  }</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 4. Attachment - 구체적 인스턴스 등록</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">resource</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;aws_lb_target_group_attachment&quot;</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;app&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  target_group_arn</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> aws_lb_target_group</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">app</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">arn</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  target_id</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">        =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> var</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">target_id     </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># App EC2 Instance ID</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  port</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">             =</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 3000</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></figure>
+<h3 id="-루트-maintf-모듈-연결">📋 루트 main.tf 모듈 연결<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-루트-maintf-모듈-연결" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="hcl" data-theme="github-light github-dark"><code data-language="hcl" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">module</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;app&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  source</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">            =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;./modules/app&quot;</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  project_name</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">      =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> var</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">project_name</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  subnet_id</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">         =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> module</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">vpc</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">private_subnet_ids[</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">0</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">]   </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># Private!</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  security_group_id</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> module</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">security</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">app_sg_id           </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># app-sg</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  key_name</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">          =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> module</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">ec2</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">key_name                 </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 동일 SSH 키</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">module</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> &quot;alb&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  source</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">            =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;./modules/alb&quot;</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  project_name</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">      =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> var</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">project_name</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  vpc_id</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">            =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> module</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">vpc</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">vpc_id</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  subnet_ids</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">        =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> module</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">vpc</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">public_subnet_ids        </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># Public 2개</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  security_group_id</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> module</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">security</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">web_sg_id            </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># web-sg</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  target_id</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">         =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> module</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">app</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">instance_id               </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># App EC2</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></figure>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>output → variable 연결 패턴 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p><code>module.vpc.private_subnet_ids[0]</code> → <code>module.app</code>의 <code>var.subnet_id</code>
+<code>module.security.app_sg_id</code> → <code>module.app</code>의 <code>var.security_group_id</code>
+<code>module.app.instance_id</code> → <code>module.alb</code>의 <code>var.target_id</code></p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="6-검증-및-트러블슈팅">6. 검증 및 트러블슈팅<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#6-검증-및-트러블슈팅" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-검증-체크리스트">📋 검증 체크리스트<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-검증-체크리스트" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="bash" data-theme="github-light github-dark"><code data-language="bash" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 1) ALB 접속 테스트</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">curl</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> http://my-infra-alb-850810618.ap-northeast-2.elb.amazonaws.com</span></span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 응답: &lt;h1>Hello from App Server&lt;/h1></span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 2) HTTP 상태 코드 확인</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">curl</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> -s</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> -o</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> /dev/null</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> -w</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &quot;HTTP Status: %{http_code}\n&quot;</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> http://ALB_DNS</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 3) Bastion 경유 App EC2 SSH</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">ssh</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> -J</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> ec2-user@43.201.xxx.xxx</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> ec2-user@10.0.10.222</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 4) App EC2에서 서비스 상태 확인</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">systemctl</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> status</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> webapp.service</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 5) App EC2에서 인터넷 접근 확인 (NAT Gateway 동작 확인)</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">curl</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> -s</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> ifconfig.me</span></span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 응답: 52.79.182.147 (NAT EIP)</span></span></code></pre></figure>
+<h3 id="-target-group이-unhealthy인-경우">🚨 Target Group이 Unhealthy인 경우<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-target-group이-unhealthy인-경우" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>원인 1: App 서버가 아직 시작 안 됨</strong></p>
+<ul>
+<li>user_data 실행에 시간이 걸림 (EC2 부팅 후 ~30초)</li>
+<li>대기 후 재확인</li>
+</ul>
+<p><strong>원인 2: SG에서 3000번 포트가 막혀 있음</strong></p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="bash" data-theme="github-light github-dark"><code data-language="bash" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># app-sg의 ingress 확인</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">aws</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> ec2</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> describe-security-groups</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> --group-ids</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> sg-0c633ad0d959fa6db</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> \</span></span>
+<span data-line><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  --query</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> 'SecurityGroups[0].IpPermissions'</span></span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># port 3000, source: web-sg 확인</span></span></code></pre></figure>
+<p><strong>원인 3: App 서버 프로세스 다운</strong></p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="bash" data-theme="github-light github-dark"><code data-language="bash" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># Bastion 경유 접속 후 확인</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">ssh</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> -J</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> ec2-user@43.201.xxx.xxx</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> ec2-user@10.0.10.222</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">sudo</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> systemctl</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> status</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> webapp.service</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">sudo</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> journalctl</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> -u</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> webapp.service</span></span></code></pre></figure>
+<h3 id="-alb-dns에-접속이-안-되는-경우">🚨 ALB DNS에 접속이 안 되는 경우<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-alb-dns에-접속이-안-되는-경우" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="bash" data-theme="github-light github-dark"><code data-language="bash" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># ALB가 Provisioning 상태인지 확인 (생성 직후 ~3분)</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">aws</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> elbv2</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> describe-load-balancers</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> --names</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> my-infra-alb</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> \</span></span>
+<span data-line><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">  --query</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> 'LoadBalancers[0].State'</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># DNS 해석 확인</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">nslookup</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> my-infra-alb-850810618.ap-northeast-2.elb.amazonaws.com</span></span></code></pre></figure>
+<hr/>
+<h2 id="7-비용-관리">7. 비용 관리<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#7-비용-관리" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-현재-과금-리소스">📊 현재 과금 리소스<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-현재-과금-리소스" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>리소스</th><th>시간당</th><th>일당</th><th>월 예상</th></tr></thead><tbody><tr><td>NAT Gateway</td><td>$0.045</td><td>$1.08</td><td>$32.4</td></tr><tr><td>ALB</td><td>$0.0225</td><td>$0.54</td><td>$16.2</td></tr><tr><td>Bastion EIP</td><td>Free</td><td>Free</td><td>사용 중이므로 무료</td></tr><tr><td>NAT EIP</td><td>Free</td><td>Free</td><td>NAT GW에 연결 중이므로 무료</td></tr><tr><td>Bastion EC2</td><td>Free</td><td>Free</td><td>프리티어</td></tr><tr><td>App EC2</td><td>Free</td><td>Free</td><td>프리티어</td></tr><tr><td><strong>합계</strong></td><td><strong>~$0.068</strong></td><td><strong>~$1.62</strong></td><td><strong>~$48.6</strong></td></tr></tbody></table></div>
+<h3 id="-비용-차단-방법">💡 비용 차단 방법<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-비용-차단-방법" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="bash" data-theme="github-light github-dark"><code data-language="bash" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 방법 1: ALB + App만 삭제 (NAT는 유지)</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">terraform</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> destroy</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> -target=module.alb</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> -target=module.app</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 방법 2: NAT도 비활성화 (terraform.tfvars 수정 후)</span></span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># enable_nat_gateway = false</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">terraform</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> apply</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># 방법 3: 전부 삭제</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">terraform</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> destroy</span></span></code></pre></figure>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>EIP 주의 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>EIP는 <strong>EC2/NAT에 연결된 상태에서는 무료</strong>지만, 연결 안 한 채로 방치하면 시간당 $0.005 과금. EC2를 stop하면 EIP가 미연결 상태가 되므로 주의.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="-핵심-정리">🎯 핵심 정리<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-핵심-정리" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="-오늘-배운-것">📊 오늘 배운 것<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-오늘-배운-것" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>개념</th><th>핵심</th></tr></thead><tbody><tr><td><strong>3-Tier</strong></td><td>ALB(Public) → App(Private) → DB(Private) 계층 분리</td></tr><tr><td><strong>ALB 구성</strong></td><td>LB + Listener + Target Group + Attachment 4단 구조</td></tr><tr><td><strong>SG 체이닝</strong></td><td>web-sg → app-sg → db-sg (CIDR 아닌 SG ID 참조)</td></tr><tr><td><strong>NAT Gateway</strong></td><td>Private Subnet → Internet 아웃바운드 (SNAT)</td></tr><tr><td><strong>conditional</strong></td><td><code>count = var.xxx ? 1 : 0</code> 패턴으로 리소스 on/off</td></tr><tr><td><strong>모듈 확장</strong></td><td><code>modules/app/</code>, <code>modules/alb/</code> 추가 → 기존 영향 없음</td></tr><tr><td><strong>user_data</strong></td><td>EC2 첫 부팅 시 스크립트 자동 실행</td></tr></tbody></table></div>
+<h3 id="-프로젝트-파일-구조-최종">🔧 프로젝트 파일 구조 (최종)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-프로젝트-파일-구조-최종" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>terraform-aws-infra/
+├── main.tf                    # 5개 모듈 호출
+├── variables.tf               # 루트 변수 (7개)
+├── outputs.tf                 # 루트 출력 (15개)
+├── providers.tf               # AWS Provider
+├── terraform.tfvars           # 변수 값
+├── modules/
+│   ├── vpc/       (3파일)     # VPC, Subnet, NAT, Route (15리소스)
+│   ├── security/  (3파일)     # SG 4개
+│   ├── ec2/       (3파일)     # Bastion + EIP (5리소스)
+│   ├── app/       (3파일)     # App EC2 (1리소스)
+│   └── alb/       (3파일)     # ALB + TG + Listener (4리소스)
+├── terraform.tfstate          # 28개 리소스 관리
+└── terraform.tfstate.pre-module-backup
+</code></pre>
+<h3 id="-접속-정보">📋 접속 정보<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-접속-정보" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="bash" data-theme="github-light github-dark"><code data-language="bash" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># ALB (브라우저 접속 가능)</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">http://my-infra-alb-850810618.ap-northeast-2.elb.amazonaws.com</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># Bastion SSH</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">ssh</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> -i</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> ~/.ssh/id_ed25519</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> ec2-user@43.201.xxx.xxx</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"># App EC2 SSH (Bastion 경유 ProxyJump)</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">ssh</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> -J</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> ec2-user@43.201.xxx.xxx</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> ec2-user@10.0.10.222</span></span></code></pre></figure></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>그래프 뷰</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-361" aria-expanded="true"><h3>목차</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#-alb--3-tier-아키텍처-구축-가이드" data-for="-alb--3-tier-아키텍처-구축-가이드">🎯 ALB + 3-Tier 아키텍처 구축 가이드</a></li><li class="depth-1"><a href="#-목차" data-for="-목차">📑 목차</a></li><li class="depth-1"><a href="#1-전체-resource-map" data-for="1-전체-resource-map">1. 전체 Resource Map</a></li><li class="depth-2"><a href="#-인프라-전체-조감도-2026-01-27-실측" data-for="-인프라-전체-조감도-2026-01-27-실측">📋 인프라 전체 조감도 (2026-01-27 실측)</a></li><li class="depth-2"><a href="#-terraform-resource-전체-목록-28개--data-2개" data-for="-terraform-resource-전체-목록-28개--data-2개">📊 Terraform Resource 전체 목록 (28개 + data 2개)</a></li><li class="depth-2"><a href="#-security-group-체이닝-상세" data-for="-security-group-체이닝-상세">📋 Security Group 체이닝 상세</a></li><li class="depth-2"><a href="#-terraform-모듈-의존성-그래프" data-for="-terraform-모듈-의존성-그래프">📋 Terraform 모듈 의존성 그래프</a></li><li class="depth-2"><a href="#-트래픽-흐름-상세" data-for="-트래픽-흐름-상세">📋 트래픽 흐름 상세</a></li><li class="depth-1"><a href="#2-아키텍처-설명" data-for="2-아키텍처-설명">2. 아키텍처 설명</a></li><li class="depth-2"><a href="#-3-tier란" data-for="-3-tier란">💡 3-Tier란?</a></li><li class="depth-2"><a href="#-현재-구성-vs-실무-확장" data-for="-현재-구성-vs-실무-확장">📊 현재 구성 vs 실무 확장</a></li><li class="depth-1"><a href="#3-alb-핵심-개념" data-for="3-alb-핵심-개념">3. ALB 핵심 개념</a></li><li class="depth-2"><a href="#-alb-구성-요소-4가지" data-for="-alb-구성-요소-4가지">💡 ALB 구성 요소 4가지</a></li><li class="depth-2"><a href="#-alb-vs-nlb-vs-clb-비교" data-for="-alb-vs-nlb-vs-clb-비교">📊 ALB vs NLB vs CLB 비교</a></li><li class="depth-1"><a href="#4-nat-gateway-활성화" data-for="4-nat-gateway-활성화">4. NAT Gateway 활성화</a></li><li class="depth-2"><a href="#-왜-nat-gateway가-필요한가" data-for="-왜-nat-gateway가-필요한가">💡 왜 NAT Gateway가 필요한가</a></li><li class="depth-2"><a href="#-terraform-구현-기존-vpc-모듈" data-for="-terraform-구현-기존-vpc-모듈">📋 Terraform 구현 (기존 vpc 모듈)</a></li><li class="depth-1"><a href="#5-구현-상세" data-for="5-구현-상세">5. 구현 상세</a></li><li class="depth-2"><a href="#-신규-모듈-modulesapp" data-for="-신규-모듈-modulesapp">📋 신규 모듈: modules/app/</a></li><li class="depth-2"><a href="#-신규-모듈-modulesalb" data-for="-신규-모듈-modulesalb">📋 신규 모듈: modules/alb/</a></li><li class="depth-2"><a href="#-루트-maintf-모듈-연결" data-for="-루트-maintf-모듈-연결">📋 루트 main.tf 모듈 연결</a></li><li class="depth-1"><a href="#6-검증-및-트러블슈팅" data-for="6-검증-및-트러블슈팅">6. 검증 및 트러블슈팅</a></li><li class="depth-2"><a href="#-검증-체크리스트" data-for="-검증-체크리스트">📋 검증 체크리스트</a></li><li class="depth-2"><a href="#-target-group이-unhealthy인-경우" data-for="-target-group이-unhealthy인-경우">🚨 Target Group이 Unhealthy인 경우</a></li><li class="depth-2"><a href="#-alb-dns에-접속이-안-되는-경우" data-for="-alb-dns에-접속이-안-되는-경우">🚨 ALB DNS에 접속이 안 되는 경우</a></li><li class="depth-1"><a href="#7-비용-관리" data-for="7-비용-관리">7. 비용 관리</a></li><li class="depth-2"><a href="#-현재-과금-리소스" data-for="-현재-과금-리소스">📊 현재 과금 리소스</a></li><li class="depth-2"><a href="#-비용-차단-방법" data-for="-비용-차단-방법">💡 비용 차단 방법</a></li><li class="depth-1"><a href="#-핵심-정리" data-for="-핵심-정리">🎯 핵심 정리</a></li><li class="depth-2"><a href="#-오늘-배운-것" data-for="-오늘-배운-것">📊 오늘 배운 것</a></li><li class="depth-2"><a href="#-프로젝트-파일-구조-최종" data-for="-프로젝트-파일-구조-최종">🔧 프로젝트 파일 구조 (최종)</a></li><li class="depth-2"><a href="#-접속-정보" data-for="-접속-정보">📋 접속 정보</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Created with <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="../../postscript.js" type="module"></script></html>

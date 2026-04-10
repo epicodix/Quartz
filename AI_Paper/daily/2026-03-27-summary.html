@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr"><head><title>2026-03-27 AI 논문 요약</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Quartz 4"/><meta property="og:title" content="2026-03-27 AI 논문 요약"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="2026-03-27 AI 논문 요약"/><meta name="twitter:description" content="📚 2026-03-27 AI 논문 핵심 요약 📊 순위 기반: 5개 | 🤖 GLM 추천: 5개 📄 전문 분석: 10개 | 📝 초록 분석: 0개 📑 목차 📊📄 PixelSmile: Toward Fine-Grained Facial Expres… ⬆️97 📊📄 Intern-S1-Pro: Scientific Multimodal Foundati… ⬆️86 📊📄 RealRestorer: Towards Generalizable Real-Worl… ⬆️37 📊📄 Calibri: Enhancing Diffusion Trans..."/><meta property="og:description" content="📚 2026-03-27 AI 논문 핵심 요약 📊 순위 기반: 5개 | 🤖 GLM 추천: 5개 📄 전문 분석: 10개 | 📝 초록 분석: 0개 📑 목차 📊📄 PixelSmile: Toward Fine-Grained Facial Expres… ⬆️97 📊📄 Intern-S1-Pro: Scientific Multimodal Foundati… ⬆️86 📊📄 RealRestorer: Towards Generalizable Real-Worl… ⬆️37 📊📄 Calibri: Enhancing Diffusion Trans..."/><meta property="og:image:alt" content="📚 2026-03-27 AI 논문 핵심 요약 📊 순위 기반: 5개 | 🤖 GLM 추천: 5개 📄 전문 분석: 10개 | 📝 초록 분석: 0개 📑 목차 📊📄 PixelSmile: Toward Fine-Grained Facial Expres… ⬆️97 📊📄 Intern-S1-Pro: Scientific Multimodal Foundati… ⬆️86 📊📄 RealRestorer: Towards Generalizable Real-Worl… ⬆️37 📊📄 Calibri: Enhancing Diffusion Trans..."/><meta property="twitter:domain" content="epicodix.github.io/Quartz"/><meta property="og:url" content="https://epicodix.github.io/Quartz/AI_Paper/daily/2026-03-27-summary"/><meta property="twitter:url" content="https://epicodix.github.io/Quartz/AI_Paper/daily/2026-03-27-summary"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="📚 2026-03-27 AI 논문 핵심 요약 📊 순위 기반: 5개 | 🤖 GLM 추천: 5개 📄 전문 분석: 10개 | 📝 초록 분석: 0개 📑 목차 📊📄 PixelSmile: Toward Fine-Grained Facial Expres… ⬆️97 📊📄 Intern-S1-Pro: Scientific Multimodal Foundati… ⬆️86 📊📄 RealRestorer: Towards Generalizable Real-Worl… ⬆️37 📊📄 Calibri: Enhancing Diffusion Trans..."/><meta name="generator" content="Quartz"/><link href="../../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL1VzZXJzL2ExMjM0L2VwaWNvZGl4L215LXF1YXJ0ei1zaXRlL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><script src="../../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://epicodix.github.io/Quartz/index.xml"/><meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/><meta property="og:image" content="https://epicodix.github.io/Quartz/AI_Paper/daily/2026-03-27-summary-og-image.webp"/><meta property="og:image:url" content="https://epicodix.github.io/Quartz/AI_Paper/daily/2026-03-27-summary-og-image.webp"/><meta name="twitter:image" content="https://epicodix.github.io/Quartz/AI_Paper/daily/2026-03-27-summary-og-image.webp"/><meta property="og:image:type" content="image/.webp"/></head><body data-slug="AI_Paper/daily/2026-03-27-summary"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../..">Quartz 4</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>검색</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="검색어를 입력하세요" placeholder="검색어를 입력하세요"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="다크 모드"><title>다크 모드</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="라이트 모드"><title>라이트 모드</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="리더 모드"><title>리더 모드</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="collapse" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>{let priorityFolders=[\&quot;\\u{1F4D6} \\uAC00\\uC774\\uB4DC\&quot;,\&quot;\\u{1F52C} \\uAE30\\uC220 \\uBD84\\uC11D\&quot;,\&quot;\\u2699\\uFE0F \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;\\u{1F4DA} \\uAD50\\uC721\&quot;,\&quot;\\u{1F4BC} \\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624\&quot;];if(a.isFolder&amp;&amp;b.isFolder){let aPriority=priorityFolders.indexOf(a.displayName),bPriority=priorityFolders.indexOf(b.displayName);if(aPriority!==-1&amp;&amp;bPriority!==-1)return aPriority-bPriority;if(aPriority!==-1)return-1;if(bPriority!==-1)return 1}return!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,\&quot;ko-KR\&quot;,{numeric:!0,sensitivity:\&quot;base\&quot;}):a.isFolder?-1:1}&quot;,&quot;filterFn&quot;:&quot;node=>{if([\&quot;99_\\uC784\\uC2DC\&quot;,\&quot;tags\&quot;,\&quot;.obsidian\&quot;].includes(node.slugSegment))return!1;if(!node.isFolder&amp;&amp;node.data){let hiddenFiles=[\&quot;GUI_\\uC790\\uB3D9\\uD654_\\uB3C4\\uC804\\uAE30\&quot;,\&quot;Gemini_CLI_\\uD65C\\uC6A9_\\uAC00\\uC774\\uB4DC\&quot;,\&quot;Ollama_Troubleshooting_Guide\&quot;,\&quot;gemini_cli_guide\&quot;,\&quot;gemini_cli_introduction\&quot;,\&quot;gemini_context_awareness_guide\&quot;,\&quot;gemini_file_management_guide\&quot;,\&quot;get_claude_news.py\&quot;,\&quot;global_news_20250712\&quot;,\&quot;kubernetes_cheatsheet\&quot;,\&quot;kubernetes_storage_hands_on\&quot;,\&quot;naver_gmail_integration_guide\&quot;,\&quot;nodejs_installation_guide\&quot;,\&quot;\\uB0B4_\\uCEF4\\uD4E8\\uD130\\uB97C_AI_\\uC11C\\uBC84\\uB85C_\\uB9CC\\uB4E4\\uAE30_Ollama_\\uC124\\uCE58_\\uBC0F_\\uBB38\\uC81C\\uD574\\uACB0_\\uAC00\\uC774\\uB4DC\&quot;,\&quot;\\uC2DC\\uB9AC\\uC640_Gemini_\\uC5F0\\uACC4\\uC131_\\uAC15\\uD654_\\uBC29\\uC548\&quot;,\&quot;2025-08-13_\\uD559\\uC2B5_\\uD3EC\\uC778\\uD2B8\&quot;,\&quot;07_02_Advanced_Pod_Concepts\&quot;],fileTitle=node.data.title||node.displayName.replace(/\\.md$/,\&quot;\&quot;);return!hiddenFiles.includes(fileTitle)}return!0}&quot;,&quot;mapFn&quot;:&quot;node=>{let folderDisplayNames={\&quot;1_\\uAC00\\uC774\\uB4DC\&quot;:\&quot;\\u{1F4D6} \\uAC00\\uC774\\uB4DC\&quot;,\&quot;2_\\uAE30\\uC220_\\uBD84\\uC11D\&quot;:\&quot;\\u{1F52C} \\uAE30\\uC220 \\uBD84\\uC11D\&quot;,\&quot;3_\\uC544\\uC774\\uB514\\uC5B4_\\uB274\\uC2A4\&quot;:\&quot;\\u{1F4A1} \\uC544\\uC774\\uB514\\uC5B4 &amp; \\uB274\\uC2A4\&quot;,K8s_Deep_Dive:\&quot;\\u2699\\uFE0F \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;01_\\uB124\\uD2B8\\uC6CC\\uD06C \\uAE30\\uCD08\&quot;:\&quot;\\u{1F310} \\uB124\\uD2B8\\uC6CC\\uD06C \\uAE30\\uCD08\&quot;,\&quot;02_k8s\\uC2E4\\uC2B5\&quot;:\&quot;\\u{1F6E0}\\uFE0F \\uC2E4\\uC2B5\&quot;,\&quot;03_\\uD504\\uB85C\\uBA54\\uD14C\\uC6B0\\uC2A4\&quot;:\&quot;\\u{1F4CA} \\uD504\\uB85C\\uBA54\\uD14C\\uC6B0\\uC2A4\&quot;,\&quot;04_\\uADF8\\uB77C\\uD30C\\uB098\&quot;:\&quot;\\u{1F4C8} \\uADF8\\uB77C\\uD30C\\uB098\&quot;,\\uAD50\\uC721:\&quot;\\u{1F4DA} \\uAD50\\uC721\&quot;,\\uAD6C\\uB984\\uB525\\uB2E4\\uC774\\uBE0C:\&quot;\\u2601\\uFE0F \\uAD6C\\uB984\\uB525\\uB2E4\\uC774\\uBE0C\&quot;,\&quot;\\uBD84\\uC0B0\\uC2DC\\uC2A4\\uD15C_Distributed Systems\&quot;:\&quot;\\u{1F517} \\uBD84\\uC0B0\\uC2DC\\uC2A4\\uD15C\&quot;,GO:\&quot;\\u{1F439} Go \\uC5B8\\uC5B4\&quot;,\&quot;\\uB124\\uC774\\uBC84-\\uAC80\\uC0C9\\uAD11\\uACE0-\\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158-\\uD504\\uB85C\\uC81D\\uD2B8\&quot;:\&quot;\\u{1F680} \\uB124\\uC774\\uBC84 \\uD504\\uB85C\\uC81D\\uD2B8\&quot;,\&quot;01-\\uD504\\uB85C\\uC81D\\uD2B8-\\uBC30\\uACBD\&quot;:\&quot;\\u{1F4CB} \\uD504\\uB85C\\uC81D\\uD2B8 \\uBC30\\uACBD\&quot;,\&quot;02-\\uD604\\uC7AC\\uC0C1\\uD0DC-\\uBD84\\uC11D\&quot;:\&quot;\\u{1F50D} \\uD604\\uC7AC\\uC0C1\\uD0DC \\uBD84\\uC11D\&quot;,\&quot;03-\\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158-\\uACC4\\uD68D\&quot;:\&quot;\\u{1F4DD} \\uB9C8\\uC774\\uADF8\\uB808\\uC774\\uC158 \\uACC4\\uD68D\&quot;,\&quot;05-\\uC6B4\\uC601-\\uCD5C\\uC801\\uD654\&quot;:\&quot;\\u26A1 \\uC6B4\\uC601 \\uCD5C\\uC801\\uD654\&quot;,CKA:\&quot;\\u{1F3AF} CKA \\uC790\\uACA9\\uC99D\&quot;,GCP:\&quot;\\u2601\\uFE0F Google Cloud\&quot;,\&quot;moc-k8s\&quot;:\&quot;\\u{1F4DA} \\uCFE0\\uBC84\\uB124\\uD2F0\\uC2A4 \\uB178\\uD2B8\&quot;,Vagrant:\&quot;\\u{1F4E6} Vagrant\&quot;,\\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624:\&quot;\\u{1F4BC} \\uD3EC\\uD2B8\\uD3F4\\uB9AC\\uC624\&quot;,\\uAC00\\uC0C1\\uD654:\&quot;\\u{1F4BB} \\uAC00\\uC0C1\\uD654\&quot;,\\uAC1C\\uBC1C\\uD658\\uACBD:\&quot;\\u{1F6E0}\\uFE0F \\uAC1C\\uBC1C\\uD658\\uACBD\&quot;,\\uAE30\\uD0C0:\&quot;\\u{1F4CE} \\uAE30\\uD0C0\&quot;,AI\\uB3C4\\uAD6C:\&quot;\\u{1F916} AI \\uB3C4\\uAD6C\&quot;,\\uBAA8\\uB2C8\\uD130\\uB9C1:\&quot;\\u{1F4CA} \\uBAA8\\uB2C8\\uD130\\uB9C1\&quot;};if(node.isFolder&amp;&amp;folderDisplayNames[node.displayName]&amp;&amp;(node.displayName=folderDisplayNames[node.displayName]),!node.isFolder&amp;&amp;node.data){let displayName=node.data.title||node.displayName;displayName=displayName.replace(/^(\\d{2}_|\\d{2}-\\d{2}-)/g,\&quot;\&quot;),displayName.length>50&amp;&amp;(displayName=displayName.substring(0,47)+\&quot;...\&quot;),displayName=displayName.replace(/^kubernetes_/,\&quot;K8s \&quot;).replace(/^쿠버네티스_/,\&quot;K8s \&quot;).replace(/_완벽_가이드$/,\&quot; \\uAC00\\uC774\\uB4DC\&quot;).replace(/_실습_가이드$/,\&quot; \\uC2E4\\uC2B5\&quot;).replace(/_핵심_정리$/,\&quot; \\uC815\\uB9AC\&quot;).replace(/_기초_개념$/,\&quot; \\uAE30\\uCD08\&quot;).replace(/완전_가이드$/,\&quot;\\uAC00\\uC774\\uB4DC\&quot;).replace(/완벽_정리$/,\&quot;\\uC815\\uB9AC\&quot;),node.displayName=displayName}return node}&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-396"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>탐색기</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-396" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../AI_Paper/">AI_Paper</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../AI_Paper/daily/">daily</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>2026 03 27 AI 논문 요약</a></div></nav><h1 class="article-title">2026-03-27 AI 논문 요약</h1><p show-comma="true" class="content-meta"><time datetime="2026-03-26T15:00:00.000Z">2026년 3월 27일</time><span>72 min read</span></p><ul class="tags"><li><a href="../../tags/3dgs" class="internal tag-link">3dgs</a></li><li><a href="../../tags/4k-synthesis" class="internal tag-link">4k-synthesis</a></li><li><a href="../../tags/ai-paper" class="internal tag-link">ai-paper</a></li><li><a href="../../tags/ai4s" class="internal tag-link">ai4s</a></li><li><a href="../../tags/audio-codec" class="internal tag-link">audio-codec</a></li><li><a href="../../tags/audio-visual-control" class="internal tag-link">audio-visual-control</a></li><li><a href="../../tags/avcontrol" class="internal tag-link">avcontrol</a></li><li><a href="../../tags/benchmarking" class="internal tag-link">benchmarking</a></li><li><a href="../../tags/calibration" class="internal tag-link">calibration</a></li><li><a href="../../tags/caption-pipeline" class="internal tag-link">caption-pipeline</a></li><li><a href="../../tags/cma-es" class="internal tag-link">cma-es</a></li><li><a href="../../tags/code-agent" class="internal tag-link">code-agent</a></li><li><a href="../../tags/computer-graphics" class="internal tag-link">computer-graphics</a></li><li><a href="../../tags/computer-vision" class="internal tag-link">computer-vision</a></li><li><a href="../../tags/daily-summary" class="internal tag-link">daily-summary</a></li><li><a href="../../tags/data-augmentation" class="internal tag-link">data-augmentation</a></li><li><a href="../../tags/deep-learning" class="internal tag-link">deep-learning</a></li><li><a href="../../tags/diffusion-model" class="internal tag-link">diffusion-model</a></li><li><a href="../../tags/diffusion-models" class="internal tag-link">diffusion-models</a></li><li><a href="../../tags/digital-twin" class="internal tag-link">digital-twin</a></li><li><a href="../../tags/dit" class="internal tag-link">dit</a></li><li><a href="../../tags/efficient-ai" class="internal tag-link">efficient-ai</a></li><li><a href="../../tags/efficient-tuning" class="internal tag-link">efficient-tuning</a></li><li><a href="../../tags/evolutionary-algorithm" class="internal tag-link">evolutionary-algorithm</a></li><li><a href="../../tags/feed-forward" class="internal tag-link">feed-forward</a></li><li><a href="../../tags/fine-tuning" class="internal tag-link">fine-tuning</a></li><li><a href="../../tags/flow-matching" class="internal tag-link">flow-matching</a></li><li><a href="../../tags/gaussian-splatting" class="internal tag-link">gaussian-splatting</a></li><li><a href="../../tags/generalization" class="internal tag-link">generalization</a></li><li><a href="../../tags/image-generation" class="internal tag-link">image-generation</a></li><li><a href="../../tags/image-restoration" class="internal tag-link">image-restoration</a></li><li><a href="../../tags/iterative-development" class="internal tag-link">iterative-development</a></li><li><a href="../../tags/llm" class="internal tag-link">llm</a></li><li><a href="../../tags/lmdeploy" class="internal tag-link">lmdeploy</a></li><li><a href="../../tags/long-context" class="internal tag-link">long-context</a></li><li><a href="../../tags/lora" class="internal tag-link">lora</a></li><li><a href="../../tags/macromethod" class="internal tag-link">macromethod</a></li><li><a href="../../tags/memory-attention" class="internal tag-link">memory-attention</a></li><li><a href="../../tags/ml" class="internal tag-link">ml</a></li><li><a href="../../tags/moe" class="internal tag-link">moe</a></li><li><a href="../../tags/msa" class="internal tag-link">msa</a></li><li><a href="../../tags/multi-reference" class="internal tag-link">multi-reference</a></li><li><a href="../../tags/multilingual" class="internal tag-link">multilingual</a></li><li><a href="../../tags/neural-rendering" class="internal tag-link">neural-rendering</a></li><li><a href="../../tags/nv" class="internal tag-link">nv</a></li><li><a href="../../tags/open-source-model" class="internal tag-link">open-source-model</a></li><li><a href="../../tags/parallel-canvas" class="internal tag-link">parallel-canvas</a></li><li><a href="../../tags/parameter-efficient" class="internal tag-link">parameter-efficient</a></li><li><a href="../../tags/rag" class="internal tag-link">rag</a></li><li><a href="../../tags/real-world-restoration" class="internal tag-link">real-world-restoration</a></li><li><a href="../../tags/reinforcement-learning" class="internal tag-link">reinforcement-learning</a></li><li><a href="../../tags/scientific-multimodal" class="internal tag-link">scientific-multimodal</a></li><li><a href="../../tags/slop-code-bench" class="internal tag-link">slop-code-bench</a></li><li><a href="../../tags/software-quality" class="internal tag-link">software-quality</a></li><li><a href="../../tags/sparse-attention" class="internal tag-link">sparse-attention</a></li><li><a href="../../tags/technical-debt" class="internal tag-link">technical-debt</a></li><li><a href="../../tags/texturing" class="internal tag-link">texturing</a></li><li><a href="../../tags/trillion-scale" class="internal tag-link">trillion-scale</a></li><li><a href="../../tags/tts" class="internal tag-link">tts</a></li><li><a href="../../tags/video-generation" class="internal tag-link">video-generation</a></li><li><a href="../../tags/visual-reasoning" class="internal tag-link">visual-reasoning</a></li><li><a href="../../tags/voice-cloning" class="internal tag-link">voice-cloning</a></li><li><a href="../../tags/voxtral" class="internal tag-link">voxtral</a></li><li><a href="../../tags/xtuner" class="internal tag-link">xtuner</a></li><li><a href="../../tags/zero-shot" class="internal tag-link">zero-shot</a></li></ul></div></div><article class="popover-hint"><h1 id="-2026-03-27-ai-논문-핵심-요약">📚 2026-03-27 AI 논문 핵심 요약<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-2026-03-27-ai-논문-핵심-요약" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<blockquote>
+<p>📊 <strong>순위 기반</strong>: 5개 | 🤖 <strong>GLM 추천</strong>: 5개
+📄 <strong>전문 분석</strong>: 10개 | 📝 <strong>초록 분석</strong>: 0개</p>
+</blockquote>
+<hr/>
+<h2 id="-목차">📑 목차<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-목차" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ol>
+<li>📊📄 <a href="#1-pixelsmile-toward-fine-grained-facial-expression-editing" class="internal alias">PixelSmile: Toward Fine-Grained Facial Expres…</a> ⬆️97</li>
+<li>📊📄 <a href="#2-intern-s1-pro-scientific-multimodal-foundation-model-at-trillion-scale" class="internal alias">Intern-S1-Pro: Scientific Multimodal Foundati…</a> ⬆️86</li>
+<li>📊📄 <a href="#3-realrestorer-towards-generalizable-real-world-image-restoration-with-large-scale-image-editing-models" class="internal alias">RealRestorer: Towards Generalizable Real-Worl…</a> ⬆️37</li>
+<li>📊📄 <a href="#4-calibri-enhancing-diffusion-transformers-via-parameter-efficient-calibration" class="internal alias">Calibri: Enhancing Diffusion Transformers via…</a> ⬆️36</li>
+<li>📊📕 <a href="#5-macro-advancing-multi-reference-image-generation-with-structured-long-context-data" class="internal alias">MACRO: Advancing Multi-Reference Image Genera…</a> ⬆️26</li>
+<li>🤖📄 <a href="#6-voxtral-tts" class="internal alias">Voxtral TTS</a> ⬆️23</li>
+<li>🤖📄 <a href="#7-slopcodebench-benchmarking-how-coding-agents-degrade-over-long-horizon-iterative-tasks" class="internal alias">SlopCodeBench: Benchmarking How Coding Agents…</a> ⬆️19</li>
+<li>🤖📄 <a href="#8-msa-memory-sparse-attention-for-efficient-end-to-end-memory-model-scaling-to-100m-tokens" class="internal alias">MSA: Memory Sparse Attention for Efficient En…</a> ⬆️18</li>
+<li>🤖📄 <a href="#9-avcontrol-efficient-framework-for-training-audio-visual-controls" class="internal alias">AVControl: Efficient Framework for Training A…</a> ⬆️10</li>
+<li>🤖📄 <a href="#10-less-gaussians,-texture-more-4k-feed-forward-textured-splatting" class="internal alias">Less Gaussians, Texture More: 4K Feed-Forward…</a> ⬆️5</li>
+</ol>
+<hr/>
+<h2 id="1-pixelsmile-toward-fine-grained-facial-expression-editing">1. PixelSmile: Toward Fine-Grained Facial Expression Editing<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-pixelsmile-toward-fine-grained-facial-expression-editing" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote>
+<p><strong>arXiv</strong>: <a href="https://arxiv.org/abs/2603.25728" class="external">2603.25728<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> | <strong>기관</strong>: Fudan University | ⬆️ 97 | ⭐ 51
+📊 순위선정 | 📄 HTML
+<strong>태그</strong>: <code>ai-paper</code> <code>ml</code>
+<strong>사전 지식</strong>: Diffusion Model, Latent Space, Contrastive Learning, LoRA (Low-Rank Adaptation), Manifold Learning</p>
+</blockquote>
+<blockquote class="callout abstract" data-callout="abstract">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>한 줄 요약 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>기존 모델들이 미세하게 겹치는 표정(예: 공포와 놀람)을 제대로 구분하지 못하는 한계를 극복하고, 연속적인 감정 강도 조절과 정체성 보존이 가능한 정교한 얼굴 표정 편집 프레임워크를 제시했기 때문에 중요합니다.</p>
+</div>
+</blockquote>
+<h3 id="-핵심-아이디어">💡 핵심 아이디어<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-핵심-아이디어" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>기존 기술이 표정을 ‘행복’, ‘슬픔’ 같은 딱딱한 상자에 넣어 분류했다면, 이 방법은 표정을 ‘온도계’처럼 연속적인 선 위에 놓고 조절합니다. 서로 엉켜 있는 실처럼 구분하기 힘들던 비슷한 감정들(예: 공포와 놀람)을 ‘대칭적 공동 학습’이라는 방법으로 효과적으로 풀어내어, 미세한 표정 차이도 자연스럽게 구현해냅니다.</p>
+<blockquote class="callout info" data-callout="info">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>문제 정의 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>기존의 생성형 모델들은 이산적인(Discrete, 떨어진) 카테고리만 학습하다 보니, 의미적으로 서로 겹치는 표정 쌍(공포 vs 놀람, 분노 vs 혐오)에서 혼란을 겪곤 했습니다. 이로 인해 표정을 바꿀 때 사람의 신원(Identity, 누구인지)이 변질되거나, 원치 않는 배경 변화가 생기는 문제가 있었습니다.</p>
+</div>
+</blockquote>
+<h3 id="-방법론-상세">🔬 방법론 상세<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-방법론-상세" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>FFE 데이터셋 및 벤치마크</strong>: 실제 사진과 애니메이션 도메인을 아우르는 6만 장의 이미지에 연속적인 감정 주석을 추가한 데이터셋을 구축했습니다. 구조적 혼란, 편집 정확도 등 4가지 지표를 평가하는 FFE-Bench를 제안했습니다.</li>
+<li><strong>텍스트 잠재 보간(Textual Latent Interpolation)</strong>: 중립(Neutral) 프롬프트와 목표 표정(Target) 프롬프트의 잠재 벡터(Embedding) 사이를 선형적으로 보간하여 표정 강도를 연속적으로 조절합니다. 수식으로는 $e_{\text{cond}}(\alpha) = e_{\text{neu}} + \alpha \cdot \Delta e$ ($\alpha$는 0에서 1 사이의 강도 계수)로 표현됩니다.</li>
+<li><strong>완전 대칭 공동 학습(Fully Symmetric Joint Training)</strong>: LoRA(Low-Rank Adaptation, 적은 파라미터로 모델을 튜닝하는 기법)를 적용한 MMDiT(Multi-modal Diffusion Transformer) 아키텍처 위에서, 표정 분리를 촉진하는 대칭적 대조 학습 목적함수를 사용하여 모델을 학습시킵니다.</li>
+</ul>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>핵심 기법 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p><strong>텍스트 잠재 보간(Textual Latent Interpolation)</strong> 기법은 마치 색상을 섞는 것과 같습니다. “무표정”이라는 베이스 색상에 “화남”이라는 색상을 조금씩 섞어($\alpha$ 값을 조절하여), 약간의 짜증부터 완전한 분노까지 원하는 세기만큼 정확하게 표현해 줍니다.</p>
+</div>
+</blockquote>
+<h3 id="-정량적-결과">📊 정량적 결과<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-정량적-결과" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>주요 성과 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li>FFE-Bench를 통해 평가한 결과, 구조적 혼란(Structural Confusion) 지표에서 기존 모델 대비 우수한 분리 성능을 달성했습니다.</li>
+</ul>
+</div>
+</blockquote>
+<ul>
+<li>표정 편집의 정확도와 신원 보존 간의 트레이드오프 관계를 개선하여, 표정을 바꿔도 사람의 얼굴 특징이 더 잘 유지되었습니다.</li>
+<li>텍스트 프롬프트만으로 선형적이고 부드러운 표정 강도 제어가 가능함을 입증했습니다.</li>
+</ul>
+<h3 id="-기존-대비-개선점">🚀 기존 대비 개선점<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-기존-대비-개선점" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>이산적(Discrete)인 라벨링에서 벗어나 연속적인 감정 매니폴드(Manifold, 다양체)를 학습하여 미세한 표정 차이를 표현할 수 있습니다.</li>
+<li>공포와 놀람처럼 의미가 겹치는 표정을 혼동 없이 정교하게 편집합니다.</li>
+<li>단순 텍스트 입력만으로도 0%에서 100%까지 자연스러운 표정 강도 조절이 가능합니다.</li>
+</ul>
+<h3 id="-활용-분야">🎯 활용 분야<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-활용-분야" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>버추얼 휴먼 및 아바타 서비스</strong>: 메타버스나 AI 비서에서 사용자가 원하는 미세한 감정 변화를 실시간으로 구현 가능합니다.</li>
+<li><strong>영화 및 애니메이션 제작</strong>: 성우의 연기나 감정선에 맞춰 캐릭터의 표정을 정밀하게 수정하고 제어하는 데 활용할 수 있습니다.</li>
+<li><strong>사진 편집 애플리케이션</strong>: 사용자가 인물 사진의 표정을 ‘조금 더 웃게’ 하는 등 자연스러운 보정을 할 수 있습니다.</li>
+</ul>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>한계 및 주의사항 </p></div>
+                  
+                </div>
+</blockquote>
+<ul>
+<li>데이터셋 구축을 위해 4단계의 복잡한 수집 및 주석 파이프라인이 필요하여, 초기 적용에 높은 비용이 들 수 있습니다.</li>
+<li>사전 학습된 대규모 디퓨전 모델(MMDiT)을 기반으로 하므로, 추론 시 연산 리소스가 많이 소요될 수 있습니다.</li>
+</ul>
+<hr/>
+<h2 id="2-intern-s1-pro-scientific-multimodal-foundation-model-at-trillion-scale">2. Intern-S1-Pro: Scientific Multimodal Foundation Model at Trillion Scale<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-intern-s1-pro-scientific-multimodal-foundation-model-at-trillion-scale" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote>
+<p><strong>arXiv</strong>: <a href="https://arxiv.org/abs/2603.25040" class="external">2603.25040<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> | <strong>기관</strong>: Intern Large Models | ⬆️ 86
+📊 순위선정 | 📄 HTML
+<strong>태그</strong>: <code>scientific-multimodal</code> <code>trillion-scale</code> <code>moe</code> <code>reinforcement-learning</code> <code>ai4s</code> <code>caption-pipeline</code> <code>xtuner</code> <code>lmdeploy</code>
+<strong>사전 지식</strong>: Mixture-of-Experts (MoE, 혼합 전문가 모델), Reinforcement Learning (강화 학습), Quantization (양자화), Multimodal Learning (멀티모달 학습), Alignment (정렬, 데이터 간의 매칭)</p>
+</blockquote>
+<blockquote class="callout abstract" data-callout="abstract">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>한 줄 요약 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>1조 파라미터를 갖춘 세계 최초의 과학용 멀티모달 기본 모델을 통해 화학부터 지구과학까지 100여 개 이상의 과학 전문 작업을 해결할 수 있는 범용 과학적 지능을 구현했기 때문에 중요합니다.</p>
+</div>
+</blockquote>
+<h3 id="-핵심-아이디어-1">💡 핵심 아이디어<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-핵심-아이디어-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>이 모델은 마치 모든 학문 분야의 백과사전을 통달한 대학 교수에게, 실험실의 복잡한 도면과 데이터를 하나하나 세부적으로 설명해 주는 전문 비서를 연결해 놓은 것과 같습니다. 기존 모델들이 과학 논문의 암호 같은 그림들을 겉핥기식으로 이해했다면, 이 모델은 그림 속의 미세한 요소까지 텍스트로 정확히 연결하여 깊이 있는 과학적 통찰을 제공합니다.</p>
+<blockquote class="callout info" data-callout="info">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>문제 정의 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>과학 분야는 화학, 생물학, 물리학 등 각기 다른 고유한 언어, 표기법, 지식 체계를 가지고 있어 일반적인 언어 모델로는 깊이 있는 이해가 어렵습니다. 특히 과학 논문에 포함된 이미지들은 기존의 자연어 캡션 데이터와 달리 내용이 매우 정밀하고 복잡하여, 모델이 이를 시각적 요소와 정확히 정렬(Alignment)하여 이해하는 것은 큰 도전 과제였습니다.</p>
+</div>
+</blockquote>
+<h3 id="-방법론-상세-1">🔬 방법론 상세<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-방법론-상세-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>과학용 전용 캡션 파이프라인 구축</strong>: 기존의 웹에서 수집한 캡션 데이터는 이미지 내용과 정렬이 잘 되어 있지 않고 잡음(Semantic Noise)이 많습니다. 이를 해결하기 위해 논문의 이미지에 대해 시각적 요소를 텍스트로 명시적으로 참조하는 고밀도 캡션(Dense Caption)을 생성하는 전용 파이프라인을 설계하여, 이미지와 텍스트의 정합성을 크게 높였습니다.</li>
+<li><strong>대규모 희소 모델용 안정적인 강화 학습(RL)</strong>: 1조 파라미터 규모의 혼합 전문가(Mixture-of-Experts, MoE) 모델에서 강화 학습을 수행할 때 발생하는 막대한 메모리 부하 문제를 해결했습니다. FP8 양자화를 도입하고 훈련-추론 엔진 간의 불일치를 줄이는 종합적인 안정화 프레임워크를 적용하여, 저정밀도 환경에서도 성능 저하 없이 학습이 가능하도록 만들었습니다.</li>
+<li><strong>초대규모 사전 학습 데이터 구성</strong>: 이미지-텍스트와 텍스트를 포함하여 총 6조(6T) 토큰 규모의 데이터를 지속 사전 학습(Continued Pre-training)에 사용했습니다. 특히 자연 이미지와 분포가 다른 과학 이미지의 특성을 고려하여 학습 데이터를 구성했습니다.</li>
+</ul>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>핵심 기법 </p></div>
+                  
+                </div>
+</blockquote>
+<ul>
+<li><strong>밀도 높은 과학 캡션 생성</strong>: 과학 논문의 이미지는 ‘그림 설명’이 텍스트의 연장선이거나 너무 간략한 경우가 많습니다. 이 논문은 별도의 파이프라인을 통해 이미지 속 구체적인 시각적 요소(예: 그래프의 특정 막대, 현미경 사진의 세포 구조 등)를 텍스트로 꼼꼼하게 묘사하도록 강제하여, 모델이 과학적 내용을 눈으로 보고 이해하는 능력을 극대화했습니다.</li>
+</ul>
+<h3 id="-정량적-결과-1">📊 정량적 결과<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-정량적-결과-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>주요 성과 </p></div>
+                  
+                </div>
+</blockquote>
+<ul>
+<li>모델 규모: 1조(1 Trillion) 파라미터를 달성하여 최초의 트릴리얄 규모 과학용 멀티모달 모델이 됨.</li>
+<li>전문성 범위: 화학, 재료과학, 생명과학, 지구과학 등 주요 과학 분야의 100개 이상의 전문 작업(Task)을 숙달함.</li>
+<li>효율성 개선: 이전 모델(Intern-S1) 대비 전문가(Expert) 수를 4배 증가시키면서도 유사한 수준의 활성화 파라미터를 유지하여 효율성을 확보함.</li>
+</ul>
+<h3 id="-기존-대비-개선점-1">🚀 기존 대비 개선점<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-기존-대비-개선점-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>기존 거대 모델이 일반적인 추론에 집중했다면, 과학적 추론과 에이전트 능력을 결합하여 실제 연구 보조 기능을 강화했습니다.</li>
+<li>단순한 이미지 이해를 넘어, 과학 문헌의 독특한 이미지 분포와 전문 용어에 특화된 학습 데이터 파이프라인을 도입했습니다.</li>
+<li>1조 파라미터 급의 거대 모델 훈련 시 발생하는 메모리 한계를 XTuner와 LMDeploy라는 인프라 지원을 통해 효율적으로 해결했습니다.</li>
+</ul>
+<h3 id="-활용-분야-1">🎯 활용 분야<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-활용-분야-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>신약 및 신소재 개발</strong>: 단백질 구조 예측이나新材料 설계 등 복잡한 과학적 문제 해결.</li>
+<li><strong>학술 문헌 분석 및 리서치</strong>: 방대한 과학 논문과 실험 데이터를 통합하여 연구자에게 인사이트를 제공하는 AI 연구원.</li>
+<li><strong>멀티모달 과학 에이전트</strong>: 실험 데이터 이미지를 분석하여 텍스트로 보고서를 작성하거나 추가 실험을 제안하는 자동화 시스템.</li>
+</ul>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>한계 및 주의사항 </p></div>
+                  
+                </div>
+</blockquote>
+<ul>
+<li>공개된 자원에서 고품질의 과학용 이미지-텍스트 쌍을 확보하는 것이 여전히 어렵고, 원본 논문의 캡션은 종종 불충분하거나 정렬되지 않아 정제가 필수적입니다.</li>
+<li>희소 MoE(Mixture-of-Experts) 아키텍처에서 강화 학습을 수행할 때 전문가 계층의 파라미터 양이 방대하여 메모리 압박이 매우 크므로, FP8과 같은 저정밀도 훈련 기술에 대한 의존도가 높습니다.</li>
+</ul>
+<hr/>
+<h2 id="3-realrestorer-towards-generalizable-real-world-image-restoration-with-large-scale-image-editing-models">3. RealRestorer: Towards Generalizable Real-World Image Restoration with Large-Scale Image Editing Models<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-realrestorer-towards-generalizable-real-world-image-restoration-with-large-scale-image-editing-models" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote>
+<p><strong>arXiv</strong>: <a href="https://arxiv.org/abs/2603.25502" class="external">2603.25502<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> | <strong>기관</strong>: Southern university of science and technology | ⬆️ 37 | ⭐ 39
+📊 순위선정 | 📄 HTML
+<strong>태그</strong>: <code>image-restoration</code> <code>computer-vision</code> <code>deep-learning</code> <code>real-world-restoration</code> <code>data-augmentation</code> <code>generalization</code> <code>open-source-model</code>
+<strong>사전 지식</strong>: Image Restoration (이미지 복원), Degradation (열화), Synthetic Data (합성 데이터), Domain Gap (도메인 격차), Zero-shot Generalization (제로 샷 일반화)</p>
+</blockquote>
+<blockquote class="callout abstract" data-callout="abstract">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>한 줄 요약 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>이 논문은 대규모 편집 모델을 활용하여 실제 환경의 다양한 복잡한 열화(화질 저하) 문제를 하나의 모델로 해결함으로써, 기존 오픈 소스 모델의 한계를 극복하고 상용 폐쇄형 모델과 대등한 성능을 보여주는 범용적인 이미지 복원 기술을 제시했기 때문에 중요합니다.</p>
+</div>
+</blockquote>
+<h3 id="-핵심-아이디어-2">💡 핵심 아이디어<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-핵심-아이디어-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>마치 교과서(합성 데이터)만으로 공부한 학생이 아닌, 실전 현장(실제 웹 이미지)에서 다양한 환자를 진료해본 전문의와 같습니다. 기존 모델들은 흐림이나 노이즈 같은 특정 질병 하나만 치료하는 전문의였다면, RealRestorer는 비, 안개, 낮은 조도 등 여러 증상이 섞여 있는 환자를 동시에 치료할 수 있는 범용 의료진과 같습니다. 이를 위해 실제와 유사한 데이터를 대량으로 만드는 파이프라인과 합성 데이터와 실제 데이터를 단계적으로 섞어 학습하는 전략을 사용했습니다.</p>
+<blockquote class="callout info" data-callout="info">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>문제 정의 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>기존 이미지 복원(Image Restoration) 모델들은 주로 합성된 데이터(Synthetic Data)로 학습했기 때문에, 실제 현장에서 발생하는 복잡하고 다양한 열화(Blur, Rain, Noise 등)에 잘 대처하지 못하는 일반화 부족 문제가 있습니다. 또한 성능이 좋은 상용 폐쇄형 모델(Closed-source Model)들은 데이터와 연산 비용이 매우 크고 연구 목적으로 활용하기 어렵습니다.</p>
+</div>
+</blockquote>
+<h3 id="-방법론-상세-2">🔬 방법론 상세<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-방법론-상세-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>대규모 합성 열화 데이터 생성 파이프라인 구축: 흐림(Blur), 압축 노이즈(Compression Artifacts), 무아레 패턴(Moiré Patterns), 저조도(Low-light), 노이즈(Noise), 렌즈 플레어(Flare), 반사(Reflection), 안개(Haze), 비(Rain)의 9가지 대표적인 열화 유형을 적용했습니다. 단순 합성을 넘어 세밀한 노이즈 모델링(Granular Noise Modeling)과 객체 영역 인식 섭동(Segment-aware Perturbations), 웹 스타일 열화 과정을 적용하여 실제와 합성 데이터 간의 격차를 좁혔습니다.</li>
+<li>단계적 혼합 학습 전략 (Two-stage progressively mixed training strategy): 합성된 정제 쌍(Synthetic Pairs)과 실제 정제 쌍(Real-to-clean Pairs)을 두 단계에 걸쳐 점진적으로 섞어서 학습시킴으로써, 모델이 합성 데이터의 구조적 이점과 실제 데이터의 현실감을 동시에 획득하도록 했습니다.</li>
+<li>RealIR-Bench 제안: 인터넷에서 수집한 실제 열화 이미지로만 구성된 새로운 벤치마크를 만들고, 거대 언어 모델(VLM) 기반의 평가 프레임워크를 도입하여 객관적인 성능 측정이 가능하게 했습니다.</li>
+</ul>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>핵심 기법 </p></div>
+                  
+                </div>
+</blockquote>
+<p>가장 중요한 기법은 실제와 합성 데이터의 격차를 줄이는 데이터 생성 파이프라인입니다. 기존에는 단순히 필터를 씌워 이미지를 망가뜨렸다면, 이 논문에서는 이미지 내의 객체(세그먼트)를 인식하여 그 부분에만 맞춰 변형을 주거나(Segment-aware), 실제 웹상에서 볼 법한 압축 손실 패턴을 흉내 내는 등 실제 환경을 최대한 모방하는 데 초점을 맞췄습니다.</p>
+<h3 id="-정량적-결과-2">📊 정량적 결과<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-정량적-결과-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>주요 성과 </p></div>
+                  
+                </div>
+</blockquote>
+<ul>
+<li>다양한 평가 세트를 통해 9가지 복원 작업에서 오픈 소스 최첨단(State-of-the-art) 성능을 달성했습니다.</li>
+<li>주요 상용 폐쇄형 시스템(Commercial Systems)과 비교했을 때, 복원 결과물의 품질이 매우 유사한 수준(Low Gap)으로 나타났습니다.</li>
+<li>본적이 없는(Zero-shot) 열화 유형에 대해서도 강력한 일반화 성능을 보였습니다.</li>
+</ul>
+<h3 id="-기존-대비-개선점-2">🚀 기존 대비 개선점<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-기존-대비-개선점-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>복잡한 현실 환경 대응력 향상: 단일 열화가 아닌 여러 열화가 섞인 실제 이미지를 훨씬 더 잘 복원합니다.</li>
+<li>접근성 및 효율성: 거대한 상용 모델에 비해 열린 소스(Open-source)로 제공되어 연구자들이 접근하고 사용하기 쉬우면서도 뛰어난 성능을 냅니다.</li>
+<li>평가의 객관성 확보: 실제 인터넷 이미지로 구성된 벤치마크를 통해 실전 성능을 더 정확히 측정할 수 있습니다.</li>
+</ul>
+<h3 id="-활용-분야-2">🎯 활용 분야<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-활용-분야-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>자율 주행 및 객체 감지: 흐리거나 비가 오는 등 날씨가 나쁜 환경에서도 카메라 영상을 복원하여 AI가 주변 환경을 정확히 인식하게 합니다.</li>
+<li>원격 탐사(Remote Sensing) 및 3차원 복원: 위성 사진이나 스캔 데이터의 노이즈와 흐림을 제거하여 분석 정확도를 높입니다.</li>
+<li>일반 사진 및 동영상 편집: 저조도나 손떨림으로 망가진 사용자의 사진을 자동으로 고품질로 되살려주는 서비스에 적용할 수 있습니다.</li>
+</ul>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>한계 및 주의사항 </p></div>
+                  
+                </div>
+</blockquote>
+<ul>
+<li>논문에서는 데이터 생성 파이프라인이 실제와 합성의 격차를 좁혔음에도 불구하고, 여전히 완벽한 실제 환경 분포를 모방하기엔 어려움이 있을 수 있음을 시사합니다.</li>
+<li>향후 연구 방향으로는 본적이 없는(Zero-shot) 열화 유형에 대한 일반화 능력을 더욱 강화하는 것을 언급하고 있습니다.</li>
+</ul>
+<hr/>
+<h2 id="4-calibri-enhancing-diffusion-transformers-via-parameter-efficient-calibration">4. Calibri: Enhancing Diffusion Transformers via Parameter-Efficient Calibration<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-calibri-enhancing-diffusion-transformers-via-parameter-efficient-calibration" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote>
+<p><strong>arXiv</strong>: <a href="https://arxiv.org/abs/2603.24800" class="external">2603.24800<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> | <strong>기관</strong>: Visual Generative AI group | ⬆️ 36 | ⭐ 19
+📊 순위선정 | 📄 HTML
+<strong>태그</strong>: <code>dit</code> <code>calibration</code> <code>parameter-efficient</code> <code>diffusion-models</code> <code>evolutionary-algorithm</code> <code>cma-es</code> <code>fine-tuning</code>
+<strong>사전 지식</strong>: Diffusion Models(확산 모델), Transformer(트랜스포머), Evolutionary Algorithm(진화 알고리즘), Black-box Optimization(블랙박스 최적화), Layer Normalization(레이어 정규화)</p>
+</blockquote>
+<blockquote class="callout abstract" data-callout="abstract">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>한 줄 요약 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Stable Diffusion 3나 FLUX와 같은 최신 DiT(Diffusion Transformer) 모델의 성능을 모델 전체를 재학습시키지 않고, 단 100여 개의 파라미터만으로 획기적으로 개선할 수 있는 길을 열었기에 중요합니다.</p>
+</div>
+</blockquote>
+<h3 id="-핵심-아이디어-3">💡 핵심 아이디어<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-핵심-아이디어-3" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>고급 오디오 장비의 이퀄라이저(Equalizer)를 조정하는 것과 같습니다. 음악(모델)을 새로 녹음(재학습)하는 대신, 각 주파수 대역(각 레이어 블록)의 볼륨을 미세하게 조절(스케일링 파라미터 최적화)하여 전체적인 소리(생성 품질)를 최상으로 만드는 원리입니다.</p>
+<blockquote class="callout info" data-callout="info">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>문제 정의 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Diffusion Transformer(DiT) 모델의 블록들은 외형적으로는 동일하지만, 실제로는 생성 과정에서 기여도가 매우 고르지 않습니다. 심지어 일부 블록은 비활성화했을 때 오히려 성능이 좋아지는 경우도 있어, 모든 레이어가 똑같이 중요한 것이 아님에도 불구하고 이를 최적으로 조절할 방법이 필요했습니다.</p>
+</div>
+</blockquote>
+<h3 id="-방법론-상세-3">🔬 방법론 상세<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-방법론-상세-3" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>스케일링 파라미터(Scaling Parameter) 도입: 각 DiT 블록의 출력을 조절하는 학습 가능한 계수 하나를 추가하여, 블록의 기여도를 제어합니다.</li>
+<li>블랙박스 최적화(Black-box Optimization): 모델 내부의 가중치를 직접 수정하는 대신, 전체 모델을 하나의 블랙박스로 보고 파라미터 조합에 따른 출력 품질 점수(Reward)를 측정합니다.</li>
+<li>CMA-ES 알고리즘 적용: 공분산 행렬 적응 진화 전략(Covariance Matrix Adaptation Evolution Strategy)이라는 진화 알고리즘을 사용하여, 최적의 스케일링 파라미터 조합을 효율적으로 탐색합니다.</li>
+</ul>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>핵심 기법 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Calibri는 수십억 개의 파라미터를 가진 거대 모델을 통째로 학습하는 대신, 각 레이어에 곱해지는 ‘계수(Scalar)’ 값만 조정합니다. 이를 통해 마치 고장 난 부품을 교체하거나 성능을 끌어올리는 파인 튜닝(Fine-tuning)을, 단 약 100개의 숫자만 바꾸어 매우 적은 비용으로 달성합니다.</p>
+</div>
+</blockquote>
+<h3 id="-정량적-결과-3">📊 정량적 결과<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-정량적-결과-3" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>주요 성과 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li>FLUX.1-dev, Stable Diffusion 3.5 Medium, Qwen-Image 등 최첨단 모델에서 HPSv3(인간 선호도 점수) 및 Q-Align(이미지 품질 점수) 기준으로 성능이 지속적으로 향상되었습니다.</li>
+<li>전체 모델 파라미터 중 약 100개($10^2$)만 수정하여 이러한 성능 향상을 달성했으며, 추론 단계(inference step)를 15단계로 낮추어도 만족스러운 품질을 유지했습니다.</li>
+</ul>
+</div>
+</blockquote>
+<h3 id="-기존-대비-개선점-3">🚀 기존 대비 개선점<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-기존-대비-개선점-3" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>파라미터 효율성: 기존의 파인 튜닝(Fine-tuning) 방식 대비 수정해야 할 파라미터 수를 획기적으로 줄였습니다.</li>
+<li>범용성: 특정 모델에 국한되지 않고 FLUX, SD 3.5 등 서로 다른 구조의 최신 텍스트-투-이미지 모델에 두루 적용 가능합니다.</li>
+<li>계산 효율성: CMA-ES를 통해 상대적으로 적은 수의 후보(Candidate)만으로도 최적의 조합을 빠르게 찾아낼 수 있습니다.</li>
+</ul>
+<h3 id="-활용-분야-3">🎯 활용 분야<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-활용-분야-3" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>고품질 텍스트-투-이미지 생성 서비스</li>
+<li>명령어 기반 이미지 편집(Instruction-guided image editing)</li>
+<li>비디오 생성(Video generation) 등 확산 모델을 기반으로 한 다양한 생성 작업</li>
+</ul>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>한계 및 주의사항 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li>최적의 파라미터를 찾기 위해서는 여전히 보상 모델(Reward model)을 이용한 평가 과정이 필요하므로, 완전히 추가적인 비용이 들지 않는 것은 아닙니다.</li>
+</ul>
+</div>
+</blockquote>
+<ul>
+<li>제공된 텍스트 내에서는 구체적인 실패 사례나 한계점에 대한 언급이 제한적이나, 블랙박스 최적화 특성상 탐색 과정에서의 시간 소모가 발생할 수 있습니다.</li>
+</ul>
+<hr/>
+<h2 id="5-macro-advancing-multi-reference-image-generation-with-structured-long-context-data">5. MACRO: Advancing Multi-Reference Image Generation with Structured Long-Context Data<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-macro-advancing-multi-reference-image-generation-with-structured-long-context-data" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote>
+<p><strong>arXiv</strong>: <a href="https://arxiv.org/abs/2603.25319" class="external">2603.25319<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> | <strong>기관</strong>: The University of Hong Kong | ⬆️ 26 | ⭐ 31
+📊 순위선정 | 📕 PDF
+<strong>태그</strong>: <code>image-generation</code> <code>multi-reference</code> <code>long-context</code> <code>diffusion-model</code> <code>computer-vision</code> <code>ai-paper</code> <code>macromethod</code> <code>visual-reasoning</code>
+<strong>사전 지식</strong>: Diffusion Models, Cross-Attention, Transformer, Long-Context Modeling, Computer Vision</p>
+</blockquote>
+<blockquote class="callout abstract" data-callout="abstract">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>한 줄 요약 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>단일 이미지 참조의 한계를 넘어, 여러 이미지를 구조화된 긴 컨텍스트(Long-Context)로 처리하여 모델이 복합적인 시각적 정보를 정확하게 통합하고 생성할 수 있도록 했기 때문에 중요합니다.</p>
+</div>
+</blockquote>
+<h3 id="-핵심-아이디어-4">💡 핵심 아이디어<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-핵심-아이디어-4" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>이 논문은 마치 요리사가 조리법 레시피를 쭉 읽으며 필요한 재료와 순서를 파악하는 것과 비슷합니다. 기존 모델은 여러 장의 참조 이미지를 마구 섞어놓은 것처럼 인식해서 정보를 잃어버리거나 섞였는데, 이 방법은 참조 이미지들을 ‘구조화된 서류’ 형태로 정리해서 모델이 필요할 때마다 해당 페이지를 정확히 찾아보고 내용을 반영할 수 있게 해줍니다. 즉, 여러 개의 참조 이미지를 긴 흐름(Long-Context) 안에서 체계적으로 이해하고 활용하도록 만든 것이 핵심입니다.</p>
+<blockquote class="callout info" data-callout="info">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>문제 정의 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>기존의 멀티-레퍼런스 이미지 생성(Multi-Reference Image Generation) 모델들은 참조 이미지가 많아지면 모델이 처리할 수 있는 정보의 양(컨텍스트 윈도우)에 제한이 걸려 세부적인 특징을 놓치거나, 여러 이미지의 특징이 서로 간섭하여 왜곡되는 문제를 겪었습니다. 본 논문은 이러한 ‘긴 컨텍스트 처리’와 ‘구조화되지 않은 참조 데이터’의 한계를 극복하는 것을 목표로 합니다.</p>
+</div>
+</blockquote>
+<h3 id="-방법론-상세-4">🔬 방법론 상세<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-방법론-상세-4" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>구조화된 긴 컨텍스트 데이터 구축 (Structured Long-Context Data Construction): 이미지 단순 나열 방식이 아니라, 참조 이미지 간의 관계(예: 전경/배경, 스타일/객체)를 정의한 메타데이터와 함께 토큰(Token)을 구조적으로 배치하여 학습 데이터를 구성합니다.</li>
+<li>MACRO 아키텍처 (Multi-scale Adaptive Context Reference Optimization): 여러 이미지에서 추출된 특징 맵(Feature Map)을 계층적으로 융합합니다. 특히 긴 시퀀스 처리를 위해 스파스 어텐션(Sparse Attention) 기반의 효율적인 메커니즘을 도입하여 연산량을 줄이면서도 먼 거리에 있는 참조 정보도 끊김 없이 참조합니다.</li>
+<li>정렬 손실 함수 (Alignment Loss): 생성된 이미지의 특정 영역이 올바른 참조 이미지의 내용을 반영했는지 검증하는 손실 함수를 추가하여, 여러 참조 이미지가 섞이는 ‘현상 교차(Cross-Contamination)’ 문제를 방지합니다.</li>
+</ul>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>핵심 기법 </p></div>
+                  
+                </div>
+</blockquote>
+<p>이 논문의 가장 중요한 기술은 <strong>구조화된 컨텍스트 인코딩</strong>입니다. 책을 읽을 때 목차를 보고 내용을 찾듯이, 모델이 참조 이미지들의 위상 관계를 이해하도록 학습시킵니다. 예를 들어, “이미지 A는 배경 스타일, 이미지 B는 주인공 의상”이라는 구조를 미리 알려주면, 모델이 무작위로 정보를 섞는 대신 목적에 맞는 정보를 정확한 위치에 가져다 쓸 수 있게 됩니다.</p>
+<h3 id="-정량적-결과-4">📊 정량적 결과<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-정량적-결과-4" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>주요 성과 </p></div>
+                  
+                </div>
+</blockquote>
+<ul>
+<li>ImageReward 벤치마크에서 기존 최첨단(SOTA) 모델 대비 약 12.5%의 성능 향상을 달성했습니다.</li>
+<li>CLIP Score(텍스트-이미지 정합도)는 0.285 수준으로, 이전 모델 대비 5% 이상 향상되어 프롬프트 따라가기 성능이 우수함을 입증했습니다.</li>
+<li>사용자 선호도 테스트(User Study)에서 78%의 참가자가 MACRO가 생성한 이미지를 더 선호한다고 응답했습니다.</li>
+</ul>
+<h3 id="-기존-대비-개선점-4">🚀 기존 대비 개선점<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-기존-대비-개선점-4" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>긴 컨텍스트 처리 능력: 기존 모델들은 참조 이미지가 3~4장을 넘어가면 성능이 급격히 떨어졌으나, MACRO는 10장 이상의 참조 이미지에서도 일관된 품질을 유지합니다.</li>
+<li>구조적 이해도: 단순히 시각적 유사성만 맞추는 게 아니라, 참조 이미지 간의 논리적 구조(예: 순서, 계층)를 반영하여 이미지를 생성합니다.</li>
+<li>효율성: 전체 이미지를 다시 계산하지 않고, 필요한 컨텍스트 부분만 선택적으로 활용하여 추론 속도를 개선했습니다.</li>
+</ul>
+<h3 id="-활용-분야-4">🎯 활용 분야<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-활용-분야-4" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>패션 및 디자인</strong>: 여러 장의 의류 참조 이미지와 소품 이미지를 동시에 입력하여 전체적인 룩(Look)을 구성하는 모델 개발.</li>
+<li><strong>만화 및 스토리보드 생성</strong>: 캐릭터 설정값, 배경 이미지, 스타일 참고 이미지 등 여러 레퍼런스를 동시에 반영한 연속적인 장면 생성.</li>
+<li><strong>게임 에셋 제작</strong>: 다양한 텍스처 참조와 3D 모델 렌더링 이미지를 결합하여 고품질의 게임 환경 이미지 자동 생성.</li>
+</ul>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>한계 및 주의사항 </p></div>
+                  
+                </div>
+</blockquote>
+<ul>
+<li>학습 데이터 구성의 어려움: 구조화된 긴 컨텍스트 데이터를 만들기 위해서는 이미지 간의 관계를 사람이 직접 라벨링하거나 정제해야 하므로 데이터셋 구축 비용이 높습니다.</li>
+<li>추론 시간: 긴 시퀀스를 처리하는 특성상, 참조 이미지가 매우 많을 경우(20장 이상)에는 여전히 추론 속도가 단일 참조 모델보다 느릴 수 있습니다.</li>
+</ul>
+<hr/>
+<h2 id="6-voxtral-tts">6. Voxtral TTS<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#6-voxtral-tts" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote>
+<p><strong>arXiv</strong>: <a href="https://arxiv.org/abs/2603.25551" class="external">2603.25551<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> | <strong>기관</strong>: Mistral AI_ | ⬆️ 23
+🤖 GLM추천 | 📄 HTML
+<strong>태그</strong>: <code>voxtral</code> <code>tts</code> <code>voice-cloning</code> <code>flow-matching</code> <code>audio-codec</code> <code>zero-shot</code> <code>multilingual</code>
+<strong>사전 지식</strong>: Auto-regressive Model, Flow-matching, Vector Quantization (VQ), Finite Scalar Quantization (FSQ), Zero-shot Learning, Codec</p>
+</blockquote>
+<blockquote class="callout abstract" data-callout="abstract">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>한 줄 요약 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Voxtral TTS는 단 3초의 참고 오디오로 다국어 보이스 클로닝이 가능한 하이브리드 아키텍처를 통해 ElevenLabs Flash v2.5와 같은 상용 모델을 인간 평가에서 앞서는 자연스럽고 표현력 있는 음성 생성의 새로운 기준을 제시했기에 중요합니다.</p>
+</div>
+</blockquote>
+<h3 id="-핵심-아이디어-5">💡 핵심 아이디어<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-핵심-아이디어-5" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>텍스트를 읽어주는 것을 캔버스에 그림을 그리는 과정에 비유할 수 있습니다. 먼저 사람의 윤곽과 표정을 빠르게 스케치하는 과정(의미적 토큰, 자기회귀 생성)을 거치고, 그 위에 붓터치와 색감으로 생명력을 불어넣는 세부 작업(음향적 토큰, 플로우 매칭)을 나누어 진행합니다. 이렇게 하면 그림의 의미가 뚜렷하면서도 색감이 훨씬 풍부하고 자연스러워져, 기존에는 불가능했던 짧은 참고 오디오만으로도 실제 사람 같은 목소리를 만들어낼 수 있습니다.</p>
+<blockquote class="callout info" data-callout="info">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>문제 정의 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>기존의 제로샷 음성 합성(Zero-shot TTS) 시스템들은 높은 지능성(Intelligibility)을 달성했지만, 인간 음성의 뉘앙스와 표현력을 포착하는 데 어려움을 겪었습니다. 특히 최근 모델(Moshi 등)은 음향적 성분(Acoustic component)을 생성할 때 깊이 방향(Depth-wise)으로 자기회귀(Autoregressive) 방식을 사용하는데, 이는 밀도가 높은 음향 정보를 모델링하는 데 비효율적일 수 있습니다. 이 논문은 이러한 음향 성분을 굳이 자기회귀 방식으로 생성할 필요가 없으며, 조건부 연속 모델(Conditional continuous model)을 통해 더 효과적으로 생성할 수 없는지에 대한 질문에서 출발합니다.</p>
+</div>
+</blockquote>
+<h3 id="-방법론-상세-5">🔬 방법론 상세<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-방법론-상세-5" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>하이브리드 아키텍처(Hybrid Architecture)</strong>: 모델은 두 가지 종류의 토큰을 생성합니다. 첫째, ‘의미적 토큰(Semantic tokens)‘은 자기회귀(Autoregressive) 방식으로 순차적으로 생성하여 말의 내용과 기본적인 운율을 담당합니다. 둘째, ‘음향적 토큰(Acoustic tokens)‘은 플로우 매칭(Flow-matching) 기법을 사용하여 생성하여 세밀한 음색과 감정을 담당합니다.</li>
+<li><strong>Voxtral Codec</strong>: 음성을 압축하고 복원하는 코덱을 처음부터 학습시켰습니다. 이 코덱은 VQ(Vector Quantization)와 FSQ(Finite Scalar Quantization)를 결합한 하이브리드 양자화 방식을 사용합니다. 의미적 스트림에는 VQ를 사용하고 밀도 높은 음향적 스트림에는 FSQ를 적용하여, 표현력과 효율성을 동시에 확보했습니다.</li>
+<li><strong>학습 데이터 구조 및 손실 함수</strong>: (참고 음성 $A_1$, 텍스트 $T_2$, 목표 음성 $A_2$)의 튜플을 사용하여 학습하며, 각 구간 사이에 특수 토큰인 <code>&lt;next></code>와 <code>&lt;repeat></code>을 삽입하여 모델이 구간을 인식하게 합니다. 손실 함수는 의미적 토큰에 대한 교차 엔트로피 손실(Cross-entropy loss)과 음향적 토큰에 대한 플로우 매칭 손실(Flow-matching loss)의 두 부분으로 구성됩니다.</li>
+</ul>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>핵심 기법 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>가장 중요한 기법은 **플로우 매칭(Flow-matching)**을 음향적 토큰 생성에 적용한 것입니다. 기존 디퓨전(Diffusion) 모델은 노이즈를 제거하는 과정이 많아 느린 반면, 플로우 매칭은 확률적 미분 방정식을 통해 더 적은 단계로 더 빠르고 고품질의 샘플을 생성할 수 있습니다. 이를 통해 의미는 순서대로 만들되, 음색과 같은 디테일은 전체적인 맥락을 고려해 효율적으로 채워 넣을 수 있게 되었습니다.</p>
+</div>
+</blockquote>
+<h3 id="-정량적-결과-5">📊 정량적 결과<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-정량적-결과-5" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>주요 성과 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li>모델은 ElevenLabs Flash v2.5 대비 **68.4%의 승리율(Win rate)**을 기록하며, 인간 평가가의 자연스러움과 표현력 면에서 더 높은 선호도를 입증했습니다.</li>
+<li>Voxtral Codec은 동일한 비트레이트(Bitrate) 설정(16 codebooks)에서 경쟁 모델인 Mimi 대비 Mel 거리, STFT 거리, PESQ(음성 품질), ESTOI(명료도), ASR-WER, 화자 유사도 등 모든 객관적 지표에서 더 우수한 성능을 보였습니다.</li>
+</ul>
+</div>
+</blockquote>
+<h3 id="-기존-대비-개선점-5">🚀 기존 대비 개선점<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-기존-대비-개선점-5" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>음성 생성의 효율성과 품질을 동시에 잡기 위해 자기회귀(AR)와 플로우 매칭(Flow-matching)이라는 두 서로 다른 생성 패러다임을 하이브리드 구조로 융합했습니다.</li>
+<li>단 3초의 아주 짧은 참고 오디오만으로도 화자의 특성과 표현력을 완벽하게 복제하여 제로샷(Zero-shot) 환경에서의 성능을 극대화했습니다.</li>
+<li>오픈 소스 라이선스(CC BY-NC)로 모델 가중치를 공개하여 연구 커뮤니티의 접근성을 높였습니다.</li>
+</ul>
+<h3 id="-활용-분야-5">🎯 활용 분야<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-활용-분야-5" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>가상 비서 및 챗봇</strong>: 사용자의 목소리를 3초만 녹음하여 자연스러운 톤으로 대답하는 초개인화된 AI 비서 구현 가능.</li>
+<li><strong>오디오북 및 더빙</strong>: 성우의 목소리를 샘플링하여 전체 책을 낭독하거나, 다국어 콘텐츠 제작 시 원어민의 감정을 살린 더빙 작업에 활용.</li>
+<li><strong>접근성 도구</strong>: 말하기 장애가 있는 분들이 자신의 과거 음성이나 짧은 목소리 샘플을 통해 자연스러운 목소리를 다시 찾을 수 있는 보조 기기 개발.</li>
+</ul>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>한계 및 주의사항 </p></div>
+                  
+                </div>
+</blockquote>
+<ul>
+<li>모델이 가장 잘 작동하는 참고 음성(Voice prompt)의 길이는 3초에서 25초 사이입니다. 1초 미만의 너무 짧은 음성이나 180초를 초과하는 긴 음성에서는 성능이 저하될 수 있습니다.</li>
+<li>모델이 CC BY-NC(저작자 표시-비영리) 라이선스로 배포되므로, 상업적 용도로 사용하기 위해서는 별도의 허가나 라이선스 변경이 필요합니다.</li>
+</ul>
+<hr/>
+<h2 id="7-slopcodebench-benchmarking-how-coding-agents-degrade-over-long-horizon-iterative-tasks">7. SlopCodeBench: Benchmarking How Coding Agents Degrade Over Long-Horizon Iterative Tasks<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#7-slopcodebench-benchmarking-how-coding-agents-degrade-over-long-horizon-iterative-tasks" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote>
+<p><strong>arXiv</strong>: <a href="https://arxiv.org/abs/2603.24755" class="external">2603.24755<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> | <strong>기관</strong>: University of Wisconsin - Madison | ⬆️ 19 | ⭐ 23
+🤖 GLM추천 | 📄 HTML
+<strong>태그</strong>: <code>slop-code-bench</code> <code>code-agent</code> <code>software-quality</code> <code>benchmarking</code> <code>iterative-development</code> <code>llm</code> <code>technical-debt</code>
+<strong>사전 지식</strong>: LLM Agents, Docker, Technical Debt, Regression Test, Refactoring, Code Smell</p>
+</blockquote>
+<blockquote class="callout abstract" data-callout="abstract">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>한 줄 요약 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>기존 벤치마크가 간과해 온 ‘장기적인 반복 작업에서의 코드 품질 저하’ 문제를 처음으로 정량적으로 측정하여, AI 코딩 에이전트가 단순히 기능을 구현하는 것을 넘어 코드를 얼마나 잘 유지 보수할 수 있는지 평가하는 새로운 기준을 제시했기 때문에 중요합니다.</p>
+</div>
+</blockquote>
+<h3 id="-핵심-아이디어-6">💡 핵심 아이디어<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-핵심-아이디어-6" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>마치 건축가에게 집을 짓게 할 때 1층을 완벽하게 지었는지만 평가하는 것이 아니라, 2층과 3층을 계속 추가 요청할 때 기반이 흔들리거나 구조가 엉망이 되어버리는지를 테스트하는 것과 같습니다. 에이전트가 자신이 이전에 작성한 코드를 계속해서 확장해야 하는 상황을 강제하여, 단발성 기능 구현 능력이 아닌 장기적인 아키텍처 건전성을 평가합니다.</p>
+<blockquote class="callout info" data-callout="info">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>문제 정의 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>현재의 AI 코딩 에이전트 평가는 완벽한 명세서를 주고 한 번에 정답을 맞히는 ‘단발성 성적(Single-shot)‘에 집중되어 있습니다. 하지만 실제 소프트웨어 개발은 반복적이며, 잘 돌아가던 코드가 기능 추가 과정에서 스파게티 코드(Spaghetti Code)로 변해 유지보수가 불가능해지는 ‘기술적 부채(Technical Debt)’ 누적 문제를 기존 평가는 전혀 잡아내지 못합니다.</p>
+</div>
+</blockquote>
+<h3 id="-방법론-상세-6">🔬 방법론 상세<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-방법론-상세-6" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>반복적 확장 환경 설계
+총 20개의 문제와 93개의 체크포인트로 구성된 벤치마크에서, 에이전트는 명세가 변경될 때마다 이전에 자신이 작성한 코드를 수정하거나 확장해야 합니다. 이때 내부 구조를 강요하지 않고 설계 결정(Design Decision)을 에이전트 스스로 내리도록 하여 코드가 얼마나 유연한지 테스트합니다.</li>
+<li>환경 격리 및 상태 관리
+각 체크포인트는 새로운 도커(Docker) 컨테이너에서 실행되며, 이전 세션의 캐시나 설치된 패키지 정보는 삭제됩니다. 오직 작업 디렉터리의 코드만 남기므로, 에이전트가 외부 기억이 아닌 코드 자체의 구조적 완결성에만 의존하도록 강제합니다.</li>
+<li>정성적 품질 지표 측정
+단순한 테스트 통과 여부뿐만 아니라, 장황함(Verbosity, 불필요한 코드의 양)과 구조적 침식(Structural Erosion, 코드 구조의 무너짐 정도)이라는 두 가지 궤적 수준(Trajectory-level)의 지표를 추적합니다.</li>
+</ul>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>핵심 기법 </p></div>
+                  
+                </div>
+</blockquote>
+<p>구조적 침식(Structural Erosion)과 장황함(Verbosity)을 측정하는 메트릭이 핵심입니다. 이는 코드가 단순히 테스트를 통과하는지를 넘어, 반복적인 수정 과정에서 코드의 가독성과 효율성이 얼마나 훼손되는지를 수치화하여, ‘잘 돌아가지만 더 이상 수정할 수 없는 코드’를 만드는 에이전트의 특성을 포찱해 냅니다.</p>
+<h3 id="-정량적-결과-6">📊 정량적 결과<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-정량적-결과-6" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>주요 성과 </p></div>
+                  
+                </div>
+</blockquote>
+<ul>
+<li>가장 높은 성능을 보인 Opus 4.6 모델조차 엄격한 해결률(Strict)은 17.2%에 불과하며, 어떤 에이전트도 문제를 끝까지 완벽하게 해결하지 못했습니다.</li>
+<li>전체 궤적(Trajectory)의 90%에서 장황함(Verbosity)이 증가했고, 80%에서 구조적 침식(Erosion)이 관찰되어 시간이 지날수록 코드가 인간이 관리하기 힘든 형태로 변질됨을 입증했습니다.</li>
+<li>프롬프트 측면에서의 개입(Prompting)은 초기 코드 품질은 높일 수 있었지만, 품질 저하의 속도(Slope)를 늦추는 데에는 실패했습니다.</li>
+</ul>
+<h3 id="-기존-대비-개선점-6">🚀 기존 대비 개선점<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-기존-대비-개선점-6" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>기존 HumanEval이나 SWE-bench 같은 벤치마크가 놓치고 있던 ‘코드의 유지보수성’과 ‘장기적 품질’을 평가 지표에 포함했습니다.</li>
+<li>에이전트가 단순히 기능을 구현하는 것이 아니라, 확장 가능한 아키텍처를 설계할 수 있는지를 판단할 수 있는 새로운 평가 표준을 제시했습니다.</li>
+<li>실제 인간이 작성한 유지보수된 레포지토리와 에이전트가 생성한 코드의 변질 양상을 비교하여, 에이전트의 저하가 비정상적임을 보여주었습니다.</li>
+</ul>
+<h3 id="-활용-분야-6">🎯 활용 분야<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-활용-분야-6" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>장기적인 수명을 가지는 소프트웨어 프로젝트를 위한 자동화된 코딩 에이전트 개발</li>
+<li>기술적 부채(Technical Debt)를 자동으로 감지하고 리팩토링을 제안하는 코드 검토 도구</li>
+<li>모델 학습 시 단발성 정답률뿐만 아니라 장기적 코드 품질을 최적화하는 강화 학습(RL) 보상 함수 설계</li>
+</ul>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>한계 및 주의사항 </p></div>
+                  
+                </div>
+</blockquote>
+<ul>
+<li>현재 실험은 언어에 의존적이지 않게 설계되었으나, 실제로는 Python 트랙에서만 수행되어 다른 언어에서의 결과가 아직 검증되지 않았습니다.</li>
+<li>평가 결과에 따르면 현재의 최신 모델들은 이 과제를 해결하기에 역부족이며, 단순한 프롬프트 엔지니어링으로는 근본적인 해결이 불가능하다는 점을 인지해야 합니다.</li>
+</ul>
+<hr/>
+<h2 id="8-msa-memory-sparse-attention-for-efficient-end-to-end-memory-model-scaling-to-100m-tokens">8. MSA: Memory Sparse Attention for Efficient End-to-End Memory Model Scaling to 100M Tokens<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#8-msa-memory-sparse-attention-for-efficient-end-to-end-memory-model-scaling-to-100m-tokens" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote>
+<p><strong>arXiv</strong>: <a href="https://arxiv.org/abs/2603.23516" class="external">2603.23516<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> | <strong>기관</strong>: EverMind-AI | ⬆️ 18 | ⭐ 2257
+🤖 GLM추천 | 📄 HTML
+<strong>태그</strong>: <code>msa</code> <code>long-context</code> <code>llm</code> <code>memory-attention</code> <code>efficient-ai</code> <code>sparse-attention</code> <code>rag</code> <code>digital-twin</code>
+<strong>사전 지식</strong>: Transformer, Attention Mechanism, KV-Cache, RoPE (Rotary Positional Embedding), RAG (Retrieval-Augmented Generation)</p>
+</blockquote>
+<blockquote class="callout abstract" data-callout="abstract">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>한 줄 요약 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>기존 LLM(대규모 언어 모델)의 최대 100만 토큰 제한을 돌파하여, 1억 토큰 규모의 장기 기억을 메모리 희소 주의(MSA) 기법으로 효율적이고 정확하게 처리할 수 있게 만든 논문입니다.</p>
+</div>
+</blockquote>
+<h3 id="-핵심-아이디어-7">💡 핵심 아이디어<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-핵심-아이디어-7" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>거대한 도서관에서 필요한 정보를 찾는 상황을 상상해 보세요. 기존의 방식은 도서관에 있는 책 한 페이지 한 페이지를 전부 읽어야 했다면, MSA는 책의 목차를 스캔하여 필요한 책만 정확히 꺼내주는 지능형 사서와 같습니다. 이를 통해 모든 데이터를 다 계산하지 않고도 필요한 부분만 주목(Sparse Attention)하여, 1억 토큰이라는 어마어마한 양의 정보도 빠르고 정확하게 찾아낼 수 있습니다.</p>
+<blockquote class="callout info" data-callout="info">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>문제 정의 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>현재의 LLM은 인간의 뇌처럼 평생에 해당하는 방대한 기억을 처리하지 못합니다. 기존 모델은 긴 맥락을 처리할 때 정확도가 떨어지거나 속도가 느려지고, RAG(검색 증강 생성) 같은 방식은 정보를 수정하기 어렵고 엔드 투 엔드 학습이 불가능하다는 문제가 있었습니다. 이 논문은 수억 개의 토큰을 잃어버리지 않고 빠르게 처리하여, 인간 수준의 장기 기억을 AI에 구현하는 것을 목표로 합니다.</p>
+</div>
+</blockquote>
+<h3 id="-방법론-상세-7">🔬 방법론 상세<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-방법론-상세-7" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>문서 기반 희소 주의(Document-based retrieval sparse attention)</strong>: 모든 토큰에 대해 계산하는 대신, 문서 단위로 중요한 것을 선택적으로 계산합니다. 이때 ‘Router K Projector’라는 특별한 행렬($W^{h}<em>{K^{R}}$)을 사용해 어떤 문서가 현재 질문과 관련 있는지 판단하는 열쇠($K</em>{i,h}^R$)를 생성합니다.</li>
+<li><strong>문서별 RoPE 및 KV 캐시 압축</strong>: 긴 문맥에서 위치 정보를 보존하기 위해 문서 단위의 회전 위치 임베딩(RoPE, Rotary Positional Embedding)을 적용합니다. 또한 메모리 사용량을 줄이기 위해 KV 캐시(Key-Value Cache)를 압축하여 저장합니다.</li>
+<li><strong>메모리 병렬화(Parallel) 및 인터리브(Interleave)</strong>: 1억 토큰을 빠르게 처리하기 위해 계산을 병렬로 수행하고, 여러 문서에 흩어 있는 정보를 연결하여 추론할 수 있도록 메모리 세그먼트를 섞어서 처리하는 기법을 사용합니다.</li>
+</ul>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>핵심 기법 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>가장 중요한 것은 <strong>Router K Projector</strong>입니다. 보통의 어텐션(Attention)은 모든 토큰의 키(Key)와 질문(Query)을 다 곱해서 계산하지만, 이 기법은 라우터(Router)가 먼저 “이 문서는 지금 필요한가?”를 빠르게 판단하게 합니다. 필요 없는 문서는 계산에서 제외(Skip)하므로, 연산 양이 획기적으로 줄어들어 1억 토큰도 처리할 수 있게 됩니다.</p>
+</div>
+</blockquote>
+<h3 id="-정량적-결과-7">📊 정량적 결과<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-정량적-결과-7" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>주요 성과 </p></div>
+                  
+                </div>
+</blockquote>
+<ul>
+<li><strong>긴 맥락 QA 성능</strong>: 277K부터 10M 토큰 규모의 메모리 뱅크를 사용하는 9가지 벤치마크(MS MARCO, Natural Questions 등)에서 기존 RAG 시스템 및 최신 모델을 능가하는 성능을 보였습니다.</li>
+<li><strong>극한 맥락 유지</strong>: RULER 데이터셋(Needle In A Haystack) 기준, 유효 맥락 길이가 1억(100M) 토큰으로 확장되어도 성능 저하가 거의 발생하지 않고 높은 정확도를 유유했습니다.</li>
+</ul>
+<h3 id="-기존-대비-개선점-7">🚀 기존 대비 개선점<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-기존-대비-개선점-7" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>엔드 투 엔드(End-to-End) 최적화가 가능하여, 검색과 생성을 따로 학습하는 기존 RAG보다 전체적인 성능이 더 우수합니다.</li>
+<li>맥락 길이가 길어짐에 따라 급격히 증가하는 지연 시간(Latency)을 획기적으로 줄여, 실시간 처리가 가능한 수준으로 개선했습니다.</li>
+<li>KV 캐시 압축을 통해 메모리 사용량과 추론 비용을 크게 절감했습니다.</li>
+</ul>
+<h3 id="-활용-분야-7">🎯 활용 분야<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-활용-분야-7" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>디지털 트윈(Digital Twins)</strong>: 한 사람의 평생 기록이나 기업의 장기 이력을 온전히 저장하고 그와 상호작용하는 AI 에이전트 구축.</li>
+<li><strong>장기 롤플레잇 및 소설 작성</strong>: 수십 권의 책에 해당하는 방대한 설정과 과거 이야기를 모두 기억하여 일관성 있는 이야기 생성.</li>
+<li><strong>복잡한 멀티 에이전트 시스템</strong>: 수많은 에이전트가 오랜 기간 동안 주고받은 대화의 역사를 모두 기억하고 분석하는 시스템.</li>
+</ul>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>한계 및 주의사항 </p></div>
+                  
+                </div>
+</blockquote>
+<ul>
+<li>제공된 본문에서는 명시적인 기술적 한계점을 언급하지는 않았으나, 1억 토큰을 처리하기 위해서는 여전히 상당한 하드웨어 리소스(고사양 GPU 메모리 등)가 필요할 것으로 보입니다.</li>
+<li>희소 주의(Sparse Attention) 메커니즘이 매우 정교하게 설계되었으므로, 라우터(Router)가 관련 없는 문서를 잘못 걸러낼 경우 답변의 품질에 영향을 줄 수 있는 위험은 내재해 있습니다.</li>
+</ul>
+<hr/>
+<h2 id="9-avcontrol-efficient-framework-for-training-audio-visual-controls">9. AVControl: Efficient Framework for Training Audio-Visual Controls<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#9-avcontrol-efficient-framework-for-training-audio-visual-controls" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote>
+<p><strong>arXiv</strong>: <a href="https://arxiv.org/abs/2603.24793" class="external">2603.24793<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> | <strong>기관</strong>: Lightricks | ⬆️ 10
+🤖 GLM추천 | 📄 HTML
+<strong>태그</strong>: <code>video-generation</code> <code>audio-visual-control</code> <code>lora</code> <code>diffusion-model</code> <code>avcontrol</code> <code>parallel-canvas</code> <code>efficient-tuning</code>
+<strong>사전 지식</strong>: Diffusion Model (확산 모델), LoRA (Low-Rank Adaptation), Self-Attention (셀프 어텐션), VAE (Variational Autoencoder), Latent Space (잠재 공간)</p>
+</blockquote>
+<blockquote class="callout abstract" data-callout="abstract">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>한 줄 요약 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>오디오와 비디오 생성 모델에 다양한 제어 기능을 유연하게 추가할 수 있는 효율적인 프레임워크를 제안하여, 모델 아키텍처를 수정하지 않고도 최소의 학습 비용으로 고품질의 멀티모달 제어를 가능하게 했습니다.</p>
+</div>
+</blockquote>
+<h3 id="-핵심-아이디어-8">💡 핵심 아이디어<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-핵심-아이디어-8" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>메인 생성 모델을 ‘베테랑 배우’라고 하고, 제어 신호(깊이, 포즈 등)를 ‘동선이 적힌 추가 대본’이라고 상상해 보세요. 기존 방식은 새로운 연기를 할 때마다 배우의 신체를 수술하거나(아키텍처 변경) 아예 새로 배우를 뽑았습니다. AVControl은 배우 옆에 병렬 캔버스(Parallel Canvas)라는 ‘작은 보조 스크린’을 설치하여, 메인 대본(영상 생성)을 읽으면서도 동시에 보조 스크린의 지시(제어 신호)를 따라 연기하게 하는 방식입니다. 이때 LoRA라는 가벼운 훈련만으로 배우가 이 새로운 보조 스크린을 이해하게 만듭니다.</p>
+<blockquote class="callout info" data-callout="info">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>문제 정의 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>비디오와 오디오 생성을 제어하는 방식은 매우 다양한데(깊이, 포즈, 카메라 궤적, 오디오 파형 등), 기존 접근법들은 특정 제어만 가능한 단일 모델을 만들거나, 새로운 모달리티(Modality, 데이터의 종류)를 추가할 때마다 비용이 많이 드는 모델 구조 변경이 필요했습니다.</p>
+</div>
+</blockquote>
+<h3 id="-방법론-상세-8">🔬 방법론 상세<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-방법론-상세-8" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>
+<p><strong>병렬 캔버스 조건부(Parallel Canvas Conditioning)</strong>
+기존의 채널 연결(Channel Concatenation) 방식 대신, 참조 신호(Control Signal)를 생성 타겟과 동일한 VAE(Variational Autoencoder, 변분 오토인코더)를 통해 잠재 패치 토큰(Latent Patch Tokens)으로 인코딩합니다. 이 참조 토큰들을 생성 토큰들의 시퀀스 차원(Sequence Dimension)에 연결하여 트랜스포머의 셀프 어텐션(Self-Attention) 레이어에서 함께 처리합니다.</p>
+</li>
+<li>
+<p><strong>타임스텝 이산화(Timestep Disambiguation)</strong>
+참조 토큰에는 깨끗한 타임스텝($t=0$)을 할당하고, 생성 중인 타겟 토큰에는 현재 노이즈 수준($t$)을 할당합니다. 이를 통해 위치 인코딩(Positional Encoding)을 변경할 필요 없이 모델이 참조 신호와 생성 대상을 본질적으로 구별하도록 학습합니다.</p>
+</li>
+<li>
+<p><strong>LoRA 어댑터(LoRA Adapters)</strong>
+모든 백본(Backbone) 모델 가중치는 동결(Frozen)된 상태를 유지하며, 각 제어 모달리티마다 경량의 LoRA(Low-Rank Adaptation, 저계수 적응) 어댑터만을 독립적으로 학습합니다.</p>
+</li>
+</ul>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>핵심 기법 </p></div>
+                  
+                </div>
+</blockquote>
+<p>가장 중요한 발상은 ‘타임스텝을 라벨로 쓴다’는 것입니다. 비디오를 생성할 때는 계속 노이즈를 제거해가지만($t$가 큼), 옆에 붙어 있는 제어용 이미지(깊이맵 등)는 이미 완성된 그림($t=0$)이라고 모델에게 알려주는 것입니다. 이렇게 하면 모델은 노이즈 섞인 그림을 보고 완성된 그림을 찾아가면서, 옆에 있는 완성된 제어 신호의 구조를 흉내 내게 됩니다.</p>
+<h3 id="-정량적-결과-8">📊 정량적 결과<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-정량적-결과-8" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>주요 성과 </p></div>
+                  
+                </div>
+</blockquote>
+<ul>
+<li>VACE 벤치마크(VACE Benchmark) 평가에서 깊이(Depth), 포즈(Pose), 인페인팅(Inpainting) 등 다양한 작업에서 기존 방법론(Control-A-Video, VideoComposer 등)보다 VBench 지표(주제 일관성, 이미지 품질 등) 전반에서 우수한 성능을 보였습니다.</li>
+<li>모든 제어 모달리티에 대한 총 학습 예산이 단 55,000 스텝(~55K steps)으로 매우 효율적입니다.</li>
+</ul>
+<h3 id="-기존-대비-개선점-8">🚀 기존 대비 개선점<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-기존-대비-개선점-8" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>확장성</strong>: 새로운 제어 방식을 추가할 때마다 복잡한 모델 구조 변경이 필요 없이, 해당 모달리티에 맞는 LoRA만 추가하면 됩니다.</li>
+<li><strong>효율성</strong>: 전체 모델을 재학습하는 것이 아니라 백본을 동결하고 작은 어댑터만 학습하므로 GPU 메모리 사용량과 학습 시간이 획기적으로 줄어듭니다.</li>
+<li><strong>구조적 제어 성능</strong>: 단순히 이미지 기반의 문맥学习方法을 비디오로 확장하는 방식이 구조적 제어에서 실패하는 문제를 병렬 캔버스 방식으로 해결했습니다.</li>
+</ul>
+<h3 id="-활용-분야-8">🎯 활용 분야<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-활용-분야-8" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>게임 개발</strong>: 블렌더(Blender) 미리보기 렌더링을 실시간으로 오디오-비주얼 결과물으로 변환하여 게임 엔진에 활용할 수 있습니다.</li>
+<li><strong>영상 편집</strong>: 단일 이미지에서 카메라 궤적을 제어하여 비디오를 생성하거나, 기존 비디오를 특정 스타일이나 깊이 정보에 맞춰 재레nder링(Re-rendering)할 수 있습니다.</li>
+<li><strong>멀티모달 생성</strong>: “누가 말하는지(Who Is Talking)“와 같은 오디오와 비디오가 동기화된 복합적인 제어가 필요한 콘텐츠 제작에 사용할 수 있습니다.</li>
+</ul>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>한계 및 주의사항 </p></div>
+                  
+                </div>
+</blockquote>
+<ul>
+<li>논문에서 명시적으로 언급된 기술적 결함은 없으나, 제어 가능한 모달리티의 공간이 계속 확장되고 있으므로 이를 계속해서 실용적으로 수용할 수 있는지 지켜봐야 합니다. 또한 LTX-2라는 특정 파운데이션 모델에 종속적일 가능성이 있습니다.</li>
+</ul>
+<hr/>
+<h2 id="10-less-gaussians-texture-more-4k-feed-forward-textured-splatting">10. Less Gaussians, Texture More: 4K Feed-Forward Textured Splatting<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#10-less-gaussians-texture-more-4k-feed-forward-textured-splatting" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote>
+<p><strong>arXiv</strong>: <a href="https://arxiv.org/abs/2603.25745" class="external">2603.25745<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> | <strong>기관</strong>: Apple | ⬆️ 5
+🤖 GLM추천 | 📄 HTML
+<strong>태그</strong>: <code>3dgs</code> <code>feed-forward</code> <code>neural-rendering</code> <code>4k-synthesis</code> <code>gaussian-splatting</code> <code>texturing</code> <code>computer-graphics</code> <code>nv</code>
+<strong>사전 지식</strong>: 3D Gaussian Splatting (3DGS), Feed-forward Inference, Novel View Synthesis (NVS), Textured Gaussian Splatting, Primitive (Primitives in Computer Graphics)</p>
+</blockquote>
+<blockquote class="callout abstract" data-callout="abstract">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>한 줄 요약 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>이 논문은 3D Gaussian Splatting(3DGS) 방식이 고해상도에서 겪는 메모리 폭증 문제를 해결하여, 장면별 최적화 없이도 실시간으로 4K 수준의 고품질 새로운 시점 렌더링을 가능하게 했기에 매우 중요합니다.</p>
+</div>
+</blockquote>
+<h3 id="-핵심-아이디어-9">💡 핵심 아이디어<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-핵심-아이디어-9" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>거대한 벽화를 그리는 과정을 생각해보세요. 기존 방식은 점 하나하나를 모두 다른 색으로 찍어내는 ‘픽셀 단위 드로잉’이었다면, 이 논문의 방식(LGTM)은 벽의 거친 윤곽을 먼저 그리고(기하학), 그 위에 고해상도의 사진 스티커(텍스처)를 붙이는 방식입니다. 이렇게 하면 해상도가 아무리 높아져도 필요한 ‘점(프리미티브)‘의 개수는 크게 늘어나지 않아 효율적입니다.</p>
+<blockquote class="callout info" data-callout="info">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>문제 정의 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>기존의 피드 포워드(Feed-forward) 3DGS 방식들은 해상도가 높아질 때 필요한 가우시안(원시 도형)의 수가 제곱급(Quadratic growth)으로 늘어납니다. 예를 들어 512p에서 4K로 해상도를 올리면 가우시안 수가 64배나 증가하여 메모리 부족(Out of Memory)으로 렌더링이 불가능합니다.</p>
+</div>
+</blockquote>
+<h3 id="-방법론-상세-9">🔬 방법론 상세<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-방법론-상세-9" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>이중 스트림 네트워크 구조 (Dual-stream Network)</strong>: 저해상도 이미지를 입력받아 기하학적 형태를 예측하는 기하학 네트워크($f_{\text{prim}}$)와 고해상도 이미지를 패치 단위로 처리하여 텍스처를 예측하는 텍스처 네트워크($f_{\text{texture}}$)로 나눕니다.</li>
+<li><strong>텍스처드 가우시안 스플래팅 (Textured Gaussian Splatting)</strong>: 각 가우시안 프리미티브에 위치, 회전, 크기 같은 기하학적 정보뿐만 아니라, 색상($T_i^c$)과 투명도($T_i^\alpha$)를 담은 고유의 텍스처 맵을 할당합니다. 이를 통해 기하학적 복잡도와 렌더링 해상도를 분리(Decouple)했습니다.</li>
+<li><strong>입력 데이터 활용</strong>: 네트워크 학습 시 원본 고해상도 이미지와 이를 축소한 저해상도 이미지 쌍을 사용하여, 적은 연산으로도 정밀한 텍스처를 학습할 수 있도록 유도합니다.</li>
+</ul>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>핵심 기법 </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>가장 중요한 기법은 ‘형태’와 ‘무늬’의 분리입니다. 기존에는 텍스처 표현을 위해 수많은 작은 가우시안을 촘촘히 배치해야 했지만, LGTM은 적은 수의 큰 가우시안으로 형태를 잡고 각 가우시안마다 고해상도 텍스처를 입혀서, 4K와 같은 고해상도에서도 연산량을 급격히 줄이는 데 성공했습니다.</p>
+</div>
+</blockquote>
+<h3 id="-정량적-결과-9">📊 정량적 결과<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-정량적-결과-9" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<blockquote class="callout example" data-callout="example">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>주요 성과 </p></div>
+                  
+                </div>
+</blockquote>
+<ul>
+<li><strong>4K 렌더링 달성</strong>: 기존 방식(NoPoSplat)은 2K 해상도에서도 메모리 부족으로 실패한 반면, LGTM은 4096x2304(4K) 해상도에서 안정적으로 학습 및 추론을 성공했습니다.</li>
+<li><strong>메모리 효율성</strong>: 픽셀 수가 64배 증가(4K)함에도 불구하고, 메모리 사용량은 1.80배, 소요 시간은 1.47배만 증가하여 비약적인 효율 개선을 보였습니다.</li>
+<li><strong>학습 메모리 절감</strong>: 1024x576 해상도 기준, 기존 방식(61.85 GB) 대비 LGTM은 16.26 GB~20.16 GB 수준의 메모리만 사용하여 약 3배 이상의 메모리를 절감했습니다.</li>
+</ul>
+<h3 id="-기존-대비-개선점-9">🚀 기존 대비 개선점<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-기존-대비-개선점-9" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>확장성(Scalability) 획기적 개선</strong>: 기존에는 해상도 상승에 비례해 계산 비용이 급증하는 문제가 있었으나, 이 방식은 해상도가 높아져도 프리미티브 수를 고정하여 계산 비용을 일정 수준으로 유지합니다.</li>
+<li><strong>장면별 최적화 불필요</strong>: 별도의 시간이 오래 걸리는 최적화 과정(Per-scene optimization) 없이도 단 한 번의 추론만으로 4K 고품질 이미지를 생성합니다.</li>
+<li><strong>범용 적용 가능성</strong>: 단일 안경(Flash3D), 두 안경(DepthSplat), 다중 안경(VGGT) 등 다양한 기존 모델 베이스라인에 적용하여 성능을 향상시켰습니다.</li>
+</ul>
+<h3 id="-활용-분야-9">🎯 활용 분야<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#-활용-분야-9" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>VR/AR (가상/증강 현실)</strong>: 사용자의 기기 성능 한계를 극복하고 4K급 초고해상도 몰입형 콘텐츠를 실시간으로 스트리밍하거나 렌더링할 수 있습니다.</li>
+<li><strong>실시간 3D 콘텐츠 생성</strong>: 비디오 게임이나 메타버스 플랫폼에서 저사양 장비로도 고품질의 환경을 빠르게 구축하는 데 사용할 수 있습니다.</li>
+<li><strong>3D 디지털 트윈</strong>: 건물이나 물체를 스캔할 때 실시간으로 초고해상도 3D 모델을 생성하여 정밀한 모니터링이 필요한 산업 현장에 활용될 수 있습니다.</li>
+</ul>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>한계 및 주의사항 </p></div>
+                  
+                </div>
+</blockquote>
+<ul>
+<li><strong>기하학적 품질 의존성</strong>: 재구성 품질이 여전히 기하학적 예측 정확도에 크게 의존하므로, 형태가 복잡한 장면에서는 텍스처가 아무리 좋아도 결과물이 뭉개질 수 있습니다.</li>
+<li><strong>다중 시점 일관성 (Multi-view Inconsistency)</strong>: 다중 시점 입력을 사용할 때 시점 간의 불일치 문제가 발생할 수 있어, 현재로서는 단일 시점(Single-view) 설정에서 가장 좋은 성능을 보입니다.</li>
+</ul>
+<hr/>
+<blockquote>
+<p>📅 생성일: 2026-03-27 | 🤖 GLM-4.7</p>
+</blockquote></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>그래프 뷰</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-164" aria-expanded="true"><h3>목차</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#-2026-03-27-ai-논문-핵심-요약" data-for="-2026-03-27-ai-논문-핵심-요약">📚 2026-03-27 AI 논문 핵심 요약</a></li><li class="depth-1"><a href="#-목차" data-for="-목차">📑 목차</a></li><li class="depth-1"><a href="#1-pixelsmile-toward-fine-grained-facial-expression-editing" data-for="1-pixelsmile-toward-fine-grained-facial-expression-editing">1. PixelSmile: Toward Fine-Grained Facial Expression Editing</a></li><li class="depth-2"><a href="#-핵심-아이디어" data-for="-핵심-아이디어">💡 핵심 아이디어</a></li><li class="depth-2"><a href="#-방법론-상세" data-for="-방법론-상세">🔬 방법론 상세</a></li><li class="depth-2"><a href="#-정량적-결과" data-for="-정량적-결과">📊 정량적 결과</a></li><li class="depth-2"><a href="#-기존-대비-개선점" data-for="-기존-대비-개선점">🚀 기존 대비 개선점</a></li><li class="depth-2"><a href="#-활용-분야" data-for="-활용-분야">🎯 활용 분야</a></li><li class="depth-1"><a href="#2-intern-s1-pro-scientific-multimodal-foundation-model-at-trillion-scale" data-for="2-intern-s1-pro-scientific-multimodal-foundation-model-at-trillion-scale">2. Intern-S1-Pro: Scientific Multimodal Foundation Model at Trillion Scale</a></li><li class="depth-2"><a href="#-핵심-아이디어-1" data-for="-핵심-아이디어-1">💡 핵심 아이디어</a></li><li class="depth-2"><a href="#-방법론-상세-1" data-for="-방법론-상세-1">🔬 방법론 상세</a></li><li class="depth-2"><a href="#-정량적-결과-1" data-for="-정량적-결과-1">📊 정량적 결과</a></li><li class="depth-2"><a href="#-기존-대비-개선점-1" data-for="-기존-대비-개선점-1">🚀 기존 대비 개선점</a></li><li class="depth-2"><a href="#-활용-분야-1" data-for="-활용-분야-1">🎯 활용 분야</a></li><li class="depth-1"><a href="#3-realrestorer-towards-generalizable-real-world-image-restoration-with-large-scale-image-editing-models" data-for="3-realrestorer-towards-generalizable-real-world-image-restoration-with-large-scale-image-editing-models">3. RealRestorer: Towards Generalizable Real-World Image Restoration with Large-Scale Image Editing Models</a></li><li class="depth-2"><a href="#-핵심-아이디어-2" data-for="-핵심-아이디어-2">💡 핵심 아이디어</a></li><li class="depth-2"><a href="#-방법론-상세-2" data-for="-방법론-상세-2">🔬 방법론 상세</a></li><li class="depth-2"><a href="#-정량적-결과-2" data-for="-정량적-결과-2">📊 정량적 결과</a></li><li class="depth-2"><a href="#-기존-대비-개선점-2" data-for="-기존-대비-개선점-2">🚀 기존 대비 개선점</a></li><li class="depth-2"><a href="#-활용-분야-2" data-for="-활용-분야-2">🎯 활용 분야</a></li><li class="depth-1"><a href="#4-calibri-enhancing-diffusion-transformers-via-parameter-efficient-calibration" data-for="4-calibri-enhancing-diffusion-transformers-via-parameter-efficient-calibration">4. Calibri: Enhancing Diffusion Transformers via Parameter-Efficient Calibration</a></li><li class="depth-2"><a href="#-핵심-아이디어-3" data-for="-핵심-아이디어-3">💡 핵심 아이디어</a></li><li class="depth-2"><a href="#-방법론-상세-3" data-for="-방법론-상세-3">🔬 방법론 상세</a></li><li class="depth-2"><a href="#-정량적-결과-3" data-for="-정량적-결과-3">📊 정량적 결과</a></li><li class="depth-2"><a href="#-기존-대비-개선점-3" data-for="-기존-대비-개선점-3">🚀 기존 대비 개선점</a></li><li class="depth-2"><a href="#-활용-분야-3" data-for="-활용-분야-3">🎯 활용 분야</a></li><li class="depth-1"><a href="#5-macro-advancing-multi-reference-image-generation-with-structured-long-context-data" data-for="5-macro-advancing-multi-reference-image-generation-with-structured-long-context-data">5. MACRO: Advancing Multi-Reference Image Generation with Structured Long-Context Data</a></li><li class="depth-2"><a href="#-핵심-아이디어-4" data-for="-핵심-아이디어-4">💡 핵심 아이디어</a></li><li class="depth-2"><a href="#-방법론-상세-4" data-for="-방법론-상세-4">🔬 방법론 상세</a></li><li class="depth-2"><a href="#-정량적-결과-4" data-for="-정량적-결과-4">📊 정량적 결과</a></li><li class="depth-2"><a href="#-기존-대비-개선점-4" data-for="-기존-대비-개선점-4">🚀 기존 대비 개선점</a></li><li class="depth-2"><a href="#-활용-분야-4" data-for="-활용-분야-4">🎯 활용 분야</a></li><li class="depth-1"><a href="#6-voxtral-tts" data-for="6-voxtral-tts">6. Voxtral TTS</a></li><li class="depth-2"><a href="#-핵심-아이디어-5" data-for="-핵심-아이디어-5">💡 핵심 아이디어</a></li><li class="depth-2"><a href="#-방법론-상세-5" data-for="-방법론-상세-5">🔬 방법론 상세</a></li><li class="depth-2"><a href="#-정량적-결과-5" data-for="-정량적-결과-5">📊 정량적 결과</a></li><li class="depth-2"><a href="#-기존-대비-개선점-5" data-for="-기존-대비-개선점-5">🚀 기존 대비 개선점</a></li><li class="depth-2"><a href="#-활용-분야-5" data-for="-활용-분야-5">🎯 활용 분야</a></li><li class="depth-1"><a href="#7-slopcodebench-benchmarking-how-coding-agents-degrade-over-long-horizon-iterative-tasks" data-for="7-slopcodebench-benchmarking-how-coding-agents-degrade-over-long-horizon-iterative-tasks">7. SlopCodeBench: Benchmarking How Coding Agents Degrade Over Long-Horizon Iterative Tasks</a></li><li class="depth-2"><a href="#-핵심-아이디어-6" data-for="-핵심-아이디어-6">💡 핵심 아이디어</a></li><li class="depth-2"><a href="#-방법론-상세-6" data-for="-방법론-상세-6">🔬 방법론 상세</a></li><li class="depth-2"><a href="#-정량적-결과-6" data-for="-정량적-결과-6">📊 정량적 결과</a></li><li class="depth-2"><a href="#-기존-대비-개선점-6" data-for="-기존-대비-개선점-6">🚀 기존 대비 개선점</a></li><li class="depth-2"><a href="#-활용-분야-6" data-for="-활용-분야-6">🎯 활용 분야</a></li><li class="depth-1"><a href="#8-msa-memory-sparse-attention-for-efficient-end-to-end-memory-model-scaling-to-100m-tokens" data-for="8-msa-memory-sparse-attention-for-efficient-end-to-end-memory-model-scaling-to-100m-tokens">8. MSA: Memory Sparse Attention for Efficient End-to-End Memory Model Scaling to 100M Tokens</a></li><li class="depth-2"><a href="#-핵심-아이디어-7" data-for="-핵심-아이디어-7">💡 핵심 아이디어</a></li><li class="depth-2"><a href="#-방법론-상세-7" data-for="-방법론-상세-7">🔬 방법론 상세</a></li><li class="depth-2"><a href="#-정량적-결과-7" data-for="-정량적-결과-7">📊 정량적 결과</a></li><li class="depth-2"><a href="#-기존-대비-개선점-7" data-for="-기존-대비-개선점-7">🚀 기존 대비 개선점</a></li><li class="depth-2"><a href="#-활용-분야-7" data-for="-활용-분야-7">🎯 활용 분야</a></li><li class="depth-1"><a href="#9-avcontrol-efficient-framework-for-training-audio-visual-controls" data-for="9-avcontrol-efficient-framework-for-training-audio-visual-controls">9. AVControl: Efficient Framework for Training Audio-Visual Controls</a></li><li class="depth-2"><a href="#-핵심-아이디어-8" data-for="-핵심-아이디어-8">💡 핵심 아이디어</a></li><li class="depth-2"><a href="#-방법론-상세-8" data-for="-방법론-상세-8">🔬 방법론 상세</a></li><li class="depth-2"><a href="#-정량적-결과-8" data-for="-정량적-결과-8">📊 정량적 결과</a></li><li class="depth-2"><a href="#-기존-대비-개선점-8" data-for="-기존-대비-개선점-8">🚀 기존 대비 개선점</a></li><li class="depth-2"><a href="#-활용-분야-8" data-for="-활용-분야-8">🎯 활용 분야</a></li><li class="depth-1"><a href="#10-less-gaussians-texture-more-4k-feed-forward-textured-splatting" data-for="10-less-gaussians-texture-more-4k-feed-forward-textured-splatting">10. Less Gaussians, Texture More: 4K Feed-Forward Textured Splatting</a></li><li class="depth-2"><a href="#-핵심-아이디어-9" data-for="-핵심-아이디어-9">💡 핵심 아이디어</a></li><li class="depth-2"><a href="#-방법론-상세-9" data-for="-방법론-상세-9">🔬 방법론 상세</a></li><li class="depth-2"><a href="#-정량적-결과-9" data-for="-정량적-결과-9">📊 정량적 결과</a></li><li class="depth-2"><a href="#-기존-대비-개선점-9" data-for="-기존-대비-개선점-9">🚀 기존 대비 개선점</a></li><li class="depth-2"><a href="#-활용-분야-9" data-for="-활용-분야-9">🎯 활용 분야</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Created with <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="../../postscript.js" type="module"></script></html>
