@@ -82,7 +82,7 @@ fi
 
 echo "🚀 Deploying to Cloudflare Pages..."
 # wrangler를 사용하여 빌드된 public 폴더를 직접 배포합니다.
-npx wrangler pages deploy public --project-name=quartz-blog
+npx wrangler pages deploy public --project-name=epicodix
 echo "✅ Deployed to Cloudflare Pages!"
 
 # ── 5. Quarantine 복원 ──
@@ -93,4 +93,4 @@ if [ -d "$QUARANTINE_DIR" ] && ls "$QUARANTINE_DIR"/*.md 1>/dev/null 2>&1; then
 fi
 rmdir "$QUARANTINE_DIR" 2>/dev/null || true
 
-echo "🌐 Site should be live at: https://epicodix.github.io/Quartz/"
+echo "🌐 Site should be live at: https://epicodix.pages.dev"
