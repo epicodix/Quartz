@@ -15070,7 +15070,7 @@ var config = {
     },
     locale: "ko-KR",
     baseUrl: "epicodix.pages.dev",
-    ignorePatterns: ["private", "templates", ".obsidian", "99_\uC784\uC2DC", "99_private_logs"],
+    ignorePatterns: ["private", "templates", ".obsidian", "99_\uC784\uC2DC", "99_Private_Logs", "99_private_logs"],
     defaultDateType: "published",
     theme: {
       fontOrigin: "googleFonts",

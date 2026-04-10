@@ -18,7 +18,7 @@ const config: QuartzConfig = {
     },
     locale: "ko-KR",
     baseUrl: "epicodix.pages.dev",
-    ignorePatterns: ["private", "templates", ".obsidian", "99_임시", "99_private_logs"],
+    ignorePatterns: ["private", "templates", ".obsidian", "99_임시", "99_Private_Logs", "99_private_logs"],
     defaultDateType: "published",
     theme: {
       fontOrigin: "googleFonts",
