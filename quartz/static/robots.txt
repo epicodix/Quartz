@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Sitemap: https://epicodix.pages.dev/sitemap.xml
+
+# AI Bots are welcome
+User-agent: GPTBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Google-Extended
+Allow: /

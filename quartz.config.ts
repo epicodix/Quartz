@@ -17,8 +17,8 @@ const config: QuartzConfig = {
       tagId: "G-2C97KEVPXC",
     },
     locale: "ko-KR",
-    baseUrl: "epicodix.github.io/Quartz",
-    ignorePatterns: ["private", "templates", ".obsidian", "99_임시"],
+    baseUrl: "epicodix.pages.dev",
+    ignorePatterns: ["private", "templates", ".obsidian", "99_임시", "99_private_logs"],
     defaultDateType: "published",
     theme: {
       fontOrigin: "googleFonts",
