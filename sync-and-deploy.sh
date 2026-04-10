@@ -70,16 +70,20 @@ echo "🔨 Building Quartz site..."
 npx quartz build
 echo "✅ Build complete!"
 
-# ── 4. Deploy (변경사항 있을 때만) ──
+# ── 4. Deploy ──
 git add .
 if git diff --cached --quiet; then
-    echo "📭 변경사항 없음. 커밋/푸시 스킵."
+    echo "📭 소스 변경사항 없음."
 else
-    echo "🚀 Deploying to GitHub..."
+    echo "🚀 Committing source changes..."
     git commit -m "Update content: $(date '+%Y-%m-%d %H:%M')"
     git push origin main
-    echo "✅ Deployed!"
 fi
+
+echo "🚀 Deploying built site to gh-pages branch (Bypassing Actions)..."
+# public 폴더를 gh-pages 브랜치로 직접 푸시합니다.
+npx gh-pages -d public -e . -m "Deploy: $(date '+%Y-%m-%d %H:%M')" --dotfiles
+echo "✅ Deployed to gh-pages!"
 
 # ── 5. Quarantine 복원 ──
 if [ -d "$QUARANTINE_DIR" ] && ls "$QUARANTINE_DIR"/*.md 1>/dev/null 2>&1; then
