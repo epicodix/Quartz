@@ -13163,6 +13163,7 @@ var Head_default = /* @__PURE__ */ __name((() => {
     const ogImageDefaultPath = `https://${cfg.baseUrl}/static/og-image.png`;
     return /* @__PURE__ */ jsxs11("head", { children: [
       /* @__PURE__ */ jsx18("title", { children: title }),
+      /* @__PURE__ */ jsx18("meta", { name: "google-site-verification", content: "4IX2T9Rn_QTRDQrahAzRvk45JG8wzAWxZ5MvoHMTsgY" }),
       /* @__PURE__ */ jsx18("meta", { charSet: "utf-8" }),
       cfg.theme.cdnCaching && cfg.theme.fontOrigin === "googleFonts" && /* @__PURE__ */ jsxs11(Fragment4, { children: [
         /* @__PURE__ */ jsx18("link", { rel: "preconnect", href: "https://fonts.googleapis.com" }),

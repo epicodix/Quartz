@@ -85,7 +85,15 @@ echo "🚀 Deploying to Cloudflare Pages..."
 npx wrangler pages deploy public --project-name=epicodix
 echo "✅ Deployed to Cloudflare Pages!"
 
-# ── 5. Quarantine 복원 ──
+# ── 5. Search Engine Indexing (Ping) ──
+echo "🔔 Notifying search engines of update..."
+# Google Sitemap Ping (Legacy but often works)
+curl -s "https://www.google.com/ping?sitemap=https://epicodix.pages.dev/sitemap.xml" > /dev/null
+# IndexNow (Bing, Naver, etc.)
+curl -s "https://www.bing.com/indexnow?url=https://epicodix.pages.dev/&key=7727bff7727bff7727bff7727bff7727" > /dev/null
+echo "✅ Indexing pings sent!"
+
+# ── 6. Quarantine 복원 ──
 if [ -d "$QUARANTINE_DIR" ] && ls "$QUARANTINE_DIR"/*.md 1>/dev/null 2>&1; then
     echo "🔄 Quarantine 파일 복원 중..."
     mv "$QUARANTINE_DIR"/*.md "$DD_DIR/"
