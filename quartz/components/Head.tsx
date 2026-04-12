@@ -40,6 +40,7 @@ export default (() => {
       <head>
         <title>{title}</title>
         <meta name="google-site-verification" content="4IX2T9Rn_QTRDQrahAzRvk45JG8wzAWxZ5MvoHMTsgY" />
+        <meta name="naver-site-verification" content="be6e1ce80014f0a7dc1cb7c510d5ff4b2869cf4d" />
         <meta charSet="utf-8" />
         {cfg.theme.cdnCaching && cfg.theme.fontOrigin === "googleFonts" && (
           <>
