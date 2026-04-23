@@ -7,7 +7,7 @@ QUARANTINE_DIR="$CONTENT_DIR/.quarantine"
 
 # ── 1. Sync ──
 echo "🔄 Syncing GEMINI folder to content..."
-rsync -av --no-whole-file --delete --exclude '.obsidian/' --exclude '.Trash/' "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/클라우드/GEMINI/" "$CONTENT_DIR/"
+rsync -av --no-whole-file --delete --exclude '.obsidian/' --exclude '.Trash/' --exclude '07_Practice_Troubleshooting/' "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/클라우드/GEMINI/" "$CONTENT_DIR/"
 echo "✅ Sync complete!"
 
 # ── 1-1. 키캡 이모지 제거 (CustomOgImages 오류 방지) ──
