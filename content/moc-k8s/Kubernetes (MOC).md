@@ -45,6 +45,11 @@ updated: '2025-11-08'
   * **네트워킹**
       * `[[K8s - Service]]`
       * `[[K8s - Ingress]]`
+      * `[[멘토링_핵심개념_네트워크_EKS|CIDR · NAT GW · CloudFront · Service/Ingress · Image Tag]]`
+
+#### 오토스케일링 & 노드 관리
+
+  * `[[멘토링_예상질문_K8s_Service_Karpenter|Karpenter · HPA · PDB · IRSA · ExternalSecrets · Probe]]`
 
 #### ️ 격리 및 정책
 
