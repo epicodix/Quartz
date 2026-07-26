@@ -104,7 +104,9 @@ if git diff --cached --quiet; then
 else
     echo "🚀 Committing source changes to GitHub (Backup)..."
     git commit -m "Update content: $(date '+%Y-%m-%d %H:%M')"
-    git push origin main
+    if ! GIT_TERMINAL_PROMPT=0 git push origin main; then
+        echo "⚠️  GitHub backup push failed; continuing with Cloudflare Pages deploy."
+    fi
 fi
 
 echo "🚀 Deploying to Cloudflare Pages..."
