@@ -4,38 +4,11 @@ set -e
 CONTENT_DIR="./content"
 DD_DIR="$CONTENT_DIR/AI_Paper/deep-dive"
 QUARANTINE_DIR="$CONTENT_DIR/.quarantine"
-PAPER_OUTPUT_DIR="$HOME/daily-paper-summary/output"
-DAILY_DIR="$CONTENT_DIR/AI_Paper/daily"
-WEEKLY_DIR="$CONTENT_DIR/AI_Paper/weekly"
 
 # ── 1. Sync ──
-echo "🔄 Syncing local AI Paper output to Quartz content..."
-
-if [ ! -d "$PAPER_OUTPUT_DIR" ]; then
-    echo "❌ Local paper output directory is missing: $PAPER_OUTPUT_DIR"
-    exit 1
-fi
-
-mkdir -p "$DAILY_DIR" "$WEEKLY_DIR" "$DD_DIR"
-
-# launchd cannot reliably read the iCloud-backed Obsidian vault because of
-# macOS TCC permissions. The generator's local output is the source of truth
-# for deployment; Obsidian remains a separate copy for reading and editing.
-rsync -av \
-    --include='20??-??-??-summary.md' \
-    --exclude='*' \
-    "$PAPER_OUTPUT_DIR/" "$DAILY_DIR/"
-
-rsync -av \
-    --include='weekly-*.md' \
-    --exclude='*' \
-    "$PAPER_OUTPUT_DIR/" "$WEEKLY_DIR/"
-
-if [ -d "$PAPER_OUTPUT_DIR/deep-dive" ]; then
-    rsync -av "$PAPER_OUTPUT_DIR/deep-dive/" "$DD_DIR/"
-fi
-
-echo "✅ Local AI Paper sync complete!"
+echo "🔄 Syncing GEMINI folder to content..."
+rsync -av --no-whole-file --delete --exclude '.obsidian/' --exclude '.Trash/' --exclude '07_Practice_Troubleshooting/' "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/클라우드/GEMINI/" "$CONTENT_DIR/"
+echo "✅ Sync complete!"
 
 # ── 1-1. 키캡 이모지 제거 (CustomOgImages 오류 방지) ──
 # U+FE0F (variation selector) + U+20E3 (combining enclosing keysign) 제거
